@@ -1,0 +1,40 @@
+# Flutter
+**/android/
+**/ios/
+**/windows/
+**/linux/
+**/macos/
+**/web/
+**/pubspec.lock
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+
+# React Native / Expo
+**/node_modules/
+**/.expo/
+**/dist/
+**/npm-debug.*
+**/*.jks
+**/*.p8
+**/*.p12
+**/*.key
+**/*.mobileprovision
+
+# Electron
+**/node_modules/
+**/dist/
+**/out/
+**/package-lock.json
+
+# React / Vite
+**/node_modules/
+**/dist/
+**/.env.local
+**/.env.*.local
+**/vite.config.js
+
+# General
+**/.DS_Store
+**/Thumbs.db
+**/*.log
