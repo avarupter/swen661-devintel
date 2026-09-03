@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'router/app_router.dart';
+import 'providers/auth_provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,14 +12,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'CareConnect',
-      theme: ThemeData(
-        primaryColor: const Color(0xFF1A73E8),
-        useMaterial3: true,
+    return ChangeNotifierProvider(
+      create: (context) => AuthProvider(),
+      child: MaterialApp.router(
+        title: 'CareConnect',
+        theme: ThemeData(
+          primaryColor: const Color(0xFF1A73E8),
+          useMaterial3: true,
+        ),
+        routerConfig: router,
+        debugShowCheckedModeBanner: false,
       ),
-      routerConfig: router,
-      debugShowCheckedModeBanner: false,
     );
   }
 }

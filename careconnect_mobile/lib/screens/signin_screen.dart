@@ -1,241 +1,194 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
+import '../utils/responsive.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final isTablet = Responsive.isTablet(context);
+
     return Scaffold(
-      body: Container(
-        width: 393,
-        height: 852,
-        color: Colors.white,
-        child: Stack(
-          children: [
-            // ---- BACK ARROW ----
-            Positioned(
-              top: 36,
-              left: 16,
-              child: GestureDetector(
-                onTap: () {
-                  context.pop();
-                },
-                child: const Text(
-                  '←',
-                  style: TextStyle(
-                    fontSize: 24,
-                    color: Color(0xFF1E293B),
-                  ),
-                ),
-              ),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: GestureDetector(
+          onTap: () {
+            context.pop();
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(
+              Icons.arrow_back,
+              size: isTablet ? 32 : 24,
+              color: const Color(0xFF1E293B),
             ),
-
-            // ---- HEADER ----
-            const Positioned(
-              top: 40,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: Text(
-                  'CareConnect',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xFF1E293B),
-                  ),
-                ),
-              ),
+          ),
+        ),
+        title: Center(
+          child: Text(
+            'CareConnect',
+            style: TextStyle(
+              fontSize: isTablet ? 28 : 20,
+              fontWeight: FontWeight.w700,
+              color: const Color(0xFF1E293B),
             ),
-
-            // ---- TITLE ----
-            const Positioned(
-              top: 146,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: Text(
+          ),
+        ),
+        actions: const [SizedBox(width: 48)],
+      ),
+      body: Center(
+        child: Container(
+          constraints: BoxConstraints(
+            maxWidth: isTablet ? 600 : double.infinity,
+          ),
+          padding: EdgeInsets.symmetric(
+            horizontal: isTablet ? 0 : 24,
+            vertical: isTablet ? 40 : 20,
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
                   'Sign In',
                   style: TextStyle(
-                    fontSize: 24,
+                    fontSize: isTablet ? 32 : 24,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF1E293B),
+                    color: const Color(0xFF1E293B),
                   ),
                 ),
-              ),
-            ),
+                SizedBox(height: isTablet ? 40 : 30),
 
-            // ---- EMAIL FIELD ----
-            const Positioned(
-              top: 304,
-              left: 24,
-              child: Text(
-                'Email address *',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF1E293B),
-                ),
-              ),
-            ),
-            Positioned(
-              top: 328,
-              left: 24,
-              child: Container(
-                width: 345,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: const Color(0xFFCBD5E1), width: 1.5),
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
+                // ---- EMAIL FIELD ----
+                _buildLabel('Email address *', isTablet),
+                _buildTextField('you@example.com', isTablet),
+                SizedBox(height: isTablet ? 20 : 16),
+
+                // ---- PASSWORD FIELD ----
+                _buildLabel('Password *', isTablet),
+                _buildTextField('••••••••', isTablet, obscureText: true),
+                SizedBox(height: isTablet ? 40 : 30),
+
+                // ---- SIGN IN BUTTON ----
+                SizedBox(
+                  width: isTablet ? 400 : double.infinity,
+                  height: isTablet ? 60 : 52,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+                      authProvider.signIn('mary@example.com', 'password123');
+                      context.push('/patient-today');
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF1A73E8),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(28),
+                      ),
+                    ),
                     child: Text(
-                      'you@example.com',
+                      'Sign In',
                       style: TextStyle(
-                        fontSize: 14,
-                        color: Color(0xFF94A3B8),
+                        fontSize: isTablet ? 20 : 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
                       ),
                     ),
                   ),
                 ),
-              ),
-            ),
+                const SizedBox(height: 20),
 
-            // ---- PASSWORD FIELD ----
-            const Positioned(
-              top: 392,
-              left: 24,
-              child: Text(
-                'Password *',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF1E293B),
-                ),
-              ),
-            ),
-            Positioned(
-              top: 416,
-              left: 24,
-              child: Container(
-                width: 345,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: const Color(0xFFCBD5E1), width: 1.5),
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      '••••••••',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Color(0xFF94A3B8),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-
-            // ---- SIGN IN BUTTON ----
-            Positioned(
-              top: 487,
-              left: 24,
-              child: SizedBox(
-                width: 345,
-                height: 52,
-                child: ElevatedButton(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Sign In coming soon!')),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF1A73E8),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(28),
-                    ),
-                  ),
-                  child: const Text(
-                    'Sign In',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-
-            // ---- FORGOT PASSWORD ----
-            const Positioned(
-              top: 565,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: Text(
+                // ---- FORGOT PASSWORD ----
+                Text(
                   'Forgot password? Click here to reset.',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: isTablet ? 18 : 14,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFF1A73E8),
+                    color: const Color(0xFF1A73E8),
                   ),
+                  textAlign: TextAlign.center,
                 ),
-              ),
-            ),
+                const SizedBox(height: 12),
 
-            // ---- SIGN UP LINK ----
-            Positioned(
-              top: 595,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: GestureDetector(
+                // ---- SIGN UP LINK ----
+                GestureDetector(
                   onTap: () {
                     context.push('/signup');
                   },
-                  child: const Text(
+                  child: Text(
                     'New? Click here to sign up.',
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: isTablet ? 18 : 14,
                       fontWeight: FontWeight.w500,
-                      color: Color(0xFF1A73E8),
+                      color: const Color(0xFF1A73E8),
                     ),
                   ),
                 ),
-              ),
+                const SizedBox(height: 20),
+              ],
             ),
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: const Color(0xFF1A73E8),
+        selectedItemColor: Colors.white,
+        unselectedItemColor: const Color(0xFFD4E4FF),
+        currentIndex: 0,
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.medication), label: 'Medications'),
+          BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: 'Appointments'),
+          BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Messages'),
+          BottomNavigationBarItem(icon: Icon(Icons.help), label: 'Help'),
+        ],
+      ),
+    );
+  }
 
-            // ---- BOTTOM NAVIGATION BAR ----
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                height: 60,
-                color: const Color(0xFF1A73E8),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text('Home', style: TextStyle(color: Color(0xFFD4E4FF), fontSize: 11)),
-                    Text('Medications', style: TextStyle(color: Color(0xFFD4E4FF), fontSize: 11)),
-                    Text('Appointments', style: TextStyle(color: Color(0xFFD4E4FF), fontSize: 11)),
-                    Text('Messages', style: TextStyle(color: Color(0xFFD4E4FF), fontSize: 11)),
-                    Text('Help', style: TextStyle(color: Color(0xFFD4E4FF), fontSize: 11)),
-                  ],
-                ),
-              ),
-            ),
-          ],
+  Widget _buildLabel(String text, bool isTablet) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: isTablet ? 0 : 0),
+      child: Text(
+        text,
+        style: TextStyle(
+          fontSize: isTablet ? 18 : 14,
+          fontWeight: FontWeight.w600,
+          color: const Color(0xFF1E293B),
+        ),
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+
+  Widget _buildTextField(String hint, bool isTablet, {bool obscureText = false}) {
+    return SizedBox(
+      width: isTablet ? 400 : double.infinity,
+      child: TextField(
+        obscureText: obscureText,
+        decoration: InputDecoration(
+          hintText: hint,
+          hintStyle: TextStyle(
+            fontSize: isTablet ? 16 : 14,
+            color: const Color(0xFF94A3B8),
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: Color(0xFFCBD5E1), width: 1.5),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: Color(0xFFCBD5E1), width: 1.5),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: Color(0xFF1A73E8), width: 2),
+          ),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
         ),
       ),
     );

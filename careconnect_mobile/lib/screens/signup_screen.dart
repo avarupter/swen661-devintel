@@ -1,346 +1,219 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
+import '../utils/responsive.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final isTablet = Responsive.isTablet(context);
+
     return Scaffold(
-      body: Container(
-        width: 393,
-        height: 852,
-        color: Colors.white,
-        child: Stack(
-          children: [
-            // ---- BACK ARROW (goes back) ----
-            Positioned(
-              top: 36,
-              left: 16,
-              child: GestureDetector(
-                onTap: () {
-                  context.pop();
-                },
-                child: const Text(
-                  '←',
-                  style: TextStyle(
-                    fontSize: 24,
-                    color: Color(0xFF1E293B),
-                  ),
-                ),
-              ),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: GestureDetector(
+          onTap: () {
+            context.pop();
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(
+              Icons.arrow_back,
+              size: isTablet ? 32 : 24,
+              color: const Color(0xFF1E293B),
             ),
-
-            // ---- HEADER ----
-            const Positioned(
-              top: 40,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: Text(
-                  'CareConnect',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xFF1E293B),
-                  ),
-                ),
-              ),
+          ),
+        ),
+        title: Center(
+          child: Text(
+            'CareConnect',
+            style: TextStyle(
+              fontSize: isTablet ? 28 : 20,
+              fontWeight: FontWeight.w700,
+              color: const Color(0xFF1E293B),
             ),
-
-            // ---- TITLE ----
-            const Positioned(
-              top: 96,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: Text(
+          ),
+        ),
+        actions: const [SizedBox(width: 48)],
+      ),
+      body: Center(
+        child: Container(
+          constraints: BoxConstraints(
+            maxWidth: isTablet ? 600 : double.infinity,
+          ),
+          padding: EdgeInsets.symmetric(
+            horizontal: isTablet ? 0 : 24,
+            vertical: isTablet ? 40 : 20,
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
                   'Create your account',
                   style: TextStyle(
-                    fontSize: 24,
+                    fontSize: isTablet ? 32 : 24,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF1E293B),
+                    color: const Color(0xFF1E293B),
                   ),
                 ),
-              ),
-            ),
-
-            // ---- SUBTITLE ----
-            const Positioned(
-              top: 136,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: Text(
+                const SizedBox(height: 12),
+                Text(
                   'Free, private, and takes under two minutes.',
                   style: TextStyle(
-                    fontSize: 14,
-                    color: Color(0xFF64748B),
+                    fontSize: isTablet ? 18 : 14,
+                    color: const Color(0xFF64748B),
                   ),
+                  textAlign: TextAlign.center,
                 ),
-              ),
-            ),
+                SizedBox(height: isTablet ? 40 : 30),
 
-            // ---- NAME FIELD ----
-            const Positioned(
-              top: 196,
-              left: 24,
-              child: Text(
-                'Your name *',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF1E293B),
+                // ---- NAME FIELD ----
+                _buildLabel('Your name *', isTablet),
+                _buildTextField('e.g. Dorothy Smith', isTablet),
+                const SizedBox(height: 8),
+                Text(
+                  'This is how CareConnect will greet you.',
+                  style: TextStyle(
+                    fontSize: isTablet ? 14 : 12,
+                    color: const Color(0xFF64748B),
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-              ),
-            ),
-            Positioned(
-              top: 220,
-              left: 24,
-              child: Container(
-                width: 345,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: const Color(0xFFCBD5E1), width: 1.5),
+                SizedBox(height: isTablet ? 20 : 16),
+
+                // ---- EMAIL FIELD ----
+                _buildLabel('Email address *', isTablet),
+                _buildTextField('you@example.com', isTablet),
+                SizedBox(height: isTablet ? 20 : 16),
+
+                // ---- PASSWORD FIELD ----
+                _buildLabel('Password *', isTablet),
+                _buildTextField('••••••••', isTablet, obscureText: true),
+                const SizedBox(height: 8),
+                Text(
+                  'At least 6 characters.',
+                  style: TextStyle(
+                    fontSize: isTablet ? 14 : 12,
+                    color: const Color(0xFF64748B),
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
+                SizedBox(height: isTablet ? 20 : 16),
+
+                // ---- CONFIRM PASSWORD FIELD ----
+                _buildLabel('Confirm password *', isTablet),
+                _buildTextField('••••••••', isTablet, obscureText: true),
+                SizedBox(height: isTablet ? 40 : 30),
+
+                // ---- CREATE ACCOUNT BUTTON ----
+                SizedBox(
+                  width: isTablet ? 400 : double.infinity,
+                  height: isTablet ? 60 : 52,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+                      authProvider.signUp('Mary', 'mary@example.com', 'password123');
+                      context.push('/signin');
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF1A73E8),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(28),
+                      ),
+                    ),
                     child: Text(
-                      'e.g. Dorothy Smith',
+                      'Create account',
                       style: TextStyle(
-                        fontSize: 14,
-                        color: Color(0xFF94A3B8),
+                        fontSize: isTablet ? 20 : 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
                       ),
                     ),
                   ),
                 ),
-              ),
-            ),
+                const SizedBox(height: 20),
 
-            // ---- HINT TEXT ----
-            const Positioned(
-              top: 278,
-              left: 24,
-              child: Text(
-                'This is how CareConnect will greet you.',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Color(0xFF64748B),
-                ),
-              ),
-            ),
-
-            // ---- EMAIL FIELD ----
-            const Positioned(
-              top: 316,
-              left: 24,
-              child: Text(
-                'Email address *',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF1E293B),
-                ),
-              ),
-            ),
-            Positioned(
-              top: 340,
-              left: 24,
-              child: Container(
-                width: 345,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: const Color(0xFFCBD5E1), width: 1.5),
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'you@example.com',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Color(0xFF94A3B8),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-
-            // ---- PASSWORD FIELD ----
-            const Positioned(
-              top: 404,
-              left: 24,
-              child: Text(
-                'Password *',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF1E293B),
-                ),
-              ),
-            ),
-            Positioned(
-              top: 428,
-              left: 24,
-              child: Container(
-                width: 345,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: const Color(0xFFCBD5E1), width: 1.5),
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      '••••••••',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Color(0xFF94A3B8),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-
-            // ---- PASSWORD HINT ----
-            const Positioned(
-              top: 486,
-              left: 24,
-              child: Text(
-                'At least 6 characters.',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Color(0xFF64748B),
-                ),
-              ),
-            ),
-
-            // ---- CONFIRM PASSWORD FIELD ----
-            const Positioned(
-              top: 520,
-              left: 24,
-              child: Text(
-                'Confirm password *',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF1E293B),
-                ),
-              ),
-            ),
-            Positioned(
-              top: 544,
-              left: 24,
-              child: Container(
-                width: 345,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: const Color(0xFFCBD5E1), width: 1.5),
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      '••••••••',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Color(0xFF94A3B8),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-
-            // ---- CREATE ACCOUNT BUTTON ----
-            Positioned(
-              top: 620,
-              left: 24,
-              child: SizedBox(
-                width: 345,
-                height: 52,
-                child: ElevatedButton(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Account creation coming soon!')),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF1A73E8),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(28),
-                    ),
-                  ),
-                  child: const Text(
-                    'Create account',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-
-            // ---- SIGN IN LINK (navigates to Sign In) ----
-            Positioned(
-              top: 690,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: GestureDetector(
+                // ---- SIGN IN LINK ----
+                GestureDetector(
                   onTap: () {
                     context.push('/signin');
                   },
-                  child: const Text(
+                  child: Text(
                     'Already have an account? Sign in',
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: isTablet ? 18 : 14,
                       fontWeight: FontWeight.w500,
-                      color: Color(0xFF1A73E8),
+                      color: const Color(0xFF1A73E8),
                     ),
                   ),
                 ),
-              ),
+                const SizedBox(height: 20),
+              ],
             ),
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: const Color(0xFF1A73E8),
+        selectedItemColor: Colors.white,
+        unselectedItemColor: const Color(0xFFD4E4FF),
+        currentIndex: 0,
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.medication), label: 'Medications'),
+          BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: 'Appointments'),
+          BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Messages'),
+          BottomNavigationBarItem(icon: Icon(Icons.help), label: 'Help'),
+        ],
+      ),
+    );
+  }
 
-            // ---- BOTTOM NAVIGATION BAR ----
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                height: 60,
-                color: const Color(0xFF1A73E8),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text('Home', style: TextStyle(color: Color(0xFFD4E4FF), fontSize: 11)),
-                    Text('Medications', style: TextStyle(color: Color(0xFFD4E4FF), fontSize: 11)),
-                    Text('Appointments', style: TextStyle(color: Color(0xFFD4E4FF), fontSize: 11)),
-                    Text('Messages', style: TextStyle(color: Color(0xFFD4E4FF), fontSize: 11)),
-                    Text('Help', style: TextStyle(color: Color(0xFFD4E4FF), fontSize: 11)),
-                  ],
-                ),
-              ),
-            ),
-          ],
+  Widget _buildLabel(String text, bool isTablet) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: isTablet ? 0 : 0),
+      child: Text(
+        text,
+        style: TextStyle(
+          fontSize: isTablet ? 18 : 14,
+          fontWeight: FontWeight.w600,
+          color: const Color(0xFF1E293B),
+        ),
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+
+  Widget _buildTextField(String hint, bool isTablet, {bool obscureText = false}) {
+    return SizedBox(
+      width: isTablet ? 400 : double.infinity,
+      child: TextField(
+        obscureText: obscureText,
+        decoration: InputDecoration(
+          hintText: hint,
+          hintStyle: TextStyle(
+            fontSize: isTablet ? 16 : 14,
+            color: const Color(0xFF94A3B8),
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: Color(0xFFCBD5E1), width: 1.5),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: Color(0xFFCBD5E1), width: 1.5),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: Color(0xFF1A73E8), width: 2),
+          ),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
         ),
       ),
     );
