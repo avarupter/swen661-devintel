@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import '../utils/responsive.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Mobile393393px extends StatelessWidget {
-  const Mobile393393px({super.key});
+class CaregiverAppointmentsScreen extends StatelessWidget {
+  const CaregiverAppointmentsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -10,9 +12,7 @@ class Mobile393393px extends StatelessWidget {
       width: 393,
       height: 852,
       clipBehavior: Clip.hardEdge,
-      decoration: const BoxDecoration(
-        color: Colors.white,
-      ),
+      decoration: const BoxDecoration(color: Colors.white),
       child: SizedBox(
         width: double.infinity,
         child: Stack(
@@ -61,8 +61,9 @@ class Mobile393393px extends StatelessWidget {
                                         height: 40,
                                         decoration: BoxDecoration(
                                           color: const Color(0xFF1A73E8),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
                                         ),
                                         child: Stack(
                                           clipBehavior: Clip.none,
@@ -76,7 +77,7 @@ class Mobile393393px extends StatelessWidget {
                                                 height: 14,
                                                 fit: BoxFit.contain,
                                               ),
-                                            )
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -89,8 +90,9 @@ class Mobile393393px extends StatelessWidget {
                                         height: 36,
                                         decoration: BoxDecoration(
                                           color: const Color(0xFFCDEADF),
-                                          borderRadius:
-                                              BorderRadius.circular(9999),
+                                          borderRadius: BorderRadius.circular(
+                                            9999,
+                                          ),
                                         ),
                                         child: Stack(
                                           clipBehavior: Clip.none,
@@ -118,7 +120,7 @@ class Mobile393393px extends StatelessWidget {
                                                   fontFamily: 'Roboto',
                                                 ),
                                               ),
-                                            )
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -132,7 +134,7 @@ class Mobile393393px extends StatelessWidget {
                                         height: 38,
                                         fit: BoxFit.contain,
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
@@ -163,13 +165,14 @@ class Mobile393393px extends StatelessWidget {
                                             ),
                                             children: const [
                                               TextSpan(
-                                                  text: 'Thursday 4 June '),
+                                                text: 'Thursday 4 June ',
+                                              ),
                                               TextSpan(
                                                 text: '5:39 AM',
                                                 style: TextStyle(
                                                   color: Color(0xFF1A73E8),
                                                 ),
-                                              )
+                                              ),
                                             ],
                                           ),
                                         ),
@@ -232,7 +235,7 @@ class Mobile393393px extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
@@ -259,7 +262,7 @@ class Mobile393393px extends StatelessWidget {
                                       spreadRadius: 1,
                                       offset: Offset.zero,
                                       blurRadius: 0,
-                                    )
+                                    ),
                                   ],
                                 ),
                                 child: Stack(
@@ -290,15 +293,15 @@ class Mobile393393px extends StatelessWidget {
                                             ),
                                             children: const [
                                               TextSpan(
-                                                  text:
-                                                      'Vision Plus Opticians'),
+                                                text: 'Vision Plus Opticians',
+                                              ),
                                               TextSpan(
                                                 text:
                                                     '— 22 High Street, Westfield',
                                                 style: TextStyle(
                                                   color: Color(0xFF6D7788),
                                                 ),
-                                              )
+                                              ),
                                             ],
                                           ),
                                         ),
@@ -315,8 +318,9 @@ class Mobile393393px extends StatelessWidget {
                                           border: Border.all(
                                             color: const Color(0xFFD6DCE3),
                                           ),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
                                         ),
                                         child: Stack(
                                           clipBehavior: Clip.none,
@@ -347,7 +351,7 @@ class Mobile393393px extends StatelessWidget {
                                                   ),
                                                 ),
                                               ),
-                                            )
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -378,15 +382,16 @@ class Mobile393393px extends StatelessWidget {
                                             width: 2,
                                             color: const Color(0xFF1E7099),
                                           ),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
                                           boxShadow: const [
                                             BoxShadow(
                                               color: Color(0x0A27303F),
                                               spreadRadius: 0,
                                               offset: Offset(0, 1),
                                               blurRadius: 1,
-                                            )
+                                            ),
                                           ],
                                         ),
                                         child: Stack(
@@ -415,7 +420,7 @@ class Mobile393393px extends StatelessWidget {
                                                   fontFamily: 'Roboto',
                                                 ),
                                               ),
-                                            )
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -428,15 +433,16 @@ class Mobile393393px extends StatelessWidget {
                                         height: 39,
                                         decoration: BoxDecoration(
                                           color: const Color(0xFFB71F3B),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
                                           boxShadow: const [
                                             BoxShadow(
                                               color: Color(0x0A27303F),
                                               spreadRadius: 0,
                                               offset: Offset(0, 1),
                                               blurRadius: 1,
-                                            )
+                                            ),
                                           ],
                                         ),
                                         child: const Stack(
@@ -455,11 +461,11 @@ class Mobile393393px extends StatelessWidget {
                                                   fontFamily: 'Roboto',
                                                 ),
                                               ),
-                                            )
+                                            ),
                                           ],
                                         ),
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
@@ -486,7 +492,7 @@ class Mobile393393px extends StatelessWidget {
                                       spreadRadius: 1,
                                       offset: Offset.zero,
                                       blurRadius: 0,
-                                    )
+                                    ),
                                   ],
                                 ),
                                 child: Stack(
@@ -560,14 +566,15 @@ class Mobile393393px extends StatelessWidget {
                                             ),
                                             children: const [
                                               TextSpan(
-                                                  text: 'Greenfield Surgery'),
+                                                text: 'Greenfield Surgery',
+                                              ),
                                               TextSpan(
                                                 text:
                                                     '— 12 Greenfield Road, Westfield',
                                                 style: TextStyle(
                                                   color: Color(0xFF6D7788),
                                                 ),
-                                              )
+                                              ),
                                             ],
                                           ),
                                         ),
@@ -584,8 +591,9 @@ class Mobile393393px extends StatelessWidget {
                                           border: Border.all(
                                             color: const Color(0xFF9EDDBD),
                                           ),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
                                         ),
                                         child: Stack(
                                           clipBehavior: Clip.none,
@@ -625,7 +633,7 @@ class Mobile393393px extends StatelessWidget {
                                                   fontFamily: 'Roboto',
                                                 ),
                                               ),
-                                            )
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -641,8 +649,9 @@ class Mobile393393px extends StatelessWidget {
                                           border: Border.all(
                                             color: const Color(0xFFD6DCE3),
                                           ),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
                                         ),
                                         child: Stack(
                                           clipBehavior: Clip.none,
@@ -673,7 +682,7 @@ class Mobile393393px extends StatelessWidget {
                                                   ),
                                                 ),
                                               ),
-                                            )
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -704,15 +713,16 @@ class Mobile393393px extends StatelessWidget {
                                             width: 2,
                                             color: const Color(0xFF1E7099),
                                           ),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
                                           boxShadow: const [
                                             BoxShadow(
                                               color: Color(0x0A27303F),
                                               spreadRadius: 0,
                                               offset: Offset(0, 1),
                                               blurRadius: 1,
-                                            )
+                                            ),
                                           ],
                                         ),
                                         child: Stack(
@@ -741,7 +751,7 @@ class Mobile393393px extends StatelessWidget {
                                                   fontFamily: 'Roboto',
                                                 ),
                                               ),
-                                            )
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -754,15 +764,16 @@ class Mobile393393px extends StatelessWidget {
                                         height: 39,
                                         decoration: BoxDecoration(
                                           color: const Color(0xFFB71F3B),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
                                           boxShadow: const [
                                             BoxShadow(
                                               color: Color(0x0A27303F),
                                               spreadRadius: 0,
                                               offset: Offset(0, 1),
                                               blurRadius: 1,
-                                            )
+                                            ),
                                           ],
                                         ),
                                         child: const Stack(
@@ -781,23 +792,115 @@ class Mobile393393px extends StatelessWidget {
                                                   fontFamily: 'Roboto',
                                                 ),
                                               ),
-                                            )
+                                            ),
                                           ],
                                         ),
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
-            )
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget build2(BuildContext context) {
+    return Container(
+      width: 1024,
+      height: 80,
+      clipBehavior: Clip.hardEdge,
+      decoration: const BoxDecoration(color: Colors.white),
+      child: SizedBox(
+        width: double.infinity,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Positioned(
+              left: 0,
+              top: 0,
+              child: Image.network(
+                'https://storage.googleapis.com/codeless-app.appspot.com/uploads%2Fimages%2F0Sb5PSViLjKVeQFXc566%2F4d1b4092-7ddb-4304-a95a-d03a882c1c7e.png',
+                width: 1024,
+                height: 80,
+                fit: BoxFit.contain,
+              ),
+            ),
+            Positioned(
+              left: 82,
+              top: 38,
+              child: Text(
+                'Home ',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.getFont(
+                  'Inter',
+                  color: const Color(0xFFD4E4FF),
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            Positioned(
+              left: 267,
+              top: 38,
+              child: Text(
+                'Medications ',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.getFont(
+                  'Inter',
+                  color: const Color(0xFFD4E4FF),
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            Positioned(
+              left: 466,
+              top: 38,
+              child: Text(
+                'Appointments ',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.getFont(
+                  'Inter',
+                  color: const Color(0xFFD4E4FF),
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            Positioned(
+              left: 683,
+              top: 38,
+              child: Text(
+                'Messages ',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.getFont(
+                  'Inter',
+                  color: const Color(0xFFD4E4FF),
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            Positioned(
+              left: 907,
+              top: 38,
+              child: Text(
+                'Help ',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.getFont(
+                  'Inter',
+                  color: const Color(0xFFD4E4FF),
+                  fontSize: 14,
+                ),
+              ),
+            ),
           ],
         ),
       ),

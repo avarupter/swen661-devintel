@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import '../utils/responsive.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Mobile393393px extends StatelessWidget {
-  const Mobile393393px({super.key});
+class CaregiverMedicationFormsScreen extends StatelessWidget {
+  const CaregiverMedicationFormsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -10,9 +12,7 @@ class Mobile393393px extends StatelessWidget {
       width: 393,
       height: 852,
       clipBehavior: Clip.hardEdge,
-      decoration: const BoxDecoration(
-        color: Colors.white,
-      ),
+      decoration: const BoxDecoration(color: Colors.white),
       child: SizedBox(
         width: double.infinity,
         child: Stack(
@@ -61,8 +61,9 @@ class Mobile393393px extends StatelessWidget {
                                         height: 40,
                                         decoration: BoxDecoration(
                                           color: const Color(0xFF1A73E8),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
                                         ),
                                         child: Stack(
                                           clipBehavior: Clip.none,
@@ -76,7 +77,7 @@ class Mobile393393px extends StatelessWidget {
                                                 height: 14,
                                                 fit: BoxFit.contain,
                                               ),
-                                            )
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -89,8 +90,9 @@ class Mobile393393px extends StatelessWidget {
                                         height: 32,
                                         decoration: BoxDecoration(
                                           color: const Color(0xFFDEF2EA),
-                                          borderRadius:
-                                              BorderRadius.circular(9999),
+                                          borderRadius: BorderRadius.circular(
+                                            9999,
+                                          ),
                                         ),
                                         child: Stack(
                                           clipBehavior: Clip.none,
@@ -118,7 +120,7 @@ class Mobile393393px extends StatelessWidget {
                                                   fontFamily: 'Roboto',
                                                 ),
                                               ),
-                                            )
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -149,13 +151,14 @@ class Mobile393393px extends StatelessWidget {
                                             ),
                                             children: const [
                                               TextSpan(
-                                                  text: 'Thursday 4 June '),
+                                                text: 'Thursday 4 June ',
+                                              ),
                                               TextSpan(
                                                 text: '5:38 AM',
                                                 style: TextStyle(
                                                   color: Color(0xFF1A73E8),
                                                 ),
-                                              )
+                                              ),
                                             ],
                                           ),
                                         ),
@@ -229,7 +232,7 @@ class Mobile393393px extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
@@ -256,8 +259,9 @@ class Mobile393393px extends StatelessWidget {
                                         width: 367,
                                         height: 48,
                                         decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
                                         ),
                                         child: Stack(
                                           clipBehavior: Clip.none,
@@ -285,7 +289,7 @@ class Mobile393393px extends StatelessWidget {
                                                   fontFamily: 'Roboto',
                                                 ),
                                               ),
-                                            )
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -298,8 +302,9 @@ class Mobile393393px extends StatelessWidget {
                                         height: 48,
                                         decoration: BoxDecoration(
                                           color: const Color(0xFFD9EEF7),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
                                         ),
                                         child: Stack(
                                           clipBehavior: Clip.none,
@@ -326,7 +331,7 @@ class Mobile393393px extends StatelessWidget {
                                                   fontFamily: 'Roboto',
                                                 ),
                                               ),
-                                            )
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -338,8 +343,9 @@ class Mobile393393px extends StatelessWidget {
                                         width: 367,
                                         height: 48,
                                         decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
                                         ),
                                         child: Stack(
                                           clipBehavior: Clip.none,
@@ -367,7 +373,7 @@ class Mobile393393px extends StatelessWidget {
                                                   fontFamily: 'Roboto',
                                                 ),
                                               ),
-                                            )
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -379,8 +385,9 @@ class Mobile393393px extends StatelessWidget {
                                         width: 367,
                                         height: 48,
                                         decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
                                         ),
                                         child: Stack(
                                           clipBehavior: Clip.none,
@@ -408,7 +415,7 @@ class Mobile393393px extends StatelessWidget {
                                                   fontFamily: 'Roboto',
                                                 ),
                                               ),
-                                            )
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -420,8 +427,9 @@ class Mobile393393px extends StatelessWidget {
                                         width: 367,
                                         height: 48,
                                         decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
                                         ),
                                         child: Stack(
                                           clipBehavior: Clip.none,
@@ -449,11 +457,11 @@ class Mobile393393px extends StatelessWidget {
                                                   fontFamily: 'Roboto',
                                                 ),
                                               ),
-                                            )
+                                            ),
                                           ],
                                         ),
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
@@ -528,8 +536,9 @@ class Mobile393393px extends StatelessWidget {
                                                   color: Colors.white,
                                                   border: Border.all(
                                                     width: 2,
-                                                    color:
-                                                        const Color(0xFFC7D0DA),
+                                                    color: const Color(
+                                                      0xFFC7D0DA,
+                                                    ),
                                                   ),
                                                   borderRadius:
                                                       BorderRadius.circular(14),
@@ -543,8 +552,9 @@ class Mobile393393px extends StatelessWidget {
                                                       child: Text(
                                                         'Add new medication',
                                                         style: TextStyle(
-                                                          color:
-                                                              Color(0xFF1F2937),
+                                                          color: Color(
+                                                            0xFF1F2937,
+                                                          ),
                                                           fontSize: 24,
                                                           fontWeight:
                                                               FontWeight.bold,
@@ -586,29 +596,31 @@ class Mobile393393px extends StatelessWidget {
                                                                     Positioned(
                                                                       left: -1,
                                                                       top: -2,
-                                                                      child:
-                                                                          SizedBox(
+                                                                      child: SizedBox(
                                                                         width:
                                                                             319,
-                                                                        child:
-                                                                            RichText(
-                                                                          text:
-                                                                              TextSpan(
-                                                                            style:
-                                                                                GoogleFonts.getFont(
+                                                                        child: RichText(
+                                                                          text: TextSpan(
+                                                                            style: GoogleFonts.getFont(
                                                                               'Roboto',
-                                                                              color: const Color(0xFF1F2937),
+                                                                              color: const Color(
+                                                                                0xFF1F2937,
+                                                                              ),
                                                                               fontSize: 16,
                                                                               height: 1.5,
                                                                             ),
                                                                             children: const [
-                                                                              TextSpan(text: 'Medication name (required) '),
+                                                                              TextSpan(
+                                                                                text: 'Medication name (required) ',
+                                                                              ),
                                                                               TextSpan(
                                                                                 text: '*',
                                                                                 style: TextStyle(
-                                                                                  color: Color(0xFFDC2626),
+                                                                                  color: Color(
+                                                                                    0xFFDC2626,
+                                                                                  ),
                                                                                 ),
-                                                                              )
+                                                                              ),
                                                                             ],
                                                                           ),
                                                                         ),
@@ -617,30 +629,28 @@ class Mobile393393px extends StatelessWidget {
                                                                     Positioned(
                                                                       left: 0,
                                                                       top: 31,
-                                                                      child:
-                                                                          Container(
+                                                                      child: Container(
                                                                         width:
                                                                             313,
                                                                         height:
                                                                             52,
                                                                         clipBehavior:
                                                                             Clip.hardEdge,
-                                                                        decoration:
-                                                                            BoxDecoration(
+                                                                        decoration: BoxDecoration(
                                                                           color:
                                                                               Colors.white,
-                                                                          border:
-                                                                              Border.all(
+                                                                          border: Border.all(
                                                                             width:
                                                                                 2,
-                                                                            color:
-                                                                                const Color(0xFFBCC5D1),
+                                                                            color: const Color(
+                                                                              0xFFBCC5D1,
+                                                                            ),
                                                                           ),
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(10),
+                                                                          borderRadius: BorderRadius.circular(
+                                                                            10,
+                                                                          ),
                                                                         ),
-                                                                        child:
-                                                                            Stack(
+                                                                        child: Stack(
                                                                           clipBehavior:
                                                                               Clip.none,
                                                                           children: [
@@ -659,11 +669,11 @@ class Mobile393393px extends StatelessWidget {
                                                                                   ),
                                                                                 ),
                                                                               ),
-                                                                            )
+                                                                            ),
                                                                           ],
                                                                         ),
                                                                       ),
-                                                                    )
+                                                                    ),
                                                                   ],
                                                                 ),
                                                               ),
@@ -681,29 +691,31 @@ class Mobile393393px extends StatelessWidget {
                                                                     Positioned(
                                                                       left: -1,
                                                                       top: -2,
-                                                                      child:
-                                                                          SizedBox(
+                                                                      child: SizedBox(
                                                                         width:
                                                                             319,
-                                                                        child:
-                                                                            RichText(
-                                                                          text:
-                                                                              TextSpan(
-                                                                            style:
-                                                                                GoogleFonts.getFont(
+                                                                        child: RichText(
+                                                                          text: TextSpan(
+                                                                            style: GoogleFonts.getFont(
                                                                               'Roboto',
-                                                                              color: const Color(0xFF1F2937),
+                                                                              color: const Color(
+                                                                                0xFF1F2937,
+                                                                              ),
                                                                               fontSize: 16,
                                                                               height: 1.5,
                                                                             ),
                                                                             children: const [
-                                                                              TextSpan(text: 'Dose (required) '),
+                                                                              TextSpan(
+                                                                                text: 'Dose (required) ',
+                                                                              ),
                                                                               TextSpan(
                                                                                 text: '*',
                                                                                 style: TextStyle(
-                                                                                  color: Color(0xFFDC2626),
+                                                                                  color: Color(
+                                                                                    0xFFDC2626,
+                                                                                  ),
                                                                                 ),
-                                                                              )
+                                                                              ),
                                                                             ],
                                                                           ),
                                                                         ),
@@ -712,30 +724,28 @@ class Mobile393393px extends StatelessWidget {
                                                                     Positioned(
                                                                       left: 0,
                                                                       top: 31,
-                                                                      child:
-                                                                          Container(
+                                                                      child: Container(
                                                                         width:
                                                                             313,
                                                                         height:
                                                                             52,
                                                                         clipBehavior:
                                                                             Clip.hardEdge,
-                                                                        decoration:
-                                                                            BoxDecoration(
+                                                                        decoration: BoxDecoration(
                                                                           color:
                                                                               Colors.white,
-                                                                          border:
-                                                                              Border.all(
+                                                                          border: Border.all(
                                                                             width:
                                                                                 2,
-                                                                            color:
-                                                                                const Color(0xFFBCC5D1),
+                                                                            color: const Color(
+                                                                              0xFFBCC5D1,
+                                                                            ),
                                                                           ),
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(10),
+                                                                          borderRadius: BorderRadius.circular(
+                                                                            10,
+                                                                          ),
                                                                         ),
-                                                                        child:
-                                                                            Stack(
+                                                                        child: Stack(
                                                                           clipBehavior:
                                                                               Clip.none,
                                                                           children: [
@@ -754,7 +764,7 @@ class Mobile393393px extends StatelessWidget {
                                                                                   ),
                                                                                 ),
                                                                               ),
-                                                                            )
+                                                                            ),
                                                                           ],
                                                                         ),
                                                                       ),
@@ -762,17 +772,15 @@ class Mobile393393px extends StatelessWidget {
                                                                     const Positioned(
                                                                       left: -1,
                                                                       top: 90,
-                                                                      child:
-                                                                          SizedBox(
+                                                                      child: SizedBox(
                                                                         width:
                                                                             319,
-                                                                        child:
-                                                                            Text(
+                                                                        child: Text(
                                                                           'Include strength, form, and quantity.',
-                                                                          style:
-                                                                              TextStyle(
-                                                                            color:
-                                                                                Color(0xFF667085),
+                                                                          style: TextStyle(
+                                                                            color: Color(
+                                                                              0xFF667085,
+                                                                            ),
                                                                             fontSize:
                                                                                 13,
                                                                             height:
@@ -782,7 +790,7 @@ class Mobile393393px extends StatelessWidget {
                                                                           ),
                                                                         ),
                                                                       ),
-                                                                    )
+                                                                    ),
                                                                   ],
                                                                 ),
                                                               ),
@@ -793,13 +801,12 @@ class Mobile393393px extends StatelessWidget {
                                                               child: SizedBox(
                                                                 width: 315,
                                                                 child: RichText(
-                                                                  text:
-                                                                      TextSpan(
-                                                                    style: GoogleFonts
-                                                                        .getFont(
+                                                                  text: TextSpan(
+                                                                    style: GoogleFonts.getFont(
                                                                       'Roboto',
                                                                       color: const Color(
-                                                                          0xFF1F2937),
+                                                                        0xFF1F2937,
+                                                                      ),
                                                                       fontSize:
                                                                           16,
                                                                       height:
@@ -807,46 +814,139 @@ class Mobile393393px extends StatelessWidget {
                                                                     ),
                                                                     children: const [
                                                                       TextSpan(
-                                                                          text:
-                                                                              'Schedule times (required) '),
+                                                                        text:
+                                                                            'Schedule times (required) ',
+                                                                      ),
                                                                       TextSpan(
                                                                         text:
                                                                             '*',
-                                                                        style:
-                                                                            TextStyle(
-                                                                          color:
-                                                                              Color(0xFFDC2626),
+                                                                        style: TextStyle(
+                                                                          color: Color(
+                                                                            0xFFDC2626,
+                                                                          ),
                                                                         ),
-                                                                      )
+                                                                      ),
                                                                     ],
                                                                   ),
                                                                 ),
                                                               ),
-                                                            )
+                                                            ),
                                                           ],
                                                         ),
                                                       ),
-                                                    )
+                                                    ),
                                                   ],
                                                 ),
                                               ),
-                                            )
+                                            ),
                                           ],
                                         ),
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
-            )
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget build2(BuildContext context) {
+    return Container(
+      width: 1024,
+      height: 80,
+      clipBehavior: Clip.hardEdge,
+      decoration: const BoxDecoration(color: Colors.white),
+      child: SizedBox(
+        width: double.infinity,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Positioned(
+              left: 0,
+              top: 0,
+              child: Image.network(
+                'https://storage.googleapis.com/codeless-app.appspot.com/uploads%2Fimages%2F0Sb5PSViLjKVeQFXc566%2F4d1b4092-7ddb-4304-a95a-d03a882c1c7e.png',
+                width: 1024,
+                height: 80,
+                fit: BoxFit.contain,
+              ),
+            ),
+            Positioned(
+              left: 82,
+              top: 38,
+              child: Text(
+                'Home ',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.getFont(
+                  'Inter',
+                  color: const Color(0xFFD4E4FF),
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            Positioned(
+              left: 267,
+              top: 38,
+              child: Text(
+                'Medications ',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.getFont(
+                  'Inter',
+                  color: const Color(0xFFD4E4FF),
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            Positioned(
+              left: 466,
+              top: 38,
+              child: Text(
+                'Appointments ',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.getFont(
+                  'Inter',
+                  color: const Color(0xFFD4E4FF),
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            Positioned(
+              left: 683,
+              top: 38,
+              child: Text(
+                'Messages ',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.getFont(
+                  'Inter',
+                  color: const Color(0xFFD4E4FF),
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            Positioned(
+              left: 907,
+              top: 38,
+              child: Text(
+                'Help ',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.getFont(
+                  'Inter',
+                  color: const Color(0xFFD4E4FF),
+                  fontSize: 14,
+                ),
+              ),
+            ),
           ],
         ),
       ),
