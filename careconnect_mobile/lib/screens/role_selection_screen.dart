@@ -12,10 +12,12 @@ class RoleSelectionScreen extends StatelessWidget {
     final user = authProvider.user;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Select Your Role'),
         backgroundColor: Colors.white,
         elevation: 0,
+        foregroundColor: Colors.black,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
@@ -26,40 +28,56 @@ class RoleSelectionScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Welcome${user?.name != null ? ', ${user!.name}' : ''}!',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'How are you using CareConnect today?',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
+            Semantics(
+              header: true,
+              label: 'Welcome to CareConnect. Please select your role.',
+              child: Column(
+                children: [
+                  Text(
+                    'Welcome${user?.name != null ? ', ${user!.name}' : ''}!',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'How are you using CareConnect today?',
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 48),
-            // Patient Button
-            _buildRoleButton(
-              context: context,
-              icon: Icons.person,
-              title: 'I\'m a Patient',
-              subtitle: 'Manage your own care',
-              color: Colors.blue,
-              onTap: () {
-                authProvider.setRole('patient');
-                context.go('/home');
-              },
+            // Patient Button with Semantics
+            Semantics(
+              button: true,
+              label: 'Select patient role. Manage your own care.',
+              child: _buildRoleButton(
+                context: context,
+                icon: Icons.person,
+                title: 'I\'m a Patient',
+                subtitle: 'Manage your own care',
+                color: Colors.blue,
+                onTap: () {
+                  authProvider.setRole('patient');
+                  context.go('/home');
+                },
+              ),
             ),
             const SizedBox(height: 16),
-            // Caregiver Button
-            _buildRoleButton(
-              context: context,
-              icon: Icons.people,
-              title: 'I\'m a Caregiver',
-              subtitle: 'Manage patients you care for',
-              color: Colors.teal,
-              onTap: () {
-                authProvider.setRole('caregiver');
-                context.go('/home');
-              },
+            // Caregiver Button with Semantics
+            Semantics(
+              button: true,
+              label: 'Select caregiver role. Manage patients you care for.',
+              child: _buildRoleButton(
+                context: context,
+                icon: Icons.people,
+                title: 'I\'m a Caregiver',
+                subtitle: 'Manage patients you care for',
+                color: Colors.teal,
+                onTap: () {
+                  authProvider.setRole('caregiver');
+                  context.go('/home');
+                },
+              ),
             ),
           ],
         ),
@@ -93,7 +111,6 @@ Widget _buildRoleButton({
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  // FIXED: Replaced withOpacity with withValues
                   color: color.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),

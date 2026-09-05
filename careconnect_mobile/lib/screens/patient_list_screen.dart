@@ -25,6 +25,7 @@ class PatientListScreen extends StatelessWidget {
                     title: Text(patient.name),
                     subtitle: Text('${patient.age} yrs • ${patient.condition}'),
                     onTap: () {
+                      // NOTE: This requires a route named 'patientDetail' in app_router.dart
                       context.pushNamed(
                         'patientDetail',
                         pathParameters: {'id': patient.id},
@@ -34,10 +35,17 @@ class PatientListScreen extends StatelessWidget {
                 );
               },
             ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.push('/patient/add'),
-        tooltip: 'Add new patient',
-        child: const Icon(Icons.add),
+      floatingActionButton: Semantics(
+        button: true,
+        label: 'Add new patient',
+        child: FloatingActionButton(
+          onPressed: () {
+            // NOTE: This requires a route '/patient/add' in app_router.dart
+            context.push('/patient/add');
+          },
+          tooltip: 'Add new patient',
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }

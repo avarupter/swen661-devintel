@@ -14,10 +14,8 @@ dependencies:
   cupertino_icons: ^1.0.8
   provider: ^6.1.5+1
   go_router: ^14.8.1
-  path_provider: ^2.1.0   # Your addition for persistence
-
-  # If your teammates added any dependencies, keep them here too
-  # Example: shared_preferences: ^2.2.3 (if someone added it)
+  path_provider: ^2.1.0   # for persistence
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:

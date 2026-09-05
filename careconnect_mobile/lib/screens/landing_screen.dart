@@ -204,26 +204,7 @@ class LandingScreen extends StatelessWidget {
                   ),
                 ),
 
-                // ---- BOTTOM NAVIGATION BAR ----
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    height: isTablet ? 80 : 60,
-                    color: const Color(0xFF1A73E8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        _navItem('Home', true, isTablet),
-                        _navItem('Medications', false, isTablet),
-                        _navItem('Appointments', false, isTablet),
-                        _navItem('Messages', false, isTablet),
-                        _navItem('Help', false, isTablet),
-                      ],
-                    ),
-                  ),
-                ),
+
               ],
             );
           },
@@ -232,13 +213,5 @@ class LandingScreen extends StatelessWidget {
     );
   }
 
-  Widget _navItem(String label, bool isActive, bool isTablet) {
-    return Text(
-      label,
-      style: TextStyle(
-        color: isActive ? Colors.white : const Color(0xFFD4E4FF),
-        fontSize: isTablet ? 14 : 12,
-      ),
-    );
-  }
+
 }

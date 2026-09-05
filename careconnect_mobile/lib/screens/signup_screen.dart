@@ -12,6 +12,7 @@ class SignUpScreen extends StatelessWidget {
     final isTablet = Responsive.isTablet(context);
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -121,7 +122,6 @@ class SignUpScreen extends StatelessWidget {
                       onPressed: () {
                         final authProvider = Provider.of<AuthProvider>(context, listen: false);
                         authProvider.signUp('Mary', 'mary@example.com', 'password123');
-                        // CHANGED: Navigate to role selection instead of home
                         context.go('/role-selection');
                       },
                       style: ElevatedButton.styleFrom(
@@ -166,20 +166,6 @@ class SignUpScreen extends StatelessWidget {
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color(0xFF1A73E8),
-        selectedItemColor: Colors.white,
-        unselectedItemColor: const Color(0xFFD4E4FF),
-        currentIndex: 0,
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.medication), label: 'Medications'),
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: 'Appointments'),
-          BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Messages'),
-          BottomNavigationBarItem(icon: Icon(Icons.help), label: 'Help'),
-        ],
       ),
     );
   }
