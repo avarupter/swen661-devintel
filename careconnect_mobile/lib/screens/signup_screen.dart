@@ -111,27 +111,32 @@ class SignUpScreen extends StatelessWidget {
                 SizedBox(height: isTablet ? 40 : 30),
 
                 // ---- CREATE ACCOUNT BUTTON ----
-                SizedBox(
-                  width: isTablet ? 400 : double.infinity,
-                  height: isTablet ? 60 : 52,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      final authProvider = Provider.of<AuthProvider>(context, listen: false);
-                      authProvider.signUp('Mary', 'mary@example.com', 'password123');
-                      context.push('/signin');
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF1A73E8),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(28),
+                Semantics(
+                  button: true,
+                  label: 'Create your new account',
+                  child: SizedBox(
+                    width: isTablet ? 400 : double.infinity,
+                    height: isTablet ? 60 : 52,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        final authProvider = Provider.of<AuthProvider>(context, listen: false);
+                        authProvider.signUp('Mary', 'mary@example.com', 'password123');
+                        // CHANGED: Navigate to role selection instead of home
+                        context.go('/role-selection');
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF1A73E8),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(28),
+                        ),
                       ),
-                    ),
-                    child: Text(
-                      'Create account',
-                      style: TextStyle(
-                        fontSize: isTablet ? 20 : 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
+                      child: Text(
+                        'Create account',
+                        style: TextStyle(
+                          fontSize: isTablet ? 20 : 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
@@ -139,16 +144,20 @@ class SignUpScreen extends StatelessWidget {
                 const SizedBox(height: 20),
 
                 // ---- SIGN IN LINK ----
-                GestureDetector(
-                  onTap: () {
-                    context.push('/signin');
-                  },
-                  child: Text(
-                    'Already have an account? Sign in',
-                    style: TextStyle(
-                      fontSize: isTablet ? 18 : 14,
-                      fontWeight: FontWeight.w500,
-                      color: const Color(0xFF1A73E8),
+                Semantics(
+                  button: true,
+                  label: 'Already have an account? Sign in',
+                  child: GestureDetector(
+                    onTap: () {
+                      context.push('/signin');
+                    },
+                    child: Text(
+                      'Already have an account? Sign in',
+                      style: TextStyle(
+                        fontSize: isTablet ? 18 : 14,
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xFF1A73E8),
+                      ),
                     ),
                   ),
                 ),

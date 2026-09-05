@@ -3,9 +3,10 @@ import '../models/user.dart';
 
 class AuthProvider extends ChangeNotifier {
   User? _user;
+  String? _role;  // 'patient' or 'caregiver'
 
   User? get user => _user;
-
+  String? get role => _role;
   bool get isLoggedIn => _user != null;
 
   void signUp(String name, String email, String password) {
@@ -20,6 +21,13 @@ class AuthProvider extends ChangeNotifier {
 
   void signOut() {
     _user = null;
+    _role = null;
+    notifyListeners();
+  }
+
+  // Add this method
+  void setRole(String role) {
+    _role = role;
     notifyListeners();
   }
 }

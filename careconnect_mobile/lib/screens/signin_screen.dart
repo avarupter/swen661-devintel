@@ -74,27 +74,32 @@ class SignInScreen extends StatelessWidget {
                 SizedBox(height: isTablet ? 40 : 30),
 
                 // ---- SIGN IN BUTTON ----
-                SizedBox(
-                  width: isTablet ? 400 : double.infinity,
-                  height: isTablet ? 60 : 52,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      final authProvider = Provider.of<AuthProvider>(context, listen: false);
-                      authProvider.signIn('mary@example.com', 'password123');
-                      context.push('/patient-today');
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF1A73E8),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(28),
+                Semantics(
+                  button: true,
+                  label: 'Sign in to your account',
+                  child: SizedBox(
+                    width: isTablet ? 400 : double.infinity,
+                    height: isTablet ? 60 : 52,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        final authProvider = Provider.of<AuthProvider>(context, listen: false);
+                        authProvider.signIn('mary@example.com', 'password123');
+                        // CHANGED: Navigate to role selection instead of home
+                        context.go('/role-selection');
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF1A73E8),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(28),
+                        ),
                       ),
-                    ),
-                    child: Text(
-                      'Sign In',
-                      style: TextStyle(
-                        fontSize: isTablet ? 20 : 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
+                      child: Text(
+                        'Sign In',
+                        style: TextStyle(
+                          fontSize: isTablet ? 20 : 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
@@ -102,28 +107,36 @@ class SignInScreen extends StatelessWidget {
                 const SizedBox(height: 20),
 
                 // ---- FORGOT PASSWORD ----
-                Text(
-                  'Forgot password? Click here to reset.',
-                  style: TextStyle(
-                    fontSize: isTablet ? 18 : 14,
-                    fontWeight: FontWeight.w500,
-                    color: const Color(0xFF1A73E8),
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 12),
-
-                // ---- SIGN UP LINK ----
-                GestureDetector(
-                  onTap: () {
-                    context.push('/signup');
-                  },
+                Semantics(
+                  button: true,
+                  label: 'Forgot password? Click here to reset',
                   child: Text(
-                    'New? Click here to sign up.',
+                    'Forgot password? Click here to reset.',
                     style: TextStyle(
                       fontSize: isTablet ? 18 : 14,
                       fontWeight: FontWeight.w500,
                       color: const Color(0xFF1A73E8),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                const SizedBox(height: 12),
+
+                // ---- SIGN UP LINK ----
+                Semantics(
+                  button: true,
+                  label: 'New user? Click here to sign up',
+                  child: GestureDetector(
+                    onTap: () {
+                      context.push('/signup');
+                    },
+                    child: Text(
+                      'New? Click here to sign up.',
+                      style: TextStyle(
+                        fontSize: isTablet ? 18 : 14,
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xFF1A73E8),
+                      ),
                     ),
                   ),
                 ),
