@@ -11,7 +11,6 @@ class CaregiverActivityScreen extends StatelessWidget {
         child: Column(
           children: [
             _buildHeader(),
-            _buildNavigation(),
             _buildActivityLog(),
           ],
         ),
@@ -101,68 +100,6 @@ class CaregiverActivityScreen extends StatelessWidget {
                   style: TextStyle(color: Color(0xFF1A73E8), fontSize: 16),
                 ),
               ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNavigation() {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      color: Colors.white,
-      child: Wrap(
-        spacing: 8,
-        runSpacing: 8,
-        children: [
-          Semantics(
-            button: true,
-            label: 'Navigate to Dashboard',
-            child: _buildNavItem('Dashboard', Icons.dashboard, false),
-          ),
-          Semantics(
-            button: true,
-            label: 'Navigate to Medications',
-            child: _buildNavItem('Medications', Icons.medication, false),
-          ),
-          Semantics(
-            button: true,
-            label: 'Navigate to Appointments',
-            child: _buildNavItem('Appointments', Icons.calendar_month, false),
-          ),
-          Semantics(
-            button: true,
-            label: 'Navigate to Activity',
-            child: _buildNavItem('Activity', Icons.fitness_center, true),
-          ),
-          Semantics(
-            button: true,
-            label: 'Navigate to Notes',
-            child: _buildNavItem('Notes', Icons.note, false),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNavItem(String label, IconData icon, bool isActive) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        color: isActive ? const Color(0xFFD7EAF4) : Colors.transparent,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 18, color: isActive ? const Color(0xFF1A73E8) : const Color(0xFF1F2937)),
-          const SizedBox(width: 8),
-          Text(
-            label,
-            style: TextStyle(
-              color: isActive ? const Color(0xFF1A73E8) : const Color(0xFF1F2937),
-              fontWeight: isActive ? FontWeight.w500 : FontWeight.normal,
             ),
           ),
         ],
