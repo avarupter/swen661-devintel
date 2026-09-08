@@ -125,11 +125,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       const Icon(Icons.waving_hand, size: 20, color: Color(0xFF1A73E8)),
                       const SizedBox(width: 8),
-                      Text(
-                        'Welcome back! Here\'s your care summary.',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey.shade600,
+                      // Expanded so the strip wraps instead of overflowing on
+                      // a narrow phone or at a large system text size.
+                      Expanded(
+                        child: Text(
+                          'Welcome back! Here\'s your care summary.',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey.shade600,
+                          ),
                         ),
                       ),
                     ],

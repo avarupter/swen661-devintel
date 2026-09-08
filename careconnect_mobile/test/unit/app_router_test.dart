@@ -22,5 +22,17 @@ void main() {
       expect(routePaths, contains('/patient/add'));
       expect(routePaths, contains('/patient/:id'));
     });
+
+    test('defines the patient detail routes that carry an id', () {
+      final routes = router.configuration.routes.whereType<GoRoute>();
+
+      expect(routes.map((r) => r.path), contains('/medications/:medId'));
+      expect(routes.map((r) => r.path), contains('/appointments/:apptId'));
+
+      // pushNamed throws at runtime on a misspelled name and nothing else
+      // catches that, so assert the names as well as the paths.
+      expect(routes.map((r) => r.name), contains('medicationDetail'));
+      expect(routes.map((r) => r.name), contains('appointmentDetail'));
+    });
   });
 }
