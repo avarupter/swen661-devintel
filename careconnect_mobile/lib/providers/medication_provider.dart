@@ -277,6 +277,11 @@ class MedicationProvider extends ChangeNotifier {
     DoseActor actor = DoseActor.patient,
     String? note,
   }) async {
+    // Re-read the clock before writing. Every derived getter uses the cached
+    // `_now`, but `recordedAt` uses the live clock. If the app has sat open
+    // across midnight those two disagree, and the tick lands on yesterday's
+    // DoseId — a card the patient can no longer see.
+    _now = _clock.now();
     if (medicationById(id.medicationId) == null) return;
     final existing = _log[id.value];
     if (existing != null && existing.isTaken) return;
@@ -294,6 +299,11 @@ class MedicationProvider extends ChangeNotifier {
   /// Removes the log entry entirely, returning the dose to "not taken yet".
   /// Backs the undo affordance that stops a mis-tap becoming a wrong belief.
   Future<void> undoTaken(DoseId id) async {
+    // Re-read the clock before writing. Every derived getter uses the cached
+    // `_now`, but `recordedAt` uses the live clock. If the app has sat open
+    // across midnight those two disagree, and the tick lands on yesterday's
+    // DoseId — a card the patient can no longer see.
+    _now = _clock.now();
     if (_log.remove(id.value) == null) return;
     _touch();
     await _persistLog();
@@ -304,6 +314,11 @@ class MedicationProvider extends ChangeNotifier {
     DoseActor actor = DoseActor.patient,
     String? reason,
   }) async {
+    // Re-read the clock before writing. Every derived getter uses the cached
+    // `_now`, but `recordedAt` uses the live clock. If the app has sat open
+    // across midnight those two disagree, and the tick lands on yesterday's
+    // DoseId — a card the patient can no longer see.
+    _now = _clock.now();
     if (medicationById(id.medicationId) == null) return;
     _log[id.value] = DoseRecord(
       doseId: id,

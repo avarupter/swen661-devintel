@@ -35,7 +35,9 @@ void main() {
       provider.nextAppointmentSentence,
       allOf(
         contains('Memory Clinic follow-up'),
-        contains('today'),
+        // 'Today', not 'today': the sentence must not lower-case a day name,
+        // because relativeDayLabel can also return 'In 3 days (Thursday)'.
+        contains('Today'),
         contains('10:30 AM'),
         contains('Joyce'),
       ),

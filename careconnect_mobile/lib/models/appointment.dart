@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import '../core/clock.dart';
+import '../core/day_labels.dart';
 import 'dose_time.dart';
 
 /// How the patient gets to the appointment.
@@ -203,9 +204,9 @@ class Appointment {
     if (delta == 0) return 'Today';
     if (delta == 1) return 'Tomorrow';
     if (delta == -1) return 'Yesterday';
-    if (delta > 1 && delta <= 6) return 'In $delta days (${_weekdayName(date.weekday)})';
+    if (delta > 1 && delta <= 6) return 'In $delta days (${weekdayName(date.weekday)})';
     if (delta < -1 && delta >= -6) return '${-delta} days ago';
-    return '${_weekdayName(date.weekday)} ${date.day} ${_monthName(date.month)}';
+    return '${weekdayName(date.weekday)} ${date.day} ${monthName(date.month)}';
   }
 
   /// Full sentence for TalkBack on an appointment card.
@@ -292,31 +293,4 @@ class Appointment {
 
   @override
   String toString() => 'Appointment($id, $title, $dateTime)';
-
-  static const List<String> _weekdays = [
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday',
-  ];
-  static const List<String> _months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
-
-  static String _weekdayName(int weekday) => _weekdays[weekday - 1];
-  static String _monthName(int month) => _months[month - 1];
 }

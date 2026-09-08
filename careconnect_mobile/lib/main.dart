@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'data/care_providers.dart';
 import 'router/app_router.dart';
 import 'providers/auth_provider.dart';
 import 'providers/patient_provider.dart';
@@ -15,7 +16,10 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => PatientProvider()),
-        // We'll add MedicationProvider and AppointmentProvider later
+        // MedicationProvider + AppointmentProvider, wired to the JSON store
+        // and the system clock. Built by one composition-root function so this
+        // file stays wiring and every dependency keeps a test seam.
+        ...buildCareProviders(),
       ],
       child: MaterialApp.router(
         title: 'CareConnect',

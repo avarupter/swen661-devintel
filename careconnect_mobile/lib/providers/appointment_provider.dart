@@ -135,12 +135,14 @@ class AppointmentProvider extends ChangeNotifier {
   String get nextAppointmentSentence {
     final next = nextAppointment;
     if (next == null) return 'You have no appointments coming up.';
-    final when = next.relativeDayLabel(_now).toLowerCase();
+    // Not lower-cased: relativeDayLabel can return "In 3 days (Thursday)",
+    // and a lower-cased proper noun is the sort of thing that gets read out
+    // loud by a screen reader.
     final transport = next.transport.isArranged
         ? ' ${next.transport.summary}'
         : ' Transport is not arranged yet.';
-    return '${next.title} with ${next.clinician} is $when '
-        'at ${next.timeLabel}.$transport';
+    return '${next.title} with ${next.clinician}: '
+        '${next.relativeDayLabel(_now)} at ${next.timeLabel}.$transport';
   }
 
   /// A short "leave by" hint. Null when there is nothing to leave for today.

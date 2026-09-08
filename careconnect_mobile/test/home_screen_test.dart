@@ -3,7 +3,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 import 'package:careconnect_mobile/screens/home_screen.dart';
 import 'package:careconnect_mobile/providers/auth_provider.dart';
+import 'package:careconnect_mobile/core/clock.dart';
+import 'package:careconnect_mobile/data/care_providers.dart';
 import 'package:careconnect_mobile/providers/patient_provider.dart';
+import 'package:careconnect_mobile/services/json_store.dart';
 import 'package:careconnect_mobile/models/patient.dart';
 
 class FakePatientProvider extends PatientProvider {
@@ -17,6 +20,14 @@ void main() {
       providers: [
         ChangeNotifierProvider<AuthProvider>.value(value: authProvider),
         ChangeNotifierProvider<PatientProvider>(create: (_) => FakePatientProvider()),
+        // The patient's first tab is now PatientTodayScreen, which reads the
+        // medication and appointment providers. An in-memory store keeps the
+        // test off path_provider, and a FixedClock keeps the seeded
+        // appointment on "today" so assertions never depend on the wall clock.
+        ...buildCareProviders(
+          store: InMemoryJsonStore(),
+          clock: FixedClock.at(2026, 9, 8, 7, 45),
+        ),
       ],
       child: const MaterialApp(
         home: HomeScreen(),
@@ -35,6 +46,7 @@ void main() {
       auth.setRole('patient');
 
       await tester.pumpWidget(createWidgetUnderTest(auth));
+      await tester.pumpAndSettle();
 
       // Header title & welcome message
       expect(find.text('My Care'), findsOneWidget);
@@ -59,6 +71,7 @@ void main() {
       auth.setRole('caregiver');
 
       await tester.pumpWidget(createWidgetUnderTest(auth));
+      await tester.pumpAndSettle();
 
       // Header title
       expect(find.text('Care Dashboard'), findsOneWidget);
@@ -83,6 +96,7 @@ void main() {
       auth.setRole('caregiver');
 
       await tester.pumpWidget(createWidgetUnderTest(auth));
+      await tester.pumpAndSettle();
 
       // Tap on Help tab in bottom nav
       final bottomNav = find.byType(BottomNavigationBar);

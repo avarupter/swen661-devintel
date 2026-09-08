@@ -6,6 +6,8 @@ import '../screens/signin_screen.dart';
 import '../screens/role_selection_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/add_edit_patient_screen.dart';
+import '../screens/appointment_detail_screen.dart';
+import '../screens/medication_detail_screen.dart';
 
 final GoRouter router = GoRouter(
   initialLocation: '/',
@@ -78,6 +80,24 @@ final GoRouter router = GoRouter(
           ),
         );
       },
+    ),
+    // ---- PATIENT DETAIL ROUTES ----
+    // Top-level rather than nested under /home, so each gets a real back
+    // button and no bottom nav. The id travels in the path: this is where the
+    // app passes information from one screen to another.
+    GoRoute(
+      path: '/medications/:medId',
+      name: 'medicationDetail',
+      builder: (context, state) => MedicationDetailScreen(
+        medicationId: state.pathParameters['medId']!,
+      ),
+    ),
+    GoRoute(
+      path: '/appointments/:apptId',
+      name: 'appointmentDetail',
+      builder: (context, state) => AppointmentDetailScreen(
+        appointmentId: state.pathParameters['apptId']!,
+      ),
     ),
   ],
 );

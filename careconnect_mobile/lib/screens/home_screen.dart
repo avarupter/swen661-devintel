@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'patient_appointments_screen.dart';
 import 'patient_list_screen.dart';
+import 'patient_medications_screen.dart';
+import 'patient_today_screen.dart';
 import 'profile_screen.dart';  // NEW: Patient profile screen
 import 'caregiver_medications_screen.dart';
 import 'caregiver_appointments_screen.dart';
@@ -26,10 +29,13 @@ class _HomeScreenState extends State<HomeScreen> {
     // Different screens based on role
     final List<Widget> screens = isPatient
         ? [
-            ProfileScreen(),              // Tab 0: My Profile (patient)
-            CaregiverMedicationsScreen(), // Tab 1: My Medications
-            CaregiverAppointmentsScreen(),// Tab 2: My Appointments
-            HelpScreen(),                 // Tab 3: Help
+            // The patient tabs used to render the CAREGIVER screens, which
+            // showed one hard-coded medicine and no state of the patient's own.
+            const PatientTodayScreen(),        // Tab 0: Today (landing tab)
+            const PatientMedicationsScreen(),  // Tab 1: My Medications
+            const PatientAppointmentsScreen(), // Tab 2: My Appointments
+            ProfileScreen(),                   // Tab 3: My Profile
+            HelpScreen(),                      // Tab 4: Help
           ]
         : [
             PatientListScreen(),          // Tab 0: Patients (caregiver)
@@ -42,9 +48,11 @@ class _HomeScreenState extends State<HomeScreen> {
     // Different bottom nav items based on role
     final List<BottomNavigationBarItem> items = isPatient
         ? const [
+            // Today is first: a dashboard you have to navigate to is not a
+            // dashboard, and it is the screen that orients the patient.
             BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
+              icon: Icon(Icons.wb_sunny),
+              label: 'Today',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.medication),
@@ -53,6 +61,10 @@ class _HomeScreenState extends State<HomeScreen> {
             BottomNavigationBarItem(
               icon: Icon(Icons.calendar_month),
               label: 'Appointments',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.help),
