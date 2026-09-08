@@ -2,8 +2,12 @@ import 'package:careconnect_mobile/screens/appointment_detail_screen.dart';
 import 'package:careconnect_mobile/screens/medication_detail_screen.dart';
 import 'package:careconnect_mobile/screens/patient_appointments_screen.dart';
 import 'package:careconnect_mobile/screens/patient_medications_screen.dart';
+import 'package:careconnect_mobile/screens/home_screen.dart';
 import 'package:careconnect_mobile/screens/patient_today_screen.dart';
+import 'package:careconnect_mobile/services/json_store.dart';
+import 'package:careconnect_mobile/widgets/appointment_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'support/care_test_harness.dart';
@@ -106,6 +110,33 @@ void main() {
         const AppointmentDetailScreen(appointmentId: 'apt-memory-clinic'),
       );
     });
+
+    // The shell is the one thing on screen no matter which tab is open, and it
+    // was the only surface the scale tests never mounted. Its welcome strip
+    // had a fixed 32 dp height and overflowed from 1.5x upwards.
+    for (final scale in [1.5, 2.0]) {
+      testWidgets('the patient shell at ${scale}x', (tester) async {
+        await tester.binding.setSurfaceSize(const Size(400, 1200));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
+
+        final harness =
+            CareHarness(store: InMemoryJsonStore(), clock: newTestClock());
+        await tester.pumpWidget(
+          harness.wrap(
+            child: MaterialApp(
+              builder: (context, child) => MediaQuery(
+                data: MediaQuery.of(context)
+                    .copyWith(textScaler: TextScaler.linear(scale)),
+                child: child!,
+              ),
+              home: const HomeScreen(),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+      });
+    }
   });
 
   group('Screen-reader structure', () {
@@ -154,6 +185,50 @@ void main() {
 
       // "Today", "Take these now", "Later today", "Where you are going".
       expect(headers.length, greaterThanOrEqualTo(4));
+    });
+
+    testWidgets('cards that announce themselves as buttons can actually be '
+        'activated by a screen reader', (tester) async {
+      final handle = tester.ensureSemantics();
+      await pumpCareScreen(tester, const PatientTodayScreen());
+
+      // find.bySemanticsLabel matches on the label alone, so it cannot tell a
+      // working button from a decorative one. TalkBack, VoiceOver and Switch
+      // Access all activate through SemanticsAction.tap — if the node lacks
+      // it, the card is unusable for them however good the label is.
+      final tile = tester.getSemantics(find.byType(AppointmentTile).first);
+      expect(tile.getSemanticsData().flagsCollection.isButton, isTrue);
+      expect(
+        tile.getSemanticsData().hasAction(SemanticsAction.tap),
+        isTrue,
+        reason: 'the appointment card is a button with no tap action',
+      );
+
+      // The dose action button must carry a NAME as well as an action; a
+      // labelled wrapper above the button leaves the actionable node unnamed.
+      final button = tester.getSemantics(find.byType(ElevatedButton).first);
+      final data = button.getSemanticsData();
+      expect(data.hasAction(SemanticsAction.tap), isTrue);
+      expect(data.label, contains('as taken'));
+
+      handle.dispose();
+    });
+
+    testWidgets('a medication row is operable through the accessibility layer',
+        (tester) async {
+      final handle = tester.ensureSemantics();
+      await pumpCareScreen(tester, const PatientMedicationsScreen());
+
+      final row = tester.getSemantics(
+        find.bySemanticsLabel(RegExp('Donepezil.*Opens the details')).first,
+      );
+      expect(
+        row.getSemanticsData().hasAction(SemanticsAction.tap),
+        isTrue,
+        reason: 'the medication row is a button with no tap action',
+      );
+
+      handle.dispose();
     });
 
     testWidgets('meets the Material tap-target and text-contrast guidelines',

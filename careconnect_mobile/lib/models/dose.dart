@@ -308,9 +308,15 @@ class ScheduledDose {
   static String _relativeFuture(Duration d) {
     if (d.inMinutes < 1) return 'Due now';
     if (d.inMinutes < 60) return 'In ${d.inMinutes} minutes';
-    final hours = d.inHours;
-    if (hours < 24) return 'In $hours hour${hours == 1 ? '' : 's'}';
-    final days = d.inDays;
+    // Rounded, not truncated. `inHours` would call 1 h 59 m "In 1 hour", and
+    // being told something is an hour away when it is nearly two is precisely
+    // the kind of small wrongness that erodes trust in an app whose whole job
+    // is to be the memory you can rely on.
+    if (d.inMinutes < 60 * 24) {
+      final hours = (d.inMinutes / 60).round();
+      return 'In $hours hour${hours == 1 ? '' : 's'}';
+    }
+    final days = (d.inHours / 24).round();
     return 'In $days day${days == 1 ? '' : 's'}';
   }
 

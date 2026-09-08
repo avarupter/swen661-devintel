@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-09-08 02:12:43</td>
+            <td class="headerValue">2026-09-08 02:56:35</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -90,9 +90,9 @@
 <span id="L20"><span class="lineNum">      20</span>              : /// serialises to JSON and sorts, without dragging in `material.dart`.</span>
 <span id="L21"><span class="lineNum">      21</span>              : @immutable</span>
 <span id="L22"><span class="lineNum">      22</span>              : class DoseTime implements Comparable&lt;DoseTime&gt; {</span>
-<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">          11 :   const DoseTime(this.hour, this.minute)</span></span>
-<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">          33 :     : assert(hour &gt;= 0 &amp;&amp; hour &lt;= 23, 'hour must be 0..23'),</span></span>
-<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">          33 :       assert(minute &gt;= 0 &amp;&amp; minute &lt;= 59, 'minute must be 0..59');</span></span>
+<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">          13 :   const DoseTime(this.hour, this.minute)</span></span>
+<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">          39 :     : assert(hour &gt;= 0 &amp;&amp; hour &lt;= 23, 'hour must be 0..23'),</span></span>
+<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">          39 :       assert(minute &gt;= 0 &amp;&amp; minute &lt;= 59, 'minute must be 0..59');</span></span>
 <span id="L26"><span class="lineNum">      26</span>              : </span>
 <span id="L27"><span class="lineNum">      27</span>              :   /// Parses the storage form `HH:mm` (24-hour, zero padded).</span>
 <span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">           3 :   factory DoseTime.parse(String value) {</span></span>

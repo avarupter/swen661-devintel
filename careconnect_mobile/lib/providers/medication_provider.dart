@@ -34,6 +34,15 @@ class MedicationProvider extends ChangeNotifier {
   /// Dose log keyed by [DoseId.value]. A missing key means "nothing logged".
   final Map<String, DoseRecord> _log = {};
 
+  /// Doses logged since the screen was last refreshed.
+  ///
+  /// These stay in the section they were in when the patient tapped them,
+  /// instead of jumping to "Already done" further down the page. Confirmation
+  /// has to appear where the person is looking: a card that silently relocates
+  /// off-screen reads as "nothing happened", and the natural next move is to
+  /// tap again. Cleared by [load] and [syncNow].
+  final Set<String> _justLogged = {};
+
   DateTime _now;
   LoadState _state = LoadState.idle;
   String? _errorMessage;
@@ -99,8 +108,11 @@ class MedicationProvider extends ChangeNotifier {
       _log
         ..clear()
         ..addEntries(
-          (results[1] as List<DoseRecord>).map((r) => MapEntry(r.doseId.value, r)),
+          (results[1] as List<DoseRecord>).map(
+            (r) => MapEntry(r.doseId.value, r),
+          ),
         );
+      _justLogged.clear();
       _state = LoadState.ready;
     } catch (error) {
       // The repository already falls back to seed data, so reaching here means
@@ -122,6 +134,7 @@ class MedicationProvider extends ChangeNotifier {
   /// covers every case a 30-second poll would have.
   void syncNow() {
     _now = _clock.now();
+    _justLogged.clear();
     _safeNotify();
   }
 
@@ -156,7 +169,9 @@ class MedicationProvider extends ChangeNotifier {
     }
     doses.sort((a, b) {
       final byTime = a.scheduledTime.compareTo(b.scheduledTime);
-      return byTime != 0 ? byTime : a.medication.name.compareTo(b.medication.name);
+      return byTime != 0
+          ? byTime
+          : a.medication.name.compareTo(b.medication.name);
     });
     return List.unmodifiable(doses);
   }
@@ -175,6 +190,15 @@ class MedicationProvider extends ChangeNotifier {
     return computed;
   }
 
+  /// True while this dose should stay put rather than move to "Already done".
+  bool _isSticky(ScheduledDose d) => _justLogged.contains(d.id.value);
+
+  /// Would this dose be actionable if it had not been logged?
+  bool _windowOpen(ScheduledDose d) {
+    if (!d.isLogged) return d.isOverdue || d.isDueNow;
+    return !d.now.isBefore(d.windowOpensAt);
+  }
+
   /// Inside the take-it-now window and not yet logged. The Today screen's
   /// primary card list.
   List<ScheduledDose> get dueNow =>
@@ -184,18 +208,35 @@ class MedicationProvider extends ChangeNotifier {
   List<ScheduledDose> get overdue =>
       todaysDoses.where((d) => d.isOverdue).toList();
 
-  /// Needs action right now: overdue first, then due.
+  /// Needs action right now: overdue first, then due — plus anything just
+  /// logged from this section, so the card the patient tapped stays visible.
   List<ScheduledDose> get needsAction =>
-      todaysDoses.where((d) => d.isOverdue || d.isDueNow).toList()
+      todaysDoses
+          .where(
+            (d) =>
+                d.isOverdue || d.isDueNow || (_isSticky(d) && _windowOpen(d)),
+          )
+          .toList()
         ..sort((a, b) => a.scheduledAt.compareTo(b.scheduledAt));
 
   List<ScheduledDose> get upcomingToday =>
-      todaysDoses.where((d) => d.isUpcoming).toList();
+      todaysDoses
+          .where((d) => d.isUpcoming || (_isSticky(d) && !_windowOpen(d)))
+          .toList();
 
   List<ScheduledDose> get takenToday =>
+      todaysDoses.where((d) => d.isTaken && !_isSticky(d)).toList();
+
+  /// Everything taken today, wherever it is currently displayed. Used for the
+  /// counter, which must not depend on where a card happens to be sitting.
+  List<ScheduledDose> get allTakenToday =>
       todaysDoses.where((d) => d.isTaken).toList();
 
   List<ScheduledDose> get skippedToday =>
+      todaysDoses.where((d) => d.isSkipped && !_isSticky(d)).toList();
+
+  /// Every skipped dose today, regardless of stickiness.
+  List<ScheduledDose> get allSkippedToday =>
       todaysDoses.where((d) => d.isSkipped).toList();
 
   /// Everything still un-logged today, in time order.
@@ -212,7 +253,7 @@ class MedicationProvider extends ChangeNotifier {
   }
 
   int get totalDosesToday => todaysDoses.length;
-  int get takenCountToday => takenToday.length;
+  int get takenCountToday => allTakenToday.length;
 
   /// 0.0 .. 1.0 for a progress indicator. 1.0 on a day with no doses so the
   /// UI reads "all done" rather than "0%".
@@ -229,8 +270,17 @@ class MedicationProvider extends ChangeNotifier {
       return 'You have no scheduled medicines today.';
     }
     if (isDayComplete) {
-      return 'All done. You have taken all $totalDosesToday of '
-          'today’s doses.';
+      final skipped = allSkippedToday.length;
+      if (skipped == 0) {
+        return 'All done. You have taken all $totalDosesToday of '
+            'today’s doses.';
+      }
+      // Never claim a skipped dose was taken. Saying "all done" over a day
+      // where nothing was swallowed would be the app lying to someone who
+      // cannot check it against their own memory.
+      return 'You have taken $takenCountToday of $totalDosesToday doses today. '
+          '${skipped == 1 ? '1 dose was' : '$skipped doses were'} skipped. '
+          'Nothing is left to decide today.';
     }
     final actionable = needsAction.length;
     if (actionable > 0) {
@@ -245,10 +295,13 @@ class MedicationProvider extends ChangeNotifier {
   DoseRecord? recordFor(DoseId id) => _log[id.value];
 
   /// Today's doses for one medication — the Medication Detail screen.
-  List<ScheduledDose> dosesForMedication(String medicationId, {DateOnly? date}) =>
-      dosesOn(date ?? today)
-          .where((d) => d.medication.id == medicationId)
-          .toList();
+  List<ScheduledDose> dosesForMedication(
+    String medicationId, {
+    DateOnly? date,
+  }) =>
+      dosesOn(
+        date ?? today,
+      ).where((d) => d.medication.id == medicationId).toList();
 
   /// Fraction of expected doses actually taken over the last [days] days,
   /// counting only doses whose time has already passed. Null when nothing was
@@ -272,16 +325,21 @@ class MedicationProvider extends ChangeNotifier {
   /// Marks a dose taken. Idempotent: marking an already-taken dose is a no-op,
   /// so a double tap (very likely with STML) cannot create a duplicate row or
   /// move the recorded time.
+  /// Deliberately does NOT re-read the clock into [_now].
+  ///
+  /// If the app has been open across midnight, the screen is still showing
+  /// yesterday's list and [id] is yesterday's dose — which is the dose the
+  /// patient actually tapped, so that is the right thing to record.
+  /// Advancing `_now` here would re-bucket the whole screen mid-tap and the
+  /// card would vanish, which is the one outcome this feature must never
+  /// produce. The day rolls over on resume or on Refresh instead, via
+  /// [syncNow]. `recordedAt` still uses the live clock, so the log is honest
+  /// about when the tick happened.
   Future<void> markTaken(
     DoseId id, {
     DoseActor actor = DoseActor.patient,
     String? note,
   }) async {
-    // Re-read the clock before writing. Every derived getter uses the cached
-    // `_now`, but `recordedAt` uses the live clock. If the app has sat open
-    // across midnight those two disagree, and the tick lands on yesterday's
-    // DoseId — a card the patient can no longer see.
-    _now = _clock.now();
     if (medicationById(id.medicationId) == null) return;
     final existing = _log[id.value];
     if (existing != null && existing.isTaken) return;
@@ -292,6 +350,7 @@ class MedicationProvider extends ChangeNotifier {
       actor: actor,
       note: note,
     );
+    _justLogged.add(id.value);
     _touch();
     await _persistLog();
   }
@@ -299,12 +358,8 @@ class MedicationProvider extends ChangeNotifier {
   /// Removes the log entry entirely, returning the dose to "not taken yet".
   /// Backs the undo affordance that stops a mis-tap becoming a wrong belief.
   Future<void> undoTaken(DoseId id) async {
-    // Re-read the clock before writing. Every derived getter uses the cached
-    // `_now`, but `recordedAt` uses the live clock. If the app has sat open
-    // across midnight those two disagree, and the tick lands on yesterday's
-    // DoseId — a card the patient can no longer see.
-    _now = _clock.now();
     if (_log.remove(id.value) == null) return;
+    _justLogged.remove(id.value);
     _touch();
     await _persistLog();
   }
@@ -314,11 +369,6 @@ class MedicationProvider extends ChangeNotifier {
     DoseActor actor = DoseActor.patient,
     String? reason,
   }) async {
-    // Re-read the clock before writing. Every derived getter uses the cached
-    // `_now`, but `recordedAt` uses the live clock. If the app has sat open
-    // across midnight those two disagree, and the tick lands on yesterday's
-    // DoseId — a card the patient can no longer see.
-    _now = _clock.now();
     if (medicationById(id.medicationId) == null) return;
     _log[id.value] = DoseRecord(
       doseId: id,
@@ -327,6 +377,7 @@ class MedicationProvider extends ChangeNotifier {
       actor: actor,
       note: reason,
     );
+    _justLogged.add(id.value);
     _touch();
     await _persistLog();
   }
@@ -400,7 +451,8 @@ class MedicationProvider extends ChangeNotifier {
         _safeNotify();
       }
     } catch (error) {
-      _saveErrorMessage = 'We could not save that just now. It is still shown here.';
+      _saveErrorMessage =
+          'We could not save that just now. It is still shown here.';
       _safeNotify();
     }
   }

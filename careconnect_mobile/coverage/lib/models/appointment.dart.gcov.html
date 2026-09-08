@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-09-08 02:12:43</td>
+            <td class="headerValue">2026-09-08 02:56:35</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -99,7 +99,7 @@
 <span id="L29"><span class="lineNum">      29</span>              : /// it can be shown identically on the Today card and the detail screen.</span>
 <span id="L30"><span class="lineNum">      30</span>              : @immutable</span>
 <span id="L31"><span class="lineNum">      31</span>              : class TransportPlan {</span>
-<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">           3 :   const TransportPlan({</span></span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">           5 :   const TransportPlan({</span></span>
 <span id="L33"><span class="lineNum">      33</span>              :     this.mode = TransportMode.notArranged,</span>
 <span id="L34"><span class="lineNum">      34</span>              :     this.companionName,</span>
 <span id="L35"><span class="lineNum">      35</span>              :     this.pickupTime,</span>
@@ -152,11 +152,11 @@
 <span id="L82"><span class="lineNum">      82</span> <span class="tlaUNC">           0 :     notes: notes ?? this.notes,</span></span>
 <span id="L83"><span class="lineNum">      83</span>              :   );</span>
 <span id="L84"><span class="lineNum">      84</span>              : </span>
-<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">          14 :   Map&lt;String, dynamic&gt; toJson() =&gt; {</span></span>
-<span id="L86"><span class="lineNum">      86</span> <span class="tlaGNC">          14 :     'mode': mode.storageKey,</span></span>
-<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">           7 :     'companionName': companionName,</span></span>
-<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">          14 :     'pickupTime': pickupTime?.key,</span></span>
-<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">           7 :     'notes': notes,</span></span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">           6 :   Map&lt;String, dynamic&gt; toJson() =&gt; {</span></span>
+<span id="L86"><span class="lineNum">      86</span> <span class="tlaGNC">           6 :     'mode': mode.storageKey,</span></span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">           3 :     'companionName': companionName,</span></span>
+<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">           6 :     'pickupTime': pickupTime?.key,</span></span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">           3 :     'notes': notes,</span></span>
 <span id="L90"><span class="lineNum">      90</span>              :   };</span>
 <span id="L91"><span class="lineNum">      91</span>              : </span>
 <span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">           1 :   @override</span></span>
@@ -317,18 +317,18 @@
 <span id="L247"><span class="lineNum">     247</span> <span class="tlaUNC">           0 :     isCancelled: isCancelled ?? this.isCancelled,</span></span>
 <span id="L248"><span class="lineNum">     248</span>              :   );</span>
 <span id="L249"><span class="lineNum">     249</span>              : </span>
-<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">          14 :   Map&lt;String, dynamic&gt; toJson() =&gt; {</span></span>
-<span id="L251"><span class="lineNum">     251</span> <span class="tlaGNC">           7 :     'id': id,</span></span>
-<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">           7 :     'title': title,</span></span>
-<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">           7 :     'clinician': clinician,</span></span>
-<span id="L254"><span class="lineNum">     254</span> <span class="tlaGNC">           7 :     'clinicianRole': clinicianRole,</span></span>
-<span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">           7 :     'location': location,</span></span>
-<span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">          14 :     'dateTime': dateTime.toIso8601String(),</span></span>
-<span id="L257"><span class="lineNum">     257</span> <span class="tlaGNC">          14 :     'durationMinutes': duration.inMinutes,</span></span>
-<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">           7 :     'notes': notes,</span></span>
-<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">          14 :     'transport': transport.toJson(),</span></span>
-<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">           7 :     'preparation': preparation,</span></span>
-<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">           7 :     'isCancelled': isCancelled,</span></span>
+<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">           6 :   Map&lt;String, dynamic&gt; toJson() =&gt; {</span></span>
+<span id="L251"><span class="lineNum">     251</span> <span class="tlaGNC">           3 :     'id': id,</span></span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">           3 :     'title': title,</span></span>
+<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">           3 :     'clinician': clinician,</span></span>
+<span id="L254"><span class="lineNum">     254</span> <span class="tlaGNC">           3 :     'clinicianRole': clinicianRole,</span></span>
+<span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">           3 :     'location': location,</span></span>
+<span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">           6 :     'dateTime': dateTime.toIso8601String(),</span></span>
+<span id="L257"><span class="lineNum">     257</span> <span class="tlaGNC">           6 :     'durationMinutes': duration.inMinutes,</span></span>
+<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">           3 :     'notes': notes,</span></span>
+<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">           6 :     'transport': transport.toJson(),</span></span>
+<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">           3 :     'preparation': preparation,</span></span>
+<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">           3 :     'isCancelled': isCancelled,</span></span>
 <span id="L262"><span class="lineNum">     262</span>              :   };</span>
 <span id="L263"><span class="lineNum">     263</span>              : </span>
 <span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">           1 :   @override</span></span>

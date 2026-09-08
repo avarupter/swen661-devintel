@@ -31,13 +31,13 @@
             <td class="headerValue">CareConnect Daily Compass — line coverage</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntryHi">91.6&nbsp;%</td>
-            <td class="headerCovTableEntry">119</td>
-            <td class="headerCovTableEntry">109</td>
+            <td class="headerCovTableEntryHi">92.1&nbsp;%</td>
+            <td class="headerCovTableEntry">126</td>
+            <td class="headerCovTableEntry">116</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-09-08 02:12:43</td>
+            <td class="headerValue">2026-09-08 02:56:35</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -102,7 +102,7 @@
 <span id="L32"><span class="lineNum">      32</span>              : /// and from the visible Refresh button; a `Timer.periodic` would make every</span>
 <span id="L33"><span class="lineNum">      33</span>              : /// widget test that mounts this screen fail with &quot;A Timer is still pending&quot;.</span>
 <span id="L34"><span class="lineNum">      34</span>              : class PatientTodayScreen extends StatefulWidget {</span>
-<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">           2 :   const PatientTodayScreen({super.key});</span></span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">           4 :   const PatientTodayScreen({super.key});</span></span>
 <span id="L36"><span class="lineNum">      36</span>              : </span>
 <span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">           4 :   @override</span></span>
 <span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">           4 :   State&lt;PatientTodayScreen&gt; createState() =&gt; _PatientTodayScreenState();</span></span>
@@ -267,169 +267,191 @@
 <span id="L197"><span class="lineNum">     197</span>              :         const SectionHeader('Later today'),</span>
 <span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">          16 :         ...meds.upcomingToday.map((d) =&gt; _tile(meds, d)),</span></span>
 <span id="L199"><span class="lineNum">     199</span>              :       ],</span>
-<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC">          10 :       if (meds.takenToday.isNotEmpty) ...[</span></span>
+<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC">           9 :       if (meds.takenToday.isNotEmpty) ...[</span></span>
 <span id="L201"><span class="lineNum">     201</span>              :         const SectionHeader('Already done'),</span>
-<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">           8 :         ...meds.takenToday.map((d) =&gt; _tile(meds, d)),</span></span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">           4 :         ...meds.takenToday.map((d) =&gt; _tile(meds, d)),</span></span>
 <span id="L203"><span class="lineNum">     203</span>              :       ],</span>
-<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">           5 :       if (meds.isDayComplete) ...[</span></span>
-<span id="L205"><span class="lineNum">     205</span>              :         const SizedBox(height: 8),</span>
-<span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">           1 :         _quietCard(</span></span>
-<span id="L207"><span class="lineNum">     207</span>              :           icon: Icons.check_circle,</span>
-<span id="L208"><span class="lineNum">     208</span>              :           colour: AppColors.statusTakenFg,</span>
-<span id="L209"><span class="lineNum">     209</span>              :           text: 'All done. There is nothing left to take today.',</span>
-<span id="L210"><span class="lineNum">     210</span>              :         ),</span>
-<span id="L211"><span class="lineNum">     211</span>              :       ],</span>
-<span id="L212"><span class="lineNum">     212</span>              :     ];</span>
-<span id="L213"><span class="lineNum">     213</span>              :   }</span>
-<span id="L214"><span class="lineNum">     214</span>              : </span>
-<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">           8 :   DoseTile _tile(MedicationProvider meds, ScheduledDose dose) =&gt; DoseTile(</span></span>
-<span id="L216"><span class="lineNum">     216</span>              :         dose: dose,</span>
-<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">           6 :         onToggleTaken: () =&gt; meds.toggleTaken(dose.id),</span></span>
-<span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC">           3 :         onOpenMedication: () =&gt; context.pushNamed(</span></span>
-<span id="L219"><span class="lineNum">     219</span>              :           'medicationDetail',</span>
-<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">           3 :           pathParameters: {'medId': dose.medication.id},</span></span>
-<span id="L221"><span class="lineNum">     221</span>              :         ),</span>
-<span id="L222"><span class="lineNum">     222</span>              :       );</span>
-<span id="L223"><span class="lineNum">     223</span>              : </span>
-<span id="L224"><span class="lineNum">     224</span>              :   // ------------------------------------------------------------ appointments</span>
-<span id="L225"><span class="lineNum">     225</span>              : </span>
-<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">           4 :   List&lt;Widget&gt; _appointmentSection(AppointmentProvider appts) {</span></span>
-<span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC">           4 :     final today = appts.todaysAppointments;</span></span>
-<span id="L228"><span class="lineNum">     228</span> <span class="tlaGNC">           4 :     return [</span></span>
-<span id="L229"><span class="lineNum">     229</span>              :       const SectionHeader('Where you are going'),</span>
-<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">           4 :       if (today.isNotEmpty)</span></span>
-<span id="L231"><span class="lineNum">     231</span> <span class="tlaGNC">           4 :         ...today.map(</span></span>
-<span id="L232"><span class="lineNum">     232</span> <span class="tlaGNC">           8 :           (a) =&gt; AppointmentTile(</span></span>
-<span id="L233"><span class="lineNum">     233</span>              :             appointment: a,</span>
-<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">           4 :             now: appts.now,</span></span>
-<span id="L235"><span class="lineNum">     235</span> <span class="tlaUNC">           0 :             onTap: () =&gt; context.pushNamed(</span></span>
-<span id="L236"><span class="lineNum">     236</span>              :               'appointmentDetail',</span>
-<span id="L237"><span class="lineNum">     237</span> <span class="tlaUNC">           0 :               pathParameters: {'apptId': a.id},</span></span>
-<span id="L238"><span class="lineNum">     238</span>              :             ),</span>
-<span id="L239"><span class="lineNum">     239</span>              :           ),</span>
-<span id="L240"><span class="lineNum">     240</span>              :         )</span>
-<span id="L241"><span class="lineNum">     241</span>              :       else</span>
-<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">           4 :         Container(</span></span>
-<span id="L243"><span class="lineNum">     243</span>              :           padding: const EdgeInsets.all(AppSizes.pagePadding),</span>
-<span id="L244"><span class="lineNum">     244</span> <span class="tlaGNC">           4 :           decoration: BoxDecoration(</span></span>
-<span id="L245"><span class="lineNum">     245</span>              :             color: AppColors.surface0,</span>
-<span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">           4 :             borderRadius: BorderRadius.circular(AppSizes.cardRadius),</span></span>
-<span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">           4 :             border: Border.all(color: AppColors.border200),</span></span>
-<span id="L248"><span class="lineNum">     248</span>              :           ),</span>
-<span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">           4 :           child: Column(</span></span>
-<span id="L250"><span class="lineNum">     250</span>              :             crossAxisAlignment: CrossAxisAlignment.start,</span>
-<span id="L251"><span class="lineNum">     251</span> <span class="tlaGNC">           4 :             children: [</span></span>
-<span id="L252"><span class="lineNum">     252</span>              :               const Text(</span>
-<span id="L253"><span class="lineNum">     253</span>              :                 'You have nothing to go to today.',</span>
-<span id="L254"><span class="lineNum">     254</span>              :                 style: TextStyle(</span>
-<span id="L255"><span class="lineNum">     255</span>              :                   fontSize: 18,</span>
-<span id="L256"><span class="lineNum">     256</span>              :                   fontWeight: FontWeight.w600,</span>
-<span id="L257"><span class="lineNum">     257</span>              :                   color: AppColors.text900,</span>
-<span id="L258"><span class="lineNum">     258</span>              :                 ),</span>
-<span id="L259"><span class="lineNum">     259</span>              :               ),</span>
-<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">           4 :               if (appts.nextAppointment != null)</span></span>
-<span id="L261"><span class="lineNum">     261</span> <span class="tlaUNC">           0 :                 Padding(</span></span>
-<span id="L262"><span class="lineNum">     262</span>              :                   padding: const EdgeInsets.only(top: 8),</span>
-<span id="L263"><span class="lineNum">     263</span> <span class="tlaUNC">           0 :                   child: Text(</span></span>
-<span id="L264"><span class="lineNum">     264</span> <span class="tlaUNC">           0 :                     appts.nextAppointmentSentence,</span></span>
-<span id="L265"><span class="lineNum">     265</span>              :                     style: const TextStyle(</span>
-<span id="L266"><span class="lineNum">     266</span>              :                       fontSize: 16,</span>
-<span id="L267"><span class="lineNum">     267</span>              :                       color: AppColors.text700,</span>
-<span id="L268"><span class="lineNum">     268</span>              :                     ),</span>
-<span id="L269"><span class="lineNum">     269</span>              :                   ),</span>
-<span id="L270"><span class="lineNum">     270</span>              :                 ),</span>
-<span id="L271"><span class="lineNum">     271</span>              :             ],</span>
-<span id="L272"><span class="lineNum">     272</span>              :           ),</span>
-<span id="L273"><span class="lineNum">     273</span>              :         ),</span>
-<span id="L274"><span class="lineNum">     274</span>              :     ];</span>
-<span id="L275"><span class="lineNum">     275</span>              :   }</span>
-<span id="L276"><span class="lineNum">     276</span>              : </span>
-<span id="L277"><span class="lineNum">     277</span>              :   // ----------------------------------------------------------------- chrome</span>
-<span id="L278"><span class="lineNum">     278</span>              : </span>
-<span id="L279"><span class="lineNum">     279</span>              :   /// A failed write is reported inline and permanently, not as a snackbar that</span>
-<span id="L280"><span class="lineNum">     280</span>              :   /// vanishes before it can be read. The tick itself still stands.</span>
-<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">           1 :   Widget _saveBanner(String message) {</span></span>
-<span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">           1 :     return Semantics(</span></span>
-<span id="L283"><span class="lineNum">     283</span>              :       liveRegion: true,</span>
-<span id="L284"><span class="lineNum">     284</span>              :       container: true,</span>
-<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">           1 :       child: Container(</span></span>
-<span id="L286"><span class="lineNum">     286</span>              :         margin: const EdgeInsets.only(top: 24),</span>
-<span id="L287"><span class="lineNum">     287</span>              :         padding: const EdgeInsets.all(AppSizes.pagePadding),</span>
-<span id="L288"><span class="lineNum">     288</span> <span class="tlaGNC">           1 :         decoration: BoxDecoration(</span></span>
-<span id="L289"><span class="lineNum">     289</span>              :           color: AppColors.dangerTint,</span>
-<span id="L290"><span class="lineNum">     290</span> <span class="tlaGNC">           1 :           borderRadius: BorderRadius.circular(AppSizes.cardRadius),</span></span>
-<span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">           1 :           border: Border.all(color: AppColors.danger600),</span></span>
-<span id="L292"><span class="lineNum">     292</span>              :         ),</span>
-<span id="L293"><span class="lineNum">     293</span> <span class="tlaGNC">           1 :         child: Row(</span></span>
-<span id="L294"><span class="lineNum">     294</span>              :           crossAxisAlignment: CrossAxisAlignment.start,</span>
-<span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">           1 :           children: [</span></span>
-<span id="L296"><span class="lineNum">     296</span>              :             const Icon(Icons.warning_amber, color: AppColors.danger600),</span>
-<span id="L297"><span class="lineNum">     297</span>              :             const SizedBox(width: 8),</span>
-<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">           1 :             Expanded(</span></span>
-<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">           1 :               child: Text(</span></span>
-<span id="L300"><span class="lineNum">     300</span>              :                 message,</span>
-<span id="L301"><span class="lineNum">     301</span>              :                 style: const TextStyle(</span>
-<span id="L302"><span class="lineNum">     302</span>              :                   fontSize: 16,</span>
-<span id="L303"><span class="lineNum">     303</span>              :                   color: AppColors.danger600,</span>
-<span id="L304"><span class="lineNum">     304</span>              :                   fontWeight: FontWeight.w600,</span>
-<span id="L305"><span class="lineNum">     305</span>              :                 ),</span>
-<span id="L306"><span class="lineNum">     306</span>              :               ),</span>
-<span id="L307"><span class="lineNum">     307</span>              :             ),</span>
-<span id="L308"><span class="lineNum">     308</span>              :           ],</span>
-<span id="L309"><span class="lineNum">     309</span>              :         ),</span>
-<span id="L310"><span class="lineNum">     310</span>              :       ),</span>
-<span id="L311"><span class="lineNum">     311</span>              :     );</span>
-<span id="L312"><span class="lineNum">     312</span>              :   }</span>
-<span id="L313"><span class="lineNum">     313</span>              : </span>
-<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">           4 :   Widget _refreshButton() {</span></span>
-<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">           4 :     return Semantics(</span></span>
-<span id="L316"><span class="lineNum">     316</span>              :       button: true,</span>
-<span id="L317"><span class="lineNum">     317</span>              :       label: 'Refresh what is due now',</span>
-<span id="L318"><span class="lineNum">     318</span> <span class="tlaGNC">           4 :       child: OutlinedButton.icon(</span></span>
-<span id="L319"><span class="lineNum">     319</span> <span class="tlaGNC">           4 :         onPressed: _refresh,</span></span>
-<span id="L320"><span class="lineNum">     320</span>              :         icon: const Icon(Icons.refresh),</span>
-<span id="L321"><span class="lineNum">     321</span>              :         label: const ExcludeSemantics(child: Text('Refresh')),</span>
-<span id="L322"><span class="lineNum">     322</span> <span class="tlaGNC">           4 :         style: OutlinedButton.styleFrom(</span></span>
-<span id="L323"><span class="lineNum">     323</span>              :           minimumSize: const Size(0, AppSizes.minTapTarget),</span>
-<span id="L324"><span class="lineNum">     324</span>              :           foregroundColor: AppColors.primary800,</span>
-<span id="L325"><span class="lineNum">     325</span>              :           side: const BorderSide(color: AppColors.border300),</span>
-<span id="L326"><span class="lineNum">     326</span>              :         ),</span>
-<span id="L327"><span class="lineNum">     327</span>              :       ),</span>
-<span id="L328"><span class="lineNum">     328</span>              :     );</span>
-<span id="L329"><span class="lineNum">     329</span>              :   }</span>
-<span id="L330"><span class="lineNum">     330</span>              : </span>
-<span id="L331"><span class="lineNum">     331</span> <span class="tlaGNC">           4 :   Widget _quietCard({</span></span>
-<span id="L332"><span class="lineNum">     332</span>              :     required IconData icon,</span>
-<span id="L333"><span class="lineNum">     333</span>              :     required Color colour,</span>
-<span id="L334"><span class="lineNum">     334</span>              :     required String text,</span>
-<span id="L335"><span class="lineNum">     335</span>              :   }) {</span>
-<span id="L336"><span class="lineNum">     336</span> <span class="tlaGNC">           4 :     return Container(</span></span>
-<span id="L337"><span class="lineNum">     337</span>              :       padding: const EdgeInsets.all(AppSizes.pagePadding),</span>
-<span id="L338"><span class="lineNum">     338</span> <span class="tlaGNC">           4 :       decoration: BoxDecoration(</span></span>
-<span id="L339"><span class="lineNum">     339</span>              :         color: AppColors.surface0,</span>
-<span id="L340"><span class="lineNum">     340</span> <span class="tlaGNC">           4 :         borderRadius: BorderRadius.circular(AppSizes.cardRadius),</span></span>
-<span id="L341"><span class="lineNum">     341</span> <span class="tlaGNC">           4 :         border: Border.all(color: AppColors.border200),</span></span>
-<span id="L342"><span class="lineNum">     342</span>              :       ),</span>
-<span id="L343"><span class="lineNum">     343</span> <span class="tlaGNC">           4 :       child: Row(</span></span>
-<span id="L344"><span class="lineNum">     344</span>              :         crossAxisAlignment: CrossAxisAlignment.start,</span>
-<span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">           4 :         children: [</span></span>
-<span id="L346"><span class="lineNum">     346</span> <span class="tlaGNC">           4 :           Icon(icon, color: colour),</span></span>
-<span id="L347"><span class="lineNum">     347</span>              :           const SizedBox(width: 8),</span>
-<span id="L348"><span class="lineNum">     348</span> <span class="tlaGNC">           4 :           Expanded(</span></span>
-<span id="L349"><span class="lineNum">     349</span> <span class="tlaGNC">           4 :             child: Text(</span></span>
-<span id="L350"><span class="lineNum">     350</span>              :               text,</span>
-<span id="L351"><span class="lineNum">     351</span> <span class="tlaGNC">           4 :               style: TextStyle(</span></span>
-<span id="L352"><span class="lineNum">     352</span>              :                 fontSize: 17,</span>
-<span id="L353"><span class="lineNum">     353</span>              :                 fontWeight: FontWeight.w600,</span>
-<span id="L354"><span class="lineNum">     354</span>              :                 color: colour,</span>
-<span id="L355"><span class="lineNum">     355</span>              :               ),</span>
-<span id="L356"><span class="lineNum">     356</span>              :             ),</span>
-<span id="L357"><span class="lineNum">     357</span>              :           ),</span>
-<span id="L358"><span class="lineNum">     358</span>              :         ],</span>
-<span id="L359"><span class="lineNum">     359</span>              :       ),</span>
-<span id="L360"><span class="lineNum">     360</span>              :     );</span>
-<span id="L361"><span class="lineNum">     361</span>              :   }</span>
-<span id="L362"><span class="lineNum">     362</span>              : }</span>
+<span id="L204"><span class="lineNum">     204</span>              :       // Skipped doses stay on the page. Removing them would leave a patient</span>
+<span id="L205"><span class="lineNum">     205</span>              :       // who cannot recall the decision with no way to see that one was made,</span>
+<span id="L206"><span class="lineNum">     206</span>              :       // and no way to change their mind.</span>
+<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">           9 :       if (meds.skippedToday.isNotEmpty) ...[</span></span>
+<span id="L208"><span class="lineNum">     208</span>              :         const SectionHeader(</span>
+<span id="L209"><span class="lineNum">     209</span>              :           'Skipped',</span>
+<span id="L210"><span class="lineNum">     210</span>              :           subtitle: 'You decided not to take these today.',</span>
+<span id="L211"><span class="lineNum">     211</span>              :         ),</span>
+<span id="L212"><span class="lineNum">     212</span> <span class="tlaGNC">           4 :         ...meds.skippedToday.map((d) =&gt; _tile(meds, d)),</span></span>
+<span id="L213"><span class="lineNum">     213</span>              :       ],</span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">           5 :       if (meds.isDayComplete) ...[</span></span>
+<span id="L215"><span class="lineNum">     215</span>              :         const SizedBox(height: 8),</span>
+<span id="L216"><span class="lineNum">     216</span>              :         // Worded from what actually happened. &quot;All done&quot; over a day where</span>
+<span id="L217"><span class="lineNum">     217</span>              :         // doses were skipped would tell the patient they had taken medicine</span>
+<span id="L218"><span class="lineNum">     218</span>              :         // they had not — and they cannot check that against their own memory.</span>
+<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">           2 :         if (meds.allSkippedToday.isEmpty)</span></span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">           1 :           _quietCard(</span></span>
+<span id="L221"><span class="lineNum">     221</span>              :             icon: Icons.check_circle,</span>
+<span id="L222"><span class="lineNum">     222</span>              :             colour: AppColors.statusTakenFg,</span>
+<span id="L223"><span class="lineNum">     223</span>              :             text: 'All done. There is nothing left to take today.',</span>
+<span id="L224"><span class="lineNum">     224</span>              :           )</span>
+<span id="L225"><span class="lineNum">     225</span>              :         else</span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">           1 :           _quietCard(</span></span>
+<span id="L227"><span class="lineNum">     227</span>              :             icon: Icons.task_alt,</span>
+<span id="L228"><span class="lineNum">     228</span>              :             colour: AppColors.primary800,</span>
+<span id="L229"><span class="lineNum">     229</span> <span class="tlaGNC">           1 :             text: 'Nothing is left to decide today. You took '</span></span>
+<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">           2 :                 '${meds.takenCountToday} of ${meds.totalDosesToday} doses and '</span></span>
+<span id="L231"><span class="lineNum">     231</span> <span class="tlaGNC">           2 :                 'skipped ${meds.allSkippedToday.length}.',</span></span>
+<span id="L232"><span class="lineNum">     232</span>              :           ),</span>
+<span id="L233"><span class="lineNum">     233</span>              :       ],</span>
+<span id="L234"><span class="lineNum">     234</span>              :     ];</span>
+<span id="L235"><span class="lineNum">     235</span>              :   }</span>
+<span id="L236"><span class="lineNum">     236</span>              : </span>
+<span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC">           8 :   DoseTile _tile(MedicationProvider meds, ScheduledDose dose) =&gt; DoseTile(</span></span>
+<span id="L238"><span class="lineNum">     238</span>              :         dose: dose,</span>
+<span id="L239"><span class="lineNum">     239</span> <span class="tlaGNC">           6 :         onToggleTaken: () =&gt; meds.toggleTaken(dose.id),</span></span>
+<span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC">           3 :         onOpenMedication: () =&gt; context.pushNamed(</span></span>
+<span id="L241"><span class="lineNum">     241</span>              :           'medicationDetail',</span>
+<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">           3 :           pathParameters: {'medId': dose.medication.id},</span></span>
+<span id="L243"><span class="lineNum">     243</span>              :         ),</span>
+<span id="L244"><span class="lineNum">     244</span>              :       );</span>
+<span id="L245"><span class="lineNum">     245</span>              : </span>
+<span id="L246"><span class="lineNum">     246</span>              :   // ------------------------------------------------------------ appointments</span>
+<span id="L247"><span class="lineNum">     247</span>              : </span>
+<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">           4 :   List&lt;Widget&gt; _appointmentSection(AppointmentProvider appts) {</span></span>
+<span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">           4 :     final today = appts.todaysAppointments;</span></span>
+<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">           4 :     return [</span></span>
+<span id="L251"><span class="lineNum">     251</span>              :       const SectionHeader('Where you are going'),</span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">           4 :       if (today.isNotEmpty)</span></span>
+<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">           4 :         ...today.map(</span></span>
+<span id="L254"><span class="lineNum">     254</span> <span class="tlaGNC">           8 :           (a) =&gt; AppointmentTile(</span></span>
+<span id="L255"><span class="lineNum">     255</span>              :             appointment: a,</span>
+<span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">           4 :             now: appts.now,</span></span>
+<span id="L257"><span class="lineNum">     257</span> <span class="tlaUNC">           0 :             onTap: () =&gt; context.pushNamed(</span></span>
+<span id="L258"><span class="lineNum">     258</span>              :               'appointmentDetail',</span>
+<span id="L259"><span class="lineNum">     259</span> <span class="tlaUNC">           0 :               pathParameters: {'apptId': a.id},</span></span>
+<span id="L260"><span class="lineNum">     260</span>              :             ),</span>
+<span id="L261"><span class="lineNum">     261</span>              :           ),</span>
+<span id="L262"><span class="lineNum">     262</span>              :         )</span>
+<span id="L263"><span class="lineNum">     263</span>              :       else</span>
+<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">           4 :         Container(</span></span>
+<span id="L265"><span class="lineNum">     265</span>              :           padding: const EdgeInsets.all(AppSizes.pagePadding),</span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">           4 :           decoration: BoxDecoration(</span></span>
+<span id="L267"><span class="lineNum">     267</span>              :             color: AppColors.surface0,</span>
+<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">           4 :             borderRadius: BorderRadius.circular(AppSizes.cardRadius),</span></span>
+<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">           4 :             border: Border.all(color: AppColors.border200),</span></span>
+<span id="L270"><span class="lineNum">     270</span>              :           ),</span>
+<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">           4 :           child: Column(</span></span>
+<span id="L272"><span class="lineNum">     272</span>              :             crossAxisAlignment: CrossAxisAlignment.start,</span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">           4 :             children: [</span></span>
+<span id="L274"><span class="lineNum">     274</span>              :               const Text(</span>
+<span id="L275"><span class="lineNum">     275</span>              :                 'You have nothing to go to today.',</span>
+<span id="L276"><span class="lineNum">     276</span>              :                 style: TextStyle(</span>
+<span id="L277"><span class="lineNum">     277</span>              :                   fontSize: 18,</span>
+<span id="L278"><span class="lineNum">     278</span>              :                   fontWeight: FontWeight.w600,</span>
+<span id="L279"><span class="lineNum">     279</span>              :                   color: AppColors.text900,</span>
+<span id="L280"><span class="lineNum">     280</span>              :                 ),</span>
+<span id="L281"><span class="lineNum">     281</span>              :               ),</span>
+<span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">           4 :               if (appts.nextAppointment != null)</span></span>
+<span id="L283"><span class="lineNum">     283</span> <span class="tlaUNC">           0 :                 Padding(</span></span>
+<span id="L284"><span class="lineNum">     284</span>              :                   padding: const EdgeInsets.only(top: 8),</span>
+<span id="L285"><span class="lineNum">     285</span> <span class="tlaUNC">           0 :                   child: Text(</span></span>
+<span id="L286"><span class="lineNum">     286</span> <span class="tlaUNC">           0 :                     appts.nextAppointmentSentence,</span></span>
+<span id="L287"><span class="lineNum">     287</span>              :                     style: const TextStyle(</span>
+<span id="L288"><span class="lineNum">     288</span>              :                       fontSize: 16,</span>
+<span id="L289"><span class="lineNum">     289</span>              :                       color: AppColors.text700,</span>
+<span id="L290"><span class="lineNum">     290</span>              :                     ),</span>
+<span id="L291"><span class="lineNum">     291</span>              :                   ),</span>
+<span id="L292"><span class="lineNum">     292</span>              :                 ),</span>
+<span id="L293"><span class="lineNum">     293</span>              :             ],</span>
+<span id="L294"><span class="lineNum">     294</span>              :           ),</span>
+<span id="L295"><span class="lineNum">     295</span>              :         ),</span>
+<span id="L296"><span class="lineNum">     296</span>              :     ];</span>
+<span id="L297"><span class="lineNum">     297</span>              :   }</span>
+<span id="L298"><span class="lineNum">     298</span>              : </span>
+<span id="L299"><span class="lineNum">     299</span>              :   // ----------------------------------------------------------------- chrome</span>
+<span id="L300"><span class="lineNum">     300</span>              : </span>
+<span id="L301"><span class="lineNum">     301</span>              :   /// A failed write is reported inline and permanently, not as a snackbar that</span>
+<span id="L302"><span class="lineNum">     302</span>              :   /// vanishes before it can be read. The tick itself still stands.</span>
+<span id="L303"><span class="lineNum">     303</span> <span class="tlaGNC">           1 :   Widget _saveBanner(String message) {</span></span>
+<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">           1 :     return Semantics(</span></span>
+<span id="L305"><span class="lineNum">     305</span>              :       liveRegion: true,</span>
+<span id="L306"><span class="lineNum">     306</span>              :       container: true,</span>
+<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC">           1 :       child: Container(</span></span>
+<span id="L308"><span class="lineNum">     308</span>              :         margin: const EdgeInsets.only(top: 24),</span>
+<span id="L309"><span class="lineNum">     309</span>              :         padding: const EdgeInsets.all(AppSizes.pagePadding),</span>
+<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">           1 :         decoration: BoxDecoration(</span></span>
+<span id="L311"><span class="lineNum">     311</span>              :           color: AppColors.dangerTint,</span>
+<span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC">           1 :           borderRadius: BorderRadius.circular(AppSizes.cardRadius),</span></span>
+<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">           1 :           border: Border.all(color: AppColors.danger600),</span></span>
+<span id="L314"><span class="lineNum">     314</span>              :         ),</span>
+<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">           1 :         child: Row(</span></span>
+<span id="L316"><span class="lineNum">     316</span>              :           crossAxisAlignment: CrossAxisAlignment.start,</span>
+<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">           1 :           children: [</span></span>
+<span id="L318"><span class="lineNum">     318</span>              :             const Icon(Icons.warning_amber, color: AppColors.danger600),</span>
+<span id="L319"><span class="lineNum">     319</span>              :             const SizedBox(width: 8),</span>
+<span id="L320"><span class="lineNum">     320</span> <span class="tlaGNC">           1 :             Expanded(</span></span>
+<span id="L321"><span class="lineNum">     321</span> <span class="tlaGNC">           1 :               child: Text(</span></span>
+<span id="L322"><span class="lineNum">     322</span>              :                 message,</span>
+<span id="L323"><span class="lineNum">     323</span>              :                 style: const TextStyle(</span>
+<span id="L324"><span class="lineNum">     324</span>              :                   fontSize: 16,</span>
+<span id="L325"><span class="lineNum">     325</span>              :                   color: AppColors.danger600,</span>
+<span id="L326"><span class="lineNum">     326</span>              :                   fontWeight: FontWeight.w600,</span>
+<span id="L327"><span class="lineNum">     327</span>              :                 ),</span>
+<span id="L328"><span class="lineNum">     328</span>              :               ),</span>
+<span id="L329"><span class="lineNum">     329</span>              :             ),</span>
+<span id="L330"><span class="lineNum">     330</span>              :           ],</span>
+<span id="L331"><span class="lineNum">     331</span>              :         ),</span>
+<span id="L332"><span class="lineNum">     332</span>              :       ),</span>
+<span id="L333"><span class="lineNum">     333</span>              :     );</span>
+<span id="L334"><span class="lineNum">     334</span>              :   }</span>
+<span id="L335"><span class="lineNum">     335</span>              : </span>
+<span id="L336"><span class="lineNum">     336</span> <span class="tlaGNC">           4 :   Widget _refreshButton() {</span></span>
+<span id="L337"><span class="lineNum">     337</span> <span class="tlaGNC">           4 :     return Semantics(</span></span>
+<span id="L338"><span class="lineNum">     338</span>              :       button: true,</span>
+<span id="L339"><span class="lineNum">     339</span>              :       label: 'Refresh what is due now',</span>
+<span id="L340"><span class="lineNum">     340</span> <span class="tlaGNC">           4 :       child: OutlinedButton.icon(</span></span>
+<span id="L341"><span class="lineNum">     341</span> <span class="tlaGNC">           4 :         onPressed: _refresh,</span></span>
+<span id="L342"><span class="lineNum">     342</span>              :         icon: const Icon(Icons.refresh),</span>
+<span id="L343"><span class="lineNum">     343</span>              :         label: const ExcludeSemantics(child: Text('Refresh')),</span>
+<span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">           4 :         style: OutlinedButton.styleFrom(</span></span>
+<span id="L345"><span class="lineNum">     345</span>              :           minimumSize: const Size(0, AppSizes.minTapTarget),</span>
+<span id="L346"><span class="lineNum">     346</span>              :           foregroundColor: AppColors.primary800,</span>
+<span id="L347"><span class="lineNum">     347</span>              :           side: const BorderSide(color: AppColors.border300),</span>
+<span id="L348"><span class="lineNum">     348</span>              :         ),</span>
+<span id="L349"><span class="lineNum">     349</span>              :       ),</span>
+<span id="L350"><span class="lineNum">     350</span>              :     );</span>
+<span id="L351"><span class="lineNum">     351</span>              :   }</span>
+<span id="L352"><span class="lineNum">     352</span>              : </span>
+<span id="L353"><span class="lineNum">     353</span> <span class="tlaGNC">           4 :   Widget _quietCard({</span></span>
+<span id="L354"><span class="lineNum">     354</span>              :     required IconData icon,</span>
+<span id="L355"><span class="lineNum">     355</span>              :     required Color colour,</span>
+<span id="L356"><span class="lineNum">     356</span>              :     required String text,</span>
+<span id="L357"><span class="lineNum">     357</span>              :   }) {</span>
+<span id="L358"><span class="lineNum">     358</span> <span class="tlaGNC">           4 :     return Container(</span></span>
+<span id="L359"><span class="lineNum">     359</span>              :       padding: const EdgeInsets.all(AppSizes.pagePadding),</span>
+<span id="L360"><span class="lineNum">     360</span> <span class="tlaGNC">           4 :       decoration: BoxDecoration(</span></span>
+<span id="L361"><span class="lineNum">     361</span>              :         color: AppColors.surface0,</span>
+<span id="L362"><span class="lineNum">     362</span> <span class="tlaGNC">           4 :         borderRadius: BorderRadius.circular(AppSizes.cardRadius),</span></span>
+<span id="L363"><span class="lineNum">     363</span> <span class="tlaGNC">           4 :         border: Border.all(color: AppColors.border200),</span></span>
+<span id="L364"><span class="lineNum">     364</span>              :       ),</span>
+<span id="L365"><span class="lineNum">     365</span> <span class="tlaGNC">           4 :       child: Row(</span></span>
+<span id="L366"><span class="lineNum">     366</span>              :         crossAxisAlignment: CrossAxisAlignment.start,</span>
+<span id="L367"><span class="lineNum">     367</span> <span class="tlaGNC">           4 :         children: [</span></span>
+<span id="L368"><span class="lineNum">     368</span> <span class="tlaGNC">           4 :           Icon(icon, color: colour),</span></span>
+<span id="L369"><span class="lineNum">     369</span>              :           const SizedBox(width: 8),</span>
+<span id="L370"><span class="lineNum">     370</span> <span class="tlaGNC">           4 :           Expanded(</span></span>
+<span id="L371"><span class="lineNum">     371</span> <span class="tlaGNC">           4 :             child: Text(</span></span>
+<span id="L372"><span class="lineNum">     372</span>              :               text,</span>
+<span id="L373"><span class="lineNum">     373</span> <span class="tlaGNC">           4 :               style: TextStyle(</span></span>
+<span id="L374"><span class="lineNum">     374</span>              :                 fontSize: 17,</span>
+<span id="L375"><span class="lineNum">     375</span>              :                 fontWeight: FontWeight.w600,</span>
+<span id="L376"><span class="lineNum">     376</span>              :                 color: colour,</span>
+<span id="L377"><span class="lineNum">     377</span>              :               ),</span>
+<span id="L378"><span class="lineNum">     378</span>              :             ),</span>
+<span id="L379"><span class="lineNum">     379</span>              :           ),</span>
+<span id="L380"><span class="lineNum">     380</span>              :         ],</span>
+<span id="L381"><span class="lineNum">     381</span>              :       ),</span>
+<span id="L382"><span class="lineNum">     382</span>              :     );</span>
+<span id="L383"><span class="lineNum">     383</span>              :   }</span>
+<span id="L384"><span class="lineNum">     384</span>              : }</span>
         </pre>
               </td>
             </tr>

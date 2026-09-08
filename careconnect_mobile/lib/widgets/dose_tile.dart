@@ -65,110 +65,120 @@ class DoseTile extends StatelessWidget {
           // ---------- node 1: the whole story, in one sentence ----------
           Semantics(
             container: true,
+            excludeSemantics: true,
             label: dose.semanticLabel,
-            child: ExcludeSemantics(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Wrap so the time and the chip reflow rather than overflow
-                  // once the system text size is turned up.
-                  Wrap(
-                    spacing: 12,
-                    runSpacing: 8,
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: [
-                      Text(
-                        dose.scheduledTime.label12h,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.primary900,
-                        ),
-                      ),
-                      StatusChip(visual: visual, text: dose.statusLabel),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    dose.medication.displayTitle,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.text900,
-                    ),
-                  ),
-                  if (dose.medication.appearance.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 2),
-                      child: Text(
-                        dose.medication.appearance,
-                        style: const TextStyle(
-                          fontSize: 15,
-                          color: AppColors.text500,
-                        ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Wrap so the time and the chip reflow rather than overflow
+                // once the system text size is turned up.
+                Wrap(
+                  spacing: 12,
+                  runSpacing: 8,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    Text(
+                      dose.scheduledTime.label12h,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.primary900,
                       ),
                     ),
-                  const SizedBox(height: 8),
-                  // The reassurance line: "You took this at 8:12 AM today."
-                  // A checkmark states a fact; this states the story the
-                  // patient has forgotten, including who logged it.
-                  Text(
-                    dose.reassuranceLine,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: dose.isTaken
-                          ? AppColors.statusTakenFg
-                          : AppColors.text700,
+                    StatusChip(visual: visual, text: dose.statusLabel),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  dose.medication.displayTitle,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.text900,
+                  ),
+                ),
+                if (dose.medication.appearance.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 2),
+                    child: Text(
+                      dose.medication.appearance,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        color: AppColors.text500,
+                      ),
                     ),
                   ),
-                ],
-              ),
+                const SizedBox(height: 8),
+                // The reassurance line: "You took this at 8:12 AM today."
+                // A checkmark states a fact; this states the story the
+                // patient has forgotten, including who logged it.
+                Text(
+                  dose.reassuranceLine,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color:
+                        dose.isTaken
+                            ? AppColors.statusTakenFg
+                            : AppColors.text700,
+                  ),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 12),
 
           // ---------- node 2: the one primary action ----------
+          //
+          // `onTap` and `excludeSemantics` are both required. A plain
+          // `Semantics(label:)` wrapped around a button produces TWO nodes:
+          // this one carrying the label but no action, and the button's own
+          // node carrying the action but — because its child text is hidden —
+          // no name at all. Screen-reader users would hear an unnamed button.
+          // Collapsing them here gives one node with both.
           Semantics(
             button: true,
+            onTap: onToggleTaken,
+            excludeSemantics: true,
             label: dose.actionSemanticLabel,
             child: SizedBox(
               width: double.infinity,
-              child: dose.isTaken
-                  ? OutlinedButton.icon(
-                      onPressed: onToggleTaken,
-                      icon: const Icon(Icons.undo),
-                      label: const ExcludeSemantics(
-                        child: Text('Undo — I have not taken this'),
-                      ),
-                      style: OutlinedButton.styleFrom(
-                        minimumSize:
-                            const Size.fromHeight(AppSizes.minTapTarget + 8),
-                        foregroundColor: AppColors.primary800,
-                        side: const BorderSide(color: AppColors.border300),
-                        textStyle: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+              child:
+                  dose.isTaken
+                      ? OutlinedButton.icon(
+                        onPressed: onToggleTaken,
+                        icon: const Icon(Icons.undo),
+                        label: const Text('Undo — I have not taken this'),
+                        style: OutlinedButton.styleFrom(
+                          minimumSize: const Size.fromHeight(
+                            AppSizes.minTapTarget + 8,
+                          ),
+                          foregroundColor: AppColors.primary800,
+                          side: const BorderSide(color: AppColors.border300),
+                          textStyle: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      )
+                      : ElevatedButton.icon(
+                        onPressed: onToggleTaken,
+                        icon: const Icon(Icons.check),
+                        label: const Text('Mark as taken'),
+                        style: ElevatedButton.styleFrom(
+                          // 56 dp — comfortably over the 48 dp floor.
+                          minimumSize: const Size.fromHeight(
+                            AppSizes.minTapTarget + 8,
+                          ),
+                          // White on primary700 measures 4.51:1, which clears AA.
+                          backgroundColor: AppColors.primary700,
+                          foregroundColor: AppColors.surface0,
+                          textStyle: const TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
-                    )
-                  : ElevatedButton.icon(
-                      onPressed: onToggleTaken,
-                      icon: const Icon(Icons.check),
-                      label: const ExcludeSemantics(child: Text('Mark as taken')),
-                      style: ElevatedButton.styleFrom(
-                        // 56 dp — comfortably over the 48 dp floor.
-                        minimumSize:
-                            const Size.fromHeight(AppSizes.minTapTarget + 8),
-                        // White on primary700 measures 4.51:1, which clears AA.
-                        backgroundColor: AppColors.primary700,
-                        foregroundColor: AppColors.surface0,
-                        textStyle: const TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
             ),
           ),
 
@@ -176,6 +186,8 @@ class DoseTile extends StatelessWidget {
           if (onOpenMedication != null)
             Semantics(
               button: true,
+              onTap: onOpenMedication,
+              excludeSemantics: true,
               label: 'What is ${dose.medication.name} for? Opens the details.',
               child: TextButton(
                 onPressed: onOpenMedication,
@@ -186,9 +198,7 @@ class DoseTile extends StatelessWidget {
                   foregroundColor: AppColors.primary800,
                   alignment: Alignment.centerLeft,
                 ),
-                child: const ExcludeSemantics(
-                  child: Text('What is this medicine for?'),
-                ),
+                child: const Text('What is this medicine for?'),
               ),
             ),
         ],

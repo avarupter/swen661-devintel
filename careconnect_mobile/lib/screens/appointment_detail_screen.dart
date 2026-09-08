@@ -8,6 +8,27 @@ import '../providers/appointment_provider.dart';
 import '../theme/app_colors.dart';
 import '../widgets/section_header.dart';
 
+/// Go back, or go home when there is nowhere to go back to.
+///
+/// The AppBar's `leading` is set unconditionally, which is the right call for
+/// this audience — an always-present, always-labelled back affordance beats one
+/// that sometimes isn't there. But setting `leading` also defeats AppBar's own
+/// "hide the chevron when the stack is empty" behaviour, and go_router's
+/// `context.pop()` throws `GoError: There is nothing to pop` rather than
+/// no-opping. That happens whenever this screen is the first route: a deep
+/// link, or a cold start straight into a detail URL.
+///
+/// `canPop()` is checked inside the callback rather than in `build`, because it
+/// is a go_router extension and the widget tests mount these screens under a
+/// plain MaterialApp with no GoRouter above them.
+void _goBack(BuildContext context) {
+  if (context.canPop()) {
+    context.pop();
+  } else {
+    context.goNamed('home');
+  }
+}
+
 /// Everything about one appointment.
 ///
 /// Like [MedicationDetailScreen], the id travels in the route path
@@ -45,7 +66,7 @@ class AppointmentDetailScreen extends StatelessWidget {
           button: true,
           label: 'Back to my appointments',
           child: BackButton(
-            onPressed: () => context.pop(),
+            onPressed: () => _goBack(context),
           ),
         ),
       ),
@@ -126,7 +147,7 @@ class AppointmentDetailScreen extends StatelessWidget {
               button: true,
               label: 'Back to my appointments',
               child: ElevatedButton(
-                onPressed: () => context.pop(),
+                onPressed: () => _goBack(context),
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(220, AppSizes.minTapTarget),
                   backgroundColor: AppColors.primary700,

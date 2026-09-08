@@ -30,9 +30,10 @@ void main() {
       expect(find.text('Already done'), findsNothing);
     });
 
-    testWidgets('marking a dose taken moves it to "Already done" and says '
-        'who took it and when', (tester) async {
-      await pumpCareScreen(tester, const PatientTodayScreen());
+    testWidgets('marking a dose taken confirms it where the patient is '
+        'looking, without the card jumping away', (tester) async {
+      final harness =
+          await pumpCareScreen(tester, const PatientTodayScreen());
 
       expect(find.text('Already done'), findsNothing);
 
@@ -41,6 +42,17 @@ void main() {
 
       // The reassurance line is the whole point: not a tick, a sentence.
       expect(find.text('You took this at 7:45 AM today.'), findsOneWidget);
+      expect(find.text('1 of 6 doses taken today'), findsOneWidget);
+
+      // And it is still under "Take these now", where the patient just
+      // pressed. A card that relocates hundreds of pixels down the page reads
+      // as "nothing happened", and the natural next move is to tap again.
+      expect(find.text('Take these now'), findsOneWidget);
+      expect(find.text('Already done'), findsNothing);
+
+      // It settles into "Already done" on the next refresh.
+      harness.meds().syncNow();
+      await tester.pumpAndSettle();
       expect(find.text('Already done'), findsOneWidget);
       expect(find.text('1 of 6 doses taken today'), findsOneWidget);
     });
@@ -137,7 +149,43 @@ void main() {
         find.text('All done. There is nothing left to take today.'),
         findsOneWidget,
       );
+      expect(find.text('6 of 6 doses taken today'), findsOneWidget);
+
+      // After a refresh the sticky cards settle and the actionable sections
+      // empty out.
+      meds.syncNow();
+      await tester.pumpAndSettle();
       expect(find.text('Take these now'), findsNothing);
+      expect(find.text('Later today'), findsNothing);
+      expect(find.text('Already done'), findsOneWidget);
+    });
+
+    testWidgets('a skipped dose is never reported as taken', (tester) async {
+      final harness =
+          await pumpCareScreen(tester, const PatientTodayScreen());
+
+      final meds = harness.meds();
+      for (final dose in meds.todaysDoses) {
+        await meds.markSkipped(dose.id);
+      }
+      await tester.pumpAndSettle();
+
+      // The old wording said "All done. You have taken all 6 of today's
+      // doses." over a day where nothing was swallowed.
+      expect(find.textContaining('You have taken all'), findsNothing);
+      expect(find.text('0 of 6 doses taken today'), findsOneWidget);
+      expect(
+        find.textContaining('You took 0 of 6 doses and skipped 6.'),
+        findsOneWidget,
+      );
+
+      // And the skipped cards stay on the page rather than vanishing.
+      meds.syncNow();
+      await tester.pumpAndSettle();
+      // "Skipped" also appears on each status chip, so assert the section by
+      // its subtitle, which is unique to the header.
+      expect(find.text('You decided not to take these today.'), findsOneWidget);
+      expect(find.text('Skipped'), findsWidgets);
     });
   });
 }

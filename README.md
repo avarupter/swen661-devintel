@@ -122,10 +122,10 @@ swen661-devintel/
 │  	├── devtools_options.yaml                     # Flutter DevTools options
 │  	├── pubspec.yaml                              # App dependencies & assets configuration
 │   └── README.md                                 # Project documentation
-├── mobile-flutter/ # Android app (Flutter)
-├── mobile-rn/ # iOS app (React Native)
-├── desktop-electron/ # Windows app (Electron)
-└── web-react/ # Web app (React + Vite)
+├── hello_flutter/       # Week 1/2 Flutter hello-world
+├── hello-react-native/  # Week 1/2 React Native hello-world
+├── hello-electron/      # Week 1/2 Electron hello-world
+└── hello-react-web/     # Week 1/2 React + Vite hello-world
 ```
 
 ## Project description
@@ -259,7 +259,13 @@ The patient screens are built around that, not decorated with it afterwards:
    that silently disappears is indistinguishable from one you have forgotten.
 10. **Status is always colour + icon + word,** never colour alone (WCAG 1.4.1),
     and "needs doing" also carries a thicker border so it survives greyscale.
-11. **Loading is never rendered as "not found".** Telling a patient their
+11. **A dose you just ticked stays where you tapped it.** It keeps its place in
+    "Take these now" and shows its taken state there, moving to "Already done"
+    only on the next refresh. A card that relocated hundreds of pixels down the
+    page read as "nothing happened", and the natural next move was to tap again.
+12. **A skipped dose is never reported as taken,** and skipped cards stay on the
+    page rather than disappearing, so the decision remains visible and reversible.
+13. **Loading is never rendered as "not found".** Telling a patient their
     medicine has been removed when the file is merely still opening would be
     the worst false message this app could produce.
 
@@ -291,10 +297,18 @@ project needs Dart >= 3.7).
 
 ```bash
 cd careconnect_mobile
+
+# The repo's .gitignore excludes the generated platform folders (android/,
+# ios/, web/, ...), so a fresh clone has none. Regenerate them once — this
+# only writes the platform scaffolding and does not touch lib/ or test/:
+flutter create .
+
 flutter pub get
 flutter devices          # pick an emulator, device, or desktop/web target
 flutter run
 ```
+
+Running the tests needs none of that — `flutter test` works on a bare clone.
 
 The app opens on the Landing screen. Sign up (or sign in — any credentials are
 accepted, authentication is mocked for this milestone), then choose **Patient**
@@ -310,7 +324,7 @@ always has something on it.
 
 ```bash
 cd careconnect_mobile
-flutter test                 # 162 tests
+flutter test                 # 167 tests
 flutter analyze              # clean
 ```
 
@@ -328,8 +342,8 @@ Coverage is committed in [`careconnect_mobile/coverage/`](careconnect_mobile/cov
 * `coverage/lcov.info` — the raw LCOV data.
 * `coverage/index.html` — the generated HTML report; open it in a browser.
 
-**Current line coverage: 84.09% (1887 of 2244 lines), against a 60% requirement.**
-162 tests, all passing.
+**Current line coverage: 84.84% (1948 of 2296 lines), against a 60%
+requirement. 167 tests, all passing, `flutter analyze` clean.**
 
 Both unit and widget tests are included:
 
@@ -342,6 +356,12 @@ Both unit and widget tests are included:
 
 ## Known issues or limitations
 
+* **The generated platform folders are not in the repo.** The root
+  `.gitignore` excludes `android/`, `ios/`, `web/`, `linux/`, `macos/` and
+  `windows/`, so `flutter run` and `flutter build` fail on a fresh clone until
+  `flutter create .` is run once (see *How to run the app*). `flutter test` and
+  `flutter analyze` are unaffected. Worth the team deciding before submission
+  whether to commit the Android and web folders instead.
 * **Authentication is mocked.** `AuthProvider.signIn` accepts any credentials
   and does not validate a password. There is no backend.
 * **`PatientProvider` is only 14% covered.** It calls

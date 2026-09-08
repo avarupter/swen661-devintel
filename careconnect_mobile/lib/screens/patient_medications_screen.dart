@@ -70,7 +70,8 @@ class PatientMedicationsScreen extends StatelessWidget {
           if (scheduled.isNotEmpty) ...[
             SectionHeader(
               'Taken every day',
-              subtitle: '${scheduled.length} '
+              subtitle:
+                  '${scheduled.length} '
                   '${scheduled.length == 1 ? 'medicine' : 'medicines'}',
             ),
             ...scheduled.map((m) => _MedicationRow(medication: m, meds: meds)),
@@ -99,111 +100,121 @@ class _MedicationRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final m = medication;
-    final doses = m.isAsNeeded
-        ? const <ScheduledDose>[]
-        : meds.dosesForMedication(m.id);
+    final doses =
+        m.isAsNeeded ? const <ScheduledDose>[] : meds.dosesForMedication(m.id);
     final takenCount = doses.where((d) => d.isTaken).length;
 
     // Spoken and written versions of the same fact, so the list answers
     // "did I already take this one?" without opening anything.
-    final todayLine = m.isAsNeeded
-        ? 'Taken only when needed.'
-        : 'Today: $takenCount of ${doses.length} taken.';
+    // Empty for an as-needed medicine: `spokenSummary` already ends with
+    // "Taken only when needed", and repeating it makes the screen reader say
+    // the same sentence twice in a row.
+    final todayLine =
+        m.isAsNeeded ? '' : 'Today: $takenCount of ${doses.length} taken.';
 
+    // One callback for both the pointer and the accessibility tap, so the two
+    // cannot drift apart.
+    void open() =>
+        context.pushNamed('medicationDetail', pathParameters: {'medId': m.id});
+
+    // `onTap` here is what makes the row operable by TalkBack, VoiceOver and
+    // Switch Access. Without it the node says `isButton` but carries no tap
+    // action, because the wrapper hides the InkWell's action from the
+    // accessibility tree — the row would announce itself as a button that
+    // cannot be pressed.
     return Semantics(
       button: true,
-      label: '${m.spokenSummary} $todayLine Opens the details.',
-      child: ExcludeSemantics(
-        child: Container(
-          margin: const EdgeInsets.only(bottom: AppSizes.cardGap),
-          decoration: BoxDecoration(
-            color: AppColors.surface0,
-            borderRadius: BorderRadius.circular(AppSizes.cardRadius),
-            border: Border.all(color: AppColors.border200),
-          ),
-          child: InkWell(
-            onTap: () => context.pushNamed(
-              'medicationDetail',
-              pathParameters: {'medId': m.id},
-            ),
-            borderRadius: BorderRadius.circular(AppSizes.cardRadius),
-            child: ConstrainedBox(
-              constraints:
-                  const BoxConstraints(minHeight: AppSizes.minTapTarget),
-              child: Padding(
-                padding: const EdgeInsets.all(AppSizes.pagePadding),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      m.displayTitle,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.text900,
+      onTap: open,
+      excludeSemantics: true,
+      label:
+          '${m.spokenSummary}'
+          '${todayLine.isEmpty ? '' : ' $todayLine'} Opens the details.',
+      child: Container(
+        margin: const EdgeInsets.only(bottom: AppSizes.cardGap),
+        decoration: BoxDecoration(
+          color: AppColors.surface0,
+          borderRadius: BorderRadius.circular(AppSizes.cardRadius),
+          border: Border.all(color: AppColors.border200),
+        ),
+        child: InkWell(
+          onTap: open,
+          borderRadius: BorderRadius.circular(AppSizes.cardRadius),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: AppSizes.minTapTarget),
+            child: Padding(
+              padding: const EdgeInsets.all(AppSizes.pagePadding),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    m.displayTitle,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.text900,
+                    ),
+                  ),
+                  if (m.purpose.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4),
+                      // Never truncated and never given a maxLines: this is
+                      // the sentence the whole screen exists to deliver.
+                      child: Text(
+                        m.purpose,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: AppColors.text700,
+                        ),
                       ),
                     ),
-                    if (m.purpose.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4),
-                        // Never truncated and never given a maxLines: this is
-                        // the sentence the whole screen exists to deliver.
-                        child: Text(
-                          m.purpose,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: AppColors.text700,
-                          ),
+                  if (m.appearance.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 2),
+                      child: Text(
+                        m.appearance,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          color: AppColors.text500,
                         ),
                       ),
-                    if (m.appearance.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 2),
-                        child: Text(
-                          m.appearance,
-                          style: const TextStyle(
-                            fontSize: 15,
-                            color: AppColors.text500,
+                    ),
+                  const SizedBox(height: 10),
+                  if (m.isAsNeeded)
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Icon(
+                          Icons.info_outline,
+                          size: 18,
+                          color: AppColors.statusDueFg,
+                        ),
+                        const SizedBox(width: 6),
+                        const Expanded(
+                          child: Text(
+                            'Take only when you need it.',
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: AppColors.statusDueFg,
+                            ),
                           ),
                         ),
-                      ),
-                    const SizedBox(height: 10),
-                    if (m.isAsNeeded)
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Icon(
-                            Icons.info_outline,
-                            size: 18,
-                            color: AppColors.statusDueFg,
+                      ],
+                    )
+                  else
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        for (final dose in doses)
+                          StatusChip(
+                            visual: visualForDoseStatus(dose.status),
+                            text:
+                                '${dose.scheduledTime.label12h} · '
+                                '${visualForDoseStatus(dose.status).word}',
                           ),
-                          const SizedBox(width: 6),
-                          const Expanded(
-                            child: Text(
-                              'Take only when you need it.',
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: AppColors.statusDueFg,
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
-                    else
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        children: [
-                          for (final dose in doses)
-                            StatusChip(
-                              visual: visualForDoseStatus(dose.status),
-                              text: '${dose.scheduledTime.label12h} · '
-                                  '${visualForDoseStatus(dose.status).word}',
-                            ),
-                        ],
-                      ),
-                  ],
-                ),
+                      ],
+                    ),
+                ],
               ),
             ),
           ),

@@ -95,9 +95,15 @@ class JsonCareRepository implements MedicationRepository, AppointmentRepository 
   Future<List<Appointment>> loadAppointments() async {
     final decoded = await _readList(appointmentsFile);
     if (decoded == null) {
-      final seeded = _seed.appointments();
-      await _trySave(appointmentsFile, seeded.map((a) => a.toJson()).toList());
-      return seeded;
+      // Returned but NOT written, unlike the medication seed.
+      //
+      // Seeded appointments are generated relative to the clock, so persisting
+      // them on first launch would freeze them to that date: every later run
+      // would show an empty "Where you are going" and a history of things that
+      // already happened. Leaving the file absent regenerates them each launch
+      // until the user actually changes something, at which point
+      // saveAppointments writes and the real data takes over.
+      return _seed.appointments();
     }
     return _mapOrSeed(
       decoded,
@@ -127,20 +133,35 @@ class JsonCareRepository implements MedicationRepository, AppointmentRepository 
     }
   }
 
+  /// Decodes row by row, keeping whatever parses.
+  ///
+  /// Decoding the list in one `map` meant a single malformed row threw and the
+  /// entire document was replaced by [fallback] — and for the dose log, whose
+  /// fallback is an empty list, the next tap then wrote that emptiness back to
+  /// disk. One bad byte silently erased the patient's whole medication
+  /// history. Salvaging the good rows is strictly better: partial history
+  /// beats none, and the loss is bounded to the row that is actually broken.
+  ///
+  /// [fallback] is still used when EVERY row fails, which is the "this file is
+  /// not what we think it is" case.
   List<T> _mapOrSeed<T>(
     List<dynamic> raw,
     T Function(Map<String, dynamic>) fromJson,
     List<T> Function() fallback,
     String fileName,
   ) {
-    try {
-      return raw
-          .map((e) => fromJson(Map<String, dynamic>.from(e as Map)))
-          .toList();
-    } catch (error, stack) {
-      _report('decode $fileName', error, stack);
-      return fallback();
+    final decoded = <T>[];
+    var failures = 0;
+    for (final entry in raw) {
+      try {
+        decoded.add(fromJson(Map<String, dynamic>.from(entry as Map)));
+      } catch (error, stack) {
+        failures++;
+        _report('decode a row of $fileName', error, stack);
+      }
     }
+    if (decoded.isEmpty && failures > 0) return fallback();
+    return decoded;
   }
 
   Future<void> _trySave(String fileName, Object payload) async {

@@ -201,13 +201,35 @@ class _PatientTodayScreenState extends State<PatientTodayScreen>
         const SectionHeader('Already done'),
         ...meds.takenToday.map((d) => _tile(meds, d)),
       ],
+      // Skipped doses stay on the page. Removing them would leave a patient
+      // who cannot recall the decision with no way to see that one was made,
+      // and no way to change their mind.
+      if (meds.skippedToday.isNotEmpty) ...[
+        const SectionHeader(
+          'Skipped',
+          subtitle: 'You decided not to take these today.',
+        ),
+        ...meds.skippedToday.map((d) => _tile(meds, d)),
+      ],
       if (meds.isDayComplete) ...[
         const SizedBox(height: 8),
-        _quietCard(
-          icon: Icons.check_circle,
-          colour: AppColors.statusTakenFg,
-          text: 'All done. There is nothing left to take today.',
-        ),
+        // Worded from what actually happened. "All done" over a day where
+        // doses were skipped would tell the patient they had taken medicine
+        // they had not — and they cannot check that against their own memory.
+        if (meds.allSkippedToday.isEmpty)
+          _quietCard(
+            icon: Icons.check_circle,
+            colour: AppColors.statusTakenFg,
+            text: 'All done. There is nothing left to take today.',
+          )
+        else
+          _quietCard(
+            icon: Icons.task_alt,
+            colour: AppColors.primary800,
+            text: 'Nothing is left to decide today. You took '
+                '${meds.takenCountToday} of ${meds.totalDosesToday} doses and '
+                'skipped ${meds.allSkippedToday.length}.',
+          ),
       ],
     ];
   }

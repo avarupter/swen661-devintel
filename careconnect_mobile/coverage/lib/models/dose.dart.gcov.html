@@ -31,13 +31,13 @@
             <td class="headerValue">CareConnect Daily Compass — line coverage</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntryLo">69.6&nbsp;%</td>
-            <td class="headerCovTableEntry">138</td>
-            <td class="headerCovTableEntry">96</td>
+            <td class="headerCovTableEntryLo">71.2&nbsp;%</td>
+            <td class="headerCovTableEntry">139</td>
+            <td class="headerCovTableEntry">99</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-09-08 02:12:43</td>
+            <td class="headerValue">2026-09-08 02:56:35</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -194,7 +194,7 @@
 <span id="L124"><span class="lineNum">     124</span>              :   final String? note;</span>
 <span id="L125"><span class="lineNum">     125</span>              : </span>
 <span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">          18 :   bool get isTaken =&gt; outcome == DoseOutcome.taken;</span></span>
-<span id="L127"><span class="lineNum">     127</span> <span class="tlaUNC">           0 :   bool get isSkipped =&gt; outcome == DoseOutcome.skipped;</span></span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">           9 :   bool get isSkipped =&gt; outcome == DoseOutcome.skipped;</span></span>
 <span id="L128"><span class="lineNum">     128</span>              : </span>
 <span id="L129"><span class="lineNum">     129</span>              :   /// `8:12 AM`.</span>
 <span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">           4 :   String get recordedAtLabel =&gt;</span></span>
@@ -246,7 +246,7 @@
 <span id="L176"><span class="lineNum">     176</span>              : /// assertable in tests instead of being magic constants inside a widget.</span>
 <span id="L177"><span class="lineNum">     177</span>              : @immutable</span>
 <span id="L178"><span class="lineNum">     178</span>              : class DoseWindowPolicy {</span>
-<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">           2 :   const DoseWindowPolicy({</span></span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">           4 :   const DoseWindowPolicy({</span></span>
 <span id="L180"><span class="lineNum">     180</span>              :     this.earlyWindow = const Duration(hours: 1),</span>
 <span id="L181"><span class="lineNum">     181</span>              :     this.lateWindow = const Duration(hours: 2),</span>
 <span id="L182"><span class="lineNum">     182</span>              :   });</span>
@@ -291,7 +291,7 @@
 <span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC">          24 :   DateOnly get date =&gt; id.date;</span></span>
 <span id="L222"><span class="lineNum">     222</span>              : </span>
 <span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC">          22 :   bool get isTaken =&gt; record?.isTaken ?? false;</span></span>
-<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">          16 :   bool get isSkipped =&gt; record?.isSkipped ?? false;</span></span>
+<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">          19 :   bool get isSkipped =&gt; record?.isSkipped ?? false;</span></span>
 <span id="L225"><span class="lineNum">     225</span> <span class="tlaGNC">          10 :   bool get isLogged =&gt; record != null;</span></span>
 <span id="L226"><span class="lineNum">     226</span> <span class="tlaUNC">           0 :   DateTime? get takenAt =&gt; isTaken ? record!.recordedAt : null;</span></span>
 <span id="L227"><span class="lineNum">     227</span>              : </span>
@@ -349,7 +349,7 @@
 <span id="L279"><span class="lineNum">     279</span> <span class="tlaGNC">          12 :       return '$who at ${record!.recordedAtLabel} today.';</span></span>
 <span id="L280"><span class="lineNum">     280</span>              :     }</span>
 <span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">           5 :     if (isSkipped) {</span></span>
-<span id="L282"><span class="lineNum">     282</span> <span class="tlaUNC">           0 :       return 'This dose was skipped${record?.note == null ? '' : ' — ${record!.note}'}.';</span></span>
+<span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">           3 :       return 'This dose was skipped${record?.note == null ? '' : ' — ${record!.note}'}.';</span></span>
 <span id="L283"><span class="lineNum">     283</span>              :     }</span>
 <span id="L284"><span class="lineNum">     284</span>              :     return 'Not taken yet.';</span>
 <span id="L285"><span class="lineNum">     285</span>              :   }</span>
@@ -378,26 +378,32 @@
 <span id="L308"><span class="lineNum">     308</span> <span class="tlaGNC">           5 :   static String _relativeFuture(Duration d) {</span></span>
 <span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">          10 :     if (d.inMinutes &lt; 1) return 'Due now';</span></span>
 <span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">          10 :     if (d.inMinutes &lt; 60) return 'In ${d.inMinutes} minutes';</span></span>
-<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">           5 :     final hours = d.inHours;</span></span>
-<span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC">          15 :     if (hours &lt; 24) return 'In $hours hour${hours == 1 ? '' : 's'}';</span></span>
-<span id="L313"><span class="lineNum">     313</span> <span class="tlaUNC">           0 :     final days = d.inDays;</span></span>
-<span id="L314"><span class="lineNum">     314</span> <span class="tlaUNC">           0 :     return 'In $days day${days == 1 ? '' : 's'}';</span></span>
-<span id="L315"><span class="lineNum">     315</span>              :   }</span>
-<span id="L316"><span class="lineNum">     316</span>              : </span>
-<span id="L317"><span class="lineNum">     317</span> <span class="tlaUNC">           0 :   @override</span></span>
-<span id="L318"><span class="lineNum">     318</span>              :   bool operator ==(Object other) =&gt;</span>
-<span id="L319"><span class="lineNum">     319</span> <span class="tlaUNC">           0 :       other is ScheduledDose &amp;&amp;</span></span>
-<span id="L320"><span class="lineNum">     320</span> <span class="tlaUNC">           0 :       other.id == id &amp;&amp;</span></span>
-<span id="L321"><span class="lineNum">     321</span> <span class="tlaUNC">           0 :       other.medication == medication &amp;&amp;</span></span>
-<span id="L322"><span class="lineNum">     322</span> <span class="tlaUNC">           0 :       other.record == record &amp;&amp;</span></span>
-<span id="L323"><span class="lineNum">     323</span> <span class="tlaUNC">           0 :       other.now == now;</span></span>
-<span id="L324"><span class="lineNum">     324</span>              : </span>
-<span id="L325"><span class="lineNum">     325</span> <span class="tlaUNC">           0 :   @override</span></span>
-<span id="L326"><span class="lineNum">     326</span> <span class="tlaUNC">           0 :   int get hashCode =&gt; Object.hash(id, medication, record, now);</span></span>
-<span id="L327"><span class="lineNum">     327</span>              : </span>
-<span id="L328"><span class="lineNum">     328</span> <span class="tlaUNC">           0 :   @override</span></span>
-<span id="L329"><span class="lineNum">     329</span> <span class="tlaUNC">           0 :   String toString() =&gt; 'ScheduledDose(${id.value}, ${status.name})';</span></span>
-<span id="L330"><span class="lineNum">     330</span>              : }</span>
+<span id="L311"><span class="lineNum">     311</span>              :     // Rounded, not truncated. `inHours` would call 1 h 59 m &quot;In 1 hour&quot;, and</span>
+<span id="L312"><span class="lineNum">     312</span>              :     // being told something is an hour away when it is nearly two is precisely</span>
+<span id="L313"><span class="lineNum">     313</span>              :     // the kind of small wrongness that erodes trust in an app whose whole job</span>
+<span id="L314"><span class="lineNum">     314</span>              :     // is to be the memory you can rely on.</span>
+<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">          15 :     if (d.inMinutes &lt; 60 * 24) {</span></span>
+<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">          15 :       final hours = (d.inMinutes / 60).round();</span></span>
+<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">          10 :       return 'In $hours hour${hours == 1 ? '' : 's'}';</span></span>
+<span id="L318"><span class="lineNum">     318</span>              :     }</span>
+<span id="L319"><span class="lineNum">     319</span> <span class="tlaUNC">           0 :     final days = (d.inHours / 24).round();</span></span>
+<span id="L320"><span class="lineNum">     320</span> <span class="tlaUNC">           0 :     return 'In $days day${days == 1 ? '' : 's'}';</span></span>
+<span id="L321"><span class="lineNum">     321</span>              :   }</span>
+<span id="L322"><span class="lineNum">     322</span>              : </span>
+<span id="L323"><span class="lineNum">     323</span> <span class="tlaUNC">           0 :   @override</span></span>
+<span id="L324"><span class="lineNum">     324</span>              :   bool operator ==(Object other) =&gt;</span>
+<span id="L325"><span class="lineNum">     325</span> <span class="tlaUNC">           0 :       other is ScheduledDose &amp;&amp;</span></span>
+<span id="L326"><span class="lineNum">     326</span> <span class="tlaUNC">           0 :       other.id == id &amp;&amp;</span></span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaUNC">           0 :       other.medication == medication &amp;&amp;</span></span>
+<span id="L328"><span class="lineNum">     328</span> <span class="tlaUNC">           0 :       other.record == record &amp;&amp;</span></span>
+<span id="L329"><span class="lineNum">     329</span> <span class="tlaUNC">           0 :       other.now == now;</span></span>
+<span id="L330"><span class="lineNum">     330</span>              : </span>
+<span id="L331"><span class="lineNum">     331</span> <span class="tlaUNC">           0 :   @override</span></span>
+<span id="L332"><span class="lineNum">     332</span> <span class="tlaUNC">           0 :   int get hashCode =&gt; Object.hash(id, medication, record, now);</span></span>
+<span id="L333"><span class="lineNum">     333</span>              : </span>
+<span id="L334"><span class="lineNum">     334</span> <span class="tlaUNC">           0 :   @override</span></span>
+<span id="L335"><span class="lineNum">     335</span> <span class="tlaUNC">           0 :   String toString() =&gt; 'ScheduledDose(${id.value}, ${status.name})';</span></span>
+<span id="L336"><span class="lineNum">     336</span>              : }</span>
         </pre>
               </td>
             </tr>
