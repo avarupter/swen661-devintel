@@ -19,7 +19,7 @@ swen661-devintel/
 ├── careconnect_mobile/
 │   ├── android/                                  # Android native build & Gradle configuration
 │   ├── coverage/                                 # Generated LCOV test coverage reports
-│   │   ├── index.html                            # Generated HTML coverage report (84.09%)
+│   │   ├── index.html                            # Generated HTML coverage report (84.8%)
 │   │   └── lcov.info                             # Aggregate line coverage report
 │   ├── lib/                                      # Main Flutter application source code
 │   │   ├── main.dart                             # Application entry point (MyApp)
@@ -80,7 +80,7 @@ swen661-devintel/
 │   │   │   └── signup_screen.dart                # User account registration screen
 │   │   └── utils/                                # Helpers & utilities
 │   │       └── responsive.dart                   # Responsive viewport & breakpoint utility
-│   ├── test/                                     # Automated test suite (162 passing tests)
+│   ├── test/                                     # Automated test suite (170 passing tests)
 │   │   ├── support/                              # Shared test scaffolding
 │   │   │   └── care_test_harness.dart            # In-memory store + fixed clock + provider graph
 │   │   ├── unit/                                 # Unit tests for models, providers, & routing
@@ -324,7 +324,7 @@ always has something on it.
 
 ```bash
 cd careconnect_mobile
-flutter test                 # 167 tests
+flutter test                 # 170 tests
 flutter analyze              # clean
 ```
 
@@ -342,8 +342,8 @@ Coverage is committed in [`careconnect_mobile/coverage/`](careconnect_mobile/cov
 * `coverage/lcov.info` — the raw LCOV data.
 * `coverage/index.html` — the generated HTML report; open it in a browser.
 
-**Current line coverage: 84.84% (1948 of 2296 lines), against a 60%
-requirement. 167 tests, all passing, `flutter analyze` clean.**
+**Current line coverage: 84.8% (1946 of 2294 lines), against a 60%
+requirement. 170 tests, all passing, `flutter analyze` clean.**
 
 Both unit and widget tests are included:
 
@@ -353,6 +353,15 @@ Both unit and widget tests are included:
 * **Widget tests** (`test/`) — each screen renders; a tap changes the interface;
   a tap navigates and the destination shows the right item's data; back
   navigation returns; accessibility guidelines are met.
+
+## Visual evidence
+
+Screenshots of every functional screen, in both roles, are in the submission
+document rather than in this repository.
+
+A 12:57 narrated walkthrough covers building from a clean checkout, the running
+application, the test suite, the coverage report and this README. It is uploaded
+as an unlisted video and linked from the submission document.
 
 ## Known issues or limitations
 
@@ -375,6 +384,10 @@ Both unit and widget tests are included:
 * **`medication_list_screen.dart`, `appointment_list_screen.dart`,
   `messages_screen.dart` and `help_screen.dart` are placeholders** and are not
   counted among the functional screens. Help is still reachable from the tab bar.
+* **The Profile screen's Sign Out button announces "Sign Out", not the fuller
+  label the code intends.** A `Semantics(label: ...)` wrapper around a button is
+  overridden by the button's own semantics node; the two patient detail screens
+  were fixed for this, `profile_screen.dart` has not been.
 * **Dose times are stored as local ISO-8601 strings.** Moving the device across
   time zones would shift historical "taken at" labels.
 * **Appointment "what to bring" is read-only.** Persisting a tick per item was
@@ -401,8 +414,8 @@ Both unit and widget tests are included:
     screens and wrote the design tokens from the Figma palette, checking every
     contrast ratio (this found that the brand blue fails AA for body text on the
     page background).
-    Wrote 99 new tests — unit, widget, navigation and accessibility — taking the
-    suite to 162 passing and line coverage to 84.09%.
+    Wrote 107 new tests — unit, widget, navigation and accessibility — taking
+    the suite to 170 passing and line coverage to 84.8%.
     Fixed a layout overflow in the patient welcome strip on HomeScreen.
 
 -Simon
@@ -427,4 +440,4 @@ dose being logged against the wrong day if the app were left open across
 midnight. Every contrast ratio quoted in the code was computed rather than
 estimated, which is how we found that our own brand blue fails AA for body text
 on the page background. All output was reviewed, and everything is verified by
-`flutter analyze` and 162 passing tests.
+`flutter analyze` and 170 passing tests.

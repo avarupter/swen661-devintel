@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-09-08 02:56:35</td>
+            <td class="headerValue">2026-09-08 14:42:13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -264,9 +264,9 @@
 <span id="L194"><span class="lineNum">     194</span> <span class="tlaGNC">          25 :   bool _isSticky(ScheduledDose d) =&gt; _justLogged.contains(d.id.value);</span></span>
 <span id="L195"><span class="lineNum">     195</span>              : </span>
 <span id="L196"><span class="lineNum">     196</span>              :   /// Would this dose be actionable if it had not been logged?</span>
-<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">           2 :   bool _windowOpen(ScheduledDose d) {</span></span>
-<span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">           2 :     if (!d.isLogged) return d.isOverdue || d.isDueNow;</span></span>
-<span id="L199"><span class="lineNum">     199</span> <span class="tlaGNC">           6 :     return !d.now.isBefore(d.windowOpensAt);</span></span>
+<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">           3 :   bool _windowOpen(ScheduledDose d) {</span></span>
+<span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">           3 :     if (!d.isLogged) return d.isOverdue || d.isDueNow;</span></span>
+<span id="L199"><span class="lineNum">     199</span> <span class="tlaGNC">           9 :     return !d.now.isBefore(d.windowOpensAt);</span></span>
 <span id="L200"><span class="lineNum">     200</span>              :   }</span>
 <span id="L201"><span class="lineNum">     201</span>              : </span>
 <span id="L202"><span class="lineNum">     202</span>              :   /// Inside the take-it-now window and not yet logged. The Today screen's</span>
@@ -284,7 +284,7 @@
 <span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">           5 :       todaysDoses</span></span>
 <span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">           5 :           .where(</span></span>
 <span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">           5 :             (d) =&gt;</span></span>
-<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">          17 :                 d.isOverdue || d.isDueNow || (_isSticky(d) &amp;&amp; _windowOpen(d)),</span></span>
+<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">          18 :                 d.isOverdue || d.isDueNow || (_isSticky(d) &amp;&amp; _windowOpen(d)),</span></span>
 <span id="L218"><span class="lineNum">     218</span>              :           )</span>
 <span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">           5 :           .toList()</span></span>
 <span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">          25 :         ..sort((a, b) =&gt; a.scheduledAt.compareTo(b.scheduledAt));</span></span>
@@ -352,181 +352,186 @@
 <span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">           2 :           '${skipped == 1 ? '1 dose was' : '$skipped doses were'} skipped. '</span></span>
 <span id="L283"><span class="lineNum">     283</span>              :           'Nothing is left to decide today.';</span>
 <span id="L284"><span class="lineNum">     284</span>              :     }</span>
-<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">          10 :     final actionable = needsAction.length;</span></span>
-<span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">           5 :     if (actionable &gt; 0) {</span></span>
-<span id="L287"><span class="lineNum">     287</span> <span class="tlaGNC">          15 :       return 'You have taken $takenCountToday of $totalDosesToday doses today. '</span></span>
-<span id="L288"><span class="lineNum">     288</span> <span class="tlaGNC">           5 :           '$actionable ${actionable == 1 ? 'dose is' : 'doses are'} ready to take now.';</span></span>
-<span id="L289"><span class="lineNum">     289</span>              :     }</span>
-<span id="L290"><span class="lineNum">     290</span> <span class="tlaUNC">           0 :     return 'You have taken $takenCountToday of $totalDosesToday doses today. '</span></span>
-<span id="L291"><span class="lineNum">     291</span>              :         'Nothing to take right now.';</span>
-<span id="L292"><span class="lineNum">     292</span>              :   }</span>
-<span id="L293"><span class="lineNum">     293</span>              : </span>
-<span id="L294"><span class="lineNum">     294</span> <span class="tlaGNC">          18 :   bool isDoseTaken(DoseId id) =&gt; _log[id.value]?.isTaken ?? false;</span></span>
-<span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">           4 :   DoseRecord? recordFor(DoseId id) =&gt; _log[id.value];</span></span>
-<span id="L296"><span class="lineNum">     296</span>              : </span>
-<span id="L297"><span class="lineNum">     297</span>              :   /// Today's doses for one medication — the Medication Detail screen.</span>
-<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">           4 :   List&lt;ScheduledDose&gt; dosesForMedication(</span></span>
-<span id="L299"><span class="lineNum">     299</span>              :     String medicationId, {</span>
-<span id="L300"><span class="lineNum">     300</span>              :     DateOnly? date,</span>
-<span id="L301"><span class="lineNum">     301</span>              :   }) =&gt;</span>
-<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC">           4 :       dosesOn(</span></span>
-<span id="L303"><span class="lineNum">     303</span> <span class="tlaGNC">           4 :         date ?? today,</span></span>
-<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">          24 :       ).where((d) =&gt; d.medication.id == medicationId).toList();</span></span>
-<span id="L305"><span class="lineNum">     305</span>              : </span>
-<span id="L306"><span class="lineNum">     306</span>              :   /// Fraction of expected doses actually taken over the last [days] days,</span>
-<span id="L307"><span class="lineNum">     307</span>              :   /// counting only doses whose time has already passed. Null when nothing was</span>
-<span id="L308"><span class="lineNum">     308</span>              :   /// expected. Pure arithmetic, fully unit testable with a [FixedClock].</span>
-<span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">           1 :   double? adherenceOverLastDays(int days) {</span></span>
-<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">           2 :     assert(days &gt; 0);</span></span>
-<span id="L311"><span class="lineNum">     311</span>              :     var expected = 0;</span>
-<span id="L312"><span class="lineNum">     312</span>              :     var taken = 0;</span>
-<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">           2 :     for (var offset = 0; offset &lt; days; offset++) {</span></span>
-<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">           5 :       for (final dose in dosesOn(today.addDays(-offset))) {</span></span>
-<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">           3 :         if (dose.scheduledAt.isAfter(_now)) continue;</span></span>
-<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">           1 :         expected++;</span></span>
-<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">           2 :         if (dose.isTaken) taken++;</span></span>
-<span id="L318"><span class="lineNum">     318</span>              :       }</span>
-<span id="L319"><span class="lineNum">     319</span>              :     }</span>
-<span id="L320"><span class="lineNum">     320</span> <span class="tlaGNC">           2 :     return expected == 0 ? null : taken / expected;</span></span>
-<span id="L321"><span class="lineNum">     321</span>              :   }</span>
-<span id="L322"><span class="lineNum">     322</span>              : </span>
-<span id="L323"><span class="lineNum">     323</span>              :   // ------------------------------------------------------------- mutations</span>
-<span id="L324"><span class="lineNum">     324</span>              : </span>
-<span id="L325"><span class="lineNum">     325</span>              :   /// Marks a dose taken. Idempotent: marking an already-taken dose is a no-op,</span>
-<span id="L326"><span class="lineNum">     326</span>              :   /// so a double tap (very likely with STML) cannot create a duplicate row or</span>
-<span id="L327"><span class="lineNum">     327</span>              :   /// move the recorded time.</span>
-<span id="L328"><span class="lineNum">     328</span>              :   /// Deliberately does NOT re-read the clock into [_now].</span>
-<span id="L329"><span class="lineNum">     329</span>              :   ///</span>
-<span id="L330"><span class="lineNum">     330</span>              :   /// If the app has been open across midnight, the screen is still showing</span>
-<span id="L331"><span class="lineNum">     331</span>              :   /// yesterday's list and [id] is yesterday's dose — which is the dose the</span>
-<span id="L332"><span class="lineNum">     332</span>              :   /// patient actually tapped, so that is the right thing to record.</span>
-<span id="L333"><span class="lineNum">     333</span>              :   /// Advancing `_now` here would re-bucket the whole screen mid-tap and the</span>
-<span id="L334"><span class="lineNum">     334</span>              :   /// card would vanish, which is the one outcome this feature must never</span>
-<span id="L335"><span class="lineNum">     335</span>              :   /// produce. The day rolls over on resume or on Refresh instead, via</span>
-<span id="L336"><span class="lineNum">     336</span>              :   /// [syncNow]. `recordedAt` still uses the live clock, so the log is honest</span>
-<span id="L337"><span class="lineNum">     337</span>              :   /// about when the tick happened.</span>
-<span id="L338"><span class="lineNum">     338</span> <span class="tlaGNC">           5 :   Future&lt;void&gt; markTaken(</span></span>
-<span id="L339"><span class="lineNum">     339</span>              :     DoseId id, {</span>
-<span id="L340"><span class="lineNum">     340</span>              :     DoseActor actor = DoseActor.patient,</span>
-<span id="L341"><span class="lineNum">     341</span>              :     String? note,</span>
-<span id="L342"><span class="lineNum">     342</span>              :   }) async {</span>
-<span id="L343"><span class="lineNum">     343</span> <span class="tlaGNC">          10 :     if (medicationById(id.medicationId) == null) return;</span></span>
-<span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">          15 :     final existing = _log[id.value];</span></span>
-<span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">           1 :     if (existing != null &amp;&amp; existing.isTaken) return;</span></span>
-<span id="L346"><span class="lineNum">     346</span> <span class="tlaGNC">          20 :     _log[id.value] = DoseRecord(</span></span>
-<span id="L347"><span class="lineNum">     347</span>              :       doseId: id,</span>
-<span id="L348"><span class="lineNum">     348</span>              :       outcome: DoseOutcome.taken,</span>
-<span id="L349"><span class="lineNum">     349</span> <span class="tlaGNC">          10 :       recordedAt: _clock.now(),</span></span>
-<span id="L350"><span class="lineNum">     350</span>              :       actor: actor,</span>
-<span id="L351"><span class="lineNum">     351</span>              :       note: note,</span>
-<span id="L352"><span class="lineNum">     352</span>              :     );</span>
-<span id="L353"><span class="lineNum">     353</span> <span class="tlaGNC">          15 :     _justLogged.add(id.value);</span></span>
-<span id="L354"><span class="lineNum">     354</span> <span class="tlaGNC">           5 :     _touch();</span></span>
-<span id="L355"><span class="lineNum">     355</span> <span class="tlaGNC">           5 :     await _persistLog();</span></span>
-<span id="L356"><span class="lineNum">     356</span>              :   }</span>
-<span id="L357"><span class="lineNum">     357</span>              : </span>
-<span id="L358"><span class="lineNum">     358</span>              :   /// Removes the log entry entirely, returning the dose to &quot;not taken yet&quot;.</span>
-<span id="L359"><span class="lineNum">     359</span>              :   /// Backs the undo affordance that stops a mis-tap becoming a wrong belief.</span>
-<span id="L360"><span class="lineNum">     360</span> <span class="tlaGNC">           2 :   Future&lt;void&gt; undoTaken(DoseId id) async {</span></span>
-<span id="L361"><span class="lineNum">     361</span> <span class="tlaGNC">           6 :     if (_log.remove(id.value) == null) return;</span></span>
-<span id="L362"><span class="lineNum">     362</span> <span class="tlaGNC">           6 :     _justLogged.remove(id.value);</span></span>
-<span id="L363"><span class="lineNum">     363</span> <span class="tlaGNC">           2 :     _touch();</span></span>
-<span id="L364"><span class="lineNum">     364</span> <span class="tlaGNC">           2 :     await _persistLog();</span></span>
-<span id="L365"><span class="lineNum">     365</span>              :   }</span>
-<span id="L366"><span class="lineNum">     366</span>              : </span>
-<span id="L367"><span class="lineNum">     367</span> <span class="tlaGNC">           1 :   Future&lt;void&gt; markSkipped(</span></span>
-<span id="L368"><span class="lineNum">     368</span>              :     DoseId id, {</span>
-<span id="L369"><span class="lineNum">     369</span>              :     DoseActor actor = DoseActor.patient,</span>
-<span id="L370"><span class="lineNum">     370</span>              :     String? reason,</span>
-<span id="L371"><span class="lineNum">     371</span>              :   }) async {</span>
-<span id="L372"><span class="lineNum">     372</span> <span class="tlaGNC">           2 :     if (medicationById(id.medicationId) == null) return;</span></span>
-<span id="L373"><span class="lineNum">     373</span> <span class="tlaGNC">           4 :     _log[id.value] = DoseRecord(</span></span>
-<span id="L374"><span class="lineNum">     374</span>              :       doseId: id,</span>
-<span id="L375"><span class="lineNum">     375</span>              :       outcome: DoseOutcome.skipped,</span>
-<span id="L376"><span class="lineNum">     376</span> <span class="tlaGNC">           2 :       recordedAt: _clock.now(),</span></span>
-<span id="L377"><span class="lineNum">     377</span>              :       actor: actor,</span>
-<span id="L378"><span class="lineNum">     378</span>              :       note: reason,</span>
-<span id="L379"><span class="lineNum">     379</span>              :     );</span>
-<span id="L380"><span class="lineNum">     380</span> <span class="tlaGNC">           3 :     _justLogged.add(id.value);</span></span>
-<span id="L381"><span class="lineNum">     381</span> <span class="tlaGNC">           1 :     _touch();</span></span>
-<span id="L382"><span class="lineNum">     382</span> <span class="tlaGNC">           1 :     await _persistLog();</span></span>
-<span id="L383"><span class="lineNum">     383</span>              :   }</span>
-<span id="L384"><span class="lineNum">     384</span>              : </span>
-<span id="L385"><span class="lineNum">     385</span>              :   /// Convenience for a toggle control.</span>
-<span id="L386"><span class="lineNum">     386</span> <span class="tlaGNC">           3 :   Future&lt;void&gt; toggleTaken(DoseId id, {DoseActor actor = DoseActor.patient}) =&gt;</span></span>
-<span id="L387"><span class="lineNum">     387</span> <span class="tlaGNC">           7 :       isDoseTaken(id) ? undoTaken(id) : markTaken(id, actor: actor);</span></span>
-<span id="L388"><span class="lineNum">     388</span>              : </span>
-<span id="L389"><span class="lineNum">     389</span> <span class="tlaUNC">           0 :   Future&lt;void&gt; addMedication(Medication medication) async {</span></span>
-<span id="L390"><span class="lineNum">     390</span> <span class="tlaUNC">           0 :     _medications = [..._medications, medication];</span></span>
-<span id="L391"><span class="lineNum">     391</span> <span class="tlaUNC">           0 :     _touch();</span></span>
-<span id="L392"><span class="lineNum">     392</span> <span class="tlaUNC">           0 :     await _persistMedications();</span></span>
-<span id="L393"><span class="lineNum">     393</span>              :   }</span>
-<span id="L394"><span class="lineNum">     394</span>              : </span>
-<span id="L395"><span class="lineNum">     395</span> <span class="tlaUNC">           0 :   Future&lt;void&gt; updateMedication(Medication updated) async {</span></span>
-<span id="L396"><span class="lineNum">     396</span> <span class="tlaUNC">           0 :     final index = _medications.indexWhere((m) =&gt; m.id == updated.id);</span></span>
-<span id="L397"><span class="lineNum">     397</span> <span class="tlaUNC">           0 :     if (index == -1) return;</span></span>
-<span id="L398"><span class="lineNum">     398</span> <span class="tlaUNC">           0 :     final next = [..._medications];</span></span>
-<span id="L399"><span class="lineNum">     399</span> <span class="tlaUNC">           0 :     next[index] = updated;</span></span>
-<span id="L400"><span class="lineNum">     400</span> <span class="tlaUNC">           0 :     _medications = next;</span></span>
-<span id="L401"><span class="lineNum">     401</span> <span class="tlaUNC">           0 :     _touch();</span></span>
-<span id="L402"><span class="lineNum">     402</span> <span class="tlaUNC">           0 :     await _persistMedications();</span></span>
-<span id="L403"><span class="lineNum">     403</span>              :   }</span>
-<span id="L404"><span class="lineNum">     404</span>              : </span>
-<span id="L405"><span class="lineNum">     405</span> <span class="tlaUNC">           0 :   Future&lt;void&gt; removeMedication(String id) async {</span></span>
-<span id="L406"><span class="lineNum">     406</span> <span class="tlaUNC">           0 :     final before = _medications.length;</span></span>
-<span id="L407"><span class="lineNum">     407</span> <span class="tlaUNC">           0 :     _medications = _medications.where((m) =&gt; m.id != id).toList();</span></span>
-<span id="L408"><span class="lineNum">     408</span> <span class="tlaUNC">           0 :     if (_medications.length == before) return;</span></span>
-<span id="L409"><span class="lineNum">     409</span> <span class="tlaUNC">           0 :     _log.removeWhere((key, record) =&gt; record.doseId.medicationId == id);</span></span>
-<span id="L410"><span class="lineNum">     410</span> <span class="tlaUNC">           0 :     _touch();</span></span>
-<span id="L411"><span class="lineNum">     411</span> <span class="tlaUNC">           0 :     await Future.wait([_persistMedications(), _persistLog()]);</span></span>
-<span id="L412"><span class="lineNum">     412</span>              :   }</span>
-<span id="L413"><span class="lineNum">     413</span>              : </span>
-<span id="L414"><span class="lineNum">     414</span>              :   /// Keeps the log from growing forever. Safe to call on every load.</span>
-<span id="L415"><span class="lineNum">     415</span> <span class="tlaUNC">           0 :   Future&lt;void&gt; pruneLog({int keepDays = 90}) async {</span></span>
-<span id="L416"><span class="lineNum">     416</span> <span class="tlaUNC">           0 :     final cutoff = today.addDays(-keepDays);</span></span>
-<span id="L417"><span class="lineNum">     417</span> <span class="tlaUNC">           0 :     final removed = _log.length;</span></span>
-<span id="L418"><span class="lineNum">     418</span> <span class="tlaUNC">           0 :     _log.removeWhere((key, record) =&gt; record.doseId.date.isBefore(cutoff));</span></span>
-<span id="L419"><span class="lineNum">     419</span> <span class="tlaUNC">           0 :     if (_log.length == removed) return;</span></span>
-<span id="L420"><span class="lineNum">     420</span> <span class="tlaUNC">           0 :     _touch();</span></span>
-<span id="L421"><span class="lineNum">     421</span> <span class="tlaUNC">           0 :     await _persistLog();</span></span>
-<span id="L422"><span class="lineNum">     422</span>              :   }</span>
-<span id="L423"><span class="lineNum">     423</span>              : </span>
-<span id="L424"><span class="lineNum">     424</span>              :   // --------------------------------------------------------------- private</span>
-<span id="L425"><span class="lineNum">     425</span>              : </span>
-<span id="L426"><span class="lineNum">     426</span>              :   /// Bumps the cache revision and notifies. Every mutation ends here.</span>
-<span id="L427"><span class="lineNum">     427</span> <span class="tlaGNC">           7 :   void _touch() {</span></span>
-<span id="L428"><span class="lineNum">     428</span> <span class="tlaGNC">          14 :     _revision++;</span></span>
-<span id="L429"><span class="lineNum">     429</span> <span class="tlaGNC">           7 :     _safeNotify();</span></span>
-<span id="L430"><span class="lineNum">     430</span>              :   }</span>
-<span id="L431"><span class="lineNum">     431</span>              : </span>
-<span id="L432"><span class="lineNum">     432</span> <span class="tlaGNC">           7 :   void _safeNotify() {</span></span>
-<span id="L433"><span class="lineNum">     433</span> <span class="tlaGNC">           7 :     if (_disposed) return;</span></span>
-<span id="L434"><span class="lineNum">     434</span> <span class="tlaGNC">           7 :     notifyListeners();</span></span>
+<span id="L285"><span class="lineNum">     285</span>              :     // Count only doses that still need a decision. `needsAction` also carries</span>
+<span id="L286"><span class="lineNum">     286</span>              :     // the card the patient has just logged — it is kept in place so it does not</span>
+<span id="L287"><span class="lineNum">     287</span>              :     // jump sections under their finger — but a dose you have already taken is</span>
+<span id="L288"><span class="lineNum">     288</span>              :     // not &quot;ready to take now&quot;, and saying so would contradict the very card</span>
+<span id="L289"><span class="lineNum">     289</span>              :     // sitting on screen saying &quot;You took this at ...&quot;.</span>
+<span id="L290"><span class="lineNum">     290</span> <span class="tlaGNC">          25 :     final actionable = needsAction.where((d) =&gt; !d.isLogged).length;</span></span>
+<span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">           5 :     if (actionable &gt; 0) {</span></span>
+<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">          15 :       return 'You have taken $takenCountToday of $totalDosesToday doses today. '</span></span>
+<span id="L293"><span class="lineNum">     293</span> <span class="tlaGNC">           5 :           '$actionable ${actionable == 1 ? 'dose is' : 'doses are'} ready to take now.';</span></span>
+<span id="L294"><span class="lineNum">     294</span>              :     }</span>
+<span id="L295"><span class="lineNum">     295</span> <span class="tlaUNC">           0 :     return 'You have taken $takenCountToday of $totalDosesToday doses today. '</span></span>
+<span id="L296"><span class="lineNum">     296</span>              :         'Nothing to take right now.';</span>
+<span id="L297"><span class="lineNum">     297</span>              :   }</span>
+<span id="L298"><span class="lineNum">     298</span>              : </span>
+<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">          18 :   bool isDoseTaken(DoseId id) =&gt; _log[id.value]?.isTaken ?? false;</span></span>
+<span id="L300"><span class="lineNum">     300</span> <span class="tlaGNC">           4 :   DoseRecord? recordFor(DoseId id) =&gt; _log[id.value];</span></span>
+<span id="L301"><span class="lineNum">     301</span>              : </span>
+<span id="L302"><span class="lineNum">     302</span>              :   /// Today's doses for one medication — the Medication Detail screen.</span>
+<span id="L303"><span class="lineNum">     303</span> <span class="tlaGNC">           4 :   List&lt;ScheduledDose&gt; dosesForMedication(</span></span>
+<span id="L304"><span class="lineNum">     304</span>              :     String medicationId, {</span>
+<span id="L305"><span class="lineNum">     305</span>              :     DateOnly? date,</span>
+<span id="L306"><span class="lineNum">     306</span>              :   }) =&gt;</span>
+<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC">           4 :       dosesOn(</span></span>
+<span id="L308"><span class="lineNum">     308</span> <span class="tlaGNC">           4 :         date ?? today,</span></span>
+<span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">          24 :       ).where((d) =&gt; d.medication.id == medicationId).toList();</span></span>
+<span id="L310"><span class="lineNum">     310</span>              : </span>
+<span id="L311"><span class="lineNum">     311</span>              :   /// Fraction of expected doses actually taken over the last [days] days,</span>
+<span id="L312"><span class="lineNum">     312</span>              :   /// counting only doses whose time has already passed. Null when nothing was</span>
+<span id="L313"><span class="lineNum">     313</span>              :   /// expected. Pure arithmetic, fully unit testable with a [FixedClock].</span>
+<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">           1 :   double? adherenceOverLastDays(int days) {</span></span>
+<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">           2 :     assert(days &gt; 0);</span></span>
+<span id="L316"><span class="lineNum">     316</span>              :     var expected = 0;</span>
+<span id="L317"><span class="lineNum">     317</span>              :     var taken = 0;</span>
+<span id="L318"><span class="lineNum">     318</span> <span class="tlaGNC">           2 :     for (var offset = 0; offset &lt; days; offset++) {</span></span>
+<span id="L319"><span class="lineNum">     319</span> <span class="tlaGNC">           5 :       for (final dose in dosesOn(today.addDays(-offset))) {</span></span>
+<span id="L320"><span class="lineNum">     320</span> <span class="tlaGNC">           3 :         if (dose.scheduledAt.isAfter(_now)) continue;</span></span>
+<span id="L321"><span class="lineNum">     321</span> <span class="tlaGNC">           1 :         expected++;</span></span>
+<span id="L322"><span class="lineNum">     322</span> <span class="tlaGNC">           2 :         if (dose.isTaken) taken++;</span></span>
+<span id="L323"><span class="lineNum">     323</span>              :       }</span>
+<span id="L324"><span class="lineNum">     324</span>              :     }</span>
+<span id="L325"><span class="lineNum">     325</span> <span class="tlaGNC">           2 :     return expected == 0 ? null : taken / expected;</span></span>
+<span id="L326"><span class="lineNum">     326</span>              :   }</span>
+<span id="L327"><span class="lineNum">     327</span>              : </span>
+<span id="L328"><span class="lineNum">     328</span>              :   // ------------------------------------------------------------- mutations</span>
+<span id="L329"><span class="lineNum">     329</span>              : </span>
+<span id="L330"><span class="lineNum">     330</span>              :   /// Marks a dose taken. Idempotent: marking an already-taken dose is a no-op,</span>
+<span id="L331"><span class="lineNum">     331</span>              :   /// so a double tap (very likely with STML) cannot create a duplicate row or</span>
+<span id="L332"><span class="lineNum">     332</span>              :   /// move the recorded time.</span>
+<span id="L333"><span class="lineNum">     333</span>              :   /// Deliberately does NOT re-read the clock into [_now].</span>
+<span id="L334"><span class="lineNum">     334</span>              :   ///</span>
+<span id="L335"><span class="lineNum">     335</span>              :   /// If the app has been open across midnight, the screen is still showing</span>
+<span id="L336"><span class="lineNum">     336</span>              :   /// yesterday's list and [id] is yesterday's dose — which is the dose the</span>
+<span id="L337"><span class="lineNum">     337</span>              :   /// patient actually tapped, so that is the right thing to record.</span>
+<span id="L338"><span class="lineNum">     338</span>              :   /// Advancing `_now` here would re-bucket the whole screen mid-tap and the</span>
+<span id="L339"><span class="lineNum">     339</span>              :   /// card would vanish, which is the one outcome this feature must never</span>
+<span id="L340"><span class="lineNum">     340</span>              :   /// produce. The day rolls over on resume or on Refresh instead, via</span>
+<span id="L341"><span class="lineNum">     341</span>              :   /// [syncNow]. `recordedAt` still uses the live clock, so the log is honest</span>
+<span id="L342"><span class="lineNum">     342</span>              :   /// about when the tick happened.</span>
+<span id="L343"><span class="lineNum">     343</span> <span class="tlaGNC">           5 :   Future&lt;void&gt; markTaken(</span></span>
+<span id="L344"><span class="lineNum">     344</span>              :     DoseId id, {</span>
+<span id="L345"><span class="lineNum">     345</span>              :     DoseActor actor = DoseActor.patient,</span>
+<span id="L346"><span class="lineNum">     346</span>              :     String? note,</span>
+<span id="L347"><span class="lineNum">     347</span>              :   }) async {</span>
+<span id="L348"><span class="lineNum">     348</span> <span class="tlaGNC">          10 :     if (medicationById(id.medicationId) == null) return;</span></span>
+<span id="L349"><span class="lineNum">     349</span> <span class="tlaGNC">          15 :     final existing = _log[id.value];</span></span>
+<span id="L350"><span class="lineNum">     350</span> <span class="tlaGNC">           1 :     if (existing != null &amp;&amp; existing.isTaken) return;</span></span>
+<span id="L351"><span class="lineNum">     351</span> <span class="tlaGNC">          20 :     _log[id.value] = DoseRecord(</span></span>
+<span id="L352"><span class="lineNum">     352</span>              :       doseId: id,</span>
+<span id="L353"><span class="lineNum">     353</span>              :       outcome: DoseOutcome.taken,</span>
+<span id="L354"><span class="lineNum">     354</span> <span class="tlaGNC">          10 :       recordedAt: _clock.now(),</span></span>
+<span id="L355"><span class="lineNum">     355</span>              :       actor: actor,</span>
+<span id="L356"><span class="lineNum">     356</span>              :       note: note,</span>
+<span id="L357"><span class="lineNum">     357</span>              :     );</span>
+<span id="L358"><span class="lineNum">     358</span> <span class="tlaGNC">          15 :     _justLogged.add(id.value);</span></span>
+<span id="L359"><span class="lineNum">     359</span> <span class="tlaGNC">           5 :     _touch();</span></span>
+<span id="L360"><span class="lineNum">     360</span> <span class="tlaGNC">           5 :     await _persistLog();</span></span>
+<span id="L361"><span class="lineNum">     361</span>              :   }</span>
+<span id="L362"><span class="lineNum">     362</span>              : </span>
+<span id="L363"><span class="lineNum">     363</span>              :   /// Removes the log entry entirely, returning the dose to &quot;not taken yet&quot;.</span>
+<span id="L364"><span class="lineNum">     364</span>              :   /// Backs the undo affordance that stops a mis-tap becoming a wrong belief.</span>
+<span id="L365"><span class="lineNum">     365</span> <span class="tlaGNC">           2 :   Future&lt;void&gt; undoTaken(DoseId id) async {</span></span>
+<span id="L366"><span class="lineNum">     366</span> <span class="tlaGNC">           6 :     if (_log.remove(id.value) == null) return;</span></span>
+<span id="L367"><span class="lineNum">     367</span> <span class="tlaGNC">           6 :     _justLogged.remove(id.value);</span></span>
+<span id="L368"><span class="lineNum">     368</span> <span class="tlaGNC">           2 :     _touch();</span></span>
+<span id="L369"><span class="lineNum">     369</span> <span class="tlaGNC">           2 :     await _persistLog();</span></span>
+<span id="L370"><span class="lineNum">     370</span>              :   }</span>
+<span id="L371"><span class="lineNum">     371</span>              : </span>
+<span id="L372"><span class="lineNum">     372</span> <span class="tlaGNC">           1 :   Future&lt;void&gt; markSkipped(</span></span>
+<span id="L373"><span class="lineNum">     373</span>              :     DoseId id, {</span>
+<span id="L374"><span class="lineNum">     374</span>              :     DoseActor actor = DoseActor.patient,</span>
+<span id="L375"><span class="lineNum">     375</span>              :     String? reason,</span>
+<span id="L376"><span class="lineNum">     376</span>              :   }) async {</span>
+<span id="L377"><span class="lineNum">     377</span> <span class="tlaGNC">           2 :     if (medicationById(id.medicationId) == null) return;</span></span>
+<span id="L378"><span class="lineNum">     378</span> <span class="tlaGNC">           4 :     _log[id.value] = DoseRecord(</span></span>
+<span id="L379"><span class="lineNum">     379</span>              :       doseId: id,</span>
+<span id="L380"><span class="lineNum">     380</span>              :       outcome: DoseOutcome.skipped,</span>
+<span id="L381"><span class="lineNum">     381</span> <span class="tlaGNC">           2 :       recordedAt: _clock.now(),</span></span>
+<span id="L382"><span class="lineNum">     382</span>              :       actor: actor,</span>
+<span id="L383"><span class="lineNum">     383</span>              :       note: reason,</span>
+<span id="L384"><span class="lineNum">     384</span>              :     );</span>
+<span id="L385"><span class="lineNum">     385</span> <span class="tlaGNC">           3 :     _justLogged.add(id.value);</span></span>
+<span id="L386"><span class="lineNum">     386</span> <span class="tlaGNC">           1 :     _touch();</span></span>
+<span id="L387"><span class="lineNum">     387</span> <span class="tlaGNC">           1 :     await _persistLog();</span></span>
+<span id="L388"><span class="lineNum">     388</span>              :   }</span>
+<span id="L389"><span class="lineNum">     389</span>              : </span>
+<span id="L390"><span class="lineNum">     390</span>              :   /// Convenience for a toggle control.</span>
+<span id="L391"><span class="lineNum">     391</span> <span class="tlaGNC">           3 :   Future&lt;void&gt; toggleTaken(DoseId id, {DoseActor actor = DoseActor.patient}) =&gt;</span></span>
+<span id="L392"><span class="lineNum">     392</span> <span class="tlaGNC">           7 :       isDoseTaken(id) ? undoTaken(id) : markTaken(id, actor: actor);</span></span>
+<span id="L393"><span class="lineNum">     393</span>              : </span>
+<span id="L394"><span class="lineNum">     394</span> <span class="tlaUNC">           0 :   Future&lt;void&gt; addMedication(Medication medication) async {</span></span>
+<span id="L395"><span class="lineNum">     395</span> <span class="tlaUNC">           0 :     _medications = [..._medications, medication];</span></span>
+<span id="L396"><span class="lineNum">     396</span> <span class="tlaUNC">           0 :     _touch();</span></span>
+<span id="L397"><span class="lineNum">     397</span> <span class="tlaUNC">           0 :     await _persistMedications();</span></span>
+<span id="L398"><span class="lineNum">     398</span>              :   }</span>
+<span id="L399"><span class="lineNum">     399</span>              : </span>
+<span id="L400"><span class="lineNum">     400</span> <span class="tlaUNC">           0 :   Future&lt;void&gt; updateMedication(Medication updated) async {</span></span>
+<span id="L401"><span class="lineNum">     401</span> <span class="tlaUNC">           0 :     final index = _medications.indexWhere((m) =&gt; m.id == updated.id);</span></span>
+<span id="L402"><span class="lineNum">     402</span> <span class="tlaUNC">           0 :     if (index == -1) return;</span></span>
+<span id="L403"><span class="lineNum">     403</span> <span class="tlaUNC">           0 :     final next = [..._medications];</span></span>
+<span id="L404"><span class="lineNum">     404</span> <span class="tlaUNC">           0 :     next[index] = updated;</span></span>
+<span id="L405"><span class="lineNum">     405</span> <span class="tlaUNC">           0 :     _medications = next;</span></span>
+<span id="L406"><span class="lineNum">     406</span> <span class="tlaUNC">           0 :     _touch();</span></span>
+<span id="L407"><span class="lineNum">     407</span> <span class="tlaUNC">           0 :     await _persistMedications();</span></span>
+<span id="L408"><span class="lineNum">     408</span>              :   }</span>
+<span id="L409"><span class="lineNum">     409</span>              : </span>
+<span id="L410"><span class="lineNum">     410</span> <span class="tlaUNC">           0 :   Future&lt;void&gt; removeMedication(String id) async {</span></span>
+<span id="L411"><span class="lineNum">     411</span> <span class="tlaUNC">           0 :     final before = _medications.length;</span></span>
+<span id="L412"><span class="lineNum">     412</span> <span class="tlaUNC">           0 :     _medications = _medications.where((m) =&gt; m.id != id).toList();</span></span>
+<span id="L413"><span class="lineNum">     413</span> <span class="tlaUNC">           0 :     if (_medications.length == before) return;</span></span>
+<span id="L414"><span class="lineNum">     414</span> <span class="tlaUNC">           0 :     _log.removeWhere((key, record) =&gt; record.doseId.medicationId == id);</span></span>
+<span id="L415"><span class="lineNum">     415</span> <span class="tlaUNC">           0 :     _touch();</span></span>
+<span id="L416"><span class="lineNum">     416</span> <span class="tlaUNC">           0 :     await Future.wait([_persistMedications(), _persistLog()]);</span></span>
+<span id="L417"><span class="lineNum">     417</span>              :   }</span>
+<span id="L418"><span class="lineNum">     418</span>              : </span>
+<span id="L419"><span class="lineNum">     419</span>              :   /// Keeps the log from growing forever. Safe to call on every load.</span>
+<span id="L420"><span class="lineNum">     420</span> <span class="tlaUNC">           0 :   Future&lt;void&gt; pruneLog({int keepDays = 90}) async {</span></span>
+<span id="L421"><span class="lineNum">     421</span> <span class="tlaUNC">           0 :     final cutoff = today.addDays(-keepDays);</span></span>
+<span id="L422"><span class="lineNum">     422</span> <span class="tlaUNC">           0 :     final removed = _log.length;</span></span>
+<span id="L423"><span class="lineNum">     423</span> <span class="tlaUNC">           0 :     _log.removeWhere((key, record) =&gt; record.doseId.date.isBefore(cutoff));</span></span>
+<span id="L424"><span class="lineNum">     424</span> <span class="tlaUNC">           0 :     if (_log.length == removed) return;</span></span>
+<span id="L425"><span class="lineNum">     425</span> <span class="tlaUNC">           0 :     _touch();</span></span>
+<span id="L426"><span class="lineNum">     426</span> <span class="tlaUNC">           0 :     await _persistLog();</span></span>
+<span id="L427"><span class="lineNum">     427</span>              :   }</span>
+<span id="L428"><span class="lineNum">     428</span>              : </span>
+<span id="L429"><span class="lineNum">     429</span>              :   // --------------------------------------------------------------- private</span>
+<span id="L430"><span class="lineNum">     430</span>              : </span>
+<span id="L431"><span class="lineNum">     431</span>              :   /// Bumps the cache revision and notifies. Every mutation ends here.</span>
+<span id="L432"><span class="lineNum">     432</span> <span class="tlaGNC">           7 :   void _touch() {</span></span>
+<span id="L433"><span class="lineNum">     433</span> <span class="tlaGNC">          14 :     _revision++;</span></span>
+<span id="L434"><span class="lineNum">     434</span> <span class="tlaGNC">           7 :     _safeNotify();</span></span>
 <span id="L435"><span class="lineNum">     435</span>              :   }</span>
 <span id="L436"><span class="lineNum">     436</span>              : </span>
-<span id="L437"><span class="lineNum">     437</span> <span class="tlaGNC">           5 :   Future&lt;void&gt; _persistLog() =&gt;</span></span>
-<span id="L438"><span class="lineNum">     438</span> <span class="tlaGNC">          30 :       _guardSave(() =&gt; _repository.saveDoseLog(_log.values));</span></span>
-<span id="L439"><span class="lineNum">     439</span>              : </span>
-<span id="L440"><span class="lineNum">     440</span> <span class="tlaUNC">           0 :   Future&lt;void&gt; _persistMedications() =&gt;</span></span>
-<span id="L441"><span class="lineNum">     441</span> <span class="tlaUNC">           0 :       _guardSave(() =&gt; _repository.saveMedications(_medications));</span></span>
-<span id="L442"><span class="lineNum">     442</span>              : </span>
-<span id="L443"><span class="lineNum">     443</span>              :   /// Writes never escape as exceptions. The optimistic in-memory update has</span>
-<span id="L444"><span class="lineNum">     444</span>              :   /// already been shown; a failed write becomes a visible, recoverable banner</span>
-<span id="L445"><span class="lineNum">     445</span>              :   /// instead of an unhandled async error that crashes a test run.</span>
-<span id="L446"><span class="lineNum">     446</span> <span class="tlaGNC">           5 :   Future&lt;void&gt; _guardSave(Future&lt;void&gt; Function() action) async {</span></span>
-<span id="L447"><span class="lineNum">     447</span>              :     try {</span>
-<span id="L448"><span class="lineNum">     448</span> <span class="tlaGNC">           5 :       await action();</span></span>
-<span id="L449"><span class="lineNum">     449</span> <span class="tlaGNC">           5 :       if (_saveErrorMessage != null) {</span></span>
-<span id="L450"><span class="lineNum">     450</span> <span class="tlaUNC">           0 :         _saveErrorMessage = null;</span></span>
-<span id="L451"><span class="lineNum">     451</span> <span class="tlaUNC">           0 :         _safeNotify();</span></span>
-<span id="L452"><span class="lineNum">     452</span>              :       }</span>
-<span id="L453"><span class="lineNum">     453</span>              :     } catch (error) {</span>
-<span id="L454"><span class="lineNum">     454</span> <span class="tlaGNC">           2 :       _saveErrorMessage =</span></span>
-<span id="L455"><span class="lineNum">     455</span>              :           'We could not save that just now. It is still shown here.';</span>
-<span id="L456"><span class="lineNum">     456</span> <span class="tlaGNC">           2 :       _safeNotify();</span></span>
-<span id="L457"><span class="lineNum">     457</span>              :     }</span>
-<span id="L458"><span class="lineNum">     458</span>              :   }</span>
-<span id="L459"><span class="lineNum">     459</span>              : }</span>
+<span id="L437"><span class="lineNum">     437</span> <span class="tlaGNC">           7 :   void _safeNotify() {</span></span>
+<span id="L438"><span class="lineNum">     438</span> <span class="tlaGNC">           7 :     if (_disposed) return;</span></span>
+<span id="L439"><span class="lineNum">     439</span> <span class="tlaGNC">           7 :     notifyListeners();</span></span>
+<span id="L440"><span class="lineNum">     440</span>              :   }</span>
+<span id="L441"><span class="lineNum">     441</span>              : </span>
+<span id="L442"><span class="lineNum">     442</span> <span class="tlaGNC">           5 :   Future&lt;void&gt; _persistLog() =&gt;</span></span>
+<span id="L443"><span class="lineNum">     443</span> <span class="tlaGNC">          30 :       _guardSave(() =&gt; _repository.saveDoseLog(_log.values));</span></span>
+<span id="L444"><span class="lineNum">     444</span>              : </span>
+<span id="L445"><span class="lineNum">     445</span> <span class="tlaUNC">           0 :   Future&lt;void&gt; _persistMedications() =&gt;</span></span>
+<span id="L446"><span class="lineNum">     446</span> <span class="tlaUNC">           0 :       _guardSave(() =&gt; _repository.saveMedications(_medications));</span></span>
+<span id="L447"><span class="lineNum">     447</span>              : </span>
+<span id="L448"><span class="lineNum">     448</span>              :   /// Writes never escape as exceptions. The optimistic in-memory update has</span>
+<span id="L449"><span class="lineNum">     449</span>              :   /// already been shown; a failed write becomes a visible, recoverable banner</span>
+<span id="L450"><span class="lineNum">     450</span>              :   /// instead of an unhandled async error that crashes a test run.</span>
+<span id="L451"><span class="lineNum">     451</span> <span class="tlaGNC">           5 :   Future&lt;void&gt; _guardSave(Future&lt;void&gt; Function() action) async {</span></span>
+<span id="L452"><span class="lineNum">     452</span>              :     try {</span>
+<span id="L453"><span class="lineNum">     453</span> <span class="tlaGNC">           5 :       await action();</span></span>
+<span id="L454"><span class="lineNum">     454</span> <span class="tlaGNC">           5 :       if (_saveErrorMessage != null) {</span></span>
+<span id="L455"><span class="lineNum">     455</span> <span class="tlaUNC">           0 :         _saveErrorMessage = null;</span></span>
+<span id="L456"><span class="lineNum">     456</span> <span class="tlaUNC">           0 :         _safeNotify();</span></span>
+<span id="L457"><span class="lineNum">     457</span>              :       }</span>
+<span id="L458"><span class="lineNum">     458</span>              :     } catch (error) {</span>
+<span id="L459"><span class="lineNum">     459</span> <span class="tlaGNC">           2 :       _saveErrorMessage =</span></span>
+<span id="L460"><span class="lineNum">     460</span>              :           'We could not save that just now. It is still shown here.';</span>
+<span id="L461"><span class="lineNum">     461</span> <span class="tlaGNC">           2 :       _safeNotify();</span></span>
+<span id="L462"><span class="lineNum">     462</span>              :     }</span>
+<span id="L463"><span class="lineNum">     463</span>              :   }</span>
+<span id="L464"><span class="lineNum">     464</span>              : }</span>
         </pre>
               </td>
             </tr>
