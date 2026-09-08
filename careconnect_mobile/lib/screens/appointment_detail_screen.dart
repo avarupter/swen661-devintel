@@ -62,12 +62,20 @@ class AppointmentDetailScreen extends StatelessWidget {
           'Appointment',
           style: TextStyle(fontWeight: FontWeight.w600),
         ),
-        leading: Semantics(
-          button: true,
-          label: 'Back to my appointments',
-          child: BackButton(
-            onPressed: () => _goBack(context),
-          ),
+        // A labelled back affordance, not a bare chevron: "back" only means
+        // something if you still remember where you came from.
+        //
+        // IconButton rather than a Semantics-wrapped BackButton: BackButton
+        // publishes its own semantics node reading just "Back", which wins over
+        // an ancestor label, so the wrapper was silently doing nothing.
+        // IconButton's tooltip becomes the screen-reader label.
+        leading: IconButton(
+          // semanticLabel on the Icon is what actually reaches TalkBack here;
+          // the tooltip alone does not publish one, and a Semantics wrapper
+          // around BackButton is overridden by BackButton's own "Back" node.
+          icon: const Icon(Icons.arrow_back, semanticLabel: 'Back to my appointments'),
+          tooltip: 'Back to my appointments',
+          onPressed: () => _goBack(context),
         ),
       ),
       body: SafeArea(child: body),

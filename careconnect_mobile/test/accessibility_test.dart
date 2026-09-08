@@ -20,16 +20,29 @@ import 'support/care_test_harness.dart';
 void main() {
   /// Every interactive control on screen must clear 48 x 48 dp.
   void expectTapTargets(WidgetTester tester) {
-    final finders = <Finder>[
-      find.byType(ElevatedButton),
-      find.byType(OutlinedButton),
-      find.byType(TextButton),
-      find.byType(InkWell),
-    ];
+    final finders = <String, Finder>{
+      'ElevatedButton': find.byType(ElevatedButton),
+      'OutlinedButton': find.byType(OutlinedButton),
+      'TextButton': find.byType(TextButton),
+      'IconButton': find.byType(IconButton),
+      'InkWell': find.byType(InkWell),
+    };
     var checked = 0;
-    for (final finder in finders) {
+    for (final entry in finders.entries) {
+      final isInkWell = entry.key == 'InkWell';
+      final finder = entry.value;
       final count = finder.evaluate().length;
       for (var i = 0; i < count; i++) {
+        // An IconButton's own InkWell is a 40 dp ripple inside a 48 dp button.
+        // The button is the touch target, so measuring the inner ink well
+        // would fail on a control that is actually compliant.
+        if (isInkWell &&
+            find
+                .ancestor(of: finder.at(i), matching: find.byType(IconButton))
+                .evaluate()
+                .isNotEmpty) {
+          continue;
+        }
         // Index into the finder rather than re-searching the tree per widget:
         // find.byWidget over a page this size is quadratic and very slow.
         final size = tester.getSize(finder.at(i));
@@ -241,6 +254,31 @@ void main() {
       await expectLater(tester, meetsGuideline(textContrastGuideline));
 
       handle.dispose();
+    });
+  });
+
+  group('Back affordances are labelled', () {
+    // A bare chevron announces "Back", which tells a patient who has lost the
+    // thread nothing about where back goes. These two screens name the
+    // destination. Regression test: a Semantics wrapper around BackButton does
+    // NOT achieve this — BackButton publishes its own node reading "Back" and
+    // the ancestor label is ignored.
+    testWidgets('medication detail names where back goes', (tester) async {
+      await pumpCareScreen(
+        tester,
+        const MedicationDetailScreen(medicationId: 'med-memantine'),
+      );
+      expect(find.bySemanticsLabel('Back to my medicines'), findsOneWidget);
+      expect(find.bySemanticsLabel('Back'), findsNothing);
+    });
+
+    testWidgets('appointment detail names where back goes', (tester) async {
+      await pumpCareScreen(
+        tester,
+        const AppointmentDetailScreen(appointmentId: 'apt-memory-clinic'),
+      );
+      expect(find.bySemanticsLabel('Back to my appointments'), findsOneWidget);
+      expect(find.bySemanticsLabel('Back'), findsNothing);
     });
   });
 }

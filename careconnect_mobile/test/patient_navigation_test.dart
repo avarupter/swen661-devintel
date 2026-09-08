@@ -40,7 +40,9 @@ void main() {
       // Backward: return to where we came from. Assert on a heading unique to
       // the detail screen — the purpose sentence also appears on the list row,
       // which is deliberate.
-      await tester.pageBack();
+      // Tap the app's own labelled back control. tester.pageBack() looks for a
+      // BackButton, and these screens deliberately use a labelled IconButton.
+      await tester.tap(find.bySemanticsLabel('Back to my medicines'));
       await tester.pumpAndSettle();
       expect(find.text('My medicines'), findsOneWidget);
       expect(find.text('What it is for'), findsNothing);
@@ -65,7 +67,7 @@ void main() {
       expect(find.text('Where to go'), findsOneWidget);
       expect(find.text('Riverside Memory Clinic, Suite 204'), findsOneWidget);
 
-      await tester.pageBack();
+      await tester.tap(find.bySemanticsLabel('Back to my appointments'));
       await tester.pumpAndSettle();
       expect(find.text('My appointments'), findsOneWidget);
     });
