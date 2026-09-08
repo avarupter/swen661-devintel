@@ -282,7 +282,12 @@ class MedicationProvider extends ChangeNotifier {
           '${skipped == 1 ? '1 dose was' : '$skipped doses were'} skipped. '
           'Nothing is left to decide today.';
     }
-    final actionable = needsAction.length;
+    // Count only doses that still need a decision. `needsAction` also carries
+    // the card the patient has just logged — it is kept in place so it does not
+    // jump sections under their finger — but a dose you have already taken is
+    // not "ready to take now", and saying so would contradict the very card
+    // sitting on screen saying "You took this at ...".
+    final actionable = needsAction.where((d) => !d.isLogged).length;
     if (actionable > 0) {
       return 'You have taken $takenCountToday of $totalDosesToday doses today. '
           '$actionable ${actionable == 1 ? 'dose is' : 'doses are'} ready to take now.';

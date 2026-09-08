@@ -172,4 +172,28 @@ void main() {
     await provider.markTaken(doseId('med-memantine', const DoseTime(8, 0)));
     expect(provider.adherenceOverLastDays(1), closeTo(1 / 3, 1e-9));
   });
+
+  test('the summary does not count a just-taken dose as ready to take', () async {
+    // 14:13, so the three 08:00 doses are overdue and actionable.
+    final clock = FixedClock(DateTime(2026, 9, 8, 14, 13));
+    final store = InMemoryJsonStore();
+    final provider = MedicationProvider(
+      repository: JsonCareRepository(store: store, seed: CareSeed(clock: clock)),
+      clock: clock,
+    );
+    await provider.load();
+    expect(provider.todaySummarySentence, contains('3 doses are ready'));
+
+    final target =
+        provider.needsAction.firstWhere((d) => d.medication.id == 'med-lisinopril');
+    await provider.markTaken(target.id);
+
+    // The card deliberately stays in "Take these now" so it does not jump
+    // under the patient's finger, so needsAction still contains it...
+    expect(provider.needsAction.length, 3);
+    // ...but it must not be counted as still needing to be taken.
+    expect(provider.todaySummarySentence, contains('You have taken 1 of 6'));
+    expect(provider.todaySummarySentence, contains('2 doses are ready'));
+    expect(provider.todaySummarySentence, isNot(contains('3 doses are ready')));
+  });
 }
