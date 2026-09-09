@@ -112,15 +112,15 @@ swen661-devintel/
 │   │   ├── patient_list_screen_test.dart         # Widget tests for PatientListScreen
 │   │   ├── placeholder_screens_test.dart         # Widget tests for placeholder screens
 │   │   ├── profile_screen_test.dart              # Widget tests for ProfileScreen
-│  	│   ├── role_selection_screen_test.dart       # Widget tests for RoleSelectionScreen
-│  	│   ├── signin_screen_test.dart               # Widget tests for SignInScreen
-│  	│   ├── signup_screen_test.dart               # Widget tests for SignUpScreen
-│  	│   └── widget_test.dart                      # Application launch smoke test
-│  	├── .gitignore                                # Git exclusion rules
-│  	├── .metadata                                 # Flutter project metadata
-│  	├── analysis_options.yaml                     # Static analysis & linter rules
-│  	├── devtools_options.yaml                     # Flutter DevTools options
-│  	├── pubspec.yaml                              # App dependencies & assets configuration
+│   │   ├── role_selection_screen_test.dart       # Widget tests for RoleSelectionScreen
+│   │   ├── signin_screen_test.dart               # Widget tests for SignInScreen
+│   │   ├── signup_screen_test.dart               # Widget tests for SignUpScreen
+│   │   └── widget_test.dart                      # Application launch smoke test
+│   ├── .gitignore                                # Git exclusion rules
+│   ├── .metadata                                 # Flutter project metadata
+│   ├── analysis_options.yaml                     # Static analysis & linter rules
+│   ├── devtools_options.yaml                     # Flutter DevTools options
+│   ├── pubspec.yaml                              # App dependencies & assets configuration
 │   └── README.md                                 # Project documentation
 ├── hello_flutter/       # Week 1/2 Flutter hello-world
 ├── hello-react-native/  # Week 1/2 React Native hello-world
@@ -129,13 +129,12 @@ swen661-devintel/
 ```
 
 ## Project description
-    The project is a flutter app with responsive layouts for mobile and tablet created from wireframes. The wireframes were created in figma and converted into flutter files. The app has incorporated navigation between screens, data persistance and state management.
 
+The project is a Flutter app with responsive layouts for mobile and tablet created from wireframes. The wireframes were created in Figma and converted into Flutter files. The app has incorporated navigation between screens, data persistence and state management.
 
 ## Major screens
 
-CareConnect Daily Compass has two roles, chosen after sign-in, and a different
-set of screens for each.
+CareConnect Daily Compass has two roles, chosen after sign-in, and a different set of screens for each.
 
 **Authentication (Matthew)**
 | Screen | What it does |
@@ -169,9 +168,7 @@ set of screens for each.
 
 **Provider** (`provider: ^6.1.5+1`), with `ChangeNotifier`.
 
-`setState` is used only for genuinely local widget state — the selected tab
-index in `HomeScreen` and form controllers. Everything shared lives in a
-provider:
+`setState` is used only for genuinely local widget state — the selected tab index in `HomeScreen` and form controllers. Everything shared lives in a provider:
 
 | Provider | Owns |
 |---|---|
@@ -180,9 +177,7 @@ provider:
 | `MedicationProvider` | Medicines, the dose log, and every derived list (due now, taken today, remaining). |
 | `AppointmentProvider` | Appointments and their derived groupings. |
 
-Application logic is kept out of the UI. Models, services and providers sit
-below the widgets, and the widgets do not compute status, format dates or build
-screen-reader sentences — those are model and provider concerns:
+Application logic is kept out of the UI. Models, services and providers sit below the widgets, and the widgets do not compute status, format dates or build screen-reader sentences — those are model and provider concerns:
 
 ```
 lib/
@@ -197,20 +192,14 @@ lib/
 
 Two decisions worth calling out:
 
-* **Nothing below the UI calls `DateTime.now()`.** Time comes from an injected
-  `Clock`, so every date-dependent rule ("is this dose due?", "was it taken
-  today?") is deterministically testable. Tests inject a `FixedClock`.
-* **Persistence sits behind an interface.** `JsonStore` has a file
-  implementation for the app and an in-memory one for tests, so the patient
-  providers need no plugin mocking at all.
+- **Nothing below the UI calls `DateTime.now()`.** Time comes from an injected `Clock`, so every date-dependent rule ("is this dose due?", "was it taken today?") is deterministically testable. Tests inject a `FixedClock`.
+- **Persistence sits behind an interface.** `JsonStore` has a file implementation for the app and an in-memory one for tests, so the patient providers need no plugin mocking at all.
 
 ## Navigation
 
 **go_router** (`go_router: ^14.8.1`), configured in `lib/router/app_router.dart`.
 
-Named routes are used throughout. Within the signed-in area, a
-`BottomNavigationBar` in `HomeScreen` switches tabs, and detail screens are
-pushed as top-level routes so they get a real back button.
+Named routes are used throughout. Within the signed-in area, a `BottomNavigationBar` in `HomeScreen` switches tabs, and detail screens are pushed as top-level routes so they get a real back button.
 
 Information is passed between screens through the route path:
 
@@ -219,81 +208,38 @@ Information is passed between screens through the route path:
 /appointments/:apptId   -> AppointmentDetailScreen(appointmentId: ...)
 ```
 
-Tapping a medicine or an appointment pushes the route for **that** item; the
-screen resolves the id against the provider. The id travels rather than the
-object, so a detail screen survives a restart, works as a deep link, and
-re-renders when the shared state changes. Back navigation returns to the list.
+Tapping a medicine or an appointment pushes the route for **that** item; the screen resolves the id against the provider. The id travels rather than the object, so a detail screen survives a restart, works as a deep link, and re-renders when the shared state changes. Back navigation returns to the list.
 
 ## Accessibility — our assigned constraint is Short-Term Memory Loss (STML)
 
-STML is a *cognitive* constraint, not a visual one. The core difficulty is that
-the user cannot reliably hold recent events in working memory: they cannot
-remember whether they took the 8 am tablet ten minutes ago, they lose track of
-which screen they are on, and a message that disappears after four seconds
-might as well never have appeared.
+STML is a *cognitive* constraint, not a visual one. The core difficulty is that the user cannot reliably hold recent events in working memory: they cannot remember whether they took the 8 am tablet ten minutes ago, they lose track of which screen they are on, and a message that disappears after four seconds might as well never have appeared.
 
 The patient screens are built around that, not decorated with it afterwards:
 
-1. **Dose state is stored per dose, not per medication.** `DoseId` is
-   `medicationId | yyyy-MM-dd | HH:mm`, so Memantine at 08:00 and at 20:00 are
-   separate facts and yesterday's tick cannot make today's 08:00 look done.
-2. **Every card answers "did I already do this?" with a sentence, not a tick** —
-   *"You took this at 8:12 AM today."* — including who logged it, so a dose the
-   caregiver marked reads differently from one the patient marked.
-3. **Nothing important is transient.** There are no snackbars or toasts in the
-   patient screens. Undo is a permanent button on the card, so a mis-tap is
-   still reversible ten minutes later.
-4. **No confirmation dialogs.** Holding a question in working memory while
-   reading it is the exact difficulty here. One tap marks a dose; reversibility
-   replaces confirmation. `markTaken` is idempotent, so repeated taps — the
-   expected input pattern — cannot corrupt the record or move the logged time.
-5. **Doses are split into "Take these now", "Later today" and "Already done",**
-   so the answer is never ambiguous and never requires recall.
-6. **Time is given in day-parts and relative words** — *Morning*, *Bedtime*,
-   *Today*, *Tomorrow*, *In 3 days (Thursday)* — because decoding "14/09" means
-   first remembering today's date.
-7. **Every medicine carries its purpose and its appearance,** so "what is this
-   one for?" and "am I holding the right pill?" are answered on screen.
+1. **Dose state is stored per dose, not per medication.** `DoseId` is `medicationId | yyyy-MM-dd | HH:mm`, so Memantine at 08:00 and at 20:00 are separate facts and yesterday's tick cannot make today's 08:00 look done.
+2. **Every card answers "did I already do this?" with a sentence, not a tick** — *"You took this at 8:12 AM today."* — including who logged it, so a dose the caregiver marked reads differently from one the patient marked.
+3. **Nothing important is transient.** There are no snackbars or toasts in the patient screens. Undo is a permanent button on the card, so a mis-tap is still reversible ten minutes later.
+4. **No confirmation dialogs.** Holding a question in working memory while reading it is the exact difficulty here. One tap marks a dose; reversibility replaces confirmation. `markTaken` is idempotent, so repeated taps — the expected input pattern — cannot corrupt the record or move the logged time.
+5. **Doses are split into "Take these now", "Later today" and "Already done",** so the answer is never ambiguous and never requires recall.
+6. **Time is given in day-parts and relative words** — *Morning*, *Bedtime*, *Today*, *Tomorrow*, *In 3 days (Thursday)* — because decoding "14/09" means first remembering today's date.
+7. **Every medicine carries its purpose and its appearance,** so "what is this one for?" and "am I holding the right pill?" are answered on screen.
 8. **"Who is taking me?" is on the appointment card,** not behind a tap.
-9. **A cancelled appointment stays visible** under a Cancelled heading. A row
-   that silently disappears is indistinguishable from one you have forgotten.
-10. **Status is always colour + icon + word,** never colour alone (WCAG 1.4.1),
-    and "needs doing" also carries a thicker border so it survives greyscale.
-11. **A dose you just ticked stays where you tapped it.** It keeps its place in
-    "Take these now" and shows its taken state there, moving to "Already done"
-    only on the next refresh. A card that relocated hundreds of pixels down the
-    page read as "nothing happened", and the natural next move was to tap again.
-12. **A skipped dose is never reported as taken,** and skipped cards stay on the
-    page rather than disappearing, so the decision remains visible and reversible.
-13. **Loading is never rendered as "not found".** Telling a patient their
-    medicine has been removed when the file is merely still opening would be
-    the worst false message this app could produce.
+9. **A cancelled appointment stays visible** under a Cancelled heading. A row that silently disappears is indistinguishable from one you have forgotten.
+10. **Status is always colour + icon + word,** never colour alone (WCAG 1.4.1), and "needs doing" also carries a thicker border so it survives greyscale.
+11. **A dose you just ticked stays where you tapped it.** It keeps its place in "Take these now" and shows its taken state there, moving to "Already done" only on the next refresh. A card that relocated hundreds of pixels down the page read as "nothing happened", and the natural next move was to tap again.
+12. **A skipped dose is never reported as taken,** and skipped cards stay on the page rather than disappearing, so the decision remains visible and reversible.
+13. **Loading is never rendered as "not found".** Telling a patient their medicine has been removed when the file is merely still opening would be the worst false message this app could produce.
 
-Baseline accessibility, all of it asserted in `test/accessibility_test.dart`
-rather than merely claimed:
+Baseline accessibility, all of it asserted in `test/accessibility_test.dart` rather than merely claimed:
 
-* **Screen readers.** Each dose card is one merged semantics node carrying a
-  whole sentence, with the action button as a *sibling* node so it stays
-  independently focusable — three focus stops per card, no fragments. Section
-  headings use `header: true` so they appear in the TalkBack/VoiceOver headings
-  rotor, and the day summary is a `liveRegion` so it is re-announced after a
-  dose is ticked.
-* **Touch targets.** Every control is at least 48 × 48 dp; the primary dose
-  buttons are 56 dp. Verified by measuring the rendered widgets, and by
-  Flutter's `androidTapTargetGuideline` and `iOSTapTargetGuideline`.
-* **Contrast.** Every colour is from the team Figma palette with its WCAG ratio
-  measured and recorded in `lib/theme/app_colors.dart`, and re-derived from the
-  hex values in `test/unit/status_style_test.dart` so the numbers cannot rot.
-  One finding worth noting: the core brand blue **#1A73E8 is 4.24:1 on the page
-  background and fails AA for body text**, so it is used as a fill colour only
-  and blue text uses **#1565C0** (5.41:1).
-* **Large text.** Each patient screen is pumped at `TextScaler.linear(2.0)` and
-  required to raise no overflow exception.
+- **Screen readers.** Each dose card is one merged semantics node carrying a whole sentence, with the action button as a *sibling* node so it stays independently focusable — three focus stops per card, no fragments. Section headings use `header: true` so they appear in the TalkBack/VoiceOver headings rotor, and the day summary is a `liveRegion` so it is re-announced after a dose is ticked.
+- **Touch targets.** Every control is at least 48 × 48 dp; the primary dose buttons are 56 dp. Verified by measuring the rendered widgets, and by Flutter's `androidTapTargetGuideline` and `iOSTapTargetGuideline`.
+- **Contrast.** Every colour is from the team Figma palette with its WCAG ratio measured and recorded in `lib/theme/app_colors.dart`, and re-derived from the hex values in `test/unit/status_style_test.dart` so the numbers cannot rot. One finding worth noting: the core brand blue **#1A73E8 is 4.24:1 on the page background and fails AA for body text**, so it is used as a fill colour only and blue text uses **#1565C0** (5.41:1).
+- **Large text.** Each patient screen is pumped at `TextScaler.linear(2.0)` and required to raise no overflow exception.
 
 ## How to run the app
 
-Requires the Flutter SDK (developed against Flutter 3.47 / Dart 3.13; the
-project needs Dart >= 3.7).
+Requires the Flutter SDK (developed against Flutter 3.47 / Dart 3.13; the project needs Dart >= 3.7).
 
 ```bash
 cd careconnect_mobile
@@ -310,15 +256,9 @@ flutter run
 
 Running the tests needs none of that — `flutter test` works on a bare clone.
 
-The app opens on the Landing screen. Sign up (or sign in — any credentials are
-accepted, authentication is mocked for this milestone), then choose **Patient**
-or **Caregiver** to reach the matching set of screens.
+The app opens on the Landing screen. Sign up (or sign in — any credentials are accepted, authentication is mocked for this milestone), then choose **Patient** or **Caregiver** to reach the matching set of screens.
 
-On first run the app seeds realistic demo data — Margaret Whitfield, 82, with
-six medicines and five appointments — and writes it to JSON in the application
-documents directory, so subsequent launches restore whatever you changed.
-Appointments are generated relative to the current date, so the Today screen
-always has something on it.
+On first run the app seeds realistic demo data — Margaret Whitfield, 82, with six medicines and five appointments — and writes it to JSON in the application documents directory, so subsequent launches restore whatever you changed. Appointments are generated relative to the current date, so the Today screen always has something on it.
 
 ## How to run tests
 
@@ -339,105 +279,50 @@ genhtml coverage/lcov.info -o coverage    # optional HTML report
 
 Coverage is committed in [`careconnect_mobile/coverage/`](careconnect_mobile/coverage/).
 
-* `coverage/lcov.info` — the raw LCOV data.
-* `coverage/index.html` — the generated HTML report; open it in a browser.
+- `coverage/lcov.info` — the raw LCOV data.
+- `coverage/index.html` — the generated HTML report; open it in a browser.
 
-**Current line coverage: 84.8% (1946 of 2294 lines), against a 60%
-requirement. 170 tests, all passing, `flutter analyze` clean.**
+**Current line coverage: 84.8% (1946 of 2294 lines), against a 60% requirement. 170 tests, all passing, `flutter analyze` clean.**
 
 Both unit and widget tests are included:
 
-* **Unit tests** (`test/unit/`) — JSON round-trips, dose-key and "today"
-  boundary rules, provider mutations and derived lists, undo, the persistence
-  layer's fallback behaviour, date wording, and the WCAG contrast calculations.
-* **Widget tests** (`test/`) — each screen renders; a tap changes the interface;
-  a tap navigates and the destination shows the right item's data; back
-  navigation returns; accessibility guidelines are met.
+- **Unit tests** (`test/unit/`) — JSON round-trips, dose-key and "today" boundary rules, provider mutations and derived lists, undo, the persistence layer's fallback behaviour, date wording, and the WCAG contrast calculations.
+- **Widget tests** (`test/`) — each screen renders; a tap changes the interface; a tap navigates and the destination shows the right item's data; back navigation returns; accessibility guidelines are met.
 
 ## Visual evidence
 
-Screenshots of every functional screen, in both roles, are in the submission
-document rather than in this repository.
+Screenshots of every functional screen, in both roles, are in the submission document rather than in this repository.
 
-A 12:57 narrated walkthrough covers building from a clean checkout, the running
-application, the test suite, the coverage report and this README. It is uploaded
-as an unlisted video and linked from the submission document.
+A 12:57 narrated walkthrough covers building from a clean checkout, the running application, the test suite, the coverage report and this README. It is uploaded as an unlisted video and linked from the submission document.
+
+**Video Link:** https://youtu.be/evf689ZirIE
+
+**APK Download:** https://umuc365-my.sharepoint.com/:u:/g/personal/mspano1_student_umgc_edu/IQDNLD6aPmqtS6CkCJT4zPoxAURFm74RIh2cjkeSL-3Qecs?e=cgBhVU
 
 ## Known issues or limitations
 
-* **The generated platform folders are not in the repo.** The root
-  `.gitignore` excludes `android/`, `ios/`, `web/`, `linux/`, `macos/` and
-  `windows/`, so `flutter run` and `flutter build` fail on a fresh clone until
-  `flutter create .` is run once (see *How to run the app*). `flutter test` and
-  `flutter analyze` are unaffected. Worth the team deciding before submission
-  whether to commit the Android and web folders instead.
-* **Authentication is mocked.** `AuthProvider.signIn` accepts any credentials
-  and does not validate a password. There is no backend.
-* **`PatientProvider` is only 14% covered.** It calls
-  `getApplicationDocumentsDirectory()` from its constructor, which throws under
-  `flutter_test`, so most of it cannot be reached from a test. The patient-side
-  providers avoid this by taking an injectable `JsonStore`; `PatientProvider`
-  was left alone this week to keep the change surface small.
-* **The caregiver screens display static content.** Simon's medication and
-  appointment screens are not yet wired to `MedicationProvider` /
-  `AppointmentProvider`; the providers are in place and ready for them.
-* **`medication_list_screen.dart`, `appointment_list_screen.dart`,
-  `messages_screen.dart` and `help_screen.dart` are placeholders** and are not
-  counted among the functional screens. Help is still reachable from the tab bar.
-* **The Profile screen's Sign Out button announces "Sign Out", not the fuller
-  label the code intends.** A `Semantics(label: ...)` wrapper around a button is
-  overridden by the button's own semantics node; the two patient detail screens
-  were fixed for this, `profile_screen.dart` has not been.
-* **Dose times are stored as local ISO-8601 strings.** Moving the device across
-  time zones would shift historical "taken at" labels.
-* **Appointment "what to bring" is read-only.** Persisting a tick per item was
-  deliberately deferred.
+- **The generated platform folders are not in the repo.** The root `.gitignore` excludes `android/`, `ios/`, `web/`, `linux/`, `macos/` and `windows/`, so `flutter run` and `flutter build` fail on a fresh clone until `flutter create .` is run once (see *How to run the app*). `flutter test` and `flutter analyze` are unaffected.
+- **Authentication is mocked.** `AuthProvider.signIn` accepts any credentials and does not validate a password. There is no backend.
+- **`PatientProvider` is only 14% covered.** It calls `getApplicationDocumentsDirectory()` from its constructor, which throws under `flutter_test`, so most of it cannot be reached from a test. The patient-side providers avoid this by taking an injectable `JsonStore`; `PatientProvider` was left alone this week to keep the change surface small.
+- **The caregiver screens display static content.** Simon's medication and appointment screens are not yet wired to `MedicationProvider` / `AppointmentProvider`; the providers are in place and ready for them.
+- **`medication_list_screen.dart`, `appointment_list_screen.dart`, `messages_screen.dart` and `help_screen.dart` are placeholders** and are not counted among the functional screens. Help is still reachable from the tab bar.
+- **The Profile screen's Sign Out button announces "Sign Out", not the fuller label the code intends.** A `Semantics(label: ...)` wrapper around a button is overridden by the button's own semantics node; the two patient detail screens were fixed for this, `profile_screen.dart` has not been.
+- **Dose times are stored as local ISO-8601 strings.** Moving the device across time zones would shift historical "taken at" labels.
+- **Appointment "what to bring" is read-only.** Persisting a tick per item was deliberately deferred.
 
 ## Team member contributions this week
--Matthew
 
+**Matthew Spano**
+Auth screens (Landing, Sign In, Sign Up) with responsive layouts, patient CRUD (add/edit/view) with JSON persistence using path_provider, profile screen, role-based home screen (patient vs caregiver), semantics and accessibility on all interactive elements, router configuration and merge conflict resolution, final APK build, README updates.
 
--Shane
-    Built the three assigned patient screens — Patient Today, Patient Medications
-    and Patient Appointments — plus Medication Detail and Appointment Detail.
-    The patient tabs had been pointing at the caregiver screens; they now render
-    the patient's own screens.
-    Built the shared domain layer those screens needed: Medication, Appointment
-    and the DoseId/DoseRecord/ScheduledDose model that tracks each dose
-    separately, an injectable Clock, and a JsonStore/JsonCareRepository
-    persistence layer with a file implementation and an in-memory one for tests.
-    MedicationProvider and AppointmentProvider are available for the caregiver
-    screens to reuse.
-    Added the two detail routes that pass an id between screens, and registered
-    the new providers in main.dart.
-    Implemented the team's STML accessibility constraint across the patient
-    screens and wrote the design tokens from the Figma palette, checking every
-    contrast ratio (this found that the brand blue fails AA for body text on the
-    page background).
-    Wrote 107 new tests — unit, widget, navigation and accessibility — taking
-    the suite to 170 passing and line coverage to 84.8%.
-    Fixed a layout overflow in the patient welcome strip on HomeScreen.
+**Shane Cray**
+Built the three assigned patient screens — Patient Today, Patient Medications and Patient Appointments — plus Medication Detail and Appointment Detail. The patient tabs had been pointing at the caregiver screens; they now render the patient's own screens. Built the shared domain layer those screens needed: Medication, Appointment and the DoseId/DoseRecord/ScheduledDose model that tracks each dose separately, an injectable Clock, and a JsonStore/JsonCareRepository persistence layer with a file implementation and an in-memory one for tests. MedicationProvider and AppointmentProvider are available for the caregiver screens to reuse. Added the two detail routes that pass an id between screens, and registered the new providers in main.dart. Implemented the team's STML accessibility constraint across the patient screens and wrote the design tokens from the Figma palette, checking every contrast ratio (this found that the brand blue fails AA for body text on the page background). Wrote 107 new tests — unit, widget, navigation and accessibility — taking the suite to 170 passing and line coverage to 84.8%. Fixed a layout overflow in the patient welcome strip on HomeScreen.
 
--Simon
-    Converted his created caregiver screens from figma to flutter.
-    Create a suite of widget and unit tests for the app.
-    Updated README.md file.
-    Created a word doc for uploading screenshots of screens for the assignment
-
-
+**Simon Mazelev**
+Converted his created caregiver screens from Figma to Flutter. Created a suite of widget and unit tests for the app. Updated README.md file. Created a Word document for uploading screenshots of screens for the assignment.
 
 ## AI usage summary (what did AI help with?)
-AI was utilized first to convert figma screens to flutter files. It was also used to clean up and simplify the converted files.
-AI was also used to generate a suite of widget and unit tests.
 
-For the patient screens, AI (Claude Code) was used to design and implement the
-domain layer and the three screens, to work through the short-term memory loss
-accessibility decisions, and to write the tests. The design went through an
-adversarial review pass before any code was written, which caught several real
-problems — an enum member colliding with Dart's built-in `Enum.index`, a
-`Timer.periodic` in a provider that would have failed every widget test, and a
-dose being logged against the wrong day if the app were left open across
-midnight. Every contrast ratio quoted in the code was computed rather than
-estimated, which is how we found that our own brand blue fails AA for body text
-on the page background. All output was reviewed, and everything is verified by
-`flutter analyze` and 170 passing tests.
+AI was utilized first to convert Figma screens to Flutter files. It was also used to clean up and simplify the converted files. AI was also used to generate a suite of widget and unit tests.
+
+For the patient screens, AI (Claude Code) was used to design and implement the domain layer and the three screens, to work through the short-term memory loss accessibility decisions, and to write the tests. The design went through an adversarial review pass before any code was written, which caught several real problems — an enum member colliding with Dart's built-in `Enum.index`, a `Timer.periodic` in a provider that would have failed every widget test, and a dose being logged against the wrong day if the app were left open across midnight. Every contrast ratio quoted in the code was computed rather than estimated, which is how we found that our own brand blue fails AA for body text on the page background. All output was reviewed, and everything is verified by `flutter analyze` and 170 passing tests.
