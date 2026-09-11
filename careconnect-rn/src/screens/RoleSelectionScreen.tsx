@@ -8,19 +8,23 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useAuth, Role } from '../context/AuthContext';
 
 export default function RoleSelectionScreen() {
   const navigation = useNavigation<any>();
+  const { user, setRole } = useAuth();
 
-  const chooseRole = (role: 'patient' | 'caregiver') => {
-    // TODO: save role in context later
+  const chooseRole = (selectedRole: Role) => {
+    setRole(selectedRole);
     navigation.navigate('HomeTabs');
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.heading}>Welcome!</Text>
+        <Text style={styles.heading}>
+          Welcome{user?.name ? `, ${user.name}` : ''}!
+        </Text>
         <Text style={styles.subheading}>
           How are you using CareConnect today?
         </Text>
@@ -84,6 +88,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 20,
     marginBottom: 16,
+    minHeight: 88,
   },
   roleIcon: {
     fontSize: 40,

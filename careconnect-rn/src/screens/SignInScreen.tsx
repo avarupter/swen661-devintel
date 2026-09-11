@@ -10,14 +10,16 @@ import {
   ScrollView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../context/AuthContext';
 
 export default function SignInScreen() {
   const navigation = useNavigation<any>();
+  const { signIn } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSignIn = () => {
-    // Mock auth — any credentials work
+    signIn(email || 'mary@example.com', password || 'password123');
     navigation.navigate('RoleSelection');
   };
 

@@ -10,16 +10,22 @@ import {
   ScrollView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../context/AuthContext';
 
 export default function SignUpScreen() {
   const navigation = useNavigation<any>();
+  const { signUp } = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleSignUp = () => {
-    // Mock signup — any values work
+    signUp(
+      name || 'Mary',
+      email || 'mary@example.com',
+      password || 'password123'
+    );
     navigation.navigate('RoleSelection');
   };
 
@@ -63,7 +69,6 @@ export default function SignUpScreen() {
           secureTextEntry
           accessibilityLabel="Password"
         />
-        <Text style={styles.hint}>At least 6 characters.</Text>
 
         <Text style={styles.label}>Confirm password *</Text>
         <TextInput
@@ -139,14 +144,6 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     fontSize: 16,
     color: '#1E293B',
-  },
-  hint: {
-    fontSize: 12,
-    color: '#64748B',
-    alignSelf: 'flex-start',
-    marginTop: 4,
-    width: '100%',
-    maxWidth: 400,
   },
   primaryButton: {
     backgroundColor: '#1A73E8',
