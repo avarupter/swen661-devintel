@@ -30,7 +30,8 @@
           "backgroundColor": "#ffffff",
           "image": "./assets/splash-icon.png"
         }
-      ]
+      ],
+      "@react-native-vector-icons/ionicons"
     ]
   }
 }

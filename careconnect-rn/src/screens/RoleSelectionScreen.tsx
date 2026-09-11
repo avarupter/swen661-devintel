@@ -16,7 +16,11 @@ export default function RoleSelectionScreen() {
 
   const chooseRole = (selectedRole: Role) => {
     setRole(selectedRole);
-    navigation.navigate('HomeTabs');
+    if (selectedRole === 'patient') {
+      navigation.navigate('PatientTabs');
+    } else {
+      navigation.navigate('CaregiverTabs');
+    }
   };
 
   return (

@@ -9,51 +9,122 @@ import {
   createNativeStackNavigator,
   createNativeStackScreen,
 } from '@react-navigation/native-stack';
-import { Image } from 'react-native';
-import bell from '../assets/bell.png';
-import newspaper from '../assets/newspaper.png';
+import { Ionicons } from '@react-native-vector-icons/ionicons';
 
-import { Home } from './screens/Home';
+// Template screens
 import { NotFound } from './screens/NotFound';
 import { Profile } from './screens/Profile';
 import { Settings } from './screens/Settings';
-import { Updates } from './screens/Updates';
 
+// CareConnect screens
 import LandingScreen from '../screens/LandingScreen';
 import SignInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import RoleSelectionScreen from '../screens/RoleSelectionScreen';
 
-const HomeTabs = createBottomTabNavigator({
+// Patient screens
+import PatientTodayScreen from '../screens/PatientTodayScreen';
+import PatientMedicationsScreen from '../screens/PatientMedicationsScreen';
+import PatientAppointmentsScreen from '../screens/PatientAppointmentsScreen';
+import PatientProfileScreen from '../screens/PatientProfileScreen';
+
+// --- Patient Tab Navigator ---
+const PatientTabs = createBottomTabNavigator({
+  screenOptions: {
+    tabBarActiveTintColor: '#1A73E8',
+    tabBarInactiveTintColor: '#94A3B8',
+    tabBarStyle: { paddingBottom: 4, height: 60 },
+    tabBarLabelStyle: { fontSize: 12, fontWeight: '500' },
+  },
   screens: {
-    Home: createBottomTabScreen({
-      screen: Home,
+    PatientToday: createBottomTabScreen({
+      screen: PatientTodayScreen,
       options: {
-        title: 'Feed',
+        title: 'Today',
         tabBarIcon: ({ color, size }) => (
-          <Image
-            source={newspaper}
-            tintColor={color}
-            style={{ width: size, height: size }}
-          />
+          <Ionicons name="today-outline" size={size} color={color} />
         ),
       },
     }),
-    Updates: createBottomTabScreen({
-      screen: Updates,
+    PatientMedications: createBottomTabScreen({
+      screen: PatientMedicationsScreen,
       options: {
+        title: 'Medications',
         tabBarIcon: ({ color, size }) => (
-          <Image
-            source={bell}
-            tintColor={color}
-            style={{ width: size, height: size }}
-          />
+          <Ionicons name="medkit-outline" size={size} color={color} />
+        ),
+      },
+    }),
+    PatientAppointments: createBottomTabScreen({
+      screen: PatientAppointmentsScreen,
+      options: {
+        title: 'Appointments',
+        tabBarIcon: ({ color, size }) => (
+          <Ionicons name="calendar-outline" size={size} color={color} />
+        ),
+      },
+    }),
+    PatientProfile: createBottomTabScreen({
+      screen: PatientProfileScreen,
+      options: {
+        title: 'Profile',
+        tabBarIcon: ({ color, size }) => (
+          <Ionicons name="person-outline" size={size} color={color} />
         ),
       },
     }),
   },
 });
 
+// --- Caregiver Tab Navigator (placeholders for now) ---
+const CaregiverTabs = createBottomTabNavigator({
+  screenOptions: {
+    tabBarActiveTintColor: '#14B8A6',
+    tabBarInactiveTintColor: '#94A3B8',
+    tabBarStyle: { paddingBottom: 4, height: 60 },
+    tabBarLabelStyle: { fontSize: 12, fontWeight: '500' },
+  },
+  screens: {
+    CaregiverPatients: createBottomTabScreen({
+      screen: PatientTodayScreen,
+      options: {
+        title: 'Patients',
+        tabBarIcon: ({ color, size }) => (
+          <Ionicons name="people-outline" size={size} color={color} />
+        ),
+      },
+    }),
+    CaregiverMedications: createBottomTabScreen({
+      screen: PatientMedicationsScreen,
+      options: {
+        title: 'Medications',
+        tabBarIcon: ({ color, size }) => (
+          <Ionicons name="medkit-outline" size={size} color={color} />
+        ),
+      },
+    }),
+    CaregiverAppointments: createBottomTabScreen({
+      screen: PatientAppointmentsScreen,
+      options: {
+        title: 'Appointments',
+        tabBarIcon: ({ color, size }) => (
+          <Ionicons name="calendar-outline" size={size} color={color} />
+        ),
+      },
+    }),
+    CaregiverActivity: createBottomTabScreen({
+      screen: PatientProfileScreen,
+      options: {
+        title: 'Activity',
+        tabBarIcon: ({ color, size }) => (
+          <Ionicons name="pulse-outline" size={size} color={color} />
+        ),
+      },
+    }),
+  },
+});
+
+// --- Root Stack ---
 const RootStack = createNativeStackNavigator({
   screens: {
     Landing: createNativeStackScreen({
@@ -72,9 +143,13 @@ const RootStack = createNativeStackNavigator({
       screen: RoleSelectionScreen,
       options: { title: 'Select Role' },
     }),
-    HomeTabs: createNativeStackScreen({
-      screen: HomeTabs,
-      options: { title: 'Home', headerShown: false },
+    PatientTabs: createNativeStackScreen({
+      screen: PatientTabs,
+      options: { headerShown: false },
+    }),
+    CaregiverTabs: createNativeStackScreen({
+      screen: CaregiverTabs,
+      options: { headerShown: false },
     }),
     Profile: createNativeStackScreen({
       screen: Profile,
