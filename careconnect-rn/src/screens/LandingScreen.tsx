@@ -1,62 +1,59 @@
 // src/screens/LandingScreen.tsx
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export default function LandingScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
+      <View style={styles.content}>
+        {/* App title */}
         <Text style={styles.title}>CareConnect</Text>
-        <View style={styles.links}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('SignIn' as never)}
-            accessibilityRole="button"
-            accessibilityLabel="Sign in to your account"
-          >
-            <Text style={styles.link}>Sign in</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('SignUp' as never)}
-            accessibilityRole="button"
-            accessibilityLabel="Create a new account"
-          >
-            <Text style={styles.link}>Sign up</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
 
-      <View style={styles.body}>
+        {/* Primary action: Sign In */}
+        <TouchableOpacity
+          style={styles.primaryButton}
+          onPress={() => navigation.navigate('SignIn')}
+          accessibilityRole="button"
+          accessibilityLabel="Sign in to your existing account"
+        >
+          <Text style={styles.primaryButtonText}>Sign In</Text>
+        </TouchableOpacity>
+
+        {/* Secondary action: Sign Up */}
+        <TouchableOpacity
+          style={styles.secondaryButton}
+          onPress={() => navigation.navigate('SignUp')}
+          accessibilityRole="button"
+          accessibilityLabel="Create a new account"
+        >
+          <Text style={styles.secondaryButtonText}>Create Account</Text>
+        </TouchableOpacity>
+
+        {/* Hero circle + heart */}
         <View style={styles.circle}>
           <Text style={styles.heart}>💙</Text>
         </View>
+
+        {/* Taglines */}
         <Text style={styles.tagline}>Your daily companion</Text>
         <Text style={styles.tagline}>for calm, confident care.</Text>
+
+        {/* Description */}
         <Text style={styles.description}>
           For people who need a little help remembering,
         </Text>
         <Text style={styles.description}>
           and the people who care for them.
         </Text>
-
-        <TouchableOpacity
-          style={styles.primaryButton}
-          onPress={() => navigation.navigate('SignUp' as never)}
-          accessibilityRole="button"
-          accessibilityLabel="Get started for free"
-        >
-          <Text style={styles.primaryButtonText}>Get started — it's free →</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() => navigation.navigate('SignIn' as never)}
-          accessibilityRole="button"
-          accessibilityLabel="I already have an account"
-        >
-          <Text style={styles.link}>I already have an account</Text>
-        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -67,44 +64,65 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 24,
-    paddingTop: 20,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: '700',
-    color: '#1E293B',
-  },
-  links: {
-    flexDirection: 'row',
-    gap: 16,
-  },
-  link: {
-    fontSize: 14,
-    color: '#1A73E8',
-    fontWeight: '500',
-  },
-  body: {
+  content: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 40,
+    paddingHorizontal: 32,
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: '700',
+    color: '#1E293B',
+    marginBottom: 40,
+  },
+  primaryButton: {
+    width: '100%',
+    maxWidth: 400,
+    backgroundColor: '#1A73E8',
+    paddingVertical: 18,
+    paddingHorizontal: 24,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 56,
+    marginBottom: 14,
+  },
+  primaryButtonText: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  secondaryButton: {
+    width: '100%',
+    maxWidth: 400,
+    backgroundColor: '#FFFFFF',
+    paddingVertical: 18,
+    paddingHorizontal: 24,
+    borderRadius: 30,
+    borderWidth: 2,
+    borderColor: '#1A73E8',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 56,
+    marginBottom: 48,
+  },
+  secondaryButtonText: {
+    color: '#1A73E8',
+    fontSize: 18,
+    fontWeight: '600',
   },
   circle: {
-    width: 160,
-    height: 160,
-    borderRadius: 80,
+    width: 140,
+    height: 140,
+    borderRadius: 70,
     backgroundColor: '#E8F0FE',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 40,
+    marginBottom: 32,
   },
   heart: {
-    fontSize: 64,
+    fontSize: 56,
   },
   tagline: {
     fontSize: 22,
@@ -117,19 +135,5 @@ const styles = StyleSheet.create({
     color: '#64748B',
     textAlign: 'center',
     marginTop: 4,
-  },
-  primaryButton: {
-    backgroundColor: '#1A73E8',
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-    borderRadius: 30,
-    marginTop: 40,
-    width: '100%',
-    alignItems: 'center',
-  },
-  primaryButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '600',
   },
 });

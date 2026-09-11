@@ -13,17 +13,16 @@ import { Image } from 'react-native';
 import bell from '../assets/bell.png';
 import newspaper from '../assets/newspaper.png';
 
-// Existing template screens (named exports)
 import { Home } from './screens/Home';
 import { NotFound } from './screens/NotFound';
 import { Profile } from './screens/Profile';
 import { Settings } from './screens/Settings';
 import { Updates } from './screens/Updates';
 
-// CareConnect screens (default exports — no curly braces)
 import LandingScreen from '../screens/LandingScreen';
 import SignInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
+import RoleSelectionScreen from '../screens/RoleSelectionScreen';
 
 const HomeTabs = createBottomTabNavigator({
   screens: {
@@ -57,7 +56,6 @@ const HomeTabs = createBottomTabNavigator({
 
 const RootStack = createNativeStackNavigator({
   screens: {
-    // Landing is the first screen — it shows when the app opens
     Landing: createNativeStackScreen({
       screen: LandingScreen,
       options: { headerShown: false },
@@ -70,6 +68,10 @@ const RootStack = createNativeStackNavigator({
       screen: SignUpScreen,
       options: { title: 'Sign Up' },
     }),
+    RoleSelection: createNativeStackScreen({
+      screen: RoleSelectionScreen,
+      options: { title: 'Select Role' },
+    }),
     HomeTabs: createNativeStackScreen({
       screen: HomeTabs,
       options: { title: 'Home', headerShown: false },
@@ -78,12 +80,8 @@ const RootStack = createNativeStackNavigator({
       screen: Profile,
       linking: {
         path: ':user(@[a-zA-Z0-9-_]+)',
-        parse: {
-          user: (value: string) => value.replace(/^@/, ''),
-        },
-        stringify: {
-          user: (value: string) => `@${value}`,
-        },
+        parse: { user: (value: string) => value.replace(/^@/, '') },
+        stringify: { user: (value: string) => `@${value}` },
       },
     }),
     Settings: createNativeStackScreen({
