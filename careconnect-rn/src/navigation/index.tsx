@@ -28,6 +28,12 @@ import PatientMedicationsScreen from '../screens/PatientMedicationsScreen';
 import PatientAppointmentsScreen from '../screens/PatientAppointmentsScreen';
 import PatientProfileScreen from '../screens/PatientProfileScreen';
 
+// Caregiver screens
+import CaregiverActivityScreen from '../screens/CaregiverActivityScreen';
+import CaregiverAppointmentsScreen from '../screens/CaregiverAppointmentsScreen';
+import CaregiverMedicationsScreen from '../screens/CaregiverMedicationsScreen';
+import CaregiverMedicationFormsScreen from '../screens/CaregiverMedicationFormsScreen';
+
 // Detail screens
 import MedicationDetailScreen from '../screens/MedicationDetailScreen';
 import AppointmentDetailScreen from '../screens/AppointmentDetailScreen';
