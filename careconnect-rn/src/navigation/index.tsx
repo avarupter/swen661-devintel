@@ -1,3 +1,4 @@
+// src/navigation/index.tsx
 import {
   createBottomTabNavigator,
   createBottomTabScreen,
@@ -11,11 +12,18 @@ import {
 import { Image } from 'react-native';
 import bell from '../assets/bell.png';
 import newspaper from '../assets/newspaper.png';
+
+// Existing template screens (named exports)
 import { Home } from './screens/Home';
 import { NotFound } from './screens/NotFound';
 import { Profile } from './screens/Profile';
 import { Settings } from './screens/Settings';
 import { Updates } from './screens/Updates';
+
+// CareConnect screens (default exports — no curly braces)
+import LandingScreen from '../screens/LandingScreen';
+import SignInScreen from '../screens/SignInScreen';
+import SignUpScreen from '../screens/SignUpScreen';
 
 const HomeTabs = createBottomTabNavigator({
   screens: {
@@ -27,10 +35,7 @@ const HomeTabs = createBottomTabNavigator({
           <Image
             source={newspaper}
             tintColor={color}
-            style={{
-              width: size,
-              height: size,
-            }}
+            style={{ width: size, height: size }}
           />
         ),
       },
@@ -42,10 +47,7 @@ const HomeTabs = createBottomTabNavigator({
           <Image
             source={bell}
             tintColor={color}
-            style={{
-              width: size,
-              height: size,
-            }}
+            style={{ width: size, height: size }}
           />
         ),
       },
@@ -55,22 +57,32 @@ const HomeTabs = createBottomTabNavigator({
 
 const RootStack = createNativeStackNavigator({
   screens: {
+    // Landing is the first screen — it shows when the app opens
+    Landing: createNativeStackScreen({
+      screen: LandingScreen,
+      options: { headerShown: false },
+    }),
+    SignIn: createNativeStackScreen({
+      screen: SignInScreen,
+      options: { title: 'Sign In' },
+    }),
+    SignUp: createNativeStackScreen({
+      screen: SignUpScreen,
+      options: { title: 'Sign Up' },
+    }),
     HomeTabs: createNativeStackScreen({
       screen: HomeTabs,
-      options: {
-        title: 'Home',
-        headerShown: false,
-      },
+      options: { title: 'Home', headerShown: false },
     }),
     Profile: createNativeStackScreen({
       screen: Profile,
       linking: {
         path: ':user(@[a-zA-Z0-9-_]+)',
         parse: {
-          user: (value) => value.replace(/^@/, ''),
+          user: (value: string) => value.replace(/^@/, ''),
         },
         stringify: {
-          user: (value) => `@${value}`,
+          user: (value: string) => `@${value}`,
         },
       },
     }),
@@ -87,12 +99,8 @@ const RootStack = createNativeStackNavigator({
     }),
     NotFound: createNativeStackScreen({
       screen: NotFound,
-      options: {
-        title: '404',
-      },
-      linking: {
-        path: '*',
-      },
+      options: { title: '404' },
+      linking: { path: '*' },
     }),
   },
 });
