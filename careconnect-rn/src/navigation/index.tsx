@@ -33,6 +33,7 @@ import CaregiverActivityScreen from '../screens/CaregiverActivityScreen';
 import CaregiverAppointmentsScreen from '../screens/CaregiverAppointmentsScreen';
 import CaregiverMedicationsScreen from '../screens/CaregiverMedicationsScreen';
 import CaregiverMedicationFormsScreen from '../screens/CaregiverMedicationFormsScreen';
+import PatientListScreen from '../screens/PatientListScreen';
 
 // Detail screens
 import MedicationDetailScreen from '../screens/MedicationDetailScreen';
@@ -96,7 +97,7 @@ const CaregiverTabs = createBottomTabNavigator({
   },
   screens: {
     CaregiverPatients: createBottomTabScreen({
-      screen: PatientTodayScreen,
+      screen: PatientListScreen,
       options: {
         title: 'Patients',
         tabBarIcon: ({ color, size }) => (
@@ -105,7 +106,7 @@ const CaregiverTabs = createBottomTabNavigator({
       },
     }),
     CaregiverMedications: createBottomTabScreen({
-      screen: PatientMedicationsScreen,
+      screen: CaregiverMedicationsScreen,
       options: {
         title: 'Medications',
         tabBarIcon: ({ color, size }) => (
@@ -114,7 +115,7 @@ const CaregiverTabs = createBottomTabNavigator({
       },
     }),
     CaregiverAppointments: createBottomTabScreen({
-      screen: PatientAppointmentsScreen,
+      screen: CaregiverAppointmentsScreen,
       options: {
         title: 'Appointments',
         tabBarIcon: ({ color, size }) => (
@@ -123,7 +124,7 @@ const CaregiverTabs = createBottomTabNavigator({
       },
     }),
     CaregiverActivity: createBottomTabScreen({
-      screen: PatientProfileScreen,
+      screen: CaregiverActivityScreen,
       options: {
         title: 'Activity',
         tabBarIcon: ({ color, size }) => (
