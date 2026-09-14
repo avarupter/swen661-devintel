@@ -1,1 +1,1 @@
-genhtml coverage/lcov.info -o coverage --title 'CareConnect Daily Compass — line coverage' --legend
+genhtml coverage/lcov.info -o coverage
