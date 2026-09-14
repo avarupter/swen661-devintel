@@ -47,6 +47,58 @@ It includes the following:
 
 - In the terminal running the development server, press `i` to open the iOS simulator, `a` to open the Android device or emulator, or `w` to open the web browser.
 
+
+## Testing
+
+```sh
+npm test              # run the suite
+npm run test:coverage # run with a coverage report
+```
+
+111 tests across 18 suites; **91% line coverage** (the assignment requires 60%).
+`jest.config` lives in `package.json` and enforces the 60% floor via
+`coverageThreshold`, so coverage dropping below it fails the run.
+
+### Writing a screen test
+
+`@testing-library/react-native` v14 is required for React 19 — the Expo SDK 56
+docs are explicit that the older `react-test-renderer` "does not support React 19
+and above". **v14 made `render` and `fireEvent` asynchronous**, which is the one
+thing that trips people up:
+
+```tsx
+await render(<SomeScreen />);              // not: render(<SomeScreen />)
+await fireEvent.press(screen.getByText('Go'));  // not: fireEvent.press(...)
+```
+
+An un-awaited `render` returns a promise, so every query against it fails with
+*"render function has not been called"*. An un-awaited `fireEvent` leaks its
+`act()` into the next test, which then renders an empty tree and fails with
+*"Unable to find an element..."* — in a completely unrelated test. If you see
+either message, check for a missing `await` first.
+
+Two more rules that follow from it:
+
+- **Re-query after a state change.** A node captured before `fireEvent` is a
+  stale snapshot; `screen.getByLabelText(...)` again to read the new value.
+- **Prefer `getByLabelText` over `getByText`** for controls. Headings and buttons
+  frequently share a string ("Sign In" is both), and `getByText` throws on
+  multiple matches.
+
+### Helpers
+
+- `src/__tests__/helpers/navigationMock.ts` — replaces `useNavigation` and
+  `useRoute` only, keeping the rest of `@react-navigation/native` intact. Use
+  `mockNavigate` / `mockGoBack` to assert navigation, and set `routeParams.current`
+  before rendering a detail screen. Call `resetNavigationMock()` in `beforeEach`.
+- `src/__tests__/helpers/renderWithAuth.tsx` — `renderWithAuth` mounts a screen
+  inside a real `AuthProvider`; `renderWithSignedInUser` mounts one with a user
+  already signed in.
+
+`src/__tests__/Navigation.test.tsx` deliberately does *not* mock navigation: it
+drives the real navigator so that a route name a screen calls but the navigator
+does not declare shows up as a failure.
+
 ## Notes
 
 This project uses a [development build](https://docs.expo.dev/develop/development-builds/introduction/) and cannot be run with [Expo Go](https://expo.dev/go). To run the app with Expo Go, edit the `package.json` file, remove the `expo-dev-client` package and `--dev-client` flag from the `start` script.
