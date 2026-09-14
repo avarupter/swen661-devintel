@@ -1,12 +1,11 @@
 // src/context/AuthContext.tsx
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-
-export type Role = 'patient' | 'caregiver' | null;
-
-export interface User {
-  name: string;
-  email: string;
-}
+import {
+  User,
+  Role,
+  createSignedInUser,
+  createSignedUpUser,
+} from '../utils/authUtils';
 
 interface AuthContextType {
   user: User | null;
@@ -25,12 +24,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [role, setRoleState] = useState<Role>(null);
 
   const signIn = (email: string, _password: string) => {
-    // Mock auth — any credentials work
-    setUser({ name: 'Mary', email });
+    setUser(createSignedInUser(email));
   };
 
   const signUp = (name: string, email: string, _password: string) => {
-    setUser({ name, email });
+    setUser(createSignedUpUser(name, email));
   };
 
   const signOut = () => {
@@ -66,3 +64,6 @@ export function useAuth() {
   }
   return context;
 }
+
+// Re-export for convenience
+export type { User, Role };

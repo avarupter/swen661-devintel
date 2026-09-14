@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "main": "index.tsx",
   "scripts": {
-    "start": "expo start --dev-client",
+    "start": "expo start --go",
     "web": "expo start --web",
     "android": "expo run:android",
-    "ios": "expo run:ios"
+    "ios": "expo run:ios",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@expo/metro-runtime": "~56.0.15",
@@ -15,12 +18,16 @@
     "@react-navigation/elements": "^2.9.26",
     "@react-navigation/native": "^7.3.4",
     "@react-navigation/native-stack": "^7.17.6",
+    "@testing-library/react-native": "^14.0.1",
+    "@types/jest": "29.5.14",
     "expo": "^56.0.12",
     "expo-asset": "~56.0.17",
     "expo-dev-client": "~56.0.20",
     "expo-linking": "~56.0.14",
     "expo-splash-screen": "~56.0.10",
     "expo-system-ui": "~56.0.5",
+    "jest": "~29.7.0",
+    "jest-expo": "~56.0.5",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-native": "0.85.3",
@@ -33,6 +40,15 @@
     "@babel/core": "^7.20.0",
     "@types/react": "~19.2.10",
     "typescript": "~6.0.3"
+  },
+  "jest": {
+    "preset": "jest-expo"
+  },
+  "overrides": {
+    "react-server-dom-webpack": {
+      "react": "$react",
+      "react-dom": "$react"
+    }
   },
   "private": true
 }
