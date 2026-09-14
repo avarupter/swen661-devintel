@@ -18,16 +18,12 @@
     "@react-navigation/elements": "^2.9.26",
     "@react-navigation/native": "^7.3.4",
     "@react-navigation/native-stack": "^7.17.6",
-    "@testing-library/react-native": "^14.0.1",
-    "@types/jest": "29.5.14",
     "expo": "^56.0.12",
     "expo-asset": "~56.0.17",
     "expo-dev-client": "~56.0.20",
     "expo-linking": "~56.0.14",
     "expo-splash-screen": "~56.0.10",
     "expo-system-ui": "~56.0.5",
-    "jest": "~29.7.0",
-    "jest-expo": "~56.0.5",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-native": "0.85.3",
@@ -38,11 +34,22 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@react-native/jest-preset": "^0.85.3",
+    "@testing-library/react-native": "^12.4.0",
+    "@types/jest": "29.5.14",
     "@types/react": "~19.2.10",
+    "jest": "~29.7.0",
+    "jest-expo": "~56.0.5",
     "typescript": "~6.0.3"
   },
   "jest": {
-    "preset": "jest-expo"
+    "preset": "jest-expo",
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}",
+      "!src/**/*.test.{ts,tsx}",
+      "!src/**/__tests__/**",
+      "!src/**/*.d.ts"
+    ]
   },
   "overrides": {
     "react-server-dom-webpack": {
