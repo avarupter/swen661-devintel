@@ -170,31 +170,39 @@ integration test over the real navigator caught it.
 
 ## 5. Testing
 
-**This is where React Native was clearly better, and the difference is philosophical, not technical.**
+**React Native was the better testing experience — but for narrower reasons than we
+assumed before we counted.**
 
 | | Flutter | React Native |
 |---|---|---|
 | Runner | `flutter test` | `jest` |
 | Component testing | `WidgetTester`, `pumpWidget` | `@testing-library/react-native` |
-| Typical query | `find.byType(...)`, `find.byKey(...)` | `getByLabelText(...)`, `getByText(...)` |
+| Typical query | `find.text` ×232, `find.byType` ×31, `find.byKey` ×0 | `getByText` ×80, `getByLabelText` ×72 |
 | Coverage | `flutter test --coverage` + `genhtml` | `jest --coverage` (Istanbul, built in) |
-| Threshold enforcement | none configured | `coverageThreshold` in `package.json` |
+| Threshold enforcement | none configured | `coverageThreshold` — on `test:coverage` only |
 | Tests | 169 across 33 files | 111 across 20 files |
 
-Two things stood out in React Native's favour.
+**Where React Native genuinely wins is coverage tooling.** Jest produces the HTML report,
+the text summary and the lcov file from one command. Flutter needs `genhtml` from the
+`lcov` package installed separately. Jest also supports `coverageThreshold`, which we use
+to fail the run below 60% — though note this only bites on `npm run test:coverage`, since
+plain `npm test` does not collect coverage and therefore never evaluates the gate.
 
-**Queries are user-facing.** React Native Testing Library pushes you to find elements the
-way a user or a screen reader would — by accessibility label and visible text. Flutter's
-`find.byType(StatusChip)` couples the test to the widget class. Because our assigned
-constraint is accessibility, RNTL's style means **our component tests double as
-accessibility assertions**: a test that finds a button by `getByLabelText('Mark Memantine
-as taken')` fails if someone removes that label. We got that for free; in Flutter we had
-to write a separate `test/accessibility_test.dart` to get the same guarantee.
+**Where we expected React Native to win, and it did not:** we assumed RNTL's user-facing
+queries (`getByLabelText`, `getByText`) would contrast with a Flutter suite coupled to
+widget classes. Counting the actual finders says otherwise. The Flutter suite uses
+**232 `find.text`, 13 `find.textContaining` and 13 `find.bySemanticsLabel` against only
+31 `find.byType` — and zero `find.byKey`**, meaning it has no test-only handles at all.
+The React Native suite uses 80 `getByText` and 72 `getByLabelText`. **Both suites are
+overwhelmingly user-facing.** RNTL makes that style the path of least resistance rather
+than a deliberate choice, which is a real ergonomic advantage — but it is not the
+difference in kind we assumed before counting.
 
-**Coverage tooling is better out of the box.** Jest produces the HTML report, the text
-summary and the lcov file in one command. Flutter needs `genhtml` from the `lcov`
-package as a separate install. Jest's `coverageThreshold` also fails the run below 60%,
-so the requirement is enforced rather than merely reported.
+Flutter is in fact the more *rigorous* of the two suites on one axis: it asserts absence
+and multiplicity far more often — **20 `findsNothing` and 19 `findsNWidgets`** against
+only 3 `queryBy…`/`toBeNull` checks on the React Native side. It is easy to write tests
+that only confirm what should appear; Flutter's suite more consistently checks what should
+*not*.
 
 Flutter's advantage is **stability**. `flutter_test` ships with the SDK and its version is
 never a question. The React Native testing stack is a version matrix that must be held in
@@ -258,8 +266,8 @@ labels load-bearing in the tests, not because we set out to protect it.
 ## Conclusion
 
 **React Native was the better experience for building and testing this application.**
-Less code, faster iteration, and a testing library whose defaults align with an
-accessibility-driven project. If we were continuing CareConnect, we would continue in
+Less code, faster iteration, and a testing library whose defaults make user-facing,
+accessibility-led queries the easy path. If we were continuing CareConnect, we would continue in
 React Native.
 
 **Flutter produced the more disciplined codebase** — though not a uniformly disciplined
