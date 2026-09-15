@@ -39,7 +39,11 @@ yarn-error.*
 *.tsbuildinfo
 
 # testing
-coverage/
+# The generated coverage report is committed on purpose: the assignment asks for a
+# submitted coverage report, and careconnect_mobile/coverage/ is committed for the
+# same reason. Only the machine-specific intermediates are ignored.
+coverage/coverage-final.json
+coverage/clover.xml
 html-report/
 
 app-example
