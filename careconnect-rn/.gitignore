@@ -40,5 +40,6 @@ yarn-error.*
 
 # testing
 coverage/
+html-report/
 
 app-example

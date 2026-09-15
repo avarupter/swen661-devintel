@@ -79,14 +79,14 @@ describe('AuthContext', () => {
     expect(result.current.isLoggedIn).toBe(false);
   });
 
-  test('useAuth outside a provider fails loudly instead of returning undefined', async () => {
+  test('useAuth outside a provider fails loudly instead of returning undefined', () => {
     const consoleError = jest
       .spyOn(console, 'error')
       .mockImplementation(() => {});
 
-    await expect(renderHook(() => useAuth())).rejects.toThrow(
-      'useAuth must be used inside an AuthProvider'
-    );
+    expect(() => {
+      renderHook(() => useAuth());
+    }).toThrow('useAuth must be used inside an AuthProvider');
 
     consoleError.mockRestore();
   });
