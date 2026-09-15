@@ -38,6 +38,7 @@ import PatientListScreen from '../screens/PatientListScreen';
 // Detail screens
 import MedicationDetailScreen from '../screens/MedicationDetailScreen';
 import AppointmentDetailScreen from '../screens/AppointmentDetailScreen';
+import AddEditPatientScreen from '../screens/AddEditPatientScreen';
 
 // --- Patient Tab Navigator ---
 const PatientTabs = createBottomTabNavigator({
@@ -169,6 +170,14 @@ const RootStack = createNativeStackNavigator({
     AppointmentDetail: createNativeStackScreen({
       screen: AppointmentDetailScreen,
       options: { title: 'Appointment' },
+    }),
+    AddPatient: createNativeStackScreen({
+      screen: AddEditPatientScreen,
+      options: { title: 'Add Patient' },
+    }),
+    AddEditPatient: createNativeStackScreen({
+      screen: AddEditPatientScreen,
+      options: { title: 'Edit Patient' },
     }),
     Profile: createNativeStackScreen({
       screen: Profile,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -9,23 +9,19 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@react-native-vector-icons/ionicons';
-
-interface Patient {
-  id: string;
-  name: string;
-  age: number;
-  condition: string;
-}
-
-const INITIAL_PATIENTS: Patient[] = [
-  { id: '1', name: 'Margaret Smith', age: 78, condition: 'Routine care & Vision' },
-  { id: '2', name: 'Arthur Pendelton', age: 82, condition: 'Hypertension monitoring' },
-  { id: '3', name: 'Eleanor Vance', age: 74, condition: 'Post-operative recovery' },
-];
+import { usePatients, Patient } from '../context/PatientContext';
 
 export default function PatientListScreen() {
   const navigation = useNavigation<any>();
-  const [patients] = useState<Patient[]>(INITIAL_PATIENTS);
+  const { patients } = usePatients();
+
+  const handlePatientPress = (patient: Patient) => {
+    navigation.navigate('AddEditPatient', { patient });
+  };
+
+  const handleAddPress = () => {
+    navigation.navigate('AddPatient');
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -54,9 +50,9 @@ export default function PatientListScreen() {
           renderItem={({ item }) => (
             <TouchableOpacity
               style={styles.card}
-              onPress={() => navigation.navigate('PatientDetail', { id: item.id })}
+              onPress={() => handlePatientPress(item)}
               accessibilityRole="button"
-              accessibilityLabel={`View details for ${item.name}`}
+              accessibilityLabel={`Edit details for ${item.name}`}
             >
               <View style={styles.cardInfo}>
                 <Text style={styles.patientName}>{item.name}</Text>
@@ -73,7 +69,7 @@ export default function PatientListScreen() {
       {/* Floating Action Button */}
       <TouchableOpacity
         style={styles.fab}
-        onPress={() => navigation.navigate('AddPatient')}
+        onPress={handleAddPress}
         accessibilityRole="button"
         accessibilityLabel="Add new patient"
       >

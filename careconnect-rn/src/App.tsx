@@ -6,6 +6,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useColorScheme } from 'react-native';
 import { Navigation } from './navigation';
 import { AuthProvider } from './context/AuthContext';
+import { PatientProvider } from './context/PatientContext';
 
 Asset.loadAsync([
   ...NavigationAssets,
@@ -27,13 +28,15 @@ export function App() {
 
   return (
     <AuthProvider>
-      <Navigation
-        theme={theme}
-        linking={linking}
-        onReady={() => {
-          SplashScreen.hideAsync();
-        }}
-      />
+      <PatientProvider>
+        <Navigation
+          theme={theme}
+          linking={linking}
+          onReady={() => {
+            SplashScreen.hideAsync();
+          }}
+        />
+      </PatientProvider>
     </AuthProvider>
   );
 }
