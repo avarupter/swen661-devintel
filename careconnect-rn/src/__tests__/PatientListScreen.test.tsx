@@ -2,6 +2,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react-native';
 import PatientListScreen from '../screens/PatientListScreen';
+import { PatientProvider } from '../context/PatientContext';
 import {
   mockGoBack,
   mockNavigate,
@@ -14,9 +15,19 @@ jest.mock('@react-navigation/native', () =>
 
 beforeEach(resetNavigationMock);
 
+// PatientListScreen reads its rows from PatientContext, so it has to be rendered
+// inside a PatientProvider exactly as App.tsx does — a bare render throws.
+async function renderScreen() {
+  return render(
+    <PatientProvider>
+      <PatientListScreen />
+    </PatientProvider>
+  );
+}
+
 describe('PatientListScreen', () => {
   test('lists every patient with their age and condition', async () => {
-    await render(<PatientListScreen />);
+    await renderScreen();
 
     expect(screen.getByText('Patients')).toBeTruthy();
     expect(screen.getByText('Margaret Smith')).toBeTruthy();
@@ -25,25 +36,34 @@ describe('PatientListScreen', () => {
   });
 
   test('each row is labelled with the patient it opens', async () => {
-    await render(<PatientListScreen />);
+    await renderScreen();
 
     expect(
-      screen.getByLabelText('View details for Margaret Smith')
+      screen.getByLabelText('Edit details for Margaret Smith')
     ).toBeTruthy();
   });
 
-  test('tapping a patient opens that patient, passing their id', async () => {
-    await render(<PatientListScreen />);
+  test('tapping a patient opens that patient for editing, passing the record', async () => {
+    await renderScreen();
 
     await fireEvent.press(
-      screen.getByLabelText('View details for Arthur Pendelton')
+      screen.getByLabelText('Edit details for Arthur Pendelton')
     );
 
-    expect(mockNavigate).toHaveBeenCalledWith('PatientDetail', { id: '2' });
+    // The row hands the whole record to the edit screen, which prefills its
+    // form from route.params.patient — passing only an id would render blank.
+    expect(mockNavigate).toHaveBeenCalledWith('AddEditPatient', {
+      patient: {
+        id: '2',
+        name: 'Arthur Pendelton',
+        age: 82,
+        condition: 'Hypertension monitoring',
+      },
+    });
   });
 
   test('the add button goes to the add-patient screen', async () => {
-    await render(<PatientListScreen />);
+    await renderScreen();
 
     await fireEvent.press(screen.getByLabelText('Add new patient'));
 
@@ -51,7 +71,7 @@ describe('PatientListScreen', () => {
   });
 
   test('the back button goes back rather than navigating somewhere new', async () => {
-    await render(<PatientListScreen />);
+    await renderScreen();
 
     await fireEvent.press(screen.getByLabelText('Go back'));
 

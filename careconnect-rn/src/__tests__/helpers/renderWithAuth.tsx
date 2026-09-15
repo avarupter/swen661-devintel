@@ -2,6 +2,7 @@
 import React, { ReactElement, ReactNode, useEffect } from 'react';
 import { render } from '@testing-library/react-native';
 import { AuthProvider, useAuth } from '../../context/AuthContext';
+import { PatientProvider } from '../../context/PatientContext';
 
 /**
  * Renders a screen inside a real AuthProvider.
@@ -13,7 +14,9 @@ import { AuthProvider, useAuth } from '../../context/AuthContext';
 export async function renderWithAuth(ui: ReactElement) {
   return render(ui, {
     wrapper: ({ children }: { children: ReactNode }) => (
-      <AuthProvider>{children}</AuthProvider>
+      <AuthProvider>
+        <PatientProvider>{children}</PatientProvider>
+      </AuthProvider>
     ),
   });
 }
@@ -43,7 +46,9 @@ export async function renderWithSignedInUser(
   return render(ui, {
     wrapper: ({ children }: { children: ReactNode }) => (
       <AuthProvider>
-        <Seed>{children}</Seed>
+        <PatientProvider>
+          <Seed>{children}</Seed>
+        </PatientProvider>
       </AuthProvider>
     ),
   });

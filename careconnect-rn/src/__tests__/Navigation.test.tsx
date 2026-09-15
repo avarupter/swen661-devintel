@@ -8,11 +8,14 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { Navigation } from '../navigation';
 import { AuthProvider } from '../context/AuthContext';
+import { PatientProvider } from '../context/PatientContext';
 
 async function renderApp() {
   return render(
     <AuthProvider>
-      <Navigation />
+      <PatientProvider>
+        <Navigation />
+      </PatientProvider>
     </AuthProvider>
   );
 }
@@ -121,18 +124,10 @@ describe('Navigation', () => {
     });
   });
 
-  test('KNOWN GAP: the patient rows point at routes that do not exist', async () => {
-    // PatientListScreen navigates to 'PatientDetail' and 'AddPatient', but
-    // neither is declared in src/navigation/index.tsx, so React Navigation
-    // cannot handle the action and the screen simply does not change.
-    //
-    // This test pins the current behaviour so the gap is visible rather than
-    // silent. When the two routes are added, this test should start failing —
-    // that is the signal to replace it with a real navigation assertion.
-    const consoleError = jest
-      .spyOn(console, 'error')
-      .mockImplementation(() => {});
-
+  test('tapping a patient row reaches the edit screen with that patient loaded', async () => {
+    // This replaces an earlier KNOWN-GAP test that pinned the rows navigating
+    // nowhere. AddPatient and AddEditPatient are both declared in the navigator
+    // now, so the row resolves for real and the form arrives prefilled.
     await renderApp();
     await fireEvent.press(
       screen.getByLabelText('Sign in to your existing account')
@@ -158,12 +153,15 @@ describe('Navigation', () => {
     );
 
     await fireEvent.press(
-      screen.getByLabelText('View details for Margaret Smith')
+      screen.getByLabelText('Edit details for Margaret Smith')
     );
 
-    // Still on the list: the navigation action went nowhere.
-    expect(screen.getByText('Margaret Smith')).toBeTruthy();
-
-    consoleError.mockRestore();
+    await waitFor(() => {
+      expect(screen.getByText('Edit Patient')).toBeTruthy();
+      expect(screen.getByLabelText('Patient name required').props.value).toBe(
+        'Margaret Smith'
+      );
+      expect(screen.getByLabelText('Save patient changes')).toBeTruthy();
+    });
   });
 });
