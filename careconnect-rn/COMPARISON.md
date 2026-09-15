@@ -21,13 +21,13 @@ number, it came from counting the actual files.
 | Language | Dart 3 (sound null safety) | TypeScript 6 (`strict: true`) |
 | Application code | **48 files, 7,169 lines** | **29 files, 3,693 lines** |
 | Screens | 21 files, 3,730 lines | 16 files, 3,082 lines |
-| Reusable widgets / components | 5 files, 592 lines (`lib/widgets/`) | *no equivalent directory* |
+| Reusable widgets / components | 5 files, 592 lines — used by 5 of 21 screens | *no equivalent directory* |
 | Test code | **33 files, 2,967 lines** | **20 files, 1,427 lines** |
 | Tests | 169 | 111 |
 | State management | `ChangeNotifier` + Provider (4 providers) | React Context (2 providers) |
 | Routing | `go_router` — `lib/router/app_router.dart` | React Navigation 7 static config |
 | Persistence | `lib/services/json_store.dart` | *none — in-memory only* |
-| Design tokens | `lib/theme/app_colors.dart` | *none — 51 distinct hex literals inline* |
+| Design tokens | `lib/theme/app_colors.dart` — used by 5 of 21 screens | *none — 51 distinct hex literals inline* |
 | Accessibility annotations | 88 `Semantics` usages | 41 `accessibilityLabel` usages |
 | Test tooling | `flutter_test` + `lcov` / `genhtml` | Jest + RNTL + Istanbul |
 
@@ -72,14 +72,21 @@ more vertical space than the equivalent JSX. Separating layout (JSX) from style
 (`StyleSheet.create` at the bottom of the file) also makes a React Native screen easier to
 skim than a Flutter `build()` method where layout and styling are interleaved.
 
-Where Flutter clearly won was **consistency**. `lib/theme/app_colors.dart` is a single
-source of truth for colour, and it is documented against the team's Figma file with a
-measured WCAG contrast ratio annotated on each token. The React Native port has no
-equivalent: our screens contain **51 distinct hex colour literals** and **not one screen
-imports a shared theme module**. Every screen re-declares `#1A73E8`, `#F4F6F8`, `#1E293B`
-and friends locally. That is a real regression against a project whose central constraint
-is accessibility — the Flutter code can prove its contrast ratios, and the React Native
-code cannot.
+Where Flutter did better was **consistency** — though the honest version of this is
+narrower than we first wrote. `lib/theme/app_colors.dart` is a genuine design-token module,
+documented against the team's Figma file with a measured WCAG contrast ratio annotated on
+each token. But it is not adopted app-wide: only **5 of the 21 Flutter screens** import it
+(the patient screens and the two detail screens), and **10 Flutter screens hardcode 36
+distinct `Color(0x…)` literals** of their own.
+
+The React Native port has no such module at all. Its screens contain **51 distinct hex
+colour literals** and **not one screen imports a shared theme**.
+
+So the fair statement is: neither implementation carries its design system all the way
+through, but Flutter has a real one covering part of the app and React Native has none.
+For a project whose central constraint is accessibility, that matters — where the token
+file is used, the Flutter code can prove its contrast ratios; the React Native code cannot
+prove them anywhere.
 
 On typing, both languages are statically checked, but we used them with different rigour.
 Dart's null safety is enforced throughout. In React Native we reached for escape hatches:
@@ -115,10 +122,11 @@ src/navigation/ 6 files   src/utils/      3 files
 Three Flutter layers have **no React Native counterpart at all**:
 
 - **`lib/widgets/`** — `status_chip.dart`, `dose_tile.dart`, `appointment_tile.dart`,
-  `section_header.dart`, `care_page.dart`. Five reusable widgets, 592 lines, shared
-  across screens. React Native has no shared component directory; each screen defines its
-  own card and row components privately, which is why the same visual patterns are
-  reimplemented several times over.
+  `section_header.dart`, `care_page.dart`. Five reusable widgets, 592 lines. Like the
+  theme module, these are used by **5 of the 21 Flutter screens** rather than universally
+  — so Flutter's reuse is real but partial. React Native has no shared component directory
+  at all; every screen defines its own card and row components privately, which is why the
+  same visual patterns are reimplemented several times over.
 - **`lib/models/`** — six typed domain models. React Native declares its types inline
   (e.g. the `Patient` interface inside `PatientContext.tsx`) or not at all.
 - **`lib/services/`** — `care_repository.dart` and `json_store.dart`. React Native has no
@@ -254,8 +262,9 @@ Less code, faster iteration, and a testing library whose defaults align with an
 accessibility-driven project. If we were continuing CareConnect, we would continue in
 React Native.
 
-**Flutter produced the more disciplined codebase.** Proper layering, reusable widgets, a
-documented design system, a persistence layer and typed routing. Some of that is Flutter's
+**Flutter produced the more disciplined codebase** — though not a uniformly disciplined
+one. Proper layering, reusable widgets, a documented design system (adopted by 5 of 21
+screens), a persistence layer and typed routing. Some of that is Flutter's
 opinionated structure; much of it is that we had more time with it and were designing
 rather than translating.
 
