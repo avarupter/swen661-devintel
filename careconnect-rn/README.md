@@ -72,7 +72,13 @@ The report appears at `html-report/report.html`.
 
 After generating the coverage report, open `coverage/lcov-report/index.html` in your browser.
 
-**Current Coverage: 91.83%** – well above the assignment requirement of 60%.
+**Current coverage: 85.51% statements / 81.42% branches / 75.93% functions / 85.23% lines** –
+well above the assignment requirement of 60%.
+
+These figures are measured from a clean checkout (`git clone` → `git checkout master` → `npm ci`
+→ `npm run test:coverage`), not carried over from an earlier run. `package.json` also sets a
+`coverageThreshold` of 60% lines and statements, so the suite fails if coverage regresses below
+the requirement.
 
 Coverage is enforced by Jest via `coverageThreshold` in `package.json`. If coverage drops below 60%, the test run fails.
 
@@ -185,7 +191,7 @@ npx expo start --go      # start the dev server
 
 ## Testing Details
 
-**111 tests across 18 test suites, all passing. 91.83% line coverage.**
+**111 tests across 18 test suites, all passing. 85.51% statement coverage, 85.23% line coverage.**
 
 ### Test Files
 
@@ -238,7 +244,10 @@ The APK will be produced by EAS and a download link provided.
 
 ## Known Issues and Limitations
 
-- **Patient Detail and Add/Edit Patient screens are not implemented.** Tapping a patient in the caregiver list currently does nothing. This is a feature parity gap from the Flutter version.
+- **"Mark as taken" on the patient Today screen is a stub.** `handleMarkTaken` in
+  `src/screens/PatientTodayScreen.tsx` logs to the console and returns; the dose list is a
+  module-level `MOCK_DOSES` constant with no state behind it, so the progress counter does not
+  move. The button is present and correctly labelled, but it does not yet change anything.
 - **Caregiver screens display static content.** They are not yet wired to shared context providers.
 - **Authentication is mocked.** Any credentials are accepted; there is no backend.
 - **Coverage is on the RN source only.** The template screens inherited from the starter (`src/navigation/screens/Home.tsx`, `Updates.tsx`, etc.) have partial coverage but are not part of the CareConnect app.
