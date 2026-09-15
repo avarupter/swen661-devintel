@@ -256,10 +256,27 @@ icon and a written label as well. The Flutter app has 88 `Semantics` annotations
 dedicated `test/accessibility_test.dart`.
 
 React Native reproduces the *result* — the screens look and behave the same, and 41
-`accessibilityLabel` annotations cover the interactive elements — but not the
-*discipline*. There is no token file, no documented contrast ratios, and no dedicated
-accessibility test file. Accessibility survived the port because RNTL's query style made
-labels load-bearing in the tests, not because we set out to protect it.
+`accessibilityLabel` annotations cover the interactive elements — but not the *discipline*.
+There is no token file, no documented contrast ratios, and no dedicated accessibility test.
+Accessibility survived the port largely because RNTL's query style makes labels
+load-bearing in the tests, not because we set out to protect it.
+
+One part of that gap is **not** our fault, and it is the single strongest technical point
+in Flutter's favour in this whole comparison. `test/accessibility_test.dart` calls
+`meetsGuideline(androidTapTargetGuideline)`, `meetsGuideline(iOSTapTargetGuideline)` and
+`meetsGuideline(textContrastGuideline)` — Flutter automatically verifies that **every tap
+target is large enough and every text/background pair has sufficient contrast**, because
+`flutter_test` renders with a real layout engine and can measure pixels.
+
+React Native Testing Library has no layout engine. It renders a component tree, not a
+laid-out screen, so it has **no equivalent check and cannot have one**. For a project whose
+assigned constraint is accessibility, that is a material capability Flutter has and React
+Native does not. We can assert that a label exists; we cannot assert that the button is big
+enough to press or that the text is readable against its background.
+
+Flutter also invests considerably more in testing domain logic away from the UI:
+`test/unit/` is **11 files and 931 lines**, against React Native's 3 utility test files
+totalling 151 lines.
 
 ---
 
@@ -271,7 +288,8 @@ accessibility-led queries the easy path. If we were continuing CareConnect, we w
 React Native.
 
 **Flutter produced the more disciplined codebase** — though not a uniformly disciplined
-one. Proper layering, reusable widgets, a documented design system (adopted by 5 of 21
+one — and it has one capability React Native simply lacks: automated tap-target and
+contrast verification in its test suite. Proper layering, reusable widgets, a documented design system (adopted by 5 of 21
 screens), a persistence layer and typed routing. Some of that is Flutter's
 opinionated structure; much of it is that we had more time with it and were designing
 rather than translating.
