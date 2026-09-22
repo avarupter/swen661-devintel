@@ -1,0 +1,28 @@
+# Marking a dose taken and undoing it.
+#
+# This is the short-term-memory-loss behaviour the app exists for: the card
+# states who took it and when, in a sentence, and the undo is a permanent button
+# rather than a snackbar that disappears before it can be read.
+appId: com.example.careconnect_mobile
+tags:
+  - patient
+  - accessibility
+---
+- launchApp:
+    clearState: true
+- runFlow: ../subflows/sign-in.yaml
+- tapOn:
+    id: "Select patient role. Manage your own care."
+
+- assertVisible: "Take these now"
+- assertVisible: "Not taken yet."
+
+- tapOn:
+    id: "Mark Lisinopril 10 mg at 8:00 AM as taken"
+
+# The reassurance line replaces "Not taken yet." and the undo appears.
+- assertVisible: "Undo — I have not taken this"
+- assertVisible: "Already done"
+
+- tapOn: "Undo — I have not taken this"
+- assertVisible: "Not taken yet."

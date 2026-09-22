@@ -1,0 +1,68 @@
+# Accessibility pass (WCAG 2.1 AA, and the assignment's screen-reader
+# requirement).
+#
+# Maestro matches against the Android content-desc as well as visible text, and
+# content-desc is exactly what accessibilityLabel compiles to — so asserting on
+# these strings is asserting on what TalkBack will announce. Icon-only controls
+# have no visible text at all, which makes them the ones worth pinning: if a
+# label is dropped, the control becomes an unlabelled button to a screen-reader
+# user and this flow fails.
+appId: com.careconnectrn
+tags:
+  - accessibility
+---
+- launchApp:
+    clearState: true
+
+# Landing: both actions carry a description of what they do, not just "button".
+- assertVisible:
+    id: "Sign in to your existing account"
+- assertVisible:
+    id: "Create a new account"
+
+- runFlow: ../subflows/sign-in.yaml
+
+# Role picker: each card says which role and what it means.
+- assertVisible:
+    id: "Select patient role, manage your own care"
+- assertVisible:
+    id: "Select caregiver role, manage patients you care for"
+
+- tapOn: "I'm a Caregiver"
+
+# Patient list: the header is exposed as a header, the icon-only back and add
+# buttons are labelled, and each row reads as one sentence rather than three
+# unrelated fragments.
+- assertVisible:
+    id: "Patients Header"
+- assertVisible:
+    id: "Go back"
+- assertVisible:
+    id: "Add new patient"
+- assertVisible:
+    id: "Patient Margaret Smith, age 78, condition: Routine care & Vision"
+
+# The add form: every field is labelled independently of its placeholder.
+- tapOn:
+    id: "Add new patient"
+- assertVisible:
+    id: "Add Patient Header"
+- assertVisible:
+    id: "Patient Name"
+- assertVisible:
+    id: "Patient Age"
+- assertVisible:
+    id: "Medical Condition"
+- back
+
+# Patient side: dose cards state the medicine, the dose and its status in one
+# announcement, and the action names the medicine it applies to.
+- tapOn: "Go back"
+- assertVisible: "How are you using CareConnect today?"
+- tapOn: "I'm a Patient"
+- assertVisible:
+    id: "Memantine 10 mg — 1 tablet, due now"
+- assertVisible:
+    id: "Mark Memantine as taken"
+- assertVisible:
+    id: "Vitamin D3 1000 IU — 1 capsule, taken"

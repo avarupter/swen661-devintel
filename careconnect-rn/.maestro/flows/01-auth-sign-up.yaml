@@ -1,0 +1,34 @@
+# A new user creating an account and reaching the role picker.
+appId: com.careconnectrn
+tags:
+  - auth
+---
+- launchApp:
+    clearState: true
+
+- assertVisible: "CareConnect"
+- assertVisible: "Your daily companion"
+
+- tapOn: "Create Account"
+- assertVisible: "Create your account"
+- assertVisible: "Free, private, and takes under two minutes."
+
+- tapOn: "Your name *"
+- inputText: "Dorothy Smith"
+- hideKeyboard
+- tapOn: "Email address *"
+- inputText: "dorothy@example.com"
+- hideKeyboard
+- tapOn: "Password *"
+- inputText: "password123"
+- hideKeyboard
+
+- tapOn:
+    text: "Create Account"
+    index: 1
+
+# The name typed into the form must survive into the greeting — this is the
+# assertion that proves auth state is actually shared, not per-screen.
+- assertVisible: "Welcome, Dorothy Smith!"
+- assertVisible: "I'm a Patient"
+- assertVisible: "I'm a Caregiver"

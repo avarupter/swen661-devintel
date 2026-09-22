@@ -1,0 +1,40 @@
+# A failed save must keep the user on the form. Popping back on invalid input
+# would silently discard whatever they had typed.
+appId: com.careconnectrn
+tags:
+  - caregiver
+  - validation
+---
+- launchApp:
+    clearState: true
+- runFlow: ../subflows/sign-in.yaml
+- tapOn: "I'm a Caregiver"
+
+- tapOn:
+    id: "Add new patient"
+- assertVisible: "Patient Name *"
+
+# Save with nothing filled in.
+- tapOn:
+    text: "Add Patient"
+    index: 1
+- assertVisible: "Please enter a patient name"
+- assertVisible: "Patient Name *"
+
+# Name only — the age check should now be the one that fires.
+- tapOn: "Patient Name *"
+- inputText: "Dorothy Hughes"
+- hideKeyboard
+- tapOn:
+    text: "Add Patient"
+    index: 1
+- assertVisible: "Please enter a valid age"
+
+# Correct it and the save goes through.
+- tapOn: "Age *"
+- inputText: "81"
+- hideKeyboard
+- tapOn:
+    text: "Add Patient"
+    index: 1
+- assertVisible: "Dorothy Hughes"

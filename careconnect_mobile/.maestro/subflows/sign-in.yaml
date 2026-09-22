@@ -1,0 +1,18 @@
+# Landing -> sign in -> role picker. Credentials are mocked, so any input works.
+appId: com.example.careconnect_mobile
+---
+- assertVisible: "CareConnect"
+- tapOn:
+    id: "Sign in to your existing account"
+- assertVisible: "Sign In"
+- tapOn:
+    id: "Email address"
+- inputText: "dorothy@example.com"
+- hideKeyboard
+- tapOn:
+    id: "Password"
+- inputText: "password123"
+- hideKeyboard
+- tapOn:
+    id: "Sign in to your account"
+- assertVisible: "Select Your Role"

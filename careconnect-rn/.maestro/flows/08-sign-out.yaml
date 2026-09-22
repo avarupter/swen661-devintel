@@ -1,0 +1,16 @@
+# Signing out must clear the session and return to the landing screen.
+appId: com.careconnectrn
+tags:
+  - auth
+---
+- launchApp:
+    clearState: true
+- runFlow: ../subflows/sign-in.yaml
+- tapOn: "I'm a Patient"
+
+- tapOn: "Profile"
+- assertVisible: "Sign Out"
+- tapOn: "Sign Out"
+
+- assertVisible: "CareConnect"
+- assertVisible: "Your daily companion"

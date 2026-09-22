@@ -1,0 +1,21 @@
+# The caregiver half of the app.
+appId: com.example.careconnect_mobile
+tags:
+  - caregiver
+---
+- launchApp:
+    clearState: true
+- runFlow: ../subflows/sign-in.yaml
+- tapOn:
+    id: "Select caregiver role. Manage patients you care for."
+
+- assertVisible: "Patients"
+
+- tapOn: "Medications"
+- assertVisible: "Manage Medications"
+
+- tapOn: "Appointments"
+- assertVisible: "Manage Appointments"
+
+- tapOn: "Activity"
+- assertVisible: "Activity log"

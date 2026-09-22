@@ -1,0 +1,14 @@
+# Getting into the app and picking a role.
+appId: com.example.careconnect_mobile
+tags:
+  - auth
+---
+- launchApp:
+    clearState: true
+- assertVisible: "CareConnect"
+- assertVisible: "Your daily companion"
+
+- runFlow: ../subflows/sign-in.yaml
+
+- assertVisible: "I'm a Patient"
+- assertVisible: "I'm a Caregiver"

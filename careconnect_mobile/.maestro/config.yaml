@@ -1,0 +1,9 @@
+# Maestro configuration for the CareConnect Flutter app.
+#
+# Run everything:  maestro test .maestro/flows
+#
+# Flutter draws to a canvas, so Maestro reads the Android accessibility tree
+# rather than native views. That tree is populated from the Semantics widgets in
+# lib/ — which means these flows assert on exactly what TalkBack announces.
+flows:
+  - flows/*.yaml

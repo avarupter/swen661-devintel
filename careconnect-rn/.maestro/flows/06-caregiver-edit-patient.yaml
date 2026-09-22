@@ -1,0 +1,28 @@
+# Editing an existing patient: the form must arrive prefilled, and the edit
+# must land back in the list.
+appId: com.careconnectrn
+tags:
+  - caregiver
+---
+- launchApp:
+    clearState: true
+- runFlow: ../subflows/sign-in.yaml
+
+- tapOn: "I'm a Caregiver"
+- assertVisible: "Arthur Pendelton"
+
+- tapOn: "Arthur Pendelton"
+
+# Prefilled from the patient that was tapped.
+- assertVisible: "Arthur Pendelton"
+- assertVisible: "Hypertension monitoring"
+- assertVisible: "Update Patient"
+
+- tapOn: "Condition"
+- eraseText
+- inputText: "Hypertension review"
+- hideKeyboard
+- tapOn: "Update Patient"
+
+- assertVisible: "Hypertension review"
+- assertVisible: "Arthur Pendelton"

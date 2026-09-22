@@ -1,0 +1,15 @@
+# The patient's daily dashboard — the screen the whole design is built around.
+appId: com.example.careconnect_mobile
+tags:
+  - patient
+---
+- launchApp:
+    clearState: true
+- runFlow: ../subflows/sign-in.yaml
+- tapOn:
+    id: "Select patient role. Manage your own care."
+
+- assertVisible: "Today"
+- assertVisible: "Take these now"
+- assertVisible: "Later today"
+- assertVisible: "Where you are going"

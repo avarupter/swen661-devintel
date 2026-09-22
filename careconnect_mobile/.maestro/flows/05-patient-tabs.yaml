@@ -1,0 +1,21 @@
+# Each patient tab opens its own screen.
+appId: com.example.careconnect_mobile
+tags:
+  - patient
+  - navigation
+---
+- launchApp:
+    clearState: true
+- runFlow: ../subflows/sign-in.yaml
+- tapOn:
+    id: "Select patient role. Manage your own care."
+
+- tapOn: "Medications"
+- assertVisible: "My medicines"
+- assertVisible: "Only if you need it"
+
+- tapOn: "Appointments"
+- assertVisible: "My appointments"
+
+- tapOn: "Today"
+- assertVisible: "Take these now"

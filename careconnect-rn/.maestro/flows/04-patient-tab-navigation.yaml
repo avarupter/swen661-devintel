@@ -1,0 +1,27 @@
+# Every patient tab opens its own screen.
+appId: com.careconnectrn
+tags:
+  - patient
+  - navigation
+---
+- launchApp:
+    clearState: true
+- runFlow: ../subflows/sign-in.yaml
+- tapOn: "I'm a Patient"
+
+- assertVisible: "Take these now"
+
+- tapOn: "Medications"
+- assertVisible: "My Medications"
+- assertVisible: "Regular medicines"
+- assertVisible: "Only if you need it"
+
+- tapOn: "Appointments"
+- assertVisible: "My Appointments"
+- assertVisible: "Coming up"
+
+- tapOn: "Profile"
+- assertVisible: "Sign Out"
+
+- tapOn: "Today"
+- assertVisible: "Today's progress"

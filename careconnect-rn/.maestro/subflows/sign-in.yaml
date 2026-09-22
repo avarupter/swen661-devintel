@@ -1,0 +1,17 @@
+# Signs in from the landing screen and stops on the role picker.
+# The form accepts demo credentials, so no real account is needed.
+appId: com.careconnectrn
+---
+- assertVisible: "CareConnect"
+- tapOn: "Sign In"
+- assertVisible: "Email address *"
+- tapOn: "Email address *"
+- inputText: "dorothy@example.com"
+- hideKeyboard
+- tapOn: "Password *"
+- inputText: "password123"
+- hideKeyboard
+- tapOn:
+    text: "Sign In"
+    index: 1
+- assertVisible: "How are you using CareConnect today?"

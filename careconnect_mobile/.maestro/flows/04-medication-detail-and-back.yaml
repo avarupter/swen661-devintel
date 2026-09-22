@@ -1,0 +1,21 @@
+# Opening a medicine and coming back — forward and backward navigation with an
+# id passed between screens.
+appId: com.example.careconnect_mobile
+tags:
+  - patient
+  - navigation
+---
+- launchApp:
+    clearState: true
+- runFlow: ../subflows/sign-in.yaml
+- tapOn:
+    id: "Select patient role. Manage your own care."
+
+- tapOn: "What is this medicine for?"
+- assertVisible: "What it is for"
+- assertVisible: "Today's doses"
+
+# The back control names its destination rather than saying just "Back".
+- tapOn:
+    id: "Back to my medicines"
+- assertVisible: "Take these now"

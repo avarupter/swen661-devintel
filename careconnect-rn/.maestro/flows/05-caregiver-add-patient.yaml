@@ -1,0 +1,35 @@
+# The caregiver CRUD workflow: add a patient and see it in the list.
+appId: com.careconnectrn
+tags:
+  - caregiver
+---
+- launchApp:
+    clearState: true
+- runFlow: ../subflows/sign-in.yaml
+
+- tapOn: "I'm a Caregiver"
+- assertVisible: "Patients"
+- assertVisible: "Margaret Smith"
+- assertNotVisible: "Dorothy Hughes"
+
+- tapOn:
+    id: "Add new patient"
+- assertVisible: "Patient Name *"
+
+- tapOn: "Patient Name *"
+- inputText: "Dorothy Hughes"
+- hideKeyboard
+- tapOn: "Age *"
+- inputText: "81"
+- hideKeyboard
+- tapOn: "Condition"
+- inputText: "Memory support"
+- hideKeyboard
+
+- tapOn:
+    text: "Add Patient"
+    index: 1
+
+# Newest first, and the list is driven by shared state rather than the form.
+- assertVisible: "Dorothy Hughes"
+- assertVisible: "Margaret Smith"
