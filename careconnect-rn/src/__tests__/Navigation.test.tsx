@@ -8,11 +8,14 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { Navigation } from '../navigation';
 import { AuthProvider } from '../context/AuthContext';
+import { PatientProvider } from '../context/PatientContext';
 
 async function renderApp() {
   return render(
     <AuthProvider>
-      <Navigation />
+      <PatientProvider>
+        <Navigation />
+      </PatientProvider>
     </AuthProvider>
   );
 }
@@ -121,18 +124,10 @@ describe('Navigation', () => {
     });
   });
 
-  test('KNOWN GAP: the patient rows point at routes that do not exist', async () => {
-    // PatientListScreen navigates to 'PatientDetail' and 'AddPatient', but
-    // neither is declared in src/navigation/index.tsx, so React Navigation
-    // cannot handle the action and the screen simply does not change.
-    //
-    // This test pins the current behaviour so the gap is visible rather than
-    // silent. When the two routes are added, this test should start failing —
-    // that is the signal to replace it with a real navigation assertion.
-    const consoleError = jest
-      .spyOn(console, 'error')
-      .mockImplementation(() => {});
-
+  test('tapping a patient reaches the edit form, prefilled', async () => {
+    // This replaces a KNOWN GAP test that pinned PatientDetail/AddPatient being
+    // missing from the navigator. Simon added the routes in 81ecea0, so the gap
+    // is closed and this is the assertion it was standing in for.
     await renderApp();
     await fireEvent.press(
       screen.getByLabelText('Sign in to your existing account')
@@ -158,12 +153,47 @@ describe('Navigation', () => {
     );
 
     await fireEvent.press(
-      screen.getByLabelText('View details for Margaret Smith')
+      screen.getByLabelText(/^Patient Margaret Smith/)
     );
 
-    // Still on the list: the navigation action went nowhere.
-    expect(screen.getByText('Margaret Smith')).toBeTruthy();
+    await waitFor(() => {
+      expect(screen.getByLabelText('Edit Patient Header')).toBeTruthy();
+      expect(screen.getByLabelText('Patient Name').props.value).toBe(
+        'Margaret Smith'
+      );
+    });
+  });
 
-    consoleError.mockRestore();
+  test('the add button reaches a blank add form', async () => {
+    await renderApp();
+    await fireEvent.press(
+      screen.getByLabelText('Sign in to your existing account')
+    );
+    await waitFor(() =>
+      expect(screen.getByLabelText('Sign in to your account')).toBeTruthy()
+    );
+    await fireEvent.press(screen.getByLabelText('Sign in to your account'));
+    await waitFor(() =>
+      expect(
+        screen.getByLabelText(
+          'Select caregiver role, manage patients you care for'
+        )
+      ).toBeTruthy()
+    );
+    await fireEvent.press(
+      screen.getByLabelText(
+        'Select caregiver role, manage patients you care for'
+      )
+    );
+    await waitFor(() =>
+      expect(screen.getByLabelText('Add new patient')).toBeTruthy()
+    );
+
+    await fireEvent.press(screen.getByLabelText('Add new patient'));
+
+    await waitFor(() => {
+      expect(screen.getByLabelText('Add Patient Header')).toBeTruthy();
+      expect(screen.getByLabelText('Patient Name').props.value).toBe('');
+    });
   });
 });

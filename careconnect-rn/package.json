@@ -57,8 +57,8 @@
     ],
     "coverageThreshold": {
       "global": {
-        "lines": 60,
-        "statements": 60
+        "lines": 75,
+        "statements": 75
       }
     },
     "reporters": [
