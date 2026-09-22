@@ -25,12 +25,19 @@ export default function PatientListScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
+      <View
+        style={styles.header}
+        accessible={true}
+        accessibilityRole="header"
+        accessibilityLabel="Patients Header"
+      >
         <TouchableOpacity
           style={styles.backButton}
           onPress={() => navigation.goBack()}
           accessibilityRole="button"
           accessibilityLabel="Go back"
+          accessibilityHint="Returns to the previous screen"
+          accessible={true}
         >
           <Ionicons name="arrow-back" size={20} color="#FFFFFF" />
         </TouchableOpacity>
@@ -38,7 +45,11 @@ export default function PatientListScreen() {
       </View>
 
       {patients.length === 0 ? (
-        <View style={styles.emptyContainer}>
+        <View
+          style={styles.emptyContainer}
+          accessible={true}
+          accessibilityLabel="No patients yet. Add one!"
+        >
           <Ionicons name="people-outline" size={56} color="#94A3B8" />
           <Text style={styles.emptyText}>No patients yet. Add one!</Text>
         </View>
@@ -52,7 +63,9 @@ export default function PatientListScreen() {
               style={styles.card}
               onPress={() => handlePatientPress(item)}
               accessibilityRole="button"
-              accessibilityLabel={`Edit details for ${item.name}`}
+              accessibilityLabel={`Patient ${item.name}, age ${item.age}, condition: ${item.condition}`}
+              accessibilityHint="Double tap to view and edit patient details"
+              accessible={true}
             >
               <View style={styles.cardInfo}>
                 <Text style={styles.patientName}>{item.name}</Text>
@@ -72,6 +85,8 @@ export default function PatientListScreen() {
         onPress={handleAddPress}
         accessibilityRole="button"
         accessibilityLabel="Add new patient"
+        accessibilityHint="Opens form to add a new patient"
+        accessible={true}
       >
         <Ionicons name="add" size={24} color="#FFFFFF" />
       </TouchableOpacity>
