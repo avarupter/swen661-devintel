@@ -7,21 +7,25 @@ tags:
 - launchApp:
     clearState: true
 - runFlow: ../subflows/sign-in.yaml
-- tapOn: "I'm a Patient"
+- tapOn: "Select patient role, manage your own care"
 
 - assertVisible: "Take these now"
 
 - tapOn: "Medications"
 - assertVisible: "My Medications"
 - assertVisible: "Regular medicines"
-- assertVisible: "Only if you need it"
+# The as-needed section sits below the scheduled medicines.
+- scrollUntilVisible:
+    element:
+      text: "Only if you need it"
+    direction: DOWN
 
 - tapOn: "Appointments"
 - assertVisible: "My Appointments"
 - assertVisible: "Coming up"
 
 - tapOn: "Profile"
-- assertVisible: "Sign Out"
+- assertVisible: "Sign out of your account"
 
 - tapOn: "Today"
 - assertVisible: "Today's progress"

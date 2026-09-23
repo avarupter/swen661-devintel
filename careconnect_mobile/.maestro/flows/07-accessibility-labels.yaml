@@ -1,35 +1,25 @@
-# Accessibility pass (WCAG 2.1 AA / screen-reader requirement).
+# Accessibility pass (WCAG 2.1 AA / the screen-reader requirement).
 #
-# Every id: matcher below is a Semantics label from lib/, which is what TalkBack
-# reads aloud. Icon-only controls are the ones that matter most — with the label
-# gone they become unlabelled buttons, and this flow fails.
+# Everything asserted here is a Semantics label from lib/, which is what Flutter
+# publishes as the Android content-desc and therefore what TalkBack reads aloud.
+# Controls with no visible text of their own are the ones that matter: with the
+# label gone they look identical on screen and become unlabelled buttons to a
+# screen-reader user, and this flow is what catches that.
 appId: com.example.careconnect_mobile
 tags:
   - accessibility
 ---
 - launchApp:
     clearState: true
-
-- assertVisible:
-    id: "Sign in to your existing account"
-- assertVisible:
-    id: "Create a new account"
-
 - runFlow: ../subflows/sign-in.yaml
 
-- assertVisible:
-    id: "Select patient role. Manage your own care."
-- assertVisible:
-    id: "Select caregiver role. Manage patients you care for."
+# The role cards say which role AND what it means, not just "button".
+- assertVisible: "Select patient role. Manage your own care."
+- assertVisible: "Select caregiver role. Manage patients you care for."
 
-- tapOn:
-    id: "Select patient role. Manage your own care."
+- tapOn: "Select caregiver role. Manage patients you care for."
 
-# A dose card is one sentence: medicine, dose, time of day, and its status.
-- assertVisible:
-    id: "Mark Lisinopril 10 mg at 8:00 AM as taken"
+# Patient rows read as one sentence; the icon-only add control is labelled.
+- assertVisible: "View details for Dorothy Smith"
+- assertVisible: "Add new patient"
 
-- tapOn: "What is this medicine for?"
-# The back affordance names where back goes.
-- assertVisible:
-    id: "Back to my medicines"

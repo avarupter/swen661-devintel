@@ -7,23 +7,27 @@ tags:
     clearState: true
 - runFlow: ../subflows/sign-in.yaml
 
-- tapOn: "I'm a Patient"
+- tapOn: "Select patient role, manage your own care"
 
 # Today groups the day into three sections — the whole point of the screen.
 - assertVisible: "Today's progress"
 - assertVisible: "Take these now"
 - assertVisible: "Later today"
-- assertVisible: "Already done"
 
 # One of the four seeded doses is already taken.
 - assertVisible: "1 of 4"
 - assertVisible: "doses taken"
 
-# Only the due dose offers the action; a taken dose says so instead.
+# Only the due dose offers the action.
 - assertVisible: "Mark as taken"
+
+# The rest of the day is below the fold.
+- scrollUntilVisible:
+    element:
+      text: "Already done"
+    direction: DOWN
 - assertVisible: "You took this earlier today."
 
-# Today's appointment, including who is driving.
 - scrollUntilVisible:
     element:
       text: "Vision Plus Opticians"

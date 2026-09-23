@@ -12,11 +12,17 @@ curl -Ls "https://get.maestro.mobile.dev" | bash      # installs to ~/.maestro
 # A booted Android emulator or a connected device
 adb devices
 
-# The app installed on it
+# The app installed on it — note assembleRelease, not assembleDebug
 npx expo prebuild --platform android
-cd android && ./gradlew assembleDebug
-adb install -r app/build/outputs/apk/debug/app-debug.apk
+cd android && ./gradlew assembleRelease
+adb install -r app/build/outputs/apk/release/app-release.apk
 ```
+
+**Use the release build.** The debug APK is an `expo-dev-client` build: it boots
+the dev launcher and waits for a Metro server, so `launchApp` lands on
+"Development Build / Start a local development server" and every flow fails on
+the first assertion. The release build has the JS bundled and runs standalone.
+It is signed with the debug keystore, so no signing setup is needed.
 
 JDK 17 is required. React Native's Gradle plugin pins
 `foojay-resolver-convention` 0.5.0, which is incompatible with Gradle 9 — on a
@@ -50,6 +56,34 @@ maestro test --format junit --output e2e-report.xml .maestro/flows
 | `07-add-patient-validation` | Both validation branches keep the user on the form |
 | `08-sign-out` | Sign-out clears the session and returns to landing |
 | `09-accessibility-labels` | Icon-only controls and card summaries are labelled |
+
+## Status
+
+All 9 flows pass against the release APK on an Android 34 emulator
+(`maestro test .maestro/flows`). `e2e-report.xml` holds the JUnit output.
+
+## Writing matchers for this app
+
+Three things cost real time the first time round:
+
+- **Maestro matches the whole node, as a regex.** A substring will not match.
+  Where the app merges text, either assert the exact merged string or use a
+  regex — `text: "(?s).*1 of 6 doses taken today"` (the `(?s)` lets `.*` cross
+  the newline).
+- **React Native publishes the accessibilityLabel and the visible text as two
+  separate nodes.** Prefer the label: "Sign In" is both a heading and a button,
+  while "Sign in to your account" is unambiguous.
+- **Several nodes can share one string.** Four nodes on the Add Patient screen
+  read "Add Patient" — the nav title, the in-app header, the button and the
+  button's inner label — and only one is clickable. Tapping the wrong one is a
+  silent no-op that looks exactly like a validation bug, so that flow selects
+  with `below: "Condition"`. That collision is also worth fixing in the app: a
+  screen-reader user hears "Add Patient" three times on one screen.
+
+Also: `eraseText` deletes backwards from the caret, and React Native puts the
+caret where you tap. Tapping the middle of a filled field and erasing leaves the
+tail behind, so `06-caregiver-edit-patient` taps the right edge of the field
+first.
 
 ## Why the accessibility flow matters
 

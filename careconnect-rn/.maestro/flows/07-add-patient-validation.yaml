@@ -8,33 +8,36 @@ tags:
 - launchApp:
     clearState: true
 - runFlow: ../subflows/sign-in.yaml
-- tapOn: "I'm a Caregiver"
+- tapOn: "Select caregiver role, manage patients you care for"
 
-- tapOn:
-    id: "Add new patient"
-- assertVisible: "Patient Name *"
+- tapOn: "Add new patient"
+- assertVisible: "Add Patient Header"
 
-# Save with nothing filled in.
+# Four nodes on this screen have the exact text "Add Patient": the navigation
+# title, the in-app header, the button, and the button's inner label. Only one
+# is clickable, so select it by position — `below: "Condition"` puts it beyond
+# the last field. Tapping one of the others is a silent no-op that looks
+# identical to validation quietly passing.
 - tapOn:
     text: "Add Patient"
-    index: 1
+    below: "Condition"
 - assertVisible: "Please enter a patient name"
-- assertVisible: "Patient Name *"
+- assertVisible: "Add Patient Header"
 
 # Name only — the age check should now be the one that fires.
-- tapOn: "Patient Name *"
+- tapOn: "Patient Name"
 - inputText: "Dorothy Hughes"
 - hideKeyboard
 - tapOn:
     text: "Add Patient"
-    index: 1
+    below: "Condition"
 - assertVisible: "Please enter a valid age"
 
 # Correct it and the save goes through.
-- tapOn: "Age *"
+- tapOn: "Patient Age"
 - inputText: "81"
 - hideKeyboard
 - tapOn:
     text: "Add Patient"
-    index: 1
-- assertVisible: "Dorothy Hughes"
+    below: "Condition"
+- assertVisible: "Patients Header"

@@ -10,5 +10,8 @@ tags:
 
 - runFlow: ../subflows/sign-in.yaml
 
-- assertVisible: "I'm a Patient"
-- assertVisible: "I'm a Caregiver"
+# Assert the Semantics labels rather than the visible card text: Flutter merges
+# the card's two Text widgets into one node ("I'm a Patient\nManage your own
+# care") that Maestro will not match, while the Semantics label is exact.
+- assertVisible: "Select patient role. Manage your own care."
+- assertVisible: "Select caregiver role. Manage patients you care for."

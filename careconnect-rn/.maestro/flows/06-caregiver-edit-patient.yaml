@@ -1,5 +1,5 @@
-# Editing an existing patient: the form must arrive prefilled, and the edit
-# must land back in the list.
+# Editing an existing patient: the form must arrive prefilled, and the edit must
+# land back in the list.
 appId: com.careconnectrn
 tags:
   - caregiver
@@ -8,21 +8,33 @@ tags:
     clearState: true
 - runFlow: ../subflows/sign-in.yaml
 
-- tapOn: "I'm a Caregiver"
+- tapOn: "Select caregiver role, manage patients you care for"
 - assertVisible: "Arthur Pendelton"
 
-- tapOn: "Arthur Pendelton"
+- tapOn: "Patient Arthur Pendelton, age 82, condition: Hypertension monitoring"
 
 # Prefilled from the patient that was tapped.
+- assertVisible: "Edit Patient Header"
 - assertVisible: "Arthur Pendelton"
 - assertVisible: "Hypertension monitoring"
-- assertVisible: "Update Patient"
 
-- tapOn: "Condition"
-- eraseText
+# Tap the RIGHT EDGE of the Condition field, not its centre. React Native puts
+# the caret where you tap, and eraseText only deletes backwards from the caret —
+# tapping the middle of "Hypertension monitoring" erased the first half and left
+# "ring" behind, producing "Hypertension reviewring". Tapping past the end of
+# the text puts the caret at the end so the field clears completely.
+# The field is bounds=[90,1155][990,1286] on a 1080x2340 screen.
+- tapOn:
+    point: "88%,52%"
+- eraseText: 50
 - inputText: "Hypertension review"
 - hideKeyboard
+
+# On the edit form the button reads "Update Patient" — the navigation title is
+# "Edit Patient", so there is no collision here and no index is needed.
 - tapOn: "Update Patient"
 
-- assertVisible: "Hypertension review"
-- assertVisible: "Arthur Pendelton"
+- assertVisible: "Patients Header"
+# The row label is the screen-reader sentence, so this checks the edit landed in
+# shared state AND that the announcement was rebuilt from it.
+- assertVisible: "Patient Arthur Pendelton, age 82, condition: Hypertension review"

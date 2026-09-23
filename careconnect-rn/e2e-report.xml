@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<testsuites>
+  <testsuite name="Test Suite" device="careconnect_e2e" tests="9" failures="0" time="324.624" timestamp="2026-09-22T20:25:51">
+    <testcase id="08-sign-out" name="08-sign-out" classname="08-sign-out" file=".maestro/flows/08-sign-out.yaml" time="30.45" timestamp="2026-09-22T20:25:51" status="SUCCESS">
+      <properties>
+        <property name="tags" value="auth"/>
+      </properties>
+    </testcase>
+    <testcase id="05-caregiver-add-patient" name="05-caregiver-add-patient" classname="05-caregiver-add-patient" file=".maestro/flows/05-caregiver-add-patient.yaml" time="48.822" timestamp="2026-09-22T20:26:21" status="SUCCESS">
+      <properties>
+        <property name="tags" value="caregiver"/>
+      </properties>
+    </testcase>
+    <testcase id="04-patient-tab-navigation" name="04-patient-tab-navigation" classname="04-patient-tab-navigation" file=".maestro/flows/04-patient-tab-navigation.yaml" time="37.258" timestamp="2026-09-22T20:27:10" status="SUCCESS">
+      <properties>
+        <property name="tags" value="patient, navigation"/>
+      </properties>
+    </testcase>
+    <testcase id="03-patient-detail-and-back" name="03-patient-detail-and-back" classname="03-patient-detail-and-back" file=".maestro/flows/03-patient-detail-and-back.yaml" time="28.001" timestamp="2026-09-22T20:27:48" status="SUCCESS">
+      <properties>
+        <property name="tags" value="patient, navigation"/>
+      </properties>
+    </testcase>
+    <testcase id="07-add-patient-validation" name="07-add-patient-validation" classname="07-add-patient-validation" file=".maestro/flows/07-add-patient-validation.yaml" time="46.592" timestamp="2026-09-22T20:28:16" status="SUCCESS">
+      <properties>
+        <property name="tags" value="caregiver, validation"/>
+      </properties>
+    </testcase>
+    <testcase id="02-patient-daily-check" name="02-patient-daily-check" classname="02-patient-daily-check" file=".maestro/flows/02-patient-daily-check.yaml" time="28.109" timestamp="2026-09-22T20:29:02" status="SUCCESS">
+      <properties>
+        <property name="tags" value="patient"/>
+      </properties>
+    </testcase>
+    <testcase id="01-auth-sign-up" name="01-auth-sign-up" classname="01-auth-sign-up" file=".maestro/flows/01-auth-sign-up.yaml" time="28.995" timestamp="2026-09-22T20:29:30" status="SUCCESS">
+      <properties>
+        <property name="tags" value="auth"/>
+      </properties>
+    </testcase>
+    <testcase id="06-caregiver-edit-patient" name="06-caregiver-edit-patient" classname="06-caregiver-edit-patient" file=".maestro/flows/06-caregiver-edit-patient.yaml" time="38.563" timestamp="2026-09-22T20:29:59" status="SUCCESS">
+      <properties>
+        <property name="tags" value="caregiver"/>
+      </properties>
+    </testcase>
+    <testcase id="09-accessibility-labels" name="09-accessibility-labels" classname="09-accessibility-labels" file=".maestro/flows/09-accessibility-labels.yaml" time="37.8" timestamp="2026-09-22T20:30:38" status="SUCCESS">
+      <properties>
+        <property name="tags" value="accessibility"/>
+      </properties>
+    </testcase>
+  </testsuite>
+</testsuites>

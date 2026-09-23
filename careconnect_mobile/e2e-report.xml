@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<testsuites>
+  <testsuite name="Test Suite" device="careconnect_e2e" tests="7" failures="0" time="175.644" timestamp="2026-09-22T20:40:02">
+    <testcase id="05-patient-tabs" name="05-patient-tabs" classname="05-patient-tabs" file=".maestro/flows/05-patient-tabs.yaml" time="30.634" timestamp="2026-09-22T20:40:02" status="SUCCESS">
+      <properties>
+        <property name="tags" value="patient, navigation"/>
+      </properties>
+    </testcase>
+    <testcase id="03-mark-dose-and-undo" name="03-mark-dose-and-undo" classname="03-mark-dose-and-undo" file=".maestro/flows/03-mark-dose-and-undo.yaml" time="25.076" timestamp="2026-09-22T20:40:32" status="SUCCESS">
+      <properties>
+        <property name="tags" value="patient, accessibility"/>
+      </properties>
+    </testcase>
+    <testcase id="01-auth-and-role" name="01-auth-and-role" classname="01-auth-and-role" file=".maestro/flows/01-auth-and-role.yaml" time="19.088" timestamp="2026-09-22T20:40:57" status="SUCCESS">
+      <properties>
+        <property name="tags" value="auth"/>
+      </properties>
+    </testcase>
+    <testcase id="06-caregiver-side" name="06-caregiver-side" classname="06-caregiver-side" file=".maestro/flows/06-caregiver-side.yaml" time="26.44" timestamp="2026-09-22T20:41:17" status="SUCCESS">
+      <properties>
+        <property name="tags" value="caregiver"/>
+      </properties>
+    </testcase>
+    <testcase id="02-patient-today" name="02-patient-today" classname="02-patient-today" file=".maestro/flows/02-patient-today.yaml" time="29.414" timestamp="2026-09-22T20:41:43" status="SUCCESS">
+      <properties>
+        <property name="tags" value="patient"/>
+      </properties>
+    </testcase>
+    <testcase id="04-medication-detail-and-back" name="04-medication-detail-and-back" classname="04-medication-detail-and-back" file=".maestro/flows/04-medication-detail-and-back.yaml" time="25.466" timestamp="2026-09-22T20:42:12" status="SUCCESS">
+      <properties>
+        <property name="tags" value="patient, navigation"/>
+      </properties>
+    </testcase>
+    <testcase id="07-accessibility-labels" name="07-accessibility-labels" classname="07-accessibility-labels" file=".maestro/flows/07-accessibility-labels.yaml" time="19.495" timestamp="2026-09-22T20:42:38" status="SUCCESS">
+      <properties>
+        <property name="tags" value="accessibility"/>
+      </properties>
+    </testcase>
+  </testsuite>
+</testsuites>

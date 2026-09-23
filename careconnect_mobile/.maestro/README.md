@@ -37,6 +37,28 @@ maestro test --format junit --output e2e-report.xml .maestro/flows
 | `06-caregiver-side` | Patients, medications, appointments, activity |
 | `07-accessibility-labels` | Semantics labels that TalkBack depends on |
 
+## Status
+
+All 7 flows pass against the debug APK on an Android 34 emulator
+(`maestro test .maestro/flows`). `e2e-report.xml` holds the JUnit output.
+
+## Writing matchers for this app
+
+- **Maestro matches the whole node, as a regex** — a substring will not match.
+- **Flutter merges sibling Text widgets into one accessibility node.** The tab
+  bar exposes `"Medications\nTab 2 of 5"`, and the Today header is one node
+  containing the date and the greeting. Assert the exact merged string, or use a
+  regex with `(?s)` so `.*` can cross the newlines.
+- **`id:` matchers never work here.** Flutter publishes no Android resource-id;
+  everything comes through as content-desc, which plain-string matching covers.
+- **Do not use `hideKeyboard`.** On Android it is a back press, and Flutter pops
+  the route — the flow silently returns to the previous screen and fails several
+  steps later somewhere confusing. Tap the next field instead.
+- **Avoid asserting anything clock-dependent.** The Today progress sentence
+  carries a "N doses are ready to take now" clause that changes through the day,
+  and the "Later today" section disappears entirely once nothing is upcoming.
+  Both are the app behaving correctly. The flows assert the stable parts.
+
 ## A note on Flutter and Maestro
 
 Flutter paints to a canvas — there are no native Android views for Maestro to

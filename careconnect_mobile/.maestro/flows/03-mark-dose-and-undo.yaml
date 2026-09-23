@@ -1,8 +1,8 @@
 # Marking a dose taken and undoing it.
 #
 # This is the short-term-memory-loss behaviour the app exists for: the card
-# states who took it and when, in a sentence, and the undo is a permanent button
-# rather than a snackbar that disappears before it can be read.
+# states in a sentence that the dose was taken and when, and the undo is a
+# permanent button rather than a snackbar that vanishes before it can be read.
 appId: com.example.careconnect_mobile
 tags:
   - patient
@@ -11,18 +11,32 @@ tags:
 - launchApp:
     clearState: true
 - runFlow: ../subflows/sign-in.yaml
+- tapOn: "Select patient role. Manage your own care."
+
+# Matched as a regex, not a literal. The full sentence also carries a
+# "N doses are ready to take now" clause that changes as the clock passes each
+# scheduled time, so asserting the literal string makes the flow fail purely
+# because of when it ran. The "N of 6 doses taken today" tail is what this test
+# is actually about. (?s) lets .* span the newline Flutter puts between the two
+# merged Text widgets.
+- assertVisible:
+    text: "(?s).*0 of 6 doses taken today"
+- assertVisible: "Lisinopril, 10 mg, Morning, 8:00 AM. Not taken yet. Take in the morning, with or without food."
+
+- tapOn: "Mark Lisinopril 10 mg at 8:00 AM as taken"
+
+# The card now states who took it and when, and the count moves.
+- assertVisible:
+    text: "Lisinopril, 10 mg, Morning, 8:00 AM. You took this at .*"
+- assertVisible:
+    text: "(?s).*1 of 6 doses taken today"
+
+# Undo is a permanent control on the card, not a timed snackbar.
+- assertVisible:
+    text: "Undo. Mark Lisinopril at 8:00 AM as not taken"
 - tapOn:
-    id: "Select patient role. Manage your own care."
+    text: "Undo. Mark Lisinopril at 8:00 AM as not taken"
 
-- assertVisible: "Take these now"
-- assertVisible: "Not taken yet."
-
-- tapOn:
-    id: "Mark Lisinopril 10 mg at 8:00 AM as taken"
-
-# The reassurance line replaces "Not taken yet." and the undo appears.
-- assertVisible: "Undo — I have not taken this"
-- assertVisible: "Already done"
-
-- tapOn: "Undo — I have not taken this"
-- assertVisible: "Not taken yet."
+- assertVisible: "Lisinopril, 10 mg, Morning, 8:00 AM. Not taken yet. Take in the morning, with or without food."
+- assertVisible:
+    text: "(?s).*0 of 6 doses taken today"

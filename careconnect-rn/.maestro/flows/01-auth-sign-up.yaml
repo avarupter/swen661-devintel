@@ -23,9 +23,7 @@ tags:
 - inputText: "password123"
 - hideKeyboard
 
-- tapOn:
-    text: "Create Account"
-    index: 1
+- tapOn: "Create your new account"
 
 # The name typed into the form must survive into the greeting — this is the
 # assertion that proves auth state is actually shared, not per-screen.
