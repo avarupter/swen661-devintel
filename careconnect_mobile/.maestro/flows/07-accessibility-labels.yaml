@@ -1,0 +1,25 @@
+# Accessibility pass (WCAG 2.1 AA / the screen-reader requirement).
+#
+# Everything asserted here is a Semantics label from lib/, which is what Flutter
+# publishes as the Android content-desc and therefore what TalkBack reads aloud.
+# Controls with no visible text of their own are the ones that matter: with the
+# label gone they look identical on screen and become unlabelled buttons to a
+# screen-reader user, and this flow is what catches that.
+appId: com.example.careconnect_mobile
+tags:
+  - accessibility
+---
+- launchApp:
+    clearState: true
+- runFlow: ../subflows/sign-in.yaml
+
+# The role cards say which role AND what it means, not just "button".
+- assertVisible: "Select patient role. Manage your own care."
+- assertVisible: "Select caregiver role. Manage patients you care for."
+
+- tapOn: "Select caregiver role. Manage patients you care for."
+
+# Patient rows read as one sentence; the icon-only add control is labelled.
+- assertVisible: "View details for Dorothy Smith"
+- assertVisible: "Add new patient"
+

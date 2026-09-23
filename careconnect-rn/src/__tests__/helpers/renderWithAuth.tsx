@@ -2,6 +2,7 @@
 import React, { ReactElement, ReactNode, useEffect } from 'react';
 import { render } from '@testing-library/react-native';
 import { AuthProvider, useAuth } from '../../context/AuthContext';
+import { PatientProvider } from '../../context/PatientContext';
 
 /**
  * Renders a screen inside a real AuthProvider.
@@ -44,6 +45,21 @@ export async function renderWithSignedInUser(
     wrapper: ({ children }: { children: ReactNode }) => (
       <AuthProvider>
         <Seed>{children}</Seed>
+      </AuthProvider>
+    ),
+  });
+}
+
+/**
+ * Renders a screen inside both app providers. PatientListScreen and
+ * AddEditPatientScreen read the patient list from PatientContext, so they throw
+ * "usePatients must be used within a PatientProvider" without this.
+ */
+export async function renderWithProviders(ui: ReactElement) {
+  return render(ui, {
+    wrapper: ({ children }: { children: ReactNode }) => (
+      <AuthProvider>
+        <PatientProvider>{children}</PatientProvider>
       </AuthProvider>
     ),
   });

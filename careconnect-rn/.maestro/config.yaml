@@ -1,0 +1,9 @@
+# Maestro configuration for the CareConnect React Native app.
+#
+# Run everything:   maestro test .maestro/flows
+# Run one flow:     maestro test .maestro/flows/02-patient-daily-check.yaml
+#
+# Requires a booted Android emulator or a connected device with the app
+# installed (com.careconnectrn). See .maestro/README.md.
+flows:
+  - flows/*.yaml
