@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>CareConnect — Landing</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      :root{
+        --bg:#f6f9fb;
+        --card:#ffffff;
+        --muted:#97a6b2;
+        --text:#0f1723;
+        --blue:#1e7cff;
+        --blue-2:#0b63e6;
+        --accent:#e9f2ff;
+      }
+      html,body{height:100%;}
+      body{
+        margin:0;
+        font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        background:var(--bg);
+        color:var(--text);
+      }
+      .container{
+        max-width:1180px;
+        margin:0 auto;
+        padding:28px 32px;
+      }
+      header{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        padding:10px 0 30px 0;
+      }
+      .brand{
+        display:flex;
+        align-items:center;
+        gap:14px;
+        font-weight:700;
+        color:#16232b;
+        font-size:22px;
+      }
+      nav ul{list-style:none;margin:0;padding:0;display:flex;gap:28px;align-items:center}
+      nav a{color:#577281;text-decoration:none;font-weight:500}
+      nav a.active{color:var(--blue);border-bottom:3px solid var(--blue);padding-bottom:10px}
+      .auth{display:flex;gap:12px;align-items:center}
+      .sign-in{color:var(--blue);text-decoration:none}
+      .sign-up{background:linear-gradient(180deg,var(--blue) 0%, var(--blue-2) 100%);color:white;padding:10px 16px;border-radius:24px;text-decoration:none;font-weight:600}
+
+      /* layout */
+      .hero{
+        display:grid;
+        grid-template-columns:1fr 560px;
+        gap:40px;
+        align-items:center;
+        min-height:680px;
+      }
+      .meta-badge{display:inline-flex;align-items:center;gap:8px;background:#eaf5ff;color:var(--blue);padding:8px 14px;border-radius:16px;font-weight:600;font-size:14px;margin-bottom:22px}
+      .meta-badge .dot{width:8px;height:8px;background:var(--blue);border-radius:50%}
+      h1{
+        font-size:64px;margin:0 0 18px 0;line-height:1.02;font-weight:800;color:#0f1723;
+      }
+      p.lead{color:var(--muted);font-size:16px;margin:0 0 28px 0}
+      .cta-row{display:flex;flex-direction:column;gap:14px}
+      .cta{display:inline-flex;align-items:center;gap:14px;background:linear-gradient(90deg,var(--blue) 0%, var(--blue-2) 100%);color:white;padding:18px 28px;border-radius:999px;box-shadow:0 8px 18px rgba(14,77,255,0.12);text-decoration:none;font-weight:700}
+      .cta .arrow{display:inline-block;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center}
+      .secondary{color:var(--blue);text-decoration:none;font-size:14px;align-self:flex-start}
+
+      .note{display:flex;gap:10px;align-items:center;color:var(--muted);margin-top:28px;font-size:14px}
+      .note .lock{width:22px;height:22px;background:#e9f2ff;border-radius:6px;display:inline-grid;place-items:center;color:var(--blue)}
+
+      /* right illustration */
+      .right-visual{position:relative;height:560px}
+      .ring{position:absolute;inset:0;margin:auto;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle at center, rgba(14,77,255,0.06) 0%, rgba(14,77,255,0.02) 30%, transparent 60%);display:block}
+      .dashed{position:absolute;border:2px dashed rgba(14,77,255,0.06);width:420px;height:420px;border-radius:50%;inset:50px}
+      .center-icon{position:absolute;inset:0;margin:auto;width:88px;height:88px;border-radius:50%;background:white;display:grid;place-items:center;left:50%;transform:translateX(-50%);top:46%;box-shadow:0 12px 24px rgba(16,56,110,0.06)}
+      .center-icon svg{width:36px;height:36px;color:var(--blue)}
+
+      .pill{position:absolute;background:white;padding:14px 18px;border-radius:12px;box-shadow:0 8px 18px rgba(16,56,110,0.06);min-width:180px}
+      .pill.small{min-width:44px;height:44px;border-radius:50%;display:grid;place-items:center}
+      .pill .label{font-size:11px;color:var(--blue);font-weight:700;text-transform:uppercase;letter-spacing:0.06em}
+      .pill .text{font-size:14px;color:#0f1723;font-weight:600;margin-top:6px}
+
+      .pill.med{left:46%;top:16%;transform:translate(-20px,0)}
+      .pill.bot{right:12%;bottom:18%;}
+      .pill.chat{right:8%;top:34%}
+
+      /* small screens */
+      @media (max-width:980px){
+        .container{padding:22px}
+        .hero{grid-template-columns:1fr;gap:28px;padding-bottom:60px}
+        .right-visual{height:320px}
+        h1{font-size:40px}
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="brand">CareConnect</div>
+        <div class="auth">
+          <a class="sign-in" href="SignInScreen.html">Sign in</a>
+          <a class="sign-up" href="SignUpScreen.html">Sign up</a>
+        </div>
+      </header>
+
+      <main class="hero">
+        <section>
+          <div class="meta-badge"><span class="dot"></span> Everyday care, made simpler</div>
+          <h1>Your daily companion for calm, confident care.</h1>
+          <p class="lead">For people who need a little help remembering, and the people who care for them.</p>
+
+          <div class="cta-row">
+            <a class="cta" href="SignUpScreen.html">
+              <span>Get started — it's free</span>
+              <span class="arrow">➜</span>
+            </a>
+            <a class="secondary" href="SignInScreen.html">I already have an account</a>
+          </div>
+
+          <div class="note">
+            <div class="lock">🔒</div>
+            <div>Private, secure, and always in your control</div>
+          </div>
+        </section>
+
+        <aside class="right-visual">
+          <div class="ring"></div>
+          <div class="dashed"></div>
+
+          <div class="center-icon" aria-hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.8 8.6a6 6 0 0 0-8.5-1L12 7.9l-.3-.4a6 6 0 0 0-8.5 8.6l.3.3L12 22l8.6-4.6.3-.2a6 6 0 0 0 0-8.6z" />
+            </svg>
+          </div>
+
+          <div class="pill med" style="">
+            <div class="label">Medications</div>
+            <div class="text">Morning dose · 9:00…</div>
+          </div>
+
+          <div class="pill chat small" style="">
+            <div aria-hidden>💬</div>
+          </div>
+
+          <div class="pill bot" style="">
+            <div class="label">Appointments</div>
+            <div class="text">Dr. Patel · Tuesday</div>
+          </div>
+        </aside>
+      </main>
+    </div>
+  </body>
+</html>

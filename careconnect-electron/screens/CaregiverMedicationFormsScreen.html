@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Caregiver — Manage medications</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      :root{--bg:#f6f9fb;--panel:#fff;--muted:#6b7a85;--blue:#1e7cff;--border:#e6edf3}
+      *{box-sizing:border-box}
+      body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:var(--bg);color:#12202b}
+      .app{display:flex;min-height:100vh}
+
+      .sidebar{width:220px;background:#fff;border-right:1px solid #eef2f5;padding:28px 18px}
+      .brand{font-weight:700;display:flex;gap:10px;align-items:center}
+      .nav{margin-top:20px}
+      .nav a{display:block;padding:10px;border-radius:8px;color:#304a56;text-decoration:none;margin-bottom:6px}
+      .nav a.active{background:linear-gradient(90deg,#eef8ff,#fff);font-weight:700}
+
+      main{flex:1;padding:28px}
+      .header{display:flex;align-items:flex-start;justify-content:space-between}
+      .header small{color:var(--muted)}
+      .header h1{margin:6px 0 0 0;font-size:28px}
+      .sub{color:#2aa65b;font-weight:600;margin-top:6px}
+
+      .content{margin-top:22px}
+
+      .manage-title{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:700}
+      .manage-sub{color:var(--muted);margin-top:6px;margin-bottom:16px}
+
+      .form-card{max-width:760px;background:var(--panel);border-radius:10px;padding:20px;border:1px solid var(--border);box-shadow:0 8px 20px rgba(16,56,110,0.03);position:relative}
+      .form-card .close{position:absolute;right:16px;top:16px;background:transparent;border:none;font-size:18px;color:var(--muted);cursor:pointer}
+
+      label{display:block;font-size:13px;color:#233142;margin-bottom:8px;font-weight:600}
+      .input{display:block;width:100%;padding:12px 14px;border-radius:8px;border:1px solid #e6edf3;background:#fff;color:#213243}
+      .field{margin-bottom:14px}
+      .hint{font-size:13px;color:var(--muted);margin-top:6px}
+
+      .small{font-size:13px;color:var(--muted)}
+
+      @media (max-width:900px){.sidebar{display:none}.form-card{max-width:100%}}
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand"><div style="width:36px;height:36;border-radius:8px;background:#eaf5ff;display:grid;place-items:center">❤</div>Caregiver</div>
+        <nav class="nav">
+          <a href="#">Dashboard</a>
+          <a href="#" class="active">Medications</a>
+          <a href="#">Appointments</a>
+          <a href="#">Activity</a>
+          <a href="#">Notes</a>
+        </nav>
+      </aside>
+
+      <main>
+        <div class="header">
+          <div>
+            <small>Good morning, Joyce · Manage Medications</small>
+            <h1>Thursday 4 June <span style="color:var(--blue)">5:38 AM</span></h1>
+            <div class="sub">Viewing Margaret's care plan</div>
+          </div>
+        </div>
+
+        <div class="content">
+          <div class="manage-title">💊 Manage medications</div>
+          <div class="manage-sub">Add, edit, or remove Margaret's prescriptions</div>
+
+          <div class="form-card" role="region" aria-labelledby="add-med">
+            <button class="close" aria-label="close">✕</button>
+            <h3 id="add-med" style="margin-top:0;margin-bottom:12px">Add new medication</h3>
+
+            <form>
+              <div class="field">
+                <label for="med-name">Medication name (required) <span style="color:#d23a3a">*</span></label>
+                <input id="med-name" class="input" placeholder="e.g. Amlodipine" required />
+              </div>
+
+              <div class="field">
+                <label for="dose">Dose (required) <span style="color:#d23a3a">*</span></label>
+                <input id="dose" class="input" placeholder="e.g. 5 mg — 1 tablet" required />
+                <div class="hint">Include strength, form, and quantity.</div>
+              </div>
+
+              <div class="field">
+                <label>Schedule times (required) <span style="color:#d23a3a">*</span></label>
+                <div class="small hint">Add one or more times when the medication should be taken (e.g. 8:30 am).</div>
+                <div style="margin-top:12px">
+                  <input class="input" placeholder="e.g. 8:30 am, 6:00 pm" />
+                </div>
+              </div>
+
+              <div style="display:flex;gap:8px;margin-top:10px">
+                <button type="submit" class="btn" style="padding:10px 14px;border-radius:8px;border:1px solid var(--border);background:var(--blue);color:#fff;font-weight:700">Add medication</button>
+                <button type="button" class="btn" style="background:#fff">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
