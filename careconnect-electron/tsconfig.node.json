@@ -22,6 +22,7 @@
     "src/shared/**/*",
     "tests/integration/**/*",
     "tests/mocks/electron.ts",
+    "tests/mocks/asset.ts",
     "src/main/env.d.ts",
     "electron.vite.config.ts"
   ]

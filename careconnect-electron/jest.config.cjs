@@ -28,7 +28,10 @@ module.exports = {
       roots: ['<rootDir>/src/main', '<rootDir>/src/preload', '<rootDir>/src/shared', '<rootDir>/tests/integration'],
       testMatch: ['**/*.test.ts'],
       transform,
-      moduleNameMapper: { '^electron$': '<rootDir>/tests/mocks/electron.ts' },
+      moduleNameMapper: {
+        '^electron$': '<rootDir>/tests/mocks/electron.ts',
+        '\\?asset$': '<rootDir>/tests/mocks/asset.ts'
+      },
       clearMocks: true
     },
     {

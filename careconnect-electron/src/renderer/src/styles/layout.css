@@ -1,0 +1,420 @@
+/* The application shell: sidebar, header, main workspace and status bar. */
+
+body {
+  overflow: hidden;
+}
+
+.app-shell {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  height: 100vh;
+}
+
+/* ------------------------------------------------------------- skip links */
+
+.skip-links {
+  position: fixed;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: 200;
+  display: flex;
+  gap: var(--space-2);
+}
+
+.skip-link {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* All skip links appear together as soon as any one has focus. */
+.skip-links:focus-within .skip-link {
+  position: static;
+  display: inline-flex;
+  align-items: center;
+  width: auto;
+  height: auto;
+  min-height: var(--target-min);
+  padding: 6px var(--space-3);
+  overflow: visible;
+  clip: auto;
+  border-radius: var(--radius-md);
+  background: var(--color-navy);
+  color: var(--color-text-inverse);
+  font-size: var(--text-base);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+/* ---------------------------------------------------------------- sidebar */
+
+.sidebar {
+  grid-row: 1;
+  grid-column: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-4) var(--space-3);
+  overflow-y: auto;
+  border-right: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.clinic {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-1) var(--space-1) var(--space-4);
+}
+
+.clinic__logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--color-navy);
+  color: var(--color-text-inverse);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+.clinic__text,
+.user__text {
+  display: grid;
+  min-width: 0;
+}
+
+.clinic__name,
+.user__name {
+  font-weight: 600;
+}
+
+.clinic__subtitle,
+.user__role {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.sidebar__label {
+  padding: var(--space-4) var(--space-3) 6px;
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.nav-list {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: var(--target-essential);
+  padding: 0 var(--space-3);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text);
+  font-size: var(--text-md);
+  text-align: left;
+  cursor: pointer;
+}
+
+.nav-item:hover {
+  background: var(--color-surface-muted);
+}
+
+.nav-item--active {
+  background: var(--color-selected);
+  color: var(--color-link);
+  font-weight: 600;
+}
+
+.nav-item__label {
+  flex: 1;
+}
+
+.keyboard-card {
+  display: grid;
+  gap: var(--space-2);
+  margin: var(--space-4) var(--space-1) var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-muted);
+}
+
+.keyboard-card__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 600;
+}
+
+.keyboard-card__title .icon {
+  color: var(--color-link);
+}
+
+.keyboard-card__text {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.keyboard-card .button {
+  justify-self: start;
+}
+
+.user {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: auto;
+  padding: var(--space-3) var(--space-1) 0;
+}
+
+/* -------------------------------------------------------------- workspace */
+
+.workspace {
+  grid-row: 1;
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.app-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-4);
+  padding: var(--space-3) var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.app-header__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.app-header h1 {
+  font-size: var(--text-xl);
+  font-weight: 400;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.toolbar__button .key-hint {
+  margin-left: var(--space-1);
+}
+
+.workspace__main {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  background: var(--color-page);
+}
+
+/* ------------------------------------------------------------- status bar */
+
+.status-bar {
+  grid-row: 2;
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+  min-height: var(--target-essential);
+  padding: var(--space-1) var(--space-6);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.status-bar .icon {
+  width: 16px;
+  height: 16px;
+}
+
+.status-bar__health {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-online);
+}
+
+.status-bar__health--error {
+  color: var(--color-error-text);
+  font-weight: 600;
+}
+
+.status-bar__health--error .status-dot {
+  background: var(--color-error-text);
+}
+
+.status-message {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  max-width: 60ch;
+  padding: 0 0 0 var(--space-3);
+  border-radius: var(--radius-md);
+}
+
+.status-message__text {
+  overflow-wrap: anywhere;
+}
+
+.status-message--success {
+  background: var(--color-done-bg);
+  color: var(--color-done-text);
+}
+
+.status-message--info {
+  background: var(--color-open-bg);
+  color: var(--color-open-text);
+}
+
+.status-message--warning {
+  background: var(--color-review-bg);
+  color: var(--color-review-text);
+}
+
+.status-message--error {
+  background: var(--color-error-bg);
+  color: var(--color-error-text);
+}
+
+.status-message .button {
+  border-color: transparent;
+  background: transparent;
+  color: inherit;
+}
+
+.status-bar__sequence {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.status-bar__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-5);
+  margin-left: auto;
+}
+
+.status-bar__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ------------------------------------------------------------- responsive */
+
+@media (max-width: 1180px) {
+  :root {
+    --sidebar-width: 224px;
+  }
+
+  .keyboard-card__text {
+    display: none;
+  }
+}
+
+/*
+ * Narrow windows and 200% zoom at the 1280 px desktop breakpoint (640 CSS px):
+ * navigation moves above the workspace and the whole page scrolls, so nothing
+ * is clipped (spec card 06, WCAG 1.4.10).
+ */
+@media (max-width: 860px) {
+  body {
+    overflow: auto;
+  }
+
+  .app-shell {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .sidebar {
+    grid-row: 1;
+    grid-column: 1;
+    flex-flow: row wrap;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    overflow: visible;
+    border-right: 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .clinic {
+    padding: 0;
+  }
+
+  .clinic__subtitle,
+  .sidebar__label,
+  .keyboard-card,
+  .user__text {
+    display: none;
+  }
+
+  .nav-list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .nav-item {
+    width: auto;
+  }
+
+  .user {
+    margin: 0 0 0 auto;
+    padding: 0;
+  }
+
+  .workspace {
+    grid-row: 2;
+    grid-column: 1;
+  }
+
+  .workspace__main {
+    overflow: visible;
+  }
+
+  .status-bar {
+    grid-row: 3;
+  }
+}

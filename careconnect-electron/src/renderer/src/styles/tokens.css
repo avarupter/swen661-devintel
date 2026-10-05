@@ -1,0 +1,120 @@
+/*
+ * Design tokens. src/renderer/src/styles/__tests__/contrast.test.ts parses this
+ * file and recomputes the WCAG 2.2 contrast ratio of every pair noted below, so
+ * a colour change that breaks AA fails the test suite.
+ */
+:root {
+  /* Surfaces */
+  --color-page: #f4f6f9;
+  --color-surface: #ffffff;
+  --color-surface-muted: #eef2f6;
+  --color-selected: #e8f0fe;
+  --color-navy: #1e293b;
+  --color-backdrop: rgb(15 23 42 / 0.45);
+
+  /* Text */
+  --color-text: #0f172a; /* 17.85:1 on surface, 16.49:1 on page */
+  --color-text-secondary: #475569; /* 7.58:1 on surface, 6.61:1 on selected */
+  --color-text-muted: #5a6b7f; /* 5.46:1 on surface, 4.86:1 on surface-muted */
+  --color-text-inverse: #ffffff; /* 14.63:1 on navy */
+  --color-link: #1559b8; /* 6.66:1 on surface, 5.81:1 on selected */
+
+  /* Brand */
+  --color-brand: #1a73e8; /* white text 4.51:1 */
+  --color-brand-strong: #1559b8; /* white text 6.66:1 (hover, pressed) */
+
+  /* Borders */
+  --color-border: #e2e8f0; /* decorative separators only */
+  --color-border-strong: #7a8899; /* input boundaries, 3.61:1 on surface */
+  --color-border-control: #cbd5e1; /* labelled buttons; their text identifies them */
+
+  /* Status: colour is always paired with an icon and a word */
+  --color-review-text: #8a4b00; /* 6.26:1 on review-bg */
+  --color-review-body: #5c3a00; /* 9.38:1 on review-bg */
+  --color-review-bg: #fff4e5;
+  --color-review-border: #f5c27a;
+  --color-open-text: #1559b8; /* 5.81:1 on open-bg */
+  --color-open-bg: #e8f0fe;
+  --color-done-text: #1e6b34; /* 5.76:1 on done-bg */
+  --color-done-bg: #e6f4ea;
+  --color-error-text: #b3261e; /* 5.72:1 on error-bg, 6.54:1 on surface */
+  --color-error-bg: #fdecea;
+  --color-online: #1e6b34;
+
+  /*
+   * Focus (spec card 02): a 3 px ring with a light halo on both sides, so the
+   * ring always sits on white whatever is behind it: 3.97:1.
+   */
+  --focus-ring: #008f89;
+  --focus-halo: #ffffff;
+  --focus-outline: 3px solid var(--focus-ring);
+  --focus-shadow: 0 0 0 7px var(--focus-halo);
+
+  /* Type */
+  --font-sans: 'Inter Variable', 'Inter', 'Segoe UI Variable Text', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.875rem;
+  --text-md: 0.9375rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 1.75rem;
+
+  /* Space and shape */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 999px;
+  --shadow-card: 0 1px 2px rgb(15 23 42 / 0.06);
+  --shadow-dialog: 0 24px 48px rgb(15 23 42 / 0.24);
+
+  /* Targets (spec card 06) */
+  --target-min: 32px;
+  --target-essential: 44px;
+
+  --sidebar-width: 260px;
+  --duration: 120ms;
+}
+
+/* In-app high contrast theme (View > High Contrast Theme). */
+:root[data-theme='high-contrast'] {
+  --color-page: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-muted: #ffffff;
+  --color-selected: #fff3b0;
+  --color-text: #000000;
+  --color-text-secondary: #000000;
+  --color-text-muted: #1f2933;
+  --color-link: #0b3d91;
+  --color-brand: #0b3d91;
+  --color-brand-strong: #062a66;
+  --color-border: #000000;
+  --color-border-strong: #000000;
+  --color-border-control: #000000;
+  --color-review-text: #5c3a00;
+  --color-review-body: #3d2600;
+  --color-open-text: #0b3d91;
+  --color-done-text: #0f4d23;
+  --color-error-text: #8c1d18;
+  --focus-ring: #000000;
+  --focus-halo: #ffd400;
+  --shadow-card: none;
+}
+
+/* macOS Increase Contrast, Windows "more contrast" preferences. */
+@media (prefers-contrast: more) {
+  :root:not([data-theme='high-contrast']) {
+    --color-text-secondary: #1e293b;
+    --color-text-muted: #334155;
+    --color-border: #94a3b8;
+    --color-border-control: #475569;
+  }
+}

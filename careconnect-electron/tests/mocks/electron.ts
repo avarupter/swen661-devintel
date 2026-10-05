@@ -257,7 +257,17 @@ function makeMainEvent(): FakeIpcMainEvent {
   return { sender, senderFrame: { url: mockElectron.rendererBus.senderUrl }, processId: 1, frameId: 1 }
 }
 
-const ipcRenderer = {
+interface FakeIpcRenderer {
+  invoke: jest.Mock<Promise<unknown>, [string, ...unknown[]]>
+  send: jest.Mock<void, [string, ...unknown[]]>
+  on: jest.Mock<FakeIpcRenderer, [string, Listener]>
+  once: jest.Mock<FakeIpcRenderer, [string, Listener]>
+  removeListener: jest.Mock<FakeIpcRenderer, [string, Listener]>
+  off: jest.Mock<FakeIpcRenderer, [string, Listener]>
+  removeAllListeners: jest.Mock<FakeIpcRenderer, [string?]>
+}
+
+const ipcRenderer: FakeIpcRenderer = {
   invoke: jest.fn(async (channel: string, ...args: unknown[]) => {
     const handler = mockElectron.ipcMain.handlers.get(channel)
     if (!handler) throw new Error(`No handler registered for '${channel}'`)
