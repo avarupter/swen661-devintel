@@ -60,12 +60,19 @@ export default function AddEditPatientScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
+      <View
+        style={styles.header}
+        accessible={true}
+        accessibilityRole="header"
+        accessibilityLabel={isEditing ? 'Edit Patient Header' : 'Add Patient Header'}
+      >
         <TouchableOpacity
           style={styles.backButton}
           onPress={() => navigation.goBack()}
           accessibilityRole="button"
           accessibilityLabel="Go back"
+          accessibilityHint="Returns to the patient list without saving"
+          accessible={true}
         >
           <Ionicons name="arrow-back" size={20} color="#FFFFFF" />
         </TouchableOpacity>
@@ -75,7 +82,16 @@ export default function AddEditPatientScreen() {
       </View>
 
       <ScrollView contentContainerStyle={styles.content}>
-        {error ? <Text style={styles.errorText}>{error}</Text> : null}
+        {error ? (
+          <Text
+            style={styles.errorText}
+            accessible={true}
+            accessibilityRole="alert"
+            accessibilityLabel={`Error: ${error}`}
+          >
+            {error}
+          </Text>
+        ) : null}
 
         <View style={styles.formCard}>
           <Text style={styles.label}>Patient Name *</Text>
@@ -85,7 +101,9 @@ export default function AddEditPatientScreen() {
             placeholderTextColor="#9CA3AF"
             value={name}
             onChangeText={setName}
-            accessibilityLabel="Patient name required"
+            accessibilityLabel="Patient Name"
+            accessibilityHint="Enter the full name of the patient"
+            accessible={true}
           />
 
           <Text style={styles.label}>Age *</Text>
@@ -96,7 +114,9 @@ export default function AddEditPatientScreen() {
             keyboardType="numeric"
             value={age}
             onChangeText={setAge}
-            accessibilityLabel="Patient age required"
+            accessibilityLabel="Patient Age"
+            accessibilityHint="Enter the age of the patient in years"
+            accessible={true}
           />
 
           <Text style={styles.label}>Condition</Text>
@@ -106,14 +126,18 @@ export default function AddEditPatientScreen() {
             placeholderTextColor="#9CA3AF"
             value={condition}
             onChangeText={setCondition}
-            accessibilityLabel="Medical condition"
+            accessibilityLabel="Medical Condition"
+            accessibilityHint="Enter the primary medical condition or care notes"
+            accessible={true}
           />
 
           <TouchableOpacity
             style={styles.saveButton}
             onPress={handleSave}
             accessibilityRole="button"
-            accessibilityLabel={isEditing ? 'Save patient changes' : 'Add new patient'}
+            accessibilityLabel={isEditing ? 'Update Patient' : 'Add Patient'}
+            accessibilityHint={isEditing ? 'Saves changes to this patient' : 'Adds the new patient to the list'}
+            accessible={true}
           >
             <Text style={styles.saveButtonText}>
               {isEditing ? 'Update Patient' : 'Add Patient'}

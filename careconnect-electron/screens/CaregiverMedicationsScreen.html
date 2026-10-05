@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Caregiver — Medications</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      :root{--bg:#f6f9fb;--panel:#fff;--muted:#6b7a85;--blue:#1e7cff;--border:#e6edf3;--danger:#c81f2d}
+      *{box-sizing:border-box}
+      body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:var(--bg);color:#12202b}
+      .app{display:flex;min-height:100vh}
+
+      .sidebar{width:220px;background:#fff;border-right:1px solid #eef2f5;padding:28px 18px}
+      .brand{font-weight:700;display:flex;gap:10px;align-items:center}
+      .nav{margin-top:20px}
+      .nav a{display:block;padding:10px;border-radius:8px;color:#304a56;text-decoration:none;margin-bottom:6px}
+      .nav a.active{background:linear-gradient(90deg,#eef8ff,#fff);font-weight:700}
+
+      main{flex:1;padding:28px}
+      .header{display:flex;align-items:flex-start;justify-content:space-between}
+      .header small{color:var(--muted)}
+      .header h1{margin:6px 0 0 0;font-size:28px}
+      .sub{color:#2aa65b;font-weight:600;margin-top:6px}
+
+      .content{margin-top:22px}
+
+      .med-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:18px}
+      .time-pill{display:inline-block;background:#eef6ff;color:var(--blue);padding:6px 10px;border-radius:999px;font-weight:700;border:1px solid rgba(30,124,255,0.08);margin-bottom:12px}
+      .med-title{font-weight:700;margin-bottom:6px}
+      .med-sub{color:var(--muted);margin-bottom:12px}
+      .note{background:#fbfdff;border:1px solid #eef4f8;padding:10px;border-radius:6px;color:var(--muted);margin-bottom:12px}
+
+      .actions{display:flex;gap:8px}
+      .btn{padding:8px 12px;border-radius:8px;border:1px solid var(--border);background:#fff;cursor:pointer}
+      .btn.delete{background:#fce6ea;border-color:#f1b8c2;color:var(--danger)}
+
+      footer{padding:24px;text-align:center;color:var(--muted);font-size:13px}
+
+      @media (max-width:900px){.sidebar{display:none};main{padding:16px}}
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand"><div style="width:36px;height:36;border-radius:8px;background:#eaf5ff;display:grid;place-items:center">❤</div>Caregiver</div>
+        <nav class="nav">
+          <a href="#">Dashboard</a>
+          <a href="#" class="active">Medications</a>
+          <a href="#">Appointments</a>
+          <a href="#">Activity</a>
+          <a href="#">Notes</a>
+        </nav>
+      </aside>
+
+      <main>
+        <div class="header">
+          <div>
+            <small>Good morning, Joyce · Manage Medications</small>
+            <h1>Thursday 4 June <span style="color:var(--blue)">5:38 AM</span></h1>
+            <div class="sub">Viewing Margaret's care plan</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <button class="btn">↻ Refresh</button>
+            <button class="btn">＋ New medication</button>
+          </div>
+        </div>
+
+        <div class="content">
+          <div class="med-card">
+            <div class="time-pill">⏰ 8:30 am</div>
+            <div class="note">Take with or without food.</div>
+            <div class="actions"><button class="btn">✎ Edit</button><button class="btn delete">Delete</button></div>
+          </div>
+
+          <div class="med-card">
+            <div class="med-title">Vitamin D3</div>
+            <div class="med-sub">1000 IU — 1 capsule</div>
+            <div class="time-pill">⏰ 8:30 am</div>
+            <div class="note">Take with breakfast.</div>
+            <div class="actions"><button class="btn">✎ Edit</button><button class="btn delete">Delete</button></div>
+          </div>
+
+        </div>
+
+        <footer>CareConnect © 2026 — Compassionate care, every day.</footer>
+      </main>
+    </div>
+  </body>
+</html>

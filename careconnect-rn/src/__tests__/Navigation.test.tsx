@@ -124,10 +124,10 @@ describe('Navigation', () => {
     });
   });
 
-  test('tapping a patient row reaches the edit screen with that patient loaded', async () => {
-    // This replaces an earlier KNOWN-GAP test that pinned the rows navigating
-    // nowhere. AddPatient and AddEditPatient are both declared in the navigator
-    // now, so the row resolves for real and the form arrives prefilled.
+  test('tapping a patient reaches the edit form, prefilled', async () => {
+    // This replaces a KNOWN GAP test that pinned PatientDetail/AddPatient being
+    // missing from the navigator. Simon added the routes in 81ecea0, so the gap
+    // is closed and this is the assertion it was standing in for.
     await renderApp();
     await fireEvent.press(
       screen.getByLabelText('Sign in to your existing account')
@@ -153,15 +153,47 @@ describe('Navigation', () => {
     );
 
     await fireEvent.press(
-      screen.getByLabelText('Edit details for Margaret Smith')
+      screen.getByLabelText(/^Patient Margaret Smith/)
     );
 
     await waitFor(() => {
-      expect(screen.getByText('Edit Patient')).toBeTruthy();
-      expect(screen.getByLabelText('Patient name required').props.value).toBe(
+      expect(screen.getByLabelText('Edit Patient Header')).toBeTruthy();
+      expect(screen.getByLabelText('Patient Name').props.value).toBe(
         'Margaret Smith'
       );
-      expect(screen.getByLabelText('Save patient changes')).toBeTruthy();
+    });
+  });
+
+  test('the add button reaches a blank add form', async () => {
+    await renderApp();
+    await fireEvent.press(
+      screen.getByLabelText('Sign in to your existing account')
+    );
+    await waitFor(() =>
+      expect(screen.getByLabelText('Sign in to your account')).toBeTruthy()
+    );
+    await fireEvent.press(screen.getByLabelText('Sign in to your account'));
+    await waitFor(() =>
+      expect(
+        screen.getByLabelText(
+          'Select caregiver role, manage patients you care for'
+        )
+      ).toBeTruthy()
+    );
+    await fireEvent.press(
+      screen.getByLabelText(
+        'Select caregiver role, manage patients you care for'
+      )
+    );
+    await waitFor(() =>
+      expect(screen.getByLabelText('Add new patient')).toBeTruthy()
+    );
+
+    await fireEvent.press(screen.getByLabelText('Add new patient'));
+
+    await waitFor(() => {
+      expect(screen.getByLabelText('Add Patient Header')).toBeTruthy();
+      expect(screen.getByLabelText('Patient Name').props.value).toBe('');
     });
   });
 });

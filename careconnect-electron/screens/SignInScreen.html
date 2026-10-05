@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>CareConnect — Sign In</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      :root{--bg:#f6f9fb;--blue:#1e7cff;--blue-2:#0b63e6;--muted:#6b7a85;--card:#fff}
+      *{box-sizing:border-box}
+      html,body{height:100%;}
+      body{margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;background:var(--bg);color:#0f1723}
+
+      /* top bar */
+      .topbar{background:linear-gradient(90deg,var(--blue) 0%,var(--blue-2)100%);height:64px;color:white;display:flex;align-items:center;padding:0 28px}
+      .topbar .brand{display:flex;align-items:center;gap:12px;font-weight:700}
+      .topbar .brand .icon{width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,0.18);display:inline-grid;place-items:center}
+
+      .wrap{max-width:1100px;margin:0 auto;padding:36px}
+
+      /* background circles */
+      .bg-circle{position:fixed;border-radius:50%;background:rgba(14,77,255,0.06);z-index:0}
+      .bg-circle.left{width:420px;height:420px;left:-160px;bottom:-160px}
+      .bg-circle.right{width:360px;height:360px;right:-80px;top:-80px}
+
+      /* center card */
+      .center-wrap{min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;padding:20px}
+      .card{width:420px;background:var(--card);border-radius:16px;padding:36px 40px;box-shadow:0 12px 30px rgba(16,56,110,0.06);position:relative;z-index:2}
+      .back-btn{position:absolute;left:20px;top:20px;width:36px;height:36px;border-radius:50%;background:#f4f7fb;display:grid;place-items:center;color:#1f3b57;text-decoration:none}
+      h2{margin:14px 0 22px 0;text-align:center;font-size:24px}
+
+      label{display:block;font-size:13px;color:#233142;margin-bottom:8px;font-weight:600}
+      .input{display:block;width:100%;padding:12px 14px;border-radius:10px;border:1px solid #e6edf3;background:#fff;color:#213243}
+      .field{margin-bottom:18px}
+
+      .btn{display:block;width:100%;padding:14px;border-radius:999px;background:linear-gradient(90deg,var(--blue) 0%,var(--blue-2)100%);color:white;text-align:center;font-weight:700;border:none;cursor:pointer;margin-top:6px}
+
+      .links{margin-top:18px;text-align:center;font-size:13px;color:var(--blue)}
+      .links a{color:var(--blue);text-decoration:none}
+
+      @media (max-width:520px){
+        .card{width:100%;padding:26px}
+      }
+    </style>
+  </head>
+  <body>
+    <div class="topbar">
+      <div class="brand"><div class="icon">❤</div>CareConnect</div>
+      <div style="flex:1"></div>
+    </div>
+
+    <div class="wrap">
+      <div class="bg-circle left" aria-hidden></div>
+      <div class="bg-circle right" aria-hidden></div>
+
+      <div class="center-wrap">
+        <div class="card">
+          <a class="back-btn" href="LandingScreen.html" aria-label="back">←</a>
+          <h2>Sign In</h2>
+
+        <div class="field">
+            <label for="email">Email address *</label>
+            <input id="email" class="input" type="email" placeholder="you@example.com"/>
+        </div>
+
+        <div class="field">
+            <label for="password">Password *</label>
+            <input id="password" class="input" type="password" placeholder="••••••••"/>
+        </div>
+
+        <a href="RoleSelectionScreen.html"><button class="btn">Sign In</button></a>
+         
+
+        <div class="links">
+            <div style="margin-top:18px"><a href="#">Forgot password? Click here to reset.</a></div>
+            <div style="margin-top:10px"><a href="SignUpScreen.html">New? Click here to sign up.</a></div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

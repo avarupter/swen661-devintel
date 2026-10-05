@@ -1,0 +1,41 @@
+# The caregiver CRUD workflow: add a patient and see it in the list.
+appId: com.careconnectrn
+tags:
+  - caregiver
+---
+- launchApp:
+    clearState: true
+- runFlow: ../subflows/sign-in.yaml
+
+- tapOn: "Select caregiver role, manage patients you care for"
+- assertVisible: "Patients Header"
+- assertVisible: "Margaret Smith"
+- assertNotVisible: "Dorothy Hughes"
+
+- tapOn: "Add new patient"
+- assertVisible: "Add Patient Header"
+
+- tapOn: "Patient Name"
+- inputText: "Dorothy Hughes"
+- hideKeyboard
+- tapOn: "Patient Age"
+- inputText: "81"
+- hideKeyboard
+- tapOn: "Medical Condition"
+- inputText: "Memory support"
+- hideKeyboard
+
+# Several nodes read "Add Patient"; only the one below the last field is the
+# button. See 07-add-patient-validation.yaml for the full explanation.
+- tapOn:
+    text: "Add Patient"
+    below: "Condition"
+
+# Newest first, and the list is driven by shared state rather than the form.
+- assertVisible: "Patients Header"
+- assertVisible: "Patient Dorothy Hughes, age 81, condition: Memory support"
+# The seeded patients are still there, just pushed down the list.
+- scrollUntilVisible:
+    element:
+      text: "Margaret Smith"
+    direction: DOWN

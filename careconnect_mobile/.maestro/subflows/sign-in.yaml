@@ -1,0 +1,25 @@
+# Landing -> sign in -> role picker. Credentials are mocked, so any input works.
+#
+# Two things worth knowing if you edit this:
+#
+# 1. Matchers are plain strings, not `id:`. Flutter paints to a canvas and
+#    publishes no Android resource-id, so Maestro's id matcher can never match a
+#    Flutter widget. What Flutter does expose is content-desc, built from the
+#    Semantics tree, and plain-string matching covers that.
+# 2. Do NOT use `hideKeyboard` here. On Android it is a back press, and Flutter
+#    treats that as "pop the route" — it silently returns to the landing screen
+#    and every later step fails somewhere confusing. Tapping the next field
+#    moves focus without needing to dismiss the keyboard.
+appId: com.example.careconnect_mobile
+---
+- assertVisible: "CareConnect"
+- tapOn: "I already have an account"
+- assertVisible: "Sign In"
+
+- tapOn: "Email address *"
+- inputText: "dorothy@example.com"
+- tapOn: "Password *"
+- inputText: "password123"
+
+- tapOn: "Sign in to your account"
+- assertVisible: "Select Your Role"

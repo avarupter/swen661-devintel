@@ -1,0 +1,21 @@
+# Landing -> sign in -> role picker. The form accepts demo credentials, so no
+# real account is needed.
+#
+# Taps target accessibilityLabel rather than visible text. React Native publishes
+# both as separate nodes, and the label is unambiguous where the visible text is
+# not — "Sign In" is both the screen heading and the submit button.
+appId: com.careconnectrn
+---
+- assertVisible: "CareConnect"
+- tapOn: "Sign in to your existing account"
+- assertVisible: "Email address *"
+
+- tapOn: "Email address"
+- inputText: "dorothy@example.com"
+- hideKeyboard
+- tapOn: "Password"
+- inputText: "password123"
+- hideKeyboard
+
+- tapOn: "Sign in to your account"
+- assertVisible: "How are you using CareConnect today?"

@@ -1,0 +1,17 @@
+{
+  "name": "careconnect-electron",
+  "version": "1.0.0",
+  "description": "Careconnect Electron Implementation",
+  "license": "ISC",
+  "author": "DevIntel",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "electron": "^44.4.5",
+    "eslint": "^10.12.0"
+  }
+}

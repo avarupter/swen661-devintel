@@ -1,0 +1,21 @@
+# Opening a medicine from Today and coming back — the navigation requirement:
+# an item is tapped, its own detail opens, and back returns to the list.
+appId: com.careconnectrn
+tags:
+  - patient
+  - navigation
+---
+- launchApp:
+    clearState: true
+- runFlow: ../subflows/sign-in.yaml
+- tapOn: "I'm a Patient"
+
+- assertVisible: "Take these now"
+- tapOn: "Memantine"
+
+# The detail screen shows THAT medicine, not the first one in the list.
+- assertVisible: "Helps with memory and thinking."
+- assertVisible: "10 mg — 1 tablet"
+
+- back
+- assertVisible: "Take these now"

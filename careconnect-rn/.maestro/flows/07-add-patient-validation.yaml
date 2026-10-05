@@ -1,0 +1,43 @@
+# A failed save must keep the user on the form. Popping back on invalid input
+# would silently discard whatever they had typed.
+appId: com.careconnectrn
+tags:
+  - caregiver
+  - validation
+---
+- launchApp:
+    clearState: true
+- runFlow: ../subflows/sign-in.yaml
+- tapOn: "Select caregiver role, manage patients you care for"
+
+- tapOn: "Add new patient"
+- assertVisible: "Add Patient Header"
+
+# Four nodes on this screen have the exact text "Add Patient": the navigation
+# title, the in-app header, the button, and the button's inner label. Only one
+# is clickable, so select it by position — `below: "Condition"` puts it beyond
+# the last field. Tapping one of the others is a silent no-op that looks
+# identical to validation quietly passing.
+- tapOn:
+    text: "Add Patient"
+    below: "Condition"
+- assertVisible: "Please enter a patient name"
+- assertVisible: "Add Patient Header"
+
+# Name only — the age check should now be the one that fires.
+- tapOn: "Patient Name"
+- inputText: "Dorothy Hughes"
+- hideKeyboard
+- tapOn:
+    text: "Add Patient"
+    below: "Condition"
+- assertVisible: "Please enter a valid age"
+
+# Correct it and the save goes through.
+- tapOn: "Patient Age"
+- inputText: "81"
+- hideKeyboard
+- tapOn:
+    text: "Add Patient"
+    below: "Condition"
+- assertVisible: "Patients Header"

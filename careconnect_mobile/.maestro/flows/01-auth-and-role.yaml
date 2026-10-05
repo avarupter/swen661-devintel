@@ -1,0 +1,17 @@
+# Getting into the app and picking a role.
+appId: com.example.careconnect_mobile
+tags:
+  - auth
+---
+- launchApp:
+    clearState: true
+- assertVisible: "CareConnect"
+- assertVisible: "Your daily companion"
+
+- runFlow: ../subflows/sign-in.yaml
+
+# Assert the Semantics labels rather than the visible card text: Flutter merges
+# the card's two Text widgets into one node ("I'm a Patient\nManage your own
+# care") that Maestro will not match, while the Semantics label is exact.
+- assertVisible: "Select patient role. Manage your own care."
+- assertVisible: "Select caregiver role. Manage patients you care for."

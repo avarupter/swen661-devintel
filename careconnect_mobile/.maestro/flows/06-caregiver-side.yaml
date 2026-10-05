@@ -1,0 +1,31 @@
+# The caregiver half of the app.
+appId: com.example.careconnect_mobile
+tags:
+  - caregiver
+---
+- launchApp:
+    clearState: true
+- runFlow: ../subflows/sign-in.yaml
+- tapOn: "Select caregiver role. Manage patients you care for."
+
+- assertVisible: "Patients"
+- assertVisible: "Dorothy Smith\n78 yrs • Alzheimer's"
+- assertVisible: "Add new patient"
+
+# The screen headings ("Manage Medications" and friends) are merged by Flutter
+# into one large greeting node, so these assert the per-row Semantics labels
+# instead — which is the more useful check anyway: it proves the caregiver has
+# working controls on each item, not just that a title rendered.
+- tapOn: "Medications\nTab 2 of 5"
+- assertVisible: "Edit this medication"
+- assertVisible: "Delete this medication"
+
+- tapOn: "Appointments\nTab 3 of 5"
+- assertVisible: "Edit this appointment"
+- assertVisible: "Delete this appointment"
+
+- tapOn: "Activity\nTab 4 of 5"
+# The heading node carries the Semantics label and the Text, hence the repeat.
+- assertVisible: "Activity log\nActivity log"
+# The empty state is explicit rather than a blank panel.
+- assertVisible: "No activity yet"

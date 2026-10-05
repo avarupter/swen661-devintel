@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Patient — Appointments</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      :root{--bg:#f6f9fb;--white:#fff;--muted:#6b7a85;--blue:#1e7cff;--border:#e6edf3}
+      *{box-sizing:border-box}
+      body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:var(--bg);color:#12202b}
+
+      .app{display:flex;min-height:100vh}
+      .sidebar{width:220px;background:var(--white);border-right:1px solid #eef2f5;padding:28px}
+      .brand{display:flex;gap:12px;align-items:center;font-weight:700}
+      .nav{margin-top:18px}
+      .nav a{display:block;padding:10px;border-radius:8px;color:#304a56;text-decoration:none;margin-bottom:6px}
+      .nav a.active{background:linear-gradient(90deg,#eef8ff,#fff);font-weight:700}
+
+      main{flex:1;padding:28px}
+      .top{display:flex;justify-content:space-between;align-items:flex-start}
+      .date{display:flex;align-items:center;gap:10px;color:var(--muted);font-weight:600}
+      h1{margin:8px 0 0 0;font-size:28px}
+
+      .layout{display:grid;grid-template-columns:1fr 320px;gap:24px;margin-top:18px}
+
+      .card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px}
+      .next{padding:18px;border-radius:12px;background:linear-gradient(180deg,#fff,#fbfeff);box-shadow:0 12px 30px rgba(16,56,110,0.04)}
+      .next .icon{width:48px;height:48px;border-radius:10px;background:#eef6ff;display:grid;place-items:center;margin-right:14px}
+      .next .title{font-weight:700;font-size:18px}
+      .muted{color:var(--muted)}
+
+      .ready{display:block;width:100%;padding:12px;border-radius:10px;background:var(--blue);color:white;border:none;margin-top:14px;font-weight:700}
+
+      .small-card{border-radius:10px;padding:12px;background:var(--white);border:1px solid var(--border);display:flex;gap:12px;align-items:center}
+      .badge{display:inline-block;padding:6px 10px;border-radius:999px;border:1px solid var(--border);font-weight:700}
+
+      @media (max-width:980px){
+        .layout{grid-template-columns:1fr}
+        .sidebar{display:none}
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand"><div style="width:36px;height:36;border-radius:8px;background:#eaf5ff;display:grid;place-items:center">❤</div>CareConnect</div>
+        <nav class="nav">
+          <a href="#">Home</a>
+          <a href="#">My Day</a>
+          <a href="#" class="active">Appointments</a>
+          <a href="#">Medicines</a>
+          <a href="#">Memories</a>
+          <a href="#">Contacts</a>
+        </nav>
+
+        <div style="margin-top:auto;color:var(--muted);font-size:13px">Margaret<br><span class="muted">Care recipient</span></div>
+      </aside>
+
+      <main>
+        <div class="top">
+          <div>
+            <div class="date">📅 Sunday, August 30</div>
+            <h1>Your appointments, Margaret</h1>
+            <div class="muted">1 of 2 done today</div>
+          </div>
+          <div>
+            <button style="padding:10px 14px;border-radius:8px;border:1px solid var(--border);background:transparent;cursor:pointer">📞 Call my caregiver</button>
+          </div>
+        </div>
+
+        <div class="layout">
+          <section>
+            <div class="card next">
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div style="display:flex;align-items:center">
+                  <div style="width:10px;height:10px;background:var(--blue);border-radius:50%;margin-right:10px"></div>
+                  <div class="muted">Next appointment</div>
+                </div>
+                <div class="badge">Coming up</div>
+              </div>
+
+              <div style="display:flex;align-items:center;margin-top:14px">
+                <div class="icon">📹</div>
+                <div style="flex:1">
+                  <div class="title">Video call with Maria</div>
+                  <div class="muted">3:00 PM<br>Your daughter — she will call you</div>
+                </div>
+              </div>
+
+              <button class="ready">I'm ready</button>
+            </div>
+          </section>
+
+          <aside>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div class="small-card card">
+                <div style="width:40px;height:40;border-radius:8px;background:#eef6ff;display:grid;place-items:center">📦</div>
+                <div>
+                  <div style="font-weight:700">Pharmacy delivery</div>
+                  <div class="muted">They will come to you — 5:30 PM</div>
+                </div>
+              </div>
+
+              <div class="small-card card">
+                <div style="width:40px;height:40;border-radius:8px;background:#eef6ff;display:grid;place-items:center">🩺</div>
+                <div>
+                  <div style="font-weight:700">Dr. Chen</div>
+                  <div class="muted">10:00 AM — Maria will drive you</div>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

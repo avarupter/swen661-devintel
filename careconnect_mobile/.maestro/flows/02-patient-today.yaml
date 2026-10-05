@@ -1,0 +1,38 @@
+# The patient's daily dashboard — the screen the whole design is built around.
+appId: com.example.careconnect_mobile
+tags:
+  - patient
+---
+- launchApp:
+    clearState: true
+- runFlow: ../subflows/sign-in.yaml
+- tapOn: "Select patient role. Manage your own care."
+
+# Flutter merges sibling Text widgets into one accessibility node and Maestro
+# matches the whole node, so these are the exact merged strings rather than the
+# individual headings you see on screen.
+- assertVisible: "Today\nTab 1 of 5"
+- assertVisible: "Take these now"
+# Matched as a regex, not a literal. The full sentence also carries a
+# "N doses are ready to take now" clause that changes as the clock passes each
+# scheduled time, so asserting the literal string makes the flow fail purely
+# because of when it ran. The "N of 6 doses taken today" tail is what this test
+# is actually about. (?s) lets .* span the newline Flutter puts between the two
+# merged Text widgets.
+- assertVisible:
+    text: "(?s).*0 of 6 doses taken today"
+
+# The dose card reads as one sentence: medicine, dose, time of day, status.
+- assertVisible: "Lisinopril, 10 mg, Morning, 8:00 AM. Not taken yet. Take in the morning, with or without food."
+
+# The later sections are below the fold.
+# Deliberately NOT asserting a "Later today" section. It renders only while some
+# dose is still upcoming, and a dose moves out of "upcoming" an hour before it is
+# due — so run this flow after about 8pm and the section is legitimately absent.
+# That is the app behaving correctly; asserting it would make the suite fail
+# based on the time of day. "Where you are going" always renders.
+- scrollUntilVisible:
+    element:
+      text: "Where you are going"
+    direction: DOWN
+    timeout: 30000

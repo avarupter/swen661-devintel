@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>CareConnect — Choose role</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      :root{--bg:#f6f9fb;--blue:#1e7cff;--muted:#6b7a85}
+      *{box-sizing:border-box}
+      html,body{height:100%}
+      body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:var(--bg);color:#12202b}
+      .topbar{background:linear-gradient(90deg,var(--blue),#0b63e6);height:64px;color:white;display:flex;align-items:center;padding:0 28px}
+      .topbar .brand{display:flex;align-items:center;gap:12px;font-weight:700}
+
+      .wrap{max-width:900px;margin:0 auto;padding:36px}
+      .card{background:#fff;border-radius:14px;padding:28px;box-shadow:0 12px 30px rgba(16,56,110,0.06)}
+      h1{margin:0 0 6px 0}
+      .sub{color:var(--muted);margin-bottom:18px}
+
+      .roles{display:flex;gap:18px;margin-top:18px}
+      .role{flex:1;padding:18px;border-radius:12px;border:1px solid #e6edf3;background:#fdfefe;display:flex;flex-direction:column;align-items:flex-start;gap:12px;cursor:pointer}
+      .role.selected{border-color:var(--blue);box-shadow:0 8px 20px rgba(30,124,255,0.08);background:#fff}
+      .role h3{margin:0}
+      .role p{margin:0;color:var(--muted)}
+
+      .actions{display:flex;justify-content:space-between;align-items:center;margin-top:22px}
+      .btn{padding:10px 14px;border-radius:10px;border:none;background:var(--blue);color:white;font-weight:700;cursor:pointer}
+      .link{color:var(--blue);text-decoration:none}
+
+      @media (max-width:700px){.roles{flex-direction:column}}
+    </style>
+  </head>
+  <body>
+    <div class="topbar">
+      <div class="brand">CareConnect</div>
+    </div>
+
+    <main class="wrap">
+      <div class="card">
+        <h1>Who are you?</h1>
+        <div class="sub">Select whether you're using CareConnect as a caregiver or a patient.</div>
+
+        <div class="roles" role="radiogroup" aria-label="Role selection">
+          <div class="role" role="radio" tabindex="0" data-role="caregiver" aria-checked="false">
+            <h3>Caregiver</h3>
+            <p>Manage medications, appointments, and check on the people you care for.</p>
+          </div>
+
+          <div class="role" role="radio" tabindex="0" data-role="patient" aria-checked="false">
+            <h3>Patient</h3>
+            <p>View your day, take medicines, and join appointments with your care team.</p>
+          </div>
+        </div>
+
+        <div class="actions">
+          <a class="link" href="SignInScreen.html">Back to sign in</a>
+          <button id="continue" class="btn" disabled>Continue</button>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Simple selection logic
+      const roles = document.querySelectorAll('.role');
+      let selected = null;
+      roles.forEach(r => {
+        r.addEventListener('click', () => selectRole(r));
+        r.addEventListener('keydown', (e) => { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectRole(r); } });
+      });
+
+      function selectRole(elem){
+        roles.forEach(x => { x.classList.remove('selected'); x.setAttribute('aria-checked','false'); });
+        elem.classList.add('selected');
+        elem.setAttribute('aria-checked','true');
+        selected = elem.dataset.role;
+        document.getElementById('continue').disabled = false;
+      }
+
+      document.getElementById('continue').addEventListener('click', ()=>{
+        if(!selected) return;
+        // Navigate to the appropriate screen for the chosen role
+        let target;
+        if(selected === 'caregiver'){
+          target = 'CaregiverActivityScreen.html';
+        } else if(selected === 'patient'){
+          target = 'PatientTodayScreen.html';
+        } else {
+          target = 'SignInScreen.html';
+        }
+        // Files are in the same folder, so navigate directly
+        window.location.href = target;
+      });
+    </script>
+  </body>
+</html>

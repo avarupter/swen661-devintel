@@ -1,0 +1,35 @@
+# The core patient workflow: sign in, land on Today, and read the day.
+appId: com.careconnectrn
+tags:
+  - patient
+---
+- launchApp:
+    clearState: true
+- runFlow: ../subflows/sign-in.yaml
+
+- tapOn: "Select patient role, manage your own care"
+
+# Today groups the day into three sections — the whole point of the screen.
+- assertVisible: "Today's progress"
+- assertVisible: "Take these now"
+- assertVisible: "Later today"
+
+# One of the four seeded doses is already taken.
+- assertVisible: "1 of 4"
+- assertVisible: "doses taken"
+
+# Only the due dose offers the action.
+- assertVisible: "Mark as taken"
+
+# The rest of the day is below the fold.
+- scrollUntilVisible:
+    element:
+      text: "Already done"
+    direction: DOWN
+- assertVisible: "You took this earlier today."
+
+- scrollUntilVisible:
+    element:
+      text: "Vision Plus Opticians"
+    direction: DOWN
+- assertVisible: "Maria Thompson is driving you"

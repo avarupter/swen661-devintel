@@ -53,3 +53,18 @@ export async function renderWithSignedInUser(
     ),
   });
 }
+
+/**
+ * Renders a screen inside both app providers. PatientListScreen and
+ * AddEditPatientScreen read the patient list from PatientContext, so they throw
+ * "usePatients must be used within a PatientProvider" without this.
+ */
+export async function renderWithProviders(ui: ReactElement) {
+  return render(ui, {
+    wrapper: ({ children }: { children: ReactNode }) => (
+      <AuthProvider>
+        <PatientProvider>{children}</PatientProvider>
+      </AuthProvider>
+    ),
+  });
+}
