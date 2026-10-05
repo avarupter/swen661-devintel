@@ -1,0 +1,39 @@
+appId: edu.umgc.swen661.careconnect
+productName: CareConnect
+copyright: Copyright © 2026 Team DevIntel
+directories:
+  output: dist
+  buildResources: build
+files:
+  - out/**
+  - package.json
+  - '!**/*.map'
+asar: true
+# No native modules, so there is nothing to rebuild for the target platform.
+npmRebuild: false
+# Electron fuses are flipped in the packaged binary (https://www.electronjs.org/docs/latest/tutorial/fuses).
+electronFuses:
+  runAsNode: false
+  enableCookieEncryption: true
+  enableNodeOptionsEnvironmentVariable: false
+  enableNodeCliInspectArguments: false
+  onlyLoadAppFromAsar: true
+  # The renderer is served from the app:// protocol, so file:// needs no extra privileges.
+  grantFileProtocolExtraPrivileges: false
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  icon: build/icon.png
+  executableName: CareConnect
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: CareConnect
+  uninstallDisplayName: CareConnect
+  artifactName: ${productName}-Setup-${version}.${ext}
+  deleteAppDataOnUninstall: false
