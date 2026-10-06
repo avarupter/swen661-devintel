@@ -18,7 +18,8 @@
     "test:coverage": "jest --coverage",
     "pack": "npm run build && electron-builder --dir",
     "dist:win": "npm run build && electron-builder --win --x64",
-    "dist:win:docker": "npm run build && bash scripts/build-win-docker.sh"
+    "dist:win:docker": "npm run build && bash scripts/build-win-docker.sh",
+    "test:e2e": "electron-vite build && jest -c jest.e2e.config.cjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

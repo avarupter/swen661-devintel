@@ -21,6 +21,7 @@
     "src/preload/**/*",
     "src/shared/**/*",
     "tests/integration/**/*",
+    "tests/e2e/**/*",
     "tests/mocks/electron.ts",
     "tests/mocks/asset.ts",
     "src/main/env.d.ts",
