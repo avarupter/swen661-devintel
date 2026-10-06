@@ -6,6 +6,7 @@ import { Avatar } from '../../components/Avatar'
 import { Icon } from '../../components/Icon'
 import { Toolbar, ToolbarButton } from '../../components/Toolbar'
 import { useAppDispatch, useAppState, useStatus, useWorkspace } from '../../state/AppStateProvider'
+import { blocksNewModal } from '../../state/appState'
 import { useNow } from '../../state/clock'
 import { conversationById, patientById, sortedConversations } from '../../state/selectors'
 import { conversationLabel, conversationPreview, conversationTime, draftLabel, sortedDrafts } from './inboxModel'
@@ -126,7 +127,7 @@ export function InboxView(): React.JSX.Element {
     () => {
       if (!selected) return
       // Like every other dialog command, never stack on top of an open dialog.
-      if (ui.modal && ui.modal.kind !== 'palette') {
+      if (blocksNewModal(ui.modal)) {
         setStatus('Close the open dialog first.', 'info')
         return
       }

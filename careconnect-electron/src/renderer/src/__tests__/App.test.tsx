@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { axe } from 'jest-axe'
 import { createMemoryApi } from '../../../../tests/renderer/memoryApi'
 import { renderApp } from '../../../../tests/renderer/renderApp'
@@ -24,6 +24,15 @@ describe('App shell', () => {
   it('has no axe violations', async () => {
     const { container } = await renderApp()
     expect(await axe(container, { rules: { 'color-contrast': { enabled: false } } })).toHaveNoViolations()
+  })
+
+  it('focuses a patient opened from the main process, revealing one the list search hid', async () => {
+    // Menu, tray, Jump List and notification commands arrive outside a React event.
+    const { api } = await renderApp({ initialUi: { view: 'reports', patientQuery: 'riley' } })
+    act(() => api.emitCommand({ id: 'patient.open', patientId: 'p-jamie-wu' }))
+    await waitFor(() => expect(document.activeElement?.id).toBe('patient-option-p-jamie-wu'))
+    expect(screen.getByRole('heading', { level: 1, name: 'Patients' })).toBeInTheDocument()
+    expect(screen.getByRole('searchbox', { name: 'Search list' })).toHaveValue('')
   })
 
   it('offers a retry when the workspace cannot be loaded', async () => {

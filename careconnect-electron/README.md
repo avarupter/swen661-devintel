@@ -162,7 +162,7 @@ The app implements every card of the Assignment 7 desktop accessibility specific
 | **NVDA** (Windows) | Start NVDA, then CareConnect. Use `F6` between regions, `NVDA+F7` for the landmarks and headings lists, and arrow keys in the patient list. Turn on the speech viewer to check exact announcements. |
 | **Narrator** | `Win+Ctrl+Enter`. Scan mode (`Caps Lock+Space`) reads landmarks and headings. |
 | **High Contrast** | Settings → Accessibility → Contrast themes, or `Left Alt+Left Shift+Print Screen`. |
-| **Zoom** | View → Zoom In to 200 % (`Ctrl+=`). Nothing should clip or need horizontal scrolling. |
+| **Zoom** | View → Zoom In (`Ctrl+=`). Eight presses give 207 %, just over the 200 % that WCAG requires. Nothing should clip or need horizontal scrolling. |
 
 A segment-by-segment recording script is in [`docs/accessibility-demo-script.md`](docs/accessibility-demo-script.md).
 

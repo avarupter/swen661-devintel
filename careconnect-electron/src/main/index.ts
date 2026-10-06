@@ -20,8 +20,9 @@ import {
   Tray,
   type MessageBoxOptions
 } from 'electron'
-import iconPath from '../../resources/icon.png?asset'
-import badgePath from '../../resources/badge.png?asset'
+// `asarUnpack` resolves to app.asar.unpacked in the packaged app, where the OS can read the files.
+import iconPath from '../../resources/icon.png?asset&asarUnpack'
+import badgePath from '../../resources/badge.png?asset&asarUnpack'
 import type { UiState } from '../shared/api'
 import { IPC } from '../shared/ipc'
 import { isAllowedExternalUrl } from '../shared/links'
@@ -56,6 +57,20 @@ let tray: CareConnectTray | null = null
 let badgeImage: Electron.NativeImage | null = null
 let unsavedChangesGuard: UnsavedChangesGuard | null = null
 let quitRequested = false
+let lastUiState: UiState | null = null
+
+/** The UiState fields the native menu depends on. */
+function menuStateChanged(previous: UiState | null, next: UiState): boolean {
+  return (
+    previous === null ||
+    previous.view !== next.view ||
+    previous.hasSelection !== next.hasSelection ||
+    previous.modal !== next.modal ||
+    previous.showShortcutHints !== next.showShortcutHints ||
+    previous.highContrast !== next.highContrast ||
+    previous.reduceMotion !== next.reduceMotion
+  )
+}
 
 function openMainWindow(): void {
   const keeper = createWindowStateKeeper({ filePath: path.join(app.getPath('userData'), 'window-state.json'), screen })
@@ -106,9 +121,14 @@ function showAbout(): void {
 function onUiState(state: UiState): void {
   commands.markReady()
   unsavedChangesGuard?.update(state.unsavedChanges)
-  if (appMenu) applyMenuState(appMenu, state)
-  tray?.update(state.unreadCount)
-  if (badgeImage) updateUnreadBadge({ platform: process.platform, app, win: mainWindow, badgeImage, count: state.unreadCount })
+  // Typing in a dialog reports state on every keystroke; only touch the menu and taskbar on a real change.
+  const previous = lastUiState
+  lastUiState = state
+  if (appMenu && menuStateChanged(previous, state)) applyMenuState(appMenu, state)
+  if (previous === null || previous.unreadCount !== state.unreadCount) {
+    tray?.update(state.unreadCount)
+    if (badgeImage) updateUnreadBadge({ platform: process.platform, app, win: mainWindow, badgeImage, count: state.unreadCount })
+  }
 }
 
 function start(): void {

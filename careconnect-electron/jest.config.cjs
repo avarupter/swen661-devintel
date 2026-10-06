@@ -30,7 +30,7 @@ module.exports = {
       transform,
       moduleNameMapper: {
         '^electron$': '<rootDir>/tests/mocks/electron.ts',
-        '\\?asset$': '<rootDir>/tests/mocks/asset.ts'
+        '\\?asset(&asarUnpack)?$': '<rootDir>/tests/mocks/asset.ts'
       },
       clearMocks: true
     },

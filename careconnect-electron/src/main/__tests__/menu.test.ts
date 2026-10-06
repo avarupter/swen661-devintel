@@ -187,7 +187,10 @@ describe('buildMenuTemplate on Windows', () => {
       'separator',
       'patient.copyCareId',
       'patient.export',
-      'patient.contextMenu'
+      'patient.contextMenu',
+      'separator',
+      'patient.filter',
+      'patient.sort'
     ])
     expect(ids('Communicate')).toEqual(['message.new', 'message.reply', 'separator', 'message.send', 'message.saveDraft', 'message.attach'])
     expect(ids('Help')).toEqual([
@@ -457,7 +460,7 @@ describe('applyMenuState', () => {
       }
     }
     walk(menu)
-    // Everything except palette-only actions (filter, sort, open patient) has a menu item.
-    expect([...COMMAND_IDS].filter((id) => !commandIds.has(id)).sort()).toEqual(['patient.filter', 'patient.open', 'patient.sort'])
+    // Everything except opening a specific patient (it needs a patient id) has a menu item.
+    expect([...COMMAND_IDS].filter((id) => !commandIds.has(id)).sort()).toEqual(['patient.open'])
   })
 })

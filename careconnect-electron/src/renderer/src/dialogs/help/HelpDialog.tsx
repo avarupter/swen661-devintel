@@ -136,7 +136,9 @@ export function HelpDialog({ onClose }: { onClose(): void }): React.JSX.Element 
           <li>Workspace (navigation): destinations, keyboard mode and settings</li>
           <li>Banner: the view title and its toolbar</li>
           <li>Main: the current view</li>
+          <li>Recent patients (region): the patient list, on the Patients view</li>
           <li>Patient list (search): the patient search, on the Patients view</li>
+          <li>Care summary (region): the selected patient’s alert and current plan</li>
           <li>Recent activity (complementary): the selected patient’s latest activity</li>
           <li>Status (content information): messages, saving and keyboard help</li>
         </ul>

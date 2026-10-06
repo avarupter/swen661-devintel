@@ -106,8 +106,9 @@ describe('patient menu helpers', () => {
 
     it('makes the menu of a patient with a maximum-length name and Care ID pass the main-process validator', () => {
       const longest = { ...avery, name: 'N'.repeat(LIMITS.shortText), careId: 'C'.repeat(LIMITS.shortText) }
-      expect(() => validateContextMenuRequest({ items: patientContextMenuItems(longest), x: 1, y: 1 })).toThrow(/must be at most 200 characters/)
-      const request = validateContextMenuRequest({ items: fitMenuLabels(patientContextMenuItems(longest)), x: 1, y: 1 })
+      // patientContextMenuItems fits its own labels, so every caller (view, menu bar, palette) is safe.
+      const request = validateContextMenuRequest({ items: patientContextMenuItems(longest), x: 1, y: 1 })
+      expect(fitMenuLabels(patientContextMenuItems(longest))).toEqual(patientContextMenuItems(longest))
       const labels = request.items.map((item) => item.label)
       expect(labels[0]).toMatch(/^Message N+…$/)
       expect(labels.find((label) => label.startsWith('Copy Care ID'))).toMatch(/^Copy Care ID \(C+…$/)

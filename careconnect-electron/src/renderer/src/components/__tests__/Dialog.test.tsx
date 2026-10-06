@@ -138,6 +138,13 @@ describe('Dialog', () => {
     expect(onClose).not.toHaveBeenCalled()
   })
 
+  it('stops a backdrop press from taking focus out of a dialog that stays open', () => {
+    const { container } = renderDialog()
+    // fireEvent returns false when the default action (moving focus to <body>) was prevented.
+    expect(fireEvent.mouseDown(container.querySelector('.dialog-backdrop') as Element)).toBe(false)
+    expect(fireEvent.mouseDown(screen.getByRole('dialog'))).toBe(true)
+  })
+
   it('calls the latest onClose after re-rendering', async () => {
     const { user, rerender, onClose } = renderDialog()
     const latest = jest.fn()

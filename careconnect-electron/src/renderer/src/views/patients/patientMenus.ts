@@ -5,7 +5,6 @@
 import type { ContextMenuItem, ContextMenuRequest } from '../../../../shared/api'
 import { pluralize, STATUS_LABELS } from '../../../../shared/format'
 import type { Patient } from '../../../../shared/model'
-import { LIMITS } from '../../../../shared/validate'
 import type { SortOrder, StatusFilter } from '../../state/appState'
 import { patientSecondaryText } from '../../state/selectors'
 
@@ -33,22 +32,8 @@ export function radioItems<T extends string>(options: readonly MenuOption<T>[], 
   return options.map((option) => ({ id: option.id, label: option.label, type: 'radio', checked: option.id === current }))
 }
 
-/**
- * The main process rejects a menu whose labels are longer than LIMITS.shortText
- * characters, but a patient's name or Care ID can reach that limit on its own
- * ("Message <name>…"). Long labels are cut to the limit and end in "…", so the
- * menu still opens; ids, and so the commands, are unchanged. Items that already
- * fit are returned as they are.
- */
-export function fitMenuLabels(items: readonly ContextMenuItem[], max: number = LIMITS.shortText): ContextMenuItem[] {
-  return items.map((item) => {
-    if (item.label.length <= max) return item
-    let head = item.label.slice(0, max - 1)
-    // Never end on the first half of a surrogate pair (an emoji, for example).
-    if (/[\uD800-\uDBFF]$/.test(head)) head = head.slice(0, -1)
-    return { ...item, label: `${head.trimEnd()}…` }
-  })
-}
+/** Label fitting lives with the patient menu items; re-exported for the view's callers. */
+export { fitMenuLabels } from '../../commands/patientContextMenu'
 
 /** The option whose id a native menu returned, or undefined when it was dismissed. */
 export function chosenOption<T extends string>(options: readonly MenuOption<T>[], choice: string | null): MenuOption<T> | undefined {

@@ -287,6 +287,19 @@ describe('patient commands', () => {
     expect(ctx.setStatus).toHaveBeenCalledWith(`${target.name} is already marked ${status.replace('-', ' ')}.`, 'info')
   })
 
+  it('patient.open clears a list search or status filter that would hide the patient', async () => {
+    const ctx = fakeContext({ ui: { view: 'tasks', patientQuery: 'riley', statusFilter: 'completed' } })
+    await runDefaultCommand({ id: 'patient.open', patientId: AVERY }, ctx)
+    expect(ctx.getState().ui).toMatchObject({ patientQuery: '', statusFilter: 'all', selectedPatientId: AVERY, view: 'patients' })
+    expect(ctx.focusAfterRender).toHaveBeenCalledWith(`patient-option-${AVERY}`)
+  })
+
+  it('patient.open keeps a search and filter that already show the patient', async () => {
+    const ctx = fakeContext({ ui: { patientQuery: 'avery', statusFilter: 'needs-review' } })
+    await runDefaultCommand({ id: 'patient.open', patientId: AVERY }, ctx)
+    expect(ctx.getState().ui).toMatchObject({ patientQuery: 'avery', statusFilter: 'needs-review', selectedPatientId: AVERY })
+  })
+
   it('patient.open warns when the patient is gone or missing', async () => {
     for (const command of [{ id: 'patient.open', patientId: 'p-removed' }, { id: 'patient.open' }] as AppCommand[]) {
       const ctx = fakeContext()

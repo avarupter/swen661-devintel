@@ -32,7 +32,7 @@ see, so the narration matches the app. All data shown is synthetic.
    - Point out that every stop keeps the visible teal focus ring.
 3. **Landmarks list.**
    - Press `NVDA+F7`, then *Landmarks*.
-   - Show the named landmarks: banner, navigation "Workspace", main, search "Patient list", complementary "Recent activity", content info "Status".
+   - Show the named landmarks: banner, navigation "Workspace", main, region "Recent patients", search "Patient list", region "Care summary", complementary "Recent activity", content info "Status".
    - Press `Esc`.
 4. **Native menus.**
    - Press `Alt`. The access keys appear (F, E, V, N, P, C, H).
@@ -120,7 +120,7 @@ see, so the narration matches the app. All data shown is synthetic.
    - Press `Ctrl+,` (Settings).
    - Toggle *High contrast theme* and *Reduce motion*. Each switch announces its new state.
 3. **Zoom.**
-   - Press `Ctrl+=` until zoom is 200%: View → Zoom In.
+   - Press `Ctrl+=` eight times (View → Zoom In) to reach about 200 %. Electron zooms in steps, so eight presses give 207 %.
    - Show the layout reflowing: navigation moves to the top, the panes stack, and nothing is clipped.
    - Press `Ctrl+0` to reset.
 

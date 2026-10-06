@@ -33,11 +33,8 @@ interface MenuModule {
 // Loaded at run time, so the renderer's type check does not take in the main process and Electron's types.
 const { buildMenuTemplate } = jest.requireActual<MenuModule>('../../../../main/menu')
 
-/**
- * Deferred chords with no macOS menu item yet, as "command: accelerator".
- * Reported to the main-process task: remove an entry once its menu item exists.
- */
-const KNOWN_GAPS = ['patient.filter: CmdOrCtrl+Shift+L']
+/** Deferred chords with no macOS menu item, as "command: accelerator". Keep this empty. */
+const KNOWN_GAPS: string[] = []
 
 interface Registered {
   command: CommandId
@@ -111,9 +108,9 @@ describe('chords the renderer leaves to the macOS menu', () => {
     expect(missing).toEqual(KNOWN_GAPS)
   })
 
-  it('include the gap from the design: ⌘⇧L (Filter list) has no menu item, so it does nothing on macOS', () => {
+  it('include ⌘⇧L (Filter list), registered by the Patient menu’s Filter List item', () => {
     const filter = deferredOnMac().find((entry) => entry.command === 'patient.filter')
     expect(filter).toEqual({ command: 'patient.filter', accelerator: 'CmdOrCtrl+Shift+L' })
-    expect(registeredOnMac().some((item) => item.command === 'patient.filter')).toBe(false)
+    expect(registeredOnMac()).toContainEqual({ command: 'patient.filter', accelerator: 'CmdOrCtrl+Shift+L' })
   })
 })

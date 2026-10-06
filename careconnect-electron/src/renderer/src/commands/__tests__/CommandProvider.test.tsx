@@ -271,6 +271,34 @@ describe('the default context', () => {
     await waitFor(() => expect(screen.getByRole('searchbox', { name: 'Patient search' })).toHaveFocus())
   })
 
+  it('waits for a focus target that renders a few frames late, as after a main-process command', async () => {
+    const h = await renderHarness(<SearchField />, { initialUi: { view: 'overview' } })
+    h.rerender(<p>No search field yet</p>)
+    act(() => h.commands().run('patient.search'))
+    // The target appears 100 ms later, well after a single setTimeout(0) would have given up.
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 100))
+      h.rerender(<input id="patient-search" type="search" aria-label="Patient search" />)
+    })
+    await waitFor(() => expect(screen.getByRole('searchbox', { name: 'Patient search' })).toHaveFocus())
+  })
+
+  it('stops retrying when the focus target never appears', async () => {
+    jest.useFakeTimers()
+    try {
+      const h = await renderHarness(<p>Nothing to focus</p>, { initialUi: { view: 'overview' } })
+      const spy = jest.spyOn(document, 'getElementById')
+      act(() => h.commands().run('patient.search'))
+      act(() => jest.advanceTimersByTime(5_000))
+      const lookups = spy.mock.calls.filter(([id]) => id === 'patient-search').length
+      expect(lookups).toBeGreaterThan(1)
+      expect(lookups).toBeLessThanOrEqual(31)
+      spy.mockRestore()
+    } finally {
+      jest.useRealTimers()
+    }
+  })
+
   it('focuses the view title after navigating', async () => {
     const h = await renderHarness(<Shell />)
     act(() => h.commands().run('navigate.inbox'))

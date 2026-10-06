@@ -42,6 +42,8 @@ All patient data is **synthetic demo data**.
 │ store.ts      workspace JSON (atomic write, corrupt-file recovery, seeding)  │
 │ fileOps.ts    export / import / attachment through native dialogs           │
 │ notifications.ts, platform.ts (Windows: AUMID, Jump List, overlay badge)     │
+│ commandChannel.ts  queues menu/tray/Jump List commands until the renderer is │
+│               ready; closeGuard.ts holds a close until the last autosave     │
 └───────────────▲─────────────────────────────────────────┬────────────────────┘
                 │ ipcRenderer.invoke / send               │ webContents.send
                 │ (channels in shared/ipc.ts)             │ ('app:command', 'theme:changed')
@@ -137,8 +139,24 @@ Types are in `src/shared/model.ts`. A `Workspace` holds the clinic and user,
 ### Menus (native)
 
 `&File &Edit &View &Navigate &Patient &Communicate &Help`. Access keys are
-unique within each menu. Edit, View zoom, Full screen, Close and Exit use
-Electron roles, so the OS behaves natively.
+unique within each menu (a test enforces it). Edit, View zoom, Full screen,
+Close and Exit use Electron roles, so the OS behaves natively. As built:
+
+- **File:** New Patient…, Import Patients…, Export Patient Summary…, Print…, Settings…, Close Window, Exit.
+- **Edit:** Undo, Redo, Cut, Copy, Paste, Select All, Find in List, Co&mmand Palette….
+- **View:**
+  - Show Shortcut Hints, High Contrast Theme and Reduce Motion, as checkboxes
+  - Actual Size, Zoom In and Zoom Out (a hidden twin also binds Ctrl+=)
+  - Toggle Full Screen
+  - in development only: Reload and Developer Tools
+- **Navigate:** the seven views, then Next Region and Pre&vious Region.
+- **Patient:**
+  - New Patient…, Edit Care Summary…, Add Clinical Note…, Message Patient…
+  - Mark as Com&pleted, Needs Review, Open
+  - Copy Care ID, Export Summary…, Open Context Menu
+  - Filter List…, Sort List…
+- **Communicate:** New Message…, Reply, Send Message, Save Draft, Attach Document….
+- **Help:** Keyboard Shortcuts, CareConnect Help, Command Palette, Accessibility &Resources, About CareConnect.
 
 **Who handles app shortcuts:**
 - **Windows and Linux:** the menu item carries the accelerator for display with `registerAccelerator: false`. The renderer handles the keystroke itself, so it can apply context synchronously (ignored while typing or while a dialog is open). There is no double firing.
@@ -168,6 +186,7 @@ Open inbox (N unread), Quit. A click shows and focuses the window.
 - Defaults: 1440×900, centred, minimum 960×640.
 - The normal bounds are saved on move or resize (debounced 400 ms), and the maximized and full-screen flags are saved too. Everything is saved synchronously on close.
 - On restore, the saved rectangle must overlap a current display's work area. If it doesn't, the window is centred on the primary display and clamped to fit.
+- Closing or quitting waits, for at most 3 s, until the renderer reports 0 unsaved changes. Ending the session can't drop the last autosave.
 
 ## 7. Renderer
 
@@ -246,16 +265,17 @@ All dialogs use one `Dialog` component:
 - Patients view order: Navigation → Toolbar → Patient list → Detail pane → Status.
 - Other views: Navigation → Toolbar → Main → Status.
 - F6 moves to the next region's last-focused element, or failing that its first focusable element. Shift+F6 moves backwards.
+- From outside every region (the view title after navigating, or `#main` after "Skip to main workspace"), F6 goes to the next region in document order and Shift+F6 to the previous one.
 
 ## 9. Accessibility (Assignment 7 spec → implementation)
 
 | Spec card | Implementation | Verified by |
 |---|---|---|
 | 01 Logical focus order | DOM order = visual order, with no positive `tabindex`. F6 and Shift+F6 move between regions. Closing a layer restores focus to its opener. | Region tests; Dialog focus-return tests; axe `tabindex` rule |
-| 02 Visible focus | A 3 px `#008F89` ring between two 2 px white halos (`:focus-visible`), so the ring always sits on white: **3.97:1** on any surface. Selection and validation use borders and backgrounds, never `outline`, so they can't hide focus. | Contrast test recomputes ratios from `tokens.css` |
-| 03 Skip links and landmarks | "Skip to main workspace / patient list / status" come first in the DOM. Named landmarks: banner, navigation "Workspace", main, complementary "Recent activity", search, and contentinfo "Status" with a `role="status"` live region. | Landmark tests; axe `region` rules |
+| 02 Visible focus | A 3 px `#008F89` ring with a white halo on both sides (`:focus-visible`), so wherever the ring is drawn outside an element it sits on white: **3.97:1**. Rows in scroll containers (`.focus-inset`) and a focused dialog draw it just inside their own edge, on their own background: 3.46:1 on the selected row, 3.53:1 on hover, 3.67:1 on the page colour. Selection and validation use borders and backgrounds, never `outline`, so they can't hide focus. | The contrast test recomputes every ratio from `tokens.css` and the component CSS |
+| 03 Skip links and landmarks | "Skip to main workspace / patient list / status" come first in the DOM. Named landmarks: banner, navigation "Workspace", main, search "Patient list", complementary "Recent activity", and contentinfo "Status". The Patients view adds two regions: "Recent patients" (the list pane) and "Care summary". Status messages are announced by the announcer's polite (`role="status"`) and assertive (`role="alert"`) live regions. Those sit outside the app shell, which is `inert` under a dialog, so the footer itself is not live. A live footer would go silent while a dialog is open, and would otherwise read each message twice. | Landmark tests; axe `region` and `landmark-*` rules |
 | 04 Menus and toolbars | Native menus. Toolbars use roving tabindex: one Tab stop, arrows, Home/End. Esc closes menus. Disabled actions use `aria-disabled` plus a described reason and stay focusable. | Toolbar tests |
-| 05 Screen-reader naming | Patient options read "Avery Park, Wellness follow-up, 10:30. Needs review", plus "selected" and "1 of 28" from the listbox. Repeated controls name their context ("Message Avery Park"). Icons are `aria-hidden`. Counts appear once ("Inbox, 4 unread"). | RTL `getByRole(name)` assertions |
+| 05 Screen-reader naming | Patient options read "Avery Park, Wellness follow-up · 10:30. Needs review", plus "selected" and "1 of 28" from the listbox. Repeated controls name their context ("Message Avery Park", "Add note for Avery Park"). Every accessible name starts with the visible label (WCAG 2.5.3). Icons are `aria-hidden`. Counts appear once ("Inbox, 4 unread"). | RTL `getByRole(name)` assertions |
 | 06 Motion, contrast, targets | `prefers-reduced-motion` and an in-app Reduce motion toggle. 4.5:1 text and 3:1 UI, recomputed in tests. Targets ≥ 32×32 px, essential clinical actions ≥ 44×44 px. Layout reflows at 200 % zoom (CSS width 640 px) without clipping. | Contrast test; CSS review; manual check at 200 % |
 | 07 Errors and recovery | On submit, focus moves to an error summary (`role="alert"` heading plus links to each field). Fields get `aria-invalid` and `aria-describedby` with specific guidance ("Visit date is required. Enter a date, or choose 'Schedule later.'"). Entered values are kept. | NewPatient and Compose tests |
 | 08 Non-colour status | Every status chip has an icon and a word (✓ Completed, ! Needs review, i Open). Polite announcements for success and assertive for failures. Status messages stay until dismissed or replaced. | Chip tests; announcer tests |
@@ -283,7 +303,7 @@ Windows High Contrast and other forced-colours modes:
 | Needs review | `#8A4B00` on `#FFF4E5` | 6.26:1 |
 | Completed | `#1E6B34` on `#E6F4EA` | 5.76:1 |
 | Error | `#B3261E` on `#FDECEA` | 5.72:1 |
-| Focus ring | `#008F89` | 3.97:1 on white halo |
+| Focus ring | `#008F89` | 3.97:1 on its white halo. Drawn inside a row: 3.46:1 on selected, 3.67:1 on the page colour. |
 | UI borders (inputs) | `#7A8899` | 3.61:1 on white |
 
 ## 11. Deviations from the Assignment 7 design
@@ -293,7 +313,7 @@ Windows High Contrast and other forced-colours modes:
    - The shortcut sheet's own rule is "CareConnect does not override reserved key combinations".
    - Ctrl+Shift+L is the filter toggle in Excel.
 2. **Focus ring `#008F89` instead of `#00A9A2`.**
-   - `#00A9A2` measures 2.92:1 on white and 2.59:1 on the selected row, which fails the spec's own "at least 3:1" criterion.
+   - `#00A9A2` measures 2.92:1 on white and 2.55:1 on the selected row (`#E8F0FE`), which fails the spec's own "at least 3:1" criterion.
 3. **Native OS menu bar instead of the drawn dark title-bar menu.**
    - The assignment requires native menus.
    - Native menus are what NVDA and Narrator handle best.
@@ -317,6 +337,7 @@ Coverage gate: 60 % global. Target: 80 % or more.
 
 - `electron-builder.yml` targets NSIS x64 (assisted installer). The user chooses the install folder, and it creates Start-menu and desktop shortcuts.
 - The appId `edu.umgc.swen661.careconnect` matches the AppUserModelID.
+- The runtime icons in `resources/` are unpacked from `app.asar`, because Windows reads them directly for toast notifications and the taskbar overlay.
 - `npm run dist:win:docker` builds it from WSL, and `npm run dist:win` builds it on Windows.
 - The installer is a submission artefact. It isn't committed: `dist/` is git-ignored.
 

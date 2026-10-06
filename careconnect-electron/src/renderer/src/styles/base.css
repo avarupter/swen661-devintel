@@ -407,6 +407,11 @@ kbd {
   gap: var(--space-4);
 }
 
+.form__instructions {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
 .form-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -603,6 +608,8 @@ fieldset.field > legend {
 }
 
 .dialog__body {
+  /* Contains absolutely positioned (visually hidden) text, so it cannot stretch the fixed backdrop. */
+  position: relative;
   flex: 1;
   min-height: 0;
   padding: var(--space-5);

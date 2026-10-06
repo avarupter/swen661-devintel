@@ -246,7 +246,11 @@ export function buildMenuTemplate(options: MenuTemplateOptions): MenuItemConstru
       separator,
       command('patient.copyCareId', '&Copy Care ID'),
       command('patient.export', 'E&xport Summary…'),
-      command('patient.contextMenu', 'Open Context Men&u')
+      command('patient.contextMenu', 'Open Context Men&u'),
+      separator,
+      // Registers ⌘⇧L on macOS, where the renderer leaves modifier chords to the menu.
+      command('patient.filter', '&Filter List…'),
+      command('patient.sort', '&Sort List…')
     ]
   }
 

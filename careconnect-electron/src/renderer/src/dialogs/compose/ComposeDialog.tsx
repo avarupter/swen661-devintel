@@ -305,6 +305,10 @@ export function ComposeDialog({ patientId, conversationId, draftId, onClose }: C
       <div className="form">
         {errors.length > 0 && <ErrorSummary errors={errors} summaryRef={summaryRef} />}
 
+        <p className="form__instructions">
+          {setup.conversation ? 'Subject and message are required.' : 'Recipient, subject and message are required.'}
+        </p>
+
         {setup.conversation ? (
           <p className="compose__to">
             To: <strong>{setup.conversation.with}</strong>

@@ -8,9 +8,9 @@ import { isCommandId, viewForCommand, type AppCommand } from '../../../shared/co
 import { STATUS_LABELS } from '../../../shared/format'
 import type { Patient, PatientStatus } from '../../../shared/model'
 import { hintForCommand, keyLabel } from '../../../shared/shortcuts'
-import type { AppAction, AppState, Modal, StatusTone } from '../state/appState'
+import { blocksNewModal, type AppAction, type AppState, type Modal, type StatusTone } from '../state/appState'
 import { createId } from '../state/ids'
-import { mergeImportedPatients, patientById } from '../state/selectors'
+import { matchesPatientQuery, mergeImportedPatients, patientById } from '../state/selectors'
 import { patientContextMenuItems } from './patientContextMenu'
 
 export interface CommandContext {
@@ -41,8 +41,7 @@ export function describeFailure(error: unknown): string {
 
 /** A modal may replace the command palette, but never another dialog with unsaved input. */
 function canOpenModal(ctx: CommandContext): boolean {
-  const { modal } = ctx.getState().ui
-  if (modal && modal.kind !== 'palette') {
+  if (blocksNewModal(ctx.getState().ui.modal)) {
     ctx.setStatus('Close the open dialog first.', 'info')
     return false
   }
@@ -153,6 +152,10 @@ export async function runDefaultCommand(command: AppCommand, ctx: CommandContext
         ctx.setStatus('That patient is no longer in the list.', 'warning')
         return
       }
+      // A search or status filter left on in the Patients list could hide the patient being opened.
+      const { patientQuery, statusFilter } = ctx.getState().ui
+      if (!matchesPatientQuery(patient, patientQuery)) ctx.dispatch({ type: 'ui/setPatientQuery', query: '' })
+      if (statusFilter !== 'all' && statusFilter !== patient.status) ctx.dispatch({ type: 'ui/setStatusFilter', filter: 'all' })
       ctx.dispatch({ type: 'ui/selectPatient', patientId: patient.id, at: ctx.now().toISOString() })
       ctx.dispatch({ type: 'ui/navigate', view: 'patients' })
       ctx.focusAfterRender(`patient-option-${patient.id}`)

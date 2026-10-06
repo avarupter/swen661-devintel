@@ -9,6 +9,10 @@ import { describeFailure, runDefaultCommand, type CommandContext } from './defau
 
 export type CommandHandler = (command: AppCommand) => void | Promise<void>
 
+/** focusAfterRender retries for up to FOCUS_RETRY_LIMIT × FOCUS_RETRY_MS (about half a second). */
+const FOCUS_RETRY_LIMIT = 30
+const FOCUS_RETRY_MS = 16
+
 interface CommandsValue {
   /** Runs a command through the most recently registered handler, or the default. */
   run(command: AppCommand | CommandId): void
@@ -79,7 +83,19 @@ export function CommandProvider({ children }: { children: ReactNode }): React.JS
       setStatus,
       openModal,
       focusAfterRender: (id) => {
-        setTimeout(() => document.getElementById(id)?.focus(), 0)
+        // Commands from the main process (menu, tray, notification clicks) arrive outside a
+        // React event, so the target may render a few frames later: retry briefly.
+        let attempts = 0
+        const tryFocus = (): void => {
+          const element = document.getElementById(id)
+          if (element && !element.closest('[inert]')) {
+            element.focus()
+            return
+          }
+          attempts += 1
+          if (attempts < FOCUS_RETRY_LIMIT) setTimeout(tryFocus, FOCUS_RETRY_MS)
+        }
+        setTimeout(tryFocus, 0)
       },
       focusSearch: () => {
         const element = searchTarget.current

@@ -93,7 +93,11 @@ export function Dialog({
     }
 
     const onBackdropMouseDown = (event: MouseEvent): void => {
-      if (latest.current.closeOnBackdrop && event.target === backdrop) latest.current.onClose()
+      if (event.target !== backdrop) return
+      if (latest.current.closeOnBackdrop) latest.current.onClose()
+      // Otherwise keep focus in the dialog: a press on the backdrop would move it to <body>,
+      // where Escape and the Tab trap no longer reach the dialog.
+      else event.preventDefault()
     }
 
     dialog.addEventListener('keydown', onDialogKeyDown)

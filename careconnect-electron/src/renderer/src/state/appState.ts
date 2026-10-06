@@ -336,6 +336,15 @@ export function workspaceForSave(state: AppState): Workspace | null {
   return state.workspace ? { ...state.workspace, recentPatients: state.ui.recentPatients } : null
 }
 
+/**
+ * Whether `modal` must stay open rather than be replaced by another one. The
+ * command palette gives way to whatever it runs; any other dialog may hold
+ * unsaved input, so a new modal never stacks on top of it.
+ */
+export function blocksNewModal(modal: Modal | null): boolean {
+  return modal !== null && modal.kind !== 'palette'
+}
+
 /** How the main process should treat the open modal (menus, accelerators). */
 export function modalCategory(modal: Modal | null): 'palette' | 'compose' | 'dialog' | null {
   if (!modal) return null

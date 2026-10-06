@@ -156,6 +156,26 @@ describe('main process bootstrap', () => {
     expect(electron.app.setBadgeCount).toHaveBeenCalledWith(3)
   })
 
+  it('touches the badge and menu only when what they show changes, not on every keystroke', async () => {
+    const { api, electron } = await boot()
+    api.updateUiState(READY_STATE)
+    expect(electron.app.setBadgeCount).toHaveBeenCalledTimes(1)
+
+    // Typing in a dialog reports state on every keystroke; only unsavedChanges differs.
+    const addNote = menuItem(electron, 'patient.addNote')
+    addNote.enabled = false
+    for (let unsaved = 1; unsaved <= 5; unsaved++) api.updateUiState({ ...READY_STATE, unsavedChanges: unsaved })
+    expect(electron.app.setBadgeCount).toHaveBeenCalledTimes(1)
+    expect(addNote.enabled).toBe(false)
+
+    api.updateUiState({ ...READY_STATE, unreadCount: 2, modal: 'dialog' })
+    expect(electron.app.setBadgeCount).toHaveBeenLastCalledWith(2)
+    expect(electron.Tray.instances[0].toolTip).toBe('CareConnect — 2 unread messages')
+    expect(menuItem(electron, 'patient.addNote').enabled).toBe(false)
+    api.updateUiState({ ...READY_STATE, unreadCount: 2 })
+    expect(menuItem(electron, 'patient.addNote').enabled).toBe(true)
+  })
+
   it('holds a Jump List --command until the renderer is ready, then delivers it', async () => {
     const { api, win } = await boot({ argv: ['--command=navigate.inbox'] })
     const listener = jest.fn()

@@ -108,6 +108,8 @@ export function NewPatientDialog({ onClose }: { onClose(): void }): React.JSX.El
       <form id={FORM_ID} className="form" noValidate onSubmit={submit}>
         {errors.length > 0 && <ErrorSummary ref={summaryRef} errors={errors} />}
 
+        <p className="form__instructions">Full name, reason for visit and a visit date (or “Schedule later”) are required.</p>
+
         <div className="field">
           <label htmlFor={FIELDS.name} className="field__label">
             Full name

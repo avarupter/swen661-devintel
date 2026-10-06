@@ -3,6 +3,7 @@ import { RECENT_PATIENT_LIMIT } from '../../../../shared/model'
 import { createSeedWorkspace } from '../../../../shared/seed'
 import {
   appReducer,
+  blocksNewModal,
   createInitialState,
   initialUi,
   modalCategory,
@@ -427,6 +428,16 @@ describe('workspaceForSave', () => {
     expect(payload?.recentPatients.map((entry) => entry.patientId)).toEqual(['p-jamie-wu', 'p-avery-park', 'p-morgan-chen'])
     expect(payload?.patients).toBe(ws(state).patients)
     expect(ws(state).recentPatients.map((entry) => entry.patientId)).toEqual(['p-avery-park', 'p-morgan-chen'])
+  })
+})
+
+describe('blocksNewModal', () => {
+  it('lets the command palette give way but protects every other dialog', () => {
+    expect(blocksNewModal(null)).toBe(false)
+    expect(blocksNewModal({ kind: 'palette' })).toBe(false)
+    expect(blocksNewModal({ kind: 'help' })).toBe(true)
+    expect(blocksNewModal({ kind: 'addNote', patientId: 'p-avery-park' })).toBe(true)
+    expect(blocksNewModal({ kind: 'compose', patientId: null, conversationId: null, draftId: null })).toBe(true)
   })
 })
 

@@ -56,7 +56,11 @@ export interface ContextMenuItem {
 
 export interface ContextMenuRequest {
   items: ContextMenuItem[]
-  /** Window-relative position; omitted means "at the mouse pointer". */
+  /**
+   * CSS pixels in the sender's viewport (getBoundingClientRect / clientX). The
+   * main process scales them by the page zoom to window coordinates. Omitted
+   * means "at the mouse pointer".
+   */
   x?: number
   y?: number
 }

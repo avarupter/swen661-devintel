@@ -981,3 +981,45 @@ Run parallel audits, then verify each finding and fix the confirmed ones:
 - test quality
 
 Re-run every gate afterwards.
+
+---
+
+## As-built notes (deviations from this plan, accepted at integration)
+
+These came out of the build/review/fix rounds. Each one is covered by tests.
+
+- **Task 3: menus.** The plan's access keys collided within menus, and a test now requires them to be unique. The as-built labels are:
+  - Pre&vious Region
+  - Mark as Com&pleted
+  - Accessibility &Resources
+  - Co&mmand Palette… (the Edit menu's copy, with its own id `edit.commandPalette`)
+
+  Also:
+  - File gained Print…, and a hidden Zoom In twin binds Ctrl+=.
+  - The Patient menu gained Filter List… and Sort List…. These register ⌘⇧L on macOS, where the renderer leaves modifier chords to the menu.
+- **Task 3: two new modules.**
+  - `commandChannel.ts` replaces "send `--command` after `did-finish-load`". Commands are queued until the renderer's first `ui:state`, which avoids a race with React's first commit.
+  - `closeGuard.ts` holds a window close, for at most 3 s, until the renderer reports 0 unsaved changes.
+- **Task 3: context menus.** `context-menu:show` scales the renderer's CSS-pixel position by the page zoom, so menus land at their anchor at 200 %.
+- **Task 3: shell.** `external:open` resolves `false` rather than rejecting when the OS can't open an allow-listed URL.
+- **Task 4: patient list.**
+  - The detail pane is `<section role="group">`, so the "Recent activity" aside stays a top-level complementary landmark.
+  - The listbox uses `div` elements, because jsx-a11y's strict rules reject `role="listbox"` on `ul`.
+  - The list pane is `clamp(360px, 30vw, 440px)` wide, so rows don't wrap at 1440 px.
+  - The Add note button is named "Add note for <name>" (WCAG 2.5.3, Label in Name), not "Add clinical note for <name>".
+- **Task 4: landmarks.** "Recent patients" (the list pane) and "Care summary" are labelled sections, and therefore region landmarks. They're documented in Help and in the demo script.
+- **Task 6: compose drafts.** Compose writes every edit straight into the workspace draft, so the close guard covers typed text. Main skips menu and taskbar updates when the menu-relevant `ui:state` fields haven't changed.
+- **Task 7: foundation fixes.**
+  - F6 from outside every region now goes by document order.
+  - Untrusted Care IDs are sanitised in export file names.
+  - ISO dates are validated strictly and stored as UTC.
+  - The launch notification is decided once per launch.
+  - Every toolbar's accessible name starts with its visible label.
+  - The focus halo has its own higher-specificity rule.
+- **Integration:**
+  - `focusAfterRender` retries for about half a second, because commands from the main process render a few frames later.
+  - `patient.open` clears a list search or status filter that would hide the patient.
+  - A press on a dialog's backdrop keeps focus in the dialog.
+  - `patientContextMenuItems` fits long labels for every caller.
+  - Runtime icons are packaged and unpacked from asar.
+  - Multi-field forms state which fields are required.

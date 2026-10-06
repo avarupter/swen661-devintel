@@ -6,9 +6,14 @@ directories:
   buildResources: build
 files:
   - out/**
+  - resources/**
   - package.json
   - '!**/*.map'
 asar: true
+# Icons are handed to Windows itself (toast notifications, the taskbar overlay),
+# which cannot read inside app.asar.
+asarUnpack:
+  - resources/**
 # No native modules, so there is nothing to rebuild for the target platform.
 npmRebuild: false
 # Electron fuses are flipped in the packaged binary (https://www.electronjs.org/docs/latest/tutorial/fuses).
