@@ -118,10 +118,13 @@ export function AppStateProvider({ children, initialUi }: { children: ReactNode;
     }
   }, [api])
 
-  // One native notification per launch for follow-ups due today.
+  // One native notification per launch for follow-ups due today. The decision is
+  // made once, for the first loaded workspace: turning notifications on later in
+  // the session must not send a "launch" toast then.
   useEffect(() => {
-    if (!workspace || notifiedRef.current || !workspace.preferences.notifications) return
+    if (!workspace || notifiedRef.current) return
     notifiedRef.current = true
+    if (!workspace.preferences.notifications) return
     const now = clock()
     const due = followUpsDueToday(workspace.patients, now)
     if (due.length === 0) return

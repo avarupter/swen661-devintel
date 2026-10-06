@@ -1,0 +1,57 @@
+/* Resources: a card per link, grouped by category. */
+
+.resources__intro {
+  max-width: 72ch;
+  color: var(--color-text-secondary);
+}
+
+.resources__group {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.resource-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: var(--space-4);
+}
+
+.resource-card {
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  gap: var(--space-2);
+}
+
+.resource-card__title {
+  font-size: var(--text-md);
+  font-weight: 600;
+}
+
+.resource-card__description {
+  color: var(--color-text-secondary);
+  font-size: var(--text-base);
+}
+
+.resource-card__host {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  overflow-wrap: anywhere;
+}
+
+.resource-card__host .icon {
+  width: 14px;
+  height: 14px;
+}
+
+.resource-card__open {
+  justify-self: start;
+  margin-top: var(--space-2);
+}
+
+.resource-card__open .icon {
+  width: 16px;
+  height: 16px;
+}

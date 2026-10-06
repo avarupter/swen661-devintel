@@ -11,7 +11,10 @@ export const PATIENT_EXPORT_FORMAT = 'careconnect.patient.v1'
 
 export function exportFileName(patient: Patient, format: ExportFormat): string {
   const slug = patient.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
-  return `${patient.careId}-${slug || 'patient'}.${format}`
+  // The name becomes the save dialog's defaultPath, and an imported record's Care ID is
+  // untrusted text, so keep only file-name-safe characters: no separators, drives or "..".
+  const careId = patient.careId.replace(/[^A-Za-z0-9-]+/g, '-').replace(/(^-+|-+$)/g, '')
+  return `${careId ? `${careId}-` : ''}${slug || 'patient'}.${format}`
 }
 
 export function formatPatientSummaryText(patient: Patient, exportedAt: Date): string {

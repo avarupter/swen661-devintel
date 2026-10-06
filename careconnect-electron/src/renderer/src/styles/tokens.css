@@ -43,7 +43,9 @@
 
   /*
    * Focus (spec card 02): a 3 px ring with a light halo on both sides, so the
-   * ring always sits on white whatever is behind it: 3.97:1.
+   * ring sits on white whatever is behind it: 3.97:1. Rows in scroll
+   * containers (.focus-inset) and a focused dialog draw the ring inside their
+   * own edge instead, on their own background: at least 3.46 to 1 (selected).
    */
   --focus-ring: #008f89;
   --focus-halo: #ffffff;

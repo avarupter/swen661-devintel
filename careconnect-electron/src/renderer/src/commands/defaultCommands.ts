@@ -7,6 +7,7 @@ import type { CareConnectApi } from '../../../shared/api'
 import { isCommandId, viewForCommand, type AppCommand } from '../../../shared/commands'
 import { STATUS_LABELS } from '../../../shared/format'
 import type { Patient, PatientStatus } from '../../../shared/model'
+import { hintForCommand, keyLabel } from '../../../shared/shortcuts'
 import type { AppAction, AppState, Modal, StatusTone } from '../state/appState'
 import { createId } from '../state/ids'
 import { mergeImportedPatients, patientById } from '../state/selectors'
@@ -210,7 +211,7 @@ export async function runDefaultCommand(command: AppCommand, ctx: CommandContext
     case 'message.saveDraft':
     case 'message.attach':
       // The compose dialog registers these while it is open.
-      ctx.setStatus('Open a message first (Ctrl+Shift+M for a new one).', 'info')
+      ctx.setStatus(`Open a message first (${hintForCommand('message.new', ctx.getState().ui.platform)} for a new one).`, 'info')
       return
     case 'app.commandPalette':
       if (canOpenModal(ctx)) ctx.openModal({ kind: 'palette' })
@@ -225,7 +226,7 @@ export async function runDefaultCommand(command: AppCommand, ctx: CommandContext
       if (canOpenModal(ctx)) ctx.openModal({ kind: 'settings' })
       return
     case 'view.toggleShortcutHints':
-      togglePreference(ctx, 'showShortcutHints', 'Shortcut hints shown.', 'Shortcut hints hidden. Hold Alt to see them.')
+      togglePreference(ctx, 'showShortcutHints', 'Shortcut hints shown.', `Shortcut hints hidden. Hold ${keyLabel('Alt', ctx.getState().ui.platform)} to see them.`)
       return
     case 'view.toggleHighContrast':
       togglePreference(ctx, 'highContrast', 'High contrast theme on.', 'High contrast theme off.')

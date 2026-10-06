@@ -1,0 +1,61 @@
+/*
+ * New patient, Add clinical note and Edit care summary dialogs. Form basics live in base.css.
+ * Classes start with "patient" because every stylesheet shares one global scope.
+ */
+
+.patient-form__choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-5);
+}
+
+/* Edit care summary: the plan list editor. */
+.patient-plan-editor {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.patient-plan-editor__list {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.patient-plan-editor__row {
+  display: grid;
+  grid-template-columns: 2.5ch minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.patient-plan-editor__number {
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.patient-plan-editor__add {
+  justify-self: start;
+}
+
+/* The follow-up alert fields sit under their checkbox, marked with the warning colour as a cue only. */
+.patient-alert-editor {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.patient-alert-editor__fields {
+  display: grid;
+  gap: var(--space-4);
+  padding-left: var(--space-4);
+  border-left: 3px solid var(--color-review-border);
+}
+
+.patient-alert-editor__details {
+  min-height: 80px;
+}
+
+@media (forced-colors: active) {
+  .patient-alert-editor__fields {
+    border-left-color: CanvasText;
+  }
+}

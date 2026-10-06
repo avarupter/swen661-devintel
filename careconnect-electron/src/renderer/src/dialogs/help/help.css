@@ -1,0 +1,85 @@
+/* CareConnect help. Colours come from tokens.css. */
+
+/* position: relative keeps visually hidden text in scrolled-away content clipped by the body, not the backdrop. */
+.help .dialog__body {
+  position: relative;
+  display: grid;
+  gap: var(--space-6);
+}
+
+.help__section {
+  display: grid;
+  gap: var(--space-3);
+  line-height: 1.55;
+}
+
+.help__heading {
+  font-size: var(--text-md);
+  font-weight: 600;
+}
+
+/* base.css resets every classed list to no markers; these lists keep theirs (the F6 order is numbered). */
+.help ol.help__list,
+.help ul.help__list {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding-left: var(--space-6);
+}
+
+.help ol.help__list {
+  list-style: decimal;
+}
+
+.help ul.help__list {
+  list-style: disc;
+}
+
+.help ul.help__keys {
+  padding-left: 0;
+  list-style: none;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+}
+
+.help__keys li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.help__caps {
+  display: inline-flex;
+  gap: var(--space-1);
+}
+
+.help__tip {
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-open-bg);
+  color: var(--color-text);
+}
+
+.help__tip > .icon {
+  color: var(--color-open-text);
+}
+
+.help__shortcuts {
+  justify-self: start;
+}
+
+.help__resources {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.help__resource {
+  padding-left: 0;
+  text-align: left;
+}
+
+.help__resource .icon {
+  width: 16px;
+  height: 16px;
+}

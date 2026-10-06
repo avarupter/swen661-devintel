@@ -1,0 +1,416 @@
+/*
+ * Patients view (design image 1): the list pane beside the detail pane.
+ * Every class here starts with "patient" because view stylesheets share one
+ * global scope (overview.css, for example, has its own .stat-card).
+ */
+
+.patients {
+  display: grid;
+  grid-template-columns: clamp(360px, 30vw, 440px) minmax(0, 1fr);
+  height: 100%;
+  min-height: 0;
+}
+
+/* -------------------------------------------------------------- list pane */
+
+.patient-list {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  border-right: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.patient-list__header {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-5) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.patient-list__title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-3);
+}
+
+.patient-list__title {
+  font-size: var(--text-md);
+  font-weight: 600;
+}
+
+.patient-list__count {
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+}
+
+.patient-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.patient-search__icon {
+  position: absolute;
+  left: var(--space-3);
+  width: 18px;
+  height: 18px;
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.patient-search__input {
+  min-height: var(--target-essential);
+  padding-right: var(--space-8);
+  padding-left: 40px;
+}
+
+.patient-search .key-hint {
+  position: absolute;
+  right: var(--space-3);
+  pointer-events: none;
+}
+
+.patient-list__filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-3);
+  color: var(--color-text-secondary);
+  font-size: var(--text-base);
+}
+
+.patient-listbox {
+  display: grid;
+  flex: 1;
+  align-content: start;
+  gap: var(--space-1);
+  min-height: 0;
+  padding: var(--space-2);
+  overflow-y: auto;
+}
+
+/* About 88 px tall, as in the design. Selection is border + background, never outline (spec card 02). */
+.patient-option {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 84px;
+  padding: var(--space-3);
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  box-shadow: inset 0 -1px 0 var(--color-border);
+  cursor: pointer;
+}
+
+.patient-option:hover {
+  background: var(--color-surface-muted);
+}
+
+.patient-option--selected,
+.patient-option--selected:hover {
+  border-color: var(--color-brand);
+  background: var(--color-selected);
+  box-shadow: none;
+}
+
+.patient-option__text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.patient-option__name {
+  font-size: var(--text-md);
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.patient-option__secondary {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  overflow-wrap: anywhere;
+}
+
+.patient-list__empty {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-3);
+}
+
+/* ------------------------------------------------------------ detail pane */
+
+.patient-detail {
+  /* The care summary / Recent activity split depends on the pane's own width (see @container below). */
+  container: patient-detail / inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  min-width: 0;
+  min-height: 0;
+  padding: var(--space-6) var(--space-6) var(--space-6) var(--space-8);
+  overflow-y: auto;
+}
+
+.patient-detail__empty {
+  margin: auto 0;
+}
+
+.patient-detail__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.patient-detail__identity {
+  display: grid;
+  flex: 1;
+  gap: var(--space-1);
+  min-width: 220px;
+}
+
+.patient-detail__name-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-4);
+}
+
+.patient-detail__name {
+  font-size: var(--text-2xl);
+  font-weight: 400;
+  overflow-wrap: anywhere;
+}
+
+.patient-detail__meta {
+  color: var(--color-text-secondary);
+  font-size: var(--text-md);
+}
+
+/*
+ * An atomic box: the line wraps between "Adult", "they/them" and "Care ID CC-1048",
+ * not at the hyphen inside the Care ID. A part wider than the line (an imported
+ * 200-character Care ID) still wraps inside its own box instead of overflowing.
+ */
+.patient-detail__meta-part {
+  display: inline-block;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+/* Stat cards: LAST CONTACT · NEXT VISIT · CARE TEAM. */
+.patient-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-4);
+}
+
+.patient-stat {
+  display: grid;
+  align-content: start;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.patient-stat__value {
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+.patient-stat__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--target-min);
+  margin-left: calc(-1 * var(--space-1));
+  padding: 0 var(--space-1);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.patient-stat__toggle:hover {
+  background: var(--color-surface-muted);
+}
+
+.patient-stat__toggle .icon {
+  width: 16px;
+  height: 16px;
+  color: var(--color-text-muted);
+}
+
+.patient-stat__team {
+  display: grid;
+  gap: 2px;
+  margin-top: var(--space-1);
+  color: var(--color-text-secondary);
+  font-size: var(--text-base);
+  font-weight: 400;
+}
+
+/* An author display value would otherwise defeat the hidden attribute. */
+.patient-stat__team[hidden] {
+  display: none;
+}
+
+/* Care summary and Recent activity fill the rest of the pane, as in the design. */
+.patient-detail__columns {
+  display: grid;
+  flex: 1 0 auto;
+  grid-template-columns: minmax(0, 1.7fr) minmax(280px, 1fr);
+  align-items: stretch;
+  gap: var(--space-5);
+}
+
+/*
+ * Side by side, Recent activity keeps 280 px, so below 600 px of pane content the
+ * care summary would become the narrower column and, near 450 px, overflow its card.
+ * Stack them instead. This tracks the pane, not the window: about 1300 px windows
+ * and below when the panes sit side by side, and any window where the pane is narrow.
+ */
+@container patient-detail (width < 600px) {
+  .patient-detail__columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.patient-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.patient-card .card__header {
+  margin-bottom: 0;
+}
+
+.patient-summary .callout__detail {
+  grid-column: 2;
+}
+
+.patient-summary ul.patient-summary__plan {
+  display: grid;
+  gap: var(--space-3);
+  padding-left: var(--space-5);
+  list-style: disc;
+}
+
+.patient-summary ul.patient-summary__plan li::marker {
+  color: var(--color-brand);
+}
+
+.patient-activity__list {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.patient-activity__item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-3);
+}
+
+.patient-activity__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: var(--color-surface-muted);
+  color: var(--color-link);
+}
+
+.patient-activity__text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.patient-activity__title {
+  font-weight: 500;
+}
+
+.patient-activity__time {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.patient-activity__footer {
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+/* Essential clinical action: full width and at least 44 px tall (spec card 06). */
+.patient-activity__add {
+  width: 100%;
+  justify-content: flex-start;
+  border-color: var(--color-selected);
+  background: var(--color-selected);
+  color: var(--color-link);
+}
+
+.patient-activity__add:hover {
+  border-color: var(--color-link);
+  background: var(--color-selected);
+}
+
+.patient-activity__add-label {
+  flex: 1;
+  text-align: left;
+}
+
+/* ------------------------------------------------------------- responsive */
+
+/* Narrow windows: the panes stack, list first, and nothing scrolls sideways at 640 px. */
+@media (max-width: 1100px) {
+  .patients {
+    grid-template-columns: minmax(0, 1fr);
+    height: auto;
+  }
+
+  .patient-list {
+    border-right: 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .patient-listbox {
+    max-height: min(360px, 60vh);
+  }
+
+  .patient-detail {
+    padding: var(--space-5);
+    overflow: visible;
+  }
+}
+
+/*
+ * Forced colours paint transparent borders, which would box every row. Hide
+ * them against the canvas and keep a separator; the selected row gets the
+ * Highlight border from base.css.
+ */
+@media (forced-colors: active) {
+  .patient-option {
+    border-color: Canvas;
+    border-bottom-color: GrayText;
+  }
+
+  .patient-stat,
+  .patient-activity__icon {
+    border: 1px solid CanvasText;
+  }
+}

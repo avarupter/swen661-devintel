@@ -1,0 +1,86 @@
+/* Reports: table cards; bars are decoration beside the numbers. */
+
+.reports {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
+  align-items: start;
+}
+
+/* The seven-day table is the tallest; spanning two rows lets the shorter cards stack beside it. */
+.report--tall {
+  grid-row: span 2;
+}
+
+.report .card__header {
+  margin-bottom: var(--space-2);
+}
+
+.report-table th[scope='row'] {
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.report-table tfoot th,
+.report-table tfoot td {
+  border-bottom: 0;
+  font-weight: 600;
+}
+
+.report-share {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+.report-bar {
+  display: inline-block;
+  width: 72px;
+  height: 8px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-muted);
+}
+
+.report-bar__fill {
+  display: block;
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--color-brand);
+}
+
+.report__empty {
+  color: var(--color-text-secondary);
+}
+
+.reports__note {
+  display: flex;
+  grid-column: 1 / -1;
+  align-items: flex-start;
+  gap: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: var(--text-base);
+}
+
+.reports__note .icon {
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  color: var(--color-link);
+}
+
+@media (max-width: 480px) {
+  .report-bar {
+    display: none;
+  }
+}
+
+/* Bars carry no information, so forced-colours mode keeps them visible but plain. */
+@media (forced-colors: active) {
+  .report-bar {
+    border: 1px solid CanvasText;
+  }
+
+  .report-bar__fill {
+    background: CanvasText;
+  }
+}

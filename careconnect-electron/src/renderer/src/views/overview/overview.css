@@ -1,0 +1,182 @@
+/* Overview: stat cards, then today's visits beside the patients who need attention. */
+
+.overview__glance {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(176px, 1fr));
+  gap: var(--space-4);
+}
+
+.stat-card {
+  display: grid;
+  align-content: space-between;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 112px;
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+  color: var(--color-text);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--duration) ease;
+}
+
+.stat-card:hover {
+  border-color: var(--color-border-strong);
+}
+
+.stat-card__label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: var(--text-base);
+  font-weight: 500;
+}
+
+/* The icon repeats the word beside it (status is never colour alone, spec card 08). */
+.stat-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-muted);
+  color: var(--color-text-secondary);
+}
+
+.stat-card__icon .icon {
+  width: 16px;
+  height: 16px;
+}
+
+.stat-card--needs-review .stat-card__icon {
+  background: var(--color-review-bg);
+  color: var(--color-review-text);
+}
+
+.stat-card--open .stat-card__icon,
+.stat-card--unread .stat-card__icon,
+.stat-card--tasks .stat-card__icon {
+  background: var(--color-open-bg);
+  color: var(--color-open-text);
+}
+
+.stat-card--completed .stat-card__icon {
+  background: var(--color-done-bg);
+  color: var(--color-done-text);
+}
+
+.stat-card__value {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.stat-card__count {
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-card__unit {
+  color: var(--color-text-secondary);
+  font-size: var(--text-base);
+}
+
+.overview__columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: var(--space-6);
+}
+
+.overview__empty {
+  padding: var(--space-2) 0;
+  color: var(--color-text-secondary);
+}
+
+.attention-list {
+  display: grid;
+}
+
+.attention {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+}
+
+.attention + .attention {
+  border-top: 1px solid var(--color-border);
+}
+
+.attention__icon {
+  margin-top: 6px;
+  color: var(--color-review-text);
+}
+
+.attention__text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.attention__patient {
+  justify-self: start;
+  padding: 0;
+  font-size: var(--text-md);
+  text-align: left;
+}
+
+.attention__title {
+  color: var(--color-review-text);
+  font-weight: 600;
+}
+
+.attention__detail {
+  color: var(--color-text-secondary);
+  font-size: var(--text-base);
+}
+
+.attention__meta {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+@media (max-width: 1100px) {
+  .overview__columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .attention {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .attention .chip {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+
+@media (forced-colors: active) {
+  .stat-card {
+    border: 1px solid ButtonText;
+  }
+
+  .stat-card__icon {
+    border: 1px solid CanvasText;
+  }
+}

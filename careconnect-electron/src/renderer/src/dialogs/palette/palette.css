@@ -1,0 +1,205 @@
+/* Command palette (design image 3). Colours come from tokens.css; focus stays in the input. */
+
+.palette .dialog__body {
+  padding-top: var(--space-4);
+}
+
+.palette__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.palette__search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--target-essential);
+  padding: 0 var(--space-2) 0 var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+/* The input keeps its own :focus-visible ring from base.css; the wrapper only draws the boundary. */
+.palette__search-icon {
+  color: var(--color-text-muted);
+}
+
+.palette__input {
+  flex: 1;
+  min-width: 0;
+  min-height: 40px;
+  padding: var(--space-2);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text);
+  font-size: var(--text-md);
+}
+
+.palette__input::placeholder {
+  color: var(--color-text-muted);
+  opacity: 1;
+}
+
+.palette__scope {
+  flex: none;
+}
+
+.palette__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.palette__legend {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--color-text-muted);
+}
+
+/*
+ * position: relative makes the list the containing block of the visually hidden
+ * shortcut text inside its options, so options scrolled out of view are clipped
+ * here instead of stretching the fixed backdrop and giving it a scrollbar.
+ */
+.palette__results {
+  position: relative;
+  display: grid;
+  gap: var(--space-3);
+  min-height: 0;
+  max-height: min(52vh, 460px);
+  overflow-y: auto;
+}
+
+.palette__results:empty {
+  display: none;
+}
+
+.palette__group {
+  display: grid;
+  gap: 2px;
+}
+
+.palette__group-heading {
+  padding: var(--space-1) var(--space-3);
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.palette__option {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--target-essential);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid transparent;
+  border-left-width: 3px;
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.palette__option:hover {
+  background: var(--color-surface-muted);
+}
+
+/* The active option: background plus a brand border, never an outline (spec card 02). */
+.palette__option--active,
+.palette__option--active:hover {
+  border-color: var(--color-brand);
+  background: var(--color-selected);
+}
+
+.palette__option-icon {
+  color: var(--color-text-secondary);
+}
+
+.palette__option--active .palette__option-icon {
+  color: var(--color-link);
+}
+
+.palette__option-text {
+  display: grid;
+  min-width: 0;
+}
+
+.palette__option-title {
+  overflow: hidden;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.palette__option-subtitle {
+  overflow: hidden;
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.palette__keys {
+  display: inline-flex;
+  gap: var(--space-1);
+}
+
+.palette__position {
+  color: var(--color-link);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.palette__empty {
+  padding: var(--space-6) var(--space-4);
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+.palette__open-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+/* At 200 % zoom (640 CSS px) the keycaps give way to the text. */
+@media (max-width: 700px) {
+  .palette__option {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .palette__option .palette__keys {
+    display: none;
+  }
+
+  .palette__scope {
+    display: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .palette__search {
+    border-color: CanvasText;
+  }
+
+  .palette__option--active {
+    border: 2px solid Highlight;
+  }
+
+  .palette__position {
+    color: CanvasText;
+  }
+}

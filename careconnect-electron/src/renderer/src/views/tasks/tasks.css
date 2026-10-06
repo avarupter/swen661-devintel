@@ -1,0 +1,94 @@
+/* Tasks: one card per group, each task a native checkbox row. */
+
+.tasks {
+  max-width: 960px;
+}
+
+.task-group .card__header {
+  margin-bottom: var(--space-2);
+}
+
+.task-group__empty {
+  padding: var(--space-2) 0;
+  color: var(--color-text-secondary);
+}
+
+.task-list {
+  display: grid;
+}
+
+.task {
+  display: grid;
+  gap: 2px;
+  min-height: var(--target-essential);
+  padding: var(--space-2) 0;
+}
+
+.task + .task {
+  border-top: 1px solid var(--color-border);
+}
+
+/* Box and title share one label, so the click target spans the whole first line of the row. */
+.task__main {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  min-height: var(--target-min);
+  padding: var(--space-1) 0;
+  cursor: pointer;
+}
+
+.task__checkbox {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin: 1px 0 0;
+  accent-color: var(--color-brand);
+  cursor: pointer;
+}
+
+.task__title {
+  min-width: 0;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.task--done .task__title {
+  color: var(--color-text-secondary);
+  text-decoration: line-through;
+}
+
+/* Due text, urgency and patient line up under the title, past the checkbox. */
+.task__meta {
+  display: flex;
+  padding-left: calc(20px + var(--space-3));
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-3);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+/* "Overdue" is spelled out; colour only reinforces it (spec card 08). */
+.task__due--overdue {
+  color: var(--color-error-text);
+  font-weight: 600;
+}
+
+.chip--urgent {
+  background: var(--color-error-bg);
+  color: var(--color-error-text);
+}
+
+.task__patient {
+  font-size: var(--text-sm);
+}
+
+.task__patient .icon {
+  width: 16px;
+  height: 16px;
+}
+
+.tasks__hidden {
+  color: var(--color-text-secondary);
+}

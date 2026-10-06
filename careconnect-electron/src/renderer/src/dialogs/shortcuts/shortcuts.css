@@ -1,0 +1,176 @@
+/* Keyboard shortcuts reference (design image 4). Colours come from tokens.css. */
+
+/* position: relative keeps the visually hidden key text in scrolled-away rows clipped by the body, not the backdrop. */
+.shortcuts .dialog__body {
+  position: relative;
+  display: grid;
+  gap: var(--space-5);
+  align-content: start;
+}
+
+.shortcuts__intro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.shortcuts__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.shortcuts__legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.shortcuts__filter {
+  flex: 0 1 320px;
+  min-width: min(100%, 240px);
+}
+
+.shortcuts__tables {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.shortcuts__table {
+  table-layout: fixed;
+}
+
+.shortcuts__table caption {
+  padding-bottom: var(--space-3);
+}
+
+.shortcuts__group-title {
+  font-size: var(--text-md);
+  font-weight: 600;
+}
+
+.shortcuts__group-description {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  font-weight: 400;
+}
+
+.shortcuts__table thead th:first-child {
+  width: 44%;
+}
+
+.shortcuts__table tbody th {
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+/* The column for this computer's keys: a tinted header, never colour alone ("(this computer)"). */
+.shortcuts__table thead th.shortcuts__current {
+  color: var(--color-link);
+}
+
+.shortcuts__table td.shortcuts__current {
+  background: var(--color-page);
+}
+
+.shortcuts__badge {
+  margin-left: var(--space-1);
+  padding: 0 var(--space-2);
+  font-size: var(--text-xs);
+}
+
+.shortcuts__key-list {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.shortcuts__caps {
+  display: inline-flex;
+  gap: var(--space-1);
+}
+
+.shortcuts__or {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.shortcuts__empty {
+  padding: var(--space-6);
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+/* At 200 % zoom (640 CSS px) the reference stays readable without sideways scrolling. */
+@media (max-width: 700px) {
+  .shortcuts__table {
+    table-layout: auto;
+  }
+
+  .shortcuts__table thead th:first-child {
+    width: auto;
+  }
+}
+
+@media (forced-colors: active) {
+  .shortcuts__table td.shortcuts__current {
+    background: Canvas;
+  }
+
+  .shortcuts__table thead th.shortcuts__current {
+    color: CanvasText;
+    text-decoration: underline;
+  }
+}
+
+/*
+ * "Print reference" prints the window. While this dialog is open, print only
+ * the reference: hide the app behind it and the dialog's controls, and let
+ * the tables run across pages instead of being clipped to the dialog.
+ */
+@media print {
+  body:has(.shortcuts) {
+    overflow: visible;
+    background: var(--color-surface);
+  }
+
+  body:has(.shortcuts) .app-shell {
+    display: none;
+  }
+
+  body:has(.shortcuts) .dialog-backdrop {
+    position: static;
+    display: block;
+    padding: 0;
+    overflow: visible;
+    background: none;
+  }
+
+  .shortcuts.dialog {
+    max-width: none;
+    max-height: none;
+    box-shadow: none;
+  }
+
+  .shortcuts .dialog__body {
+    overflow: visible;
+  }
+
+  .shortcuts .dialog__close,
+  .shortcuts .dialog__footer .button,
+  .shortcuts__filter {
+    display: none;
+  }
+
+  .shortcuts__table {
+    break-inside: avoid;
+  }
+}

@@ -1,0 +1,54 @@
+/* Visit rows, shared by Schedule and Overview. */
+
+.visit-list {
+  display: grid;
+}
+
+.visit {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--target-essential);
+  padding: var(--space-2) 0;
+}
+
+.visit + .visit {
+  border-top: 1px solid var(--color-border);
+}
+
+.visit__time {
+  color: var(--color-text);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.visit__who {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 var(--space-3);
+  min-width: 0;
+}
+
+.visit__patient {
+  padding: 0;
+  font-size: var(--text-md);
+  text-align: left;
+}
+
+.visit__reason {
+  color: var(--color-text-secondary);
+  font-size: var(--text-base);
+}
+
+@media (max-width: 640px) {
+  .visit {
+    grid-template-columns: 48px minmax(0, 1fr);
+  }
+
+  .visit .chip {
+    grid-column: 2;
+    justify-self: start;
+  }
+}

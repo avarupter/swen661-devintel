@@ -109,6 +109,7 @@ export function pluralize(count: number, singular: string, plural = `${singular}
 /** "512 bytes", "12 KB", "3.4 MB" */
 export function formatBytes(bytes: number): string {
   if (bytes < 1024) return `${bytes} ${bytes === 1 ? 'byte' : 'bytes'}`
-  if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`
+  // Sizes that would round to "1024 KB" are shown as "1.0 MB" instead.
+  if (bytes < 1023.5 * 1024) return `${Math.round(bytes / 1024)} KB`
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
 }

@@ -45,13 +45,29 @@ function targetFor(region: HTMLElement, memory: RegionMemory): HTMLElement {
   return region
 }
 
+/**
+ * The region to move to when focus is outside every region: the view title
+ * after navigating, `#main` after "Skip to main workspace", or the page itself.
+ * F6 takes the first region after the focused element in document order
+ * (including regions inside it) and Shift+F6 the last one before it, wrapping
+ * round at either end.
+ */
+function indexAround(regions: HTMLElement[], from: Element | null, direction: 1 | -1): number {
+  const relation = direction === 1 ? Node.DOCUMENT_POSITION_FOLLOWING : Node.DOCUMENT_POSITION_PRECEDING
+  const isOnThatSide = (region: HTMLElement): boolean => from !== null && (from.compareDocumentPosition(region) & relation) !== 0
+  const index = direction === 1 ? regions.findIndex(isOnThatSide) : regions.findLastIndex(isOnThatSide)
+  if (index !== -1) return index
+  return direction === 1 ? 0 : regions.length - 1
+}
+
 /** Moves focus to the next (1) or previous (-1) region; returns the region name. */
 export function moveToRegion(direction: 1 | -1, memory: RegionMemory, root: ParentNode = document): string | null {
   const regions = regionsIn(root)
   if (regions.length === 0) return null
-  const current = regionOf(document.activeElement)
+  const active = document.activeElement
+  const current = regionOf(active)
   const index = current ? regions.indexOf(current) : -1
-  const nextIndex = index === -1 ? (direction === 1 ? 0 : regions.length - 1) : (index + direction + regions.length) % regions.length
+  const nextIndex = index === -1 ? indexAround(regions, active, direction) : (index + direction + regions.length) % regions.length
   const region = regions[nextIndex]
   targetFor(region, memory).focus()
   return region.dataset.region ?? null

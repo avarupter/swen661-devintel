@@ -1,0 +1,14 @@
+/* Schedule: a card per day for the next seven days. */
+
+.schedule {
+  max-width: 960px;
+}
+
+.schedule-day .card__header {
+  margin-bottom: var(--space-2);
+}
+
+.schedule-day__empty {
+  padding: var(--space-2) 0;
+  color: var(--color-text-secondary);
+}

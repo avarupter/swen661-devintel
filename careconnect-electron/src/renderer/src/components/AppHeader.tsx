@@ -37,7 +37,9 @@ function ViewTools({ view, ui }: { view: ViewId; ui: UiSlice }): React.JSX.Eleme
   const dispatch = useAppDispatch()
   switch (view) {
     case 'patients': {
-      const filterText = ui.statusFilter === 'all' ? 'Filter' : `Filter: ${STATUS_LABELS[ui.statusFilter]}`
+      // Each accessible name starts with the visible label, so speech input can say
+      // what it sees (WCAG 2.5.3). The Patients list shows the active filter
+      // ("Showing: Needs review"), so the Filter button keeps its short label.
       const sortText = ui.sortOrder === 'recent' ? 'Sort' : `Sort: ${SORT_LABELS[ui.sortOrder]}`
       return (
         <>
@@ -48,9 +50,14 @@ function ViewTools({ view, ui }: { view: ViewId; ui: UiSlice }): React.JSX.Eleme
             icon="sliders"
             hasPopup="menu"
           >
-            {filterText}
+            Filter
           </ToolbarButton>
-          <ToolbarButton command="patient.sort" label={`Sort patient list, by ${SORT_LABELS[ui.sortOrder]}`} icon="sort" hasPopup="menu">
+          <ToolbarButton
+            command="patient.sort"
+            label={ui.sortOrder === 'recent' ? `Sort patient list, by ${SORT_LABELS.recent}` : `${sortText}, sort patient list`}
+            icon="sort"
+            hasPopup="menu"
+          >
             {sortText}
           </ToolbarButton>
           <ToolbarButton command="patient.new" label="New patient" icon="userPlus" variant="primary" />

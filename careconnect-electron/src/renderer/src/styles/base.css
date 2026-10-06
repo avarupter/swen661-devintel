@@ -66,6 +66,15 @@ a {
 :focus-visible {
   outline: var(--focus-outline);
   outline-offset: 2px;
+}
+
+/*
+ * The white halo has its own, more specific rule, so a component's box-shadow
+ * (.card, .dialog, a view's .stat-card) cannot replace it while focused. The
+ * outline stays at :focus-visible specificity, so the forced-colours rule at
+ * the end of this file still replaces it.
+ */
+:root :focus-visible {
   box-shadow: var(--focus-shadow);
 }
 
@@ -536,6 +545,16 @@ fieldset.field > legend {
   max-height: 84vh;
   border-radius: var(--radius-xl);
   background: var(--color-surface);
+  box-shadow: var(--shadow-dialog);
+}
+
+/*
+ * A dialog with nothing focusable in its body takes focus itself. Outside, the
+ * ring would sit on the dimmed backdrop (about 1.3:1), so draw it 2 px inside
+ * the dialog's white edge instead, and keep the dialog's own shadow.
+ */
+.dialog:focus-visible {
+  outline-offset: -5px;
   box-shadow: var(--shadow-dialog);
 }
 

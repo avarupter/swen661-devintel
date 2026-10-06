@@ -98,6 +98,11 @@ export class FakeWebContents extends EventEmitter {
   setZoomLevel = jest.fn((level: number) => {
     this.zoomLevel = level
   })
+  /** Electron's zoom factor is 1.2 to the power of the zoom level (level 0 is 100 %). */
+  getZoomFactor = jest.fn(() => 1.2 ** this.zoomLevel)
+  setZoomFactor = jest.fn((factor: number) => {
+    this.zoomLevel = Math.log(factor) / Math.log(1.2)
+  })
   session = { setPermissionRequestHandler: jest.fn(), setPermissionCheckHandler: jest.fn() }
 }
 

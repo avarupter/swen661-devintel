@@ -30,17 +30,17 @@ function NavItem({ view, icon, active, unread }: { view: ViewId; icon: IconName;
         id={`nav-${view}`}
         className={`nav-item${active ? ' nav-item--active' : ''}`}
         aria-current={active ? 'page' : undefined}
+        // The count is read once, as part of the name: "Inbox, 4 unread" (spec card 05). An explicit
+        // label keeps it exact; built from the flex children it would read "Inbox , 4 unread".
+        aria-label={unread ? `${VIEW_LABELS[view]}, ${unread} unread` : undefined}
         onClick={() => run({ id: command })}
       >
         <Icon name={icon} />
         <span className="nav-item__label">{VIEW_LABELS[view]}</span>
         {unread ? (
-          <>
-            <span className="badge" aria-hidden="true">
-              {unread}
-            </span>
-            <span className="visually-hidden">, {unread} unread</span>
-          </>
+          <span className="badge" aria-hidden="true">
+            {unread}
+          </span>
         ) : null}
         <KeyHint command={command} />
       </button>

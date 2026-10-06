@@ -15,7 +15,10 @@ const TONE_ICONS: Record<StatusTone, IconName> = {
 /**
  * The "Status" contentinfo landmark. The latest status message stays visible
  * until it is replaced or dismissed (spec card 08); screen readers hear it
- * through the announcer's live regions, so this bar is not itself live.
+ * through the announcer's live regions, so this bar is not itself live. Those
+ * regions sit outside the app shell, which is inert while a dialog is open: a
+ * live region here would go silent exactly then, and would read every message
+ * a second time otherwise.
  */
 export function StatusBar(): React.JSX.Element {
   const state = useAppState()

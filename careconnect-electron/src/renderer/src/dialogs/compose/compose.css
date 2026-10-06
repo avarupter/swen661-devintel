@@ -1,0 +1,77 @@
+/* New message / Reply dialog. Shared form, error-summary and dialog styles live in base.css. */
+
+/* A little wider than other medium dialogs, so Attach, Save draft and Send (with their key hints) fit on one row. */
+.dialog.compose {
+  max-width: 720px;
+}
+
+.compose__to {
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-muted);
+  color: var(--color-text-secondary);
+}
+
+.compose__to strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.compose__body {
+  min-height: 180px;
+}
+
+.compose__attachments {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.compose__attachment {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--target-min);
+  padding: var(--space-1) var(--space-1) var(--space-1) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.compose__attachment > .icon {
+  width: 16px;
+  height: 16px;
+  color: var(--color-text-muted);
+}
+
+.compose__attachment-name {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-weight: 500;
+}
+
+.compose__attachment-size {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  white-space: nowrap;
+}
+
+.compose__remove {
+  color: var(--color-text-secondary);
+}
+
+/* Attach sits on the left; Save draft and Send stay together on the right. */
+.compose__attach {
+  margin-right: auto;
+}
+
+.compose__send {
+  min-width: 112px;
+}
+
+@media (max-width: 560px) {
+  .compose__attach {
+    margin-right: 0;
+  }
+}

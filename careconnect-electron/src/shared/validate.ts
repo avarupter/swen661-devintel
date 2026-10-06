@@ -61,10 +61,31 @@ function text(value: unknown, path: string, max: number = LIMITS.shortText, allo
   return value
 }
 
+/**
+ * An ISO 8601 date and time with an explicit offset: "2026-10-05T10:30:00.000Z",
+ * "2026-10-05T10:30+05:00". The first group is the calendar day.
+ */
+const ISO_DATE_TIME =
+  /^(\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\d|3[01]))T(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d{1,9})?)?(?:Z|[+-](?:[01]\d|2[0-3]):[0-5]\d)$/
+
+/** Whether "2026-02-31" is a real day. Date.parse quietly rolls it on to 3 March. */
+function isRealDay(day: string): boolean {
+  return new Date(`${day}T00:00:00Z`).toISOString().slice(0, 10) === day
+}
+
+/**
+ * Accepts only real ISO 8601 date-times (Date.parse alone would take "1" or
+ * "Oct 5") and returns them in UTC, as toISOString writes them, so the
+ * selectors can compare dates as strings.
+ */
 function isoDate(value: unknown, path: string): string {
   const raw = text(value, path, LIMITS.isoDate)
-  if (Number.isNaN(Date.parse(raw))) throw new ValidationError(path, 'expected an ISO 8601 date')
-  return raw
+  const day = ISO_DATE_TIME.exec(raw)?.[1]
+  const time = day && isRealDay(day) ? Date.parse(raw) : Number.NaN
+  const utc = Number.isNaN(time) ? '' : new Date(time).toISOString()
+  // An offset can carry 9999-12-31 past year 9999, which toISOString writes as "+010000-…".
+  if (!ISO_DATE_TIME.test(utc)) throw new ValidationError(path, 'expected an ISO 8601 date')
+  return utc
 }
 
 function bool(value: unknown, path: string): boolean {

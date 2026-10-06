@@ -1,0 +1,301 @@
+/* Inbox: message list (drafts + conversations) beside the reading pane, like the Patients panes. */
+
+.inbox {
+  grid-template-columns: minmax(300px, 380px) minmax(0, 1fr);
+  align-items: start;
+}
+
+.inbox__pane {
+  min-width: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.inbox__group + .inbox__group {
+  border-top: 1px solid var(--color-border);
+}
+
+.inbox__heading {
+  padding: var(--space-4) var(--space-5) var(--space-2);
+  font-size: var(--text-lg);
+  font-weight: 500;
+}
+
+/* ------------------------------------------------------------- drafts */
+
+.draft-list {
+  display: grid;
+  gap: 2px;
+  padding: 0 var(--space-2) var(--space-3);
+}
+
+.draft-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-3);
+  width: 100%;
+  min-height: var(--target-essential);
+  padding: var(--space-3);
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.draft-item:hover {
+  background: var(--color-surface-muted);
+}
+
+.draft-item__icon {
+  margin-top: 2px;
+  color: var(--color-link);
+}
+
+.draft-item__text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.draft-item__top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.draft-item__to {
+  overflow: hidden;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.draft-item__time {
+  flex: none;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.draft-item__subject,
+.draft-item__preview {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.draft-item__subject {
+  color: var(--color-text-secondary);
+}
+
+.draft-item__preview {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+/* -------------------------------------------------------- conversations */
+
+.conversation-list {
+  display: grid;
+  gap: 2px;
+  padding: 0 var(--space-2) var(--space-2);
+}
+
+.conversation-option {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--space-3);
+  min-height: 80px;
+  padding: var(--space-3);
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.conversation-option:hover {
+  background: var(--color-surface-muted);
+}
+
+/* Selection uses border and background, never the outline, so focus stays visible (spec card 02). */
+.conversation-option[aria-selected='true'] {
+  border-color: var(--color-brand);
+  background: var(--color-selected);
+}
+
+.conversation-option__text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.conversation-option__with {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Time and the "New" chip share a right-hand column, so times line up whether or not a row is unread. */
+.conversation-option__meta {
+  display: grid;
+  justify-items: end;
+  gap: var(--space-2);
+}
+
+.conversation-option__time {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  white-space: nowrap;
+}
+
+.conversation-option__subject {
+  overflow: hidden;
+  color: var(--color-text-secondary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.conversation-option__preview {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.conversation-option[aria-selected='true'] .conversation-option__time,
+.conversation-option[aria-selected='true'] .conversation-option__preview {
+  color: var(--color-text-secondary);
+}
+
+/* Unread is bold text plus a "New" chip, never colour alone (spec card 08). */
+.conversation-option--unread .conversation-option__with,
+.conversation-option--unread .conversation-option__subject {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------- reading pane */
+
+.inbox__detail {
+  padding: var(--space-6);
+}
+
+.inbox__empty {
+  padding: var(--space-8) var(--space-4);
+}
+
+.reading-pane__header {
+  display: grid;
+  gap: var(--space-2);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.reading-pane__subject {
+  font-size: var(--text-xl);
+  font-weight: 500;
+}
+
+.reading-pane__meta {
+  color: var(--color-text-secondary);
+}
+
+.reading-pane__actions {
+  margin-top: var(--space-2);
+}
+
+.message-list {
+  display: grid;
+  gap: var(--space-4);
+  padding-top: var(--space-5);
+}
+
+.message {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.message--outgoing {
+  border-left: 4px solid var(--color-brand);
+  background: var(--color-page);
+}
+
+.message__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+
+.message__author {
+  font-size: var(--text-md);
+  font-weight: 600;
+}
+
+.message__time {
+  margin-left: auto;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.message__body {
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.message__attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.message__attachment {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--color-border-control);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-sm);
+}
+
+.message__attachment .icon {
+  width: 16px;
+  height: 16px;
+  color: var(--color-text-muted);
+}
+
+.message__attachment-size {
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 1100px) {
+  .inbox {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .inbox__detail {
+    padding: var(--space-4);
+  }
+}
+
+@media (forced-colors: active) {
+  .conversation-option[aria-selected='true'],
+  .draft-item:hover {
+    border-color: Highlight;
+  }
+
+  .message--outgoing {
+    border-left-color: CanvasText;
+  }
+}
