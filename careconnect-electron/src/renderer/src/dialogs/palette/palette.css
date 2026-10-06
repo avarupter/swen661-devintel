@@ -11,29 +11,24 @@
 }
 
 .palette__search {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  min-height: var(--target-essential);
-  padding: 0 var(--space-2) 0 var(--space-3);
-  border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-md);
-  background: var(--color-surface);
 }
 
-/* The input keeps its own :focus-visible ring from base.css; the wrapper only draws the boundary. */
-.palette__search-icon {
-  color: var(--color-text-muted);
-}
-
+/*
+ * The input itself is the bordered field, with the icon and the scope chip laid
+ * over its padding. Its :focus-visible ring from base.css therefore goes round
+ * the whole field, as in the design, and forced colours can still replace it.
+ */
 .palette__input {
   flex: 1;
   min-width: 0;
-  min-height: 40px;
-  padding: var(--space-2);
-  border: 0;
-  border-radius: var(--radius-sm);
-  background: transparent;
+  min-height: var(--target-essential);
+  padding: var(--space-2) 128px var(--space-2) 44px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
   color: var(--color-text);
   font-size: var(--text-md);
 }
@@ -43,8 +38,17 @@
   opacity: 1;
 }
 
+.palette__search-icon {
+  position: absolute;
+  left: var(--space-3);
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
 .palette__scope {
-  flex: none;
+  position: absolute;
+  right: var(--space-2);
+  pointer-events: none;
 }
 
 .palette__meta {
@@ -191,7 +195,7 @@
 }
 
 @media (forced-colors: active) {
-  .palette__search {
+  .palette__input {
     border-color: CanvasText;
   }
 
