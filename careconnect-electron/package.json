@@ -8,10 +8,25 @@
   "main": "index.js",
   "scripts": {
     "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
     "electron": "^44.4.5",
+    "electron-builder": "^26.15.3",
     "eslint": "^10.12.0"
+  },
+  "build": {
+    "appId": "com.example.myapp",
+    "productName": "My App",
+    "win": {
+      "target": [ "nsis" ],
+      "icon": "icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+    }
   }
-}
