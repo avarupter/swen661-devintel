@@ -11,7 +11,7 @@
         --bg:#f6f9fb;
         --card:#ffffff;
         --muted:#97a6b2;
-        --text:#0f1723;
+        --text:#0e1520;
         --blue:#1e7cff;
         --blue-2:#0b63e6;
         --accent:#e9f2ff;
@@ -23,6 +23,9 @@
         background:var(--bg);
         color:var(--text);
       }
+      /* Ensure all text uses the global text color */
+      body, h1,h2,h3,h4,h5,h6,p,span,label,a,li,div,input,textarea,select { color:var(--global-text) !important; }
+      .btn, .cta, .sign-up, .ready, .call-btn { color:#fff !important; }
       .container{
         max-width:1180px;
         margin:0 auto;
@@ -60,7 +63,7 @@
       .meta-badge{display:inline-flex;align-items:center;gap:8px;background:#eaf5ff;color:var(--blue);padding:8px 14px;border-radius:16px;font-weight:600;font-size:14px;margin-bottom:22px}
       .meta-badge .dot{width:8px;height:8px;background:var(--blue);border-radius:50%}
       h1{
-        font-size:64px;margin:0 0 18px 0;line-height:1.02;font-weight:800;color:#0f1723;
+        font-size:64px;margin:0 0 18px 0;line-height:1.02;font-weight:800;color:var(--text);
       }
       p.lead{color:var(--muted);font-size:16px;margin:0 0 28px 0}
       .cta-row{display:flex;flex-direction:column;gap:14px}
@@ -81,7 +84,7 @@
       .pill{position:absolute;background:white;padding:14px 18px;border-radius:12px;box-shadow:0 8px 18px rgba(16,56,110,0.06);min-width:180px}
       .pill.small{min-width:44px;height:44px;border-radius:50%;display:grid;place-items:center}
       .pill .label{font-size:11px;color:var(--blue);font-weight:700;text-transform:uppercase;letter-spacing:0.06em}
-      .pill .text{font-size:14px;color:#0f1723;font-weight:600;margin-top:6px}
+      .pill .text{font-size:14px;color:var(--text);font-weight:600;margin-top:6px}
 
       .pill.med{left:46%;top:16%;transform:translate(-20px,0)}
       .pill.bot{right:12%;bottom:18%;}

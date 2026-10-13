@@ -6,9 +6,9 @@
     <title>CareConnect — Create account</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
-      :root{--bg:#f6f9fb;--white:#fff;--blue:#1e7cff;--blue-2:#0b63e6;--muted:#6b7a85}
+      :root{--bg:#f6f9fb;--white:#fff;--blue:#1e7cff;--blue-2:#0b63e6;--muted:#6b7a85;--global-text:#0e1520}
       *{box-sizing:border-box}
-      body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:var(--bg);color:#12202b}
+      body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:var(--bg);color:#0e1520}
 
       .container{max-width:1180px;margin:0 auto;padding:28px}
       header{display:flex;align-items:center;justify-content:space-between;padding:8px 0}
@@ -27,6 +27,8 @@
       .sub{color:var(--muted);margin-bottom:18px}
 
       label{display:block;font-size:13px;color:#233142;margin-bottom:8px;font-weight:600}
+      body, h1,h2,h3,h4,h5,h6,p,span,label,a,li,div,input,textarea,select { color:var(--global-text) !important; }
+      .btn, .cta, .sign-up, .ready, .call-btn { color:#fff !important; }
       .input{display:block;width:100%;padding:12px 14px;border-radius:10px;border:1px solid #e6edf3;background:#fff;color:#213243}
       .field{margin-bottom:16px}
 
