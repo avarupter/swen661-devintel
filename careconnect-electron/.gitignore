@@ -20,6 +20,8 @@ lib-cov
 
 # Coverage directory used by tools like istanbul
 coverage
+# ...except the report snapshot kept for the Week 9 submission
+!docs/coverage
 *.lcov
 
 # nyc test coverage
