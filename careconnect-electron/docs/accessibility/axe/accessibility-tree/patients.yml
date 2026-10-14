@@ -1,0 +1,118 @@
+- link "Skip to main workspace":
+  - /url: "#main"
+- link "Skip to patient list":
+  - /url: "#patient-list"
+- link "Skip to status":
+  - /url: "#status-bar"
+- navigation "Workspace":
+  - text: North Coast Clinic Clinical operations
+  - button "Switch clinic" [disabled]
+  - text: Only one clinic is available in this demo. Workspace
+  - list "Workspace":
+    - listitem:
+      - button "Overview"
+    - listitem:
+      - button "Schedule"
+    - listitem:
+      - button "Patients"
+    - listitem:
+      - button "Inbox, 4 unread"
+    - listitem:
+      - button "Tasks"
+  - text: Tools
+  - list "Tools":
+    - listitem:
+      - button "Reports"
+    - listitem:
+      - button "Resources"
+  - paragraph: Keyboard mode
+  - paragraph: Hold Alt to show access keys on interactive controls.
+  - button "Always show shortcut hints" [pressed]
+  - text: Jordan Lee, RN Care coordinator
+  - button "Settings"
+- banner:
+  - heading "Patients" [level=1]
+  - text: Care team · 28
+  - toolbar "Patients tools":
+    - button "Search"
+    - button "Filter patient list"
+    - button "Sort patient list, by Recent activity"
+    - button "New patient"
+- main "Patients":
+  - region "Recent patients":
+    - heading "Recent patients" [level=2]
+    - text: 28 results
+    - search "Patient list":
+      - text: Search list
+      - searchbox "Search list"
+    - listbox "Recent patients":
+      - option "Avery Park, Wellness follow-up · 10:30. Needs review" [selected]
+      - option "Morgan Chen, Care plan update · Today. Open"
+      - option "Riley Singh, Lab results · Yesterday. Completed"
+      - option "Taylor Lane, New referral · Oct 6. Open"
+      - option "Jamie Wu, Medication review · Oct 5. Completed"
+      - option "Alex Rivera, Post-discharge check-in · Oct 4. Open"
+      - option "Casey Morgan, Chronic care review · 13:00. Needs review"
+      - option "Drew Patel, Blood pressure check · Oct 2. Completed"
+      - option "Emerson Brooks, Nutrition consult · 15:45. Open"
+      - option "Finley Ortiz, Mobility assessment · Sep 30. Completed"
+      - option "Harper Nguyen, Annual wellness visit · Sep 29. Open"
+      - option "Kai Thompson, Diabetes education · Sep 28. Needs review"
+      - option "Logan Reyes, Wellness follow-up · Sep 27. Open"
+      - option "Quinn Foster, Post-discharge check-in · Sep 26. Needs review"
+      - option "Reese Kim, Chronic care review · Sep 25. Completed"
+      - option "Rowan Hughes, Blood pressure check · Sep 24. Open"
+      - option "Sage Bennett, Nutrition consult · Sep 23. Completed"
+      - option "Skyler Diaz, Mobility assessment · Sep 22. Open"
+      - option "Blake Murphy, Annual wellness visit · Sep 21. Needs review"
+      - option "Cameron Price, Diabetes education · Sep 20. Open"
+      - option "Dakota Shah, Wellness follow-up · Sep 19. Needs review"
+      - option "Elliot Ward, Post-discharge check-in · Sep 18. Completed"
+      - option "Hayden Cruz, Chronic care review · Sep 17. Open"
+      - option "Jesse Coleman, Blood pressure check · Sep 16. Completed"
+      - option "Kendall Ross, Nutrition consult · Sep 15. Open"
+      - option "Marlowe Ito, Mobility assessment · Sep 14. Needs review"
+      - option "Peyton Grant, Annual wellness visit · Sep 13. Open"
+      - option "Rory Okoye, Diabetes education · Sep 12. Needs review"
+  - group "Avery Park":
+    - heading "Avery Park" [level=2]
+    - text: Synthetic demo record
+    - paragraph: Adult · they/them · Care ID CC-1048
+    - toolbar "Actions for Avery Park":
+      - button "Message Avery Park"
+      - button "More actions for Avery Park"
+    - term: Last contact
+    - definition: Oct 8
+    - term: Next visit
+    - definition: Today, 10:30
+    - term: Care team
+    - definition:
+      - button "4 members in the care team"
+    - region "Care summary":
+      - heading "Care summary" [level=3]
+      - button "Edit care summary for Avery Park"
+      - paragraph: "Follow-up alert: Follow-up due today"
+      - paragraph: Review home monitoring notes before the 10:30 check-in.
+      - heading "Current plan" [level=4]
+      - list:
+        - listitem: Confirm symptom trend and energy level
+        - listitem: Review adherence to hydration goals
+        - listitem: Coordinate next wellness follow-up
+    - complementary "Recent activity":
+      - heading "Recent activity" [level=3]
+      - list:
+        - listitem:
+          - text: Visit note updated
+          - time: Today · 09:14
+        - listitem:
+          - text: Portal message
+          - time: Yesterday · 15:22
+        - listitem:
+          - text: Care task completed
+          - time: Oct 4 · 11:05
+      - button "Add note for Avery Park"
+- contentinfo "Status":
+  - text: All systems operational · 0 unsaved changes Browser preview · data stays in this browser Synced 20:36
+  - button "Keyboard help"
+- status
+- alert

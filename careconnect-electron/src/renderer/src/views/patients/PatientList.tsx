@@ -233,7 +233,7 @@ export function PatientList({ now, onShowMenu }: PatientListProps): React.JSX.El
             autoComplete="off"
             spellCheck={false}
             value={query}
-            aria-keyshortcuts={`${ariaKeyShortcuts('patient.search', ui.platform) ?? ''} /`.trim()}
+            aria-keyshortcuts={`${ariaKeyShortcuts('patient.search', ui.platform) ?? ''}${workspace.preferences.singleKeyShortcuts ? ' /' : ''}`.trim()}
             onChange={(event) => setQuery(event.target.value)}
             onKeyDown={onSearchKeyDown}
           />

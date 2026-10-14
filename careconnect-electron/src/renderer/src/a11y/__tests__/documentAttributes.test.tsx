@@ -21,7 +21,7 @@ describe('document attributes', () => {
 
   it('follow saved preferences', async () => {
     const api = createMemoryApi()
-    api.workspace.preferences = { showShortcutHints: false, reduceMotion: true, highContrast: true, notifications: false }
+    api.workspace.preferences = { showShortcutHints: false, singleKeyShortcuts: true, reduceMotion: true, highContrast: true, notifications: false }
     await renderApp({ api })
     expect(root.dataset.theme).toBe('high-contrast')
     expect(root.dataset.motion).toBe('reduce')

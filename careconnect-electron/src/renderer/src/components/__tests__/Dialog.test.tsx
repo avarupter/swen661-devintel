@@ -124,17 +124,33 @@ describe('Dialog', () => {
     expect(onClose).not.toHaveBeenCalled()
   })
 
-  it('closes on a backdrop click only when asked to', () => {
+  it('closes on a backdrop click only when asked to, and only once the button is released (WCAG 2.5.2)', () => {
     const { container, onClose } = renderDialog({ closeOnBackdrop: true })
+    const backdrop = container.querySelector('.dialog-backdrop') as Element
     fireEvent.mouseDown(screen.getByRole('dialog'))
+    fireEvent.mouseUp(screen.getByRole('dialog'))
     expect(onClose).not.toHaveBeenCalled()
-    fireEvent.mouseDown(container.querySelector('.dialog-backdrop') as Element)
+    fireEvent.mouseDown(backdrop)
+    expect(onClose).not.toHaveBeenCalled()
+    fireEvent.mouseUp(backdrop)
     expect(onClose).toHaveBeenCalledTimes(1)
+  })
+
+  it('cancels a backdrop press released over the dialog, and ignores a drag that starts inside it', () => {
+    const { container, onClose } = renderDialog({ closeOnBackdrop: true })
+    const backdrop = container.querySelector('.dialog-backdrop') as Element
+    fireEvent.mouseDown(backdrop)
+    fireEvent.mouseUp(screen.getByRole('dialog'))
+    fireEvent.mouseDown(screen.getByRole('dialog'))
+    fireEvent.mouseUp(backdrop)
+    expect(onClose).not.toHaveBeenCalled()
   })
 
   it('keeps form input safe from a stray backdrop click by default', () => {
     const { container, onClose } = renderDialog()
-    fireEvent.mouseDown(container.querySelector('.dialog-backdrop') as Element)
+    const backdrop = container.querySelector('.dialog-backdrop') as Element
+    fireEvent.mouseDown(backdrop)
+    fireEvent.mouseUp(backdrop)
     expect(onClose).not.toHaveBeenCalled()
   })
 

@@ -18,6 +18,7 @@ const SWITCHES: { name: string; key: keyof Preferences; spoken: string; initiall
   { name: 'Show shortcut hints', key: 'showShortcutHints', spoken: 'Shortcut hints', initially: true },
   { name: 'High contrast theme', key: 'highContrast', spoken: 'High contrast theme', initially: false },
   { name: 'Reduce motion', key: 'reduceMotion', spoken: 'Reduce motion', initially: false },
+  { name: 'Single-key shortcuts', key: 'singleKeyShortcuts', spoken: 'Single-key shortcuts', initially: true },
   { name: 'Desktop notifications for follow-ups due today', key: 'notifications', spoken: 'Desktop notifications', initially: true }
 ]
 
@@ -26,12 +27,14 @@ describe('SettingsDialog', () => {
     delete document.documentElement.dataset.theme
   })
 
-  it('opens with Ctrl+, showing Display and Notifications switches', async () => {
+  it('opens with Ctrl+, showing Display, Keyboard and Notifications switches', async () => {
     await openSettings()
     const display = screen.getByRole('group', { name: 'Display' })
     const switches = within(display).getAllByRole('switch')
     expect(switches).toHaveLength(3)
     ;['Show shortcut hints', 'High contrast theme', 'Reduce motion'].forEach((name, index) => expect(switches[index]).toHaveAccessibleName(name))
+    const keyboard = screen.getByRole('group', { name: 'Keyboard' })
+    expect(within(keyboard).getByRole('switch', { name: 'Single-key shortcuts' })).toBeInTheDocument()
     const notifications = screen.getByRole('group', { name: 'Notifications' })
     expect(within(notifications).getByRole('switch', { name: 'Desktop notifications for follow-ups due today' })).toBeInTheDocument()
     expect(screen.getByRole('switch', { name: 'Show shortcut hints' })).toHaveFocus()
@@ -70,6 +73,13 @@ describe('SettingsDialog', () => {
     await openSettings()
     expect(screen.getByRole('switch', { name: 'Show shortcut hints' })).toHaveAccessibleDescription(
       'Shows shortcut keys beside buttons and the search field. Hold Alt to see them at any time.'
+    )
+  })
+
+  it('explains single-key shortcuts, who should turn them off (WCAG 2.1.4), and what keeps working', async () => {
+    await openSettings()
+    expect(screen.getByRole('switch', { name: 'Single-key shortcuts' })).toHaveAccessibleDescription(
+      'E, N, M, R, / and G-key sequences. Turn off if you use speech recognition, so spoken words never trigger commands. Ctrl shortcuts and function keys always work.'
     )
   })
 

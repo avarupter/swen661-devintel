@@ -1,0 +1,84 @@
+- link "Skip to main workspace":
+  - /url: "#main"
+- link "Skip to status":
+  - /url: "#status-bar"
+- navigation "Workspace":
+  - text: North Coast Clinic Clinical operations
+  - button "Switch clinic" [disabled]
+  - text: Only one clinic is available in this demo. Workspace
+  - list "Workspace":
+    - listitem:
+      - button "Overview"
+    - listitem:
+      - button "Schedule"
+    - listitem:
+      - button "Patients"
+    - listitem:
+      - button "Inbox, 3 unread"
+    - listitem:
+      - button "Tasks"
+  - text: Tools
+  - list "Tools":
+    - listitem:
+      - button "Reports"
+    - listitem:
+      - button "Resources"
+  - paragraph: Keyboard mode
+  - paragraph: Hold Alt to show access keys on interactive controls.
+  - button "Always show shortcut hints" [pressed]
+  - text: Jordan Lee, RN Care coordinator
+  - button "Settings"
+- banner:
+  - heading "Tasks" [level=1]
+  - text: 4 tasks due today
+  - toolbar "Tasks tools":
+    - button "Show completed tasks"
+    - button "Command palette"
+- main "Tasks":
+  - region "Overdue":
+    - heading "Overdue" [level=2]
+    - text: 4 tasks
+    - list "Overdue":
+      - listitem:
+        - checkbox "Review home monitoring notes for Avery Park"
+        - text: "Review home monitoring notes for Avery Park Overdue: was due today at 10:00 Urgent"
+        - button "Avery Park, Review home monitoring notes for Avery Park": Avery Park
+      - listitem:
+        - checkbox "Authorize refill for Jamie Wu"
+        - text: "Authorize refill for Jamie Wu Overdue: was due today at 11:00 Urgent"
+        - button "Jamie Wu, Authorize refill for Jamie Wu": Jamie Wu
+      - listitem:
+        - checkbox "Call Riley Singh with lab results"
+        - text: "Call Riley Singh with lab results Overdue: was due today at 12:00"
+        - button "Riley Singh, Call Riley Singh with lab results": Riley Singh
+      - listitem:
+        - checkbox "Confirm care plan changes with Morgan Chen"
+        - text: "Confirm care plan changes with Morgan Chen Overdue: was due today at 16:00"
+        - button "Morgan Chen, Confirm care plan changes with Morgan Chen": Morgan Chen
+  - region "Due today":
+    - heading "Due today" [level=2]
+    - text: 0 tasks
+    - paragraph: Nothing else is due today.
+  - region "Upcoming":
+    - heading "Upcoming" [level=2]
+    - text: 3 tasks
+    - list "Upcoming":
+      - listitem:
+        - checkbox "Send referral packet to Taylor Lane"
+        - text: Send referral packet to Taylor Lane Due tomorrow at 09:00
+        - button "Taylor Lane, Send referral packet to Taylor Lane": Taylor Lane
+      - listitem:
+        - checkbox "Schedule mobility assessment for Rowan Hughes"
+        - text: Schedule mobility assessment for Rowan Hughes Due Thu, Oct 15 at 10:00
+        - button "Rowan Hughes, Schedule mobility assessment for Rowan Hughes": Rowan Hughes
+      - listitem:
+        - checkbox "Update the hydration goals handout"
+        - text: Update the hydration goals handout Due Fri, Oct 16 at 15:00
+  - paragraph:
+    - text: 1 completed task is hidden.
+    - button "Show 1 completed task"
+- contentinfo "Status":
+  - text: All systems operational · 0 unsaved changes Browser preview · data stays in this browser Synced 20:36
+  - button "Keyboard help"
+- status: 1 result
+- alert

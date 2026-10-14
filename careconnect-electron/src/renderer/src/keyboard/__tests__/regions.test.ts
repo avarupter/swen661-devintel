@@ -228,6 +228,20 @@ describe('moveToRegion (F6 / Shift+F6)', () => {
     expect(document.activeElement).toBe(byText('Patients'))
   })
 
+  it('does not remember a region focused as a whole, so F6 lands on a control inside it', () => {
+    buildPatientsWorkspace()
+    const memory: RegionMemory = new Map()
+    const list = document.querySelector<HTMLElement>('[data-region="list"]') as HTMLElement
+    // "Skip to patient list" focuses the pane itself.
+    list.setAttribute('tabindex', '-1')
+    list.focus()
+    rememberFocus(memory, list)
+    expect(memory.has('list')).toBe(false)
+    byText('Search').focus()
+    moveToRegion(1, memory)
+    expect(document.activeElement).toBe(byText('Search list'))
+  })
+
   it('falls back to the first control when the remembered one is gone or hidden', () => {
     buildPatientsWorkspace()
     const memory: RegionMemory = new Map()

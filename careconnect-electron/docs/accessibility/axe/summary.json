@@ -1,0 +1,534 @@
+{
+  "axeVersion": "4.14.0",
+  "browser": "Chromium 153.0.8010.12",
+  "url": "http://localhost:5173/",
+  "when": "2026-10-14T00:36:36.702Z",
+  "tags": [
+    "wcag2a",
+    "wcag2aa",
+    "wcag21a",
+    "wcag21aa"
+  ],
+  "pageErrors": [],
+  "screens": [
+    {
+      "id": "overview",
+      "label": "Overview view",
+      "measured": [],
+      "passes": 24,
+      "impacts": {
+        "critical": 0,
+        "serious": 0,
+        "moderate": 0,
+        "minor": 0
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "id": "schedule",
+      "label": "Schedule view",
+      "measured": [],
+      "passes": 24,
+      "impacts": {
+        "critical": 0,
+        "serious": 0,
+        "moderate": 0,
+        "minor": 0
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "id": "patients",
+      "label": "Patients view (Avery Park selected)",
+      "measured": [
+        {
+          "selector": "#patient-option-p-drew-patel > .patient-option__text[aria-hidden=\"true\"] > .patient-option__secondary",
+          "text": "Blood pressure check · Oct 2",
+          "color": "rgb(71, 85, 105)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 7.58,
+          "required": 4.5,
+          "pass": true
+        }
+      ],
+      "passes": 32,
+      "impacts": {
+        "critical": 0,
+        "serious": 0,
+        "moderate": 0,
+        "minor": 0
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "id": "patients-filtered",
+      "label": "Patients view, list searched for \"riley\"",
+      "measured": [],
+      "passes": 31,
+      "impacts": {
+        "critical": 0,
+        "serious": 0,
+        "moderate": 0,
+        "minor": 0
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "id": "inbox",
+      "label": "Inbox view, first conversation open",
+      "measured": [],
+      "passes": 26,
+      "impacts": {
+        "critical": 0,
+        "serious": 0,
+        "moderate": 0,
+        "minor": 0
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "id": "tasks",
+      "label": "Tasks view",
+      "measured": [],
+      "passes": 26,
+      "impacts": {
+        "critical": 0,
+        "serious": 0,
+        "moderate": 0,
+        "minor": 0
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "id": "reports",
+      "label": "Reports view",
+      "measured": [],
+      "passes": 24,
+      "impacts": {
+        "critical": 0,
+        "serious": 0,
+        "moderate": 0,
+        "minor": 0
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "id": "resources",
+      "label": "Resources view",
+      "measured": [],
+      "passes": 24,
+      "impacts": {
+        "critical": 0,
+        "serious": 0,
+        "moderate": 0,
+        "minor": 0
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "id": "patients-high-contrast-theme",
+      "label": "Patients view with the in-app high contrast theme (Settings)",
+      "measured": [
+        {
+          "selector": "#patient-option-p-drew-patel > .patient-option__text[aria-hidden=\"true\"] > .patient-option__secondary",
+          "text": "Blood pressure check · Oct 2",
+          "color": "rgb(0, 0, 0)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 21,
+          "required": 4.5,
+          "pass": true
+        }
+      ],
+      "passes": 32,
+      "impacts": {
+        "critical": 0,
+        "serious": 0,
+        "moderate": 0,
+        "minor": 0
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "id": "dialog-command-palette",
+      "label": "Command palette (Ctrl+K), searching \"pat\"",
+      "measured": [
+        {
+          "selector": ".palette__legend",
+          "text": "↑↓ move · Enter open",
+          "color": "rgb(90, 107, 127)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 5.46,
+          "required": 4.5,
+          "pass": true
+        },
+        {
+          "selector": ".palette__legend > kbd:nth-child(1)",
+          "text": "↑",
+          "color": "rgb(15, 23, 42)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 17.85,
+          "required": 4.5,
+          "pass": true
+        },
+        {
+          "selector": ".palette__legend > kbd:nth-child(2)",
+          "text": "↓",
+          "color": "rgb(15, 23, 42)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 17.85,
+          "required": 4.5,
+          "pass": true
+        },
+        {
+          "selector": "#_r_t_palette-patients-p-drew-patel > .palette__option-text[aria-hidden=\"true\"] > .palette__option-subtitle",
+          "text": "CC-1076 · Blood pressure check · Completed",
+          "color": "rgb(71, 85, 105)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 7.58,
+          "required": 4.5,
+          "pass": true
+        },
+        {
+          "selector": "#_r_t_palette-listbox-destinations",
+          "text": "Destinations",
+          "color": "rgb(90, 107, 127)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 5.46,
+          "required": 4.5,
+          "pass": true
+        },
+        {
+          "selector": "#_r_t_palette-destinations-navigate-patients > .palette__option-text[aria-hidden=\"true\"] > .palette__option-title",
+          "text": "Open Patients",
+          "color": "rgb(15, 23, 42)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 17.85,
+          "required": 4.5,
+          "pass": true
+        },
+        {
+          "selector": "#_r_t_palette-destinations-navigate-patients > .palette__option-text[aria-hidden=\"true\"] > .palette__option-subtitle",
+          "text": "Navigate to patient workspace",
+          "color": "rgb(71, 85, 105)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 7.58,
+          "required": 4.5,
+          "pass": true
+        }
+      ],
+      "passes": 25,
+      "impacts": {
+        "critical": 0,
+        "serious": 0,
+        "moderate": 0,
+        "minor": 0
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 7
+        }
+      ]
+    },
+    {
+      "id": "dialog-keyboard-shortcuts",
+      "label": "Keyboard shortcuts (Ctrl+/)",
+      "measured": [
+        {
+          "selector": "table:nth-child(1) > tbody > tr:nth-child(7) > td:nth-child(3) > .shortcuts__key-list[aria-hidden=\"true\"] > .shortcuts__caps > kbd:nth-child(1)",
+          "text": "⇧",
+          "color": "rgb(15, 23, 42)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 17.85,
+          "required": 4.5,
+          "pass": true
+        },
+        {
+          "selector": "table:nth-child(2) > tbody > tr:nth-child(1) > td:nth-child(3) > .shortcuts__key-list[aria-hidden=\"true\"] > .shortcuts__caps > kbd:nth-child(1)",
+          "text": "⌘",
+          "color": "rgb(15, 23, 42)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 17.85,
+          "required": 4.5,
+          "pass": true
+        },
+        {
+          "selector": "table:nth-child(2) > tbody > tr:nth-child(2) > td:nth-child(3) > .shortcuts__key-list[aria-hidden=\"true\"] > .shortcuts__caps:nth-child(1) > kbd:nth-child(1)",
+          "text": "⌘",
+          "color": "rgb(15, 23, 42)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 17.85,
+          "required": 4.5,
+          "pass": true
+        },
+        {
+          "selector": "table:nth-child(2) > tbody > tr:nth-child(3) > td:nth-child(3) > .shortcuts__key-list[aria-hidden=\"true\"] > .shortcuts__caps > kbd:nth-child(1)",
+          "text": "⌘",
+          "color": "rgb(15, 23, 42)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 17.85,
+          "required": 4.5,
+          "pass": true
+        },
+        {
+          "selector": "table:nth-child(2) > tbody > tr:nth-child(3) > td:nth-child(3) > .shortcuts__key-list[aria-hidden=\"true\"] > .shortcuts__caps > kbd:nth-child(2)",
+          "text": "⇧",
+          "color": "rgb(15, 23, 42)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 17.85,
+          "required": 4.5,
+          "pass": true
+        },
+        {
+          "selector": "table:nth-child(2) > tbody > tr:nth-child(4) > th[scope=\"row\"]",
+          "text": "Edit care summary",
+          "color": "rgb(15, 23, 42)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 17.85,
+          "required": 4.5,
+          "pass": true
+        },
+        {
+          "selector": "table:nth-child(2) > tbody > tr:nth-child(5) > th[scope=\"row\"]",
+          "text": "Add clinical note",
+          "color": "rgb(15, 23, 42)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 17.85,
+          "required": 4.5,
+          "pass": true
+        }
+      ],
+      "passes": 27,
+      "impacts": {
+        "critical": 0,
+        "serious": 0,
+        "moderate": 0,
+        "minor": 0
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 7
+        }
+      ]
+    },
+    {
+      "id": "dialog-help",
+      "label": "Help (F1)",
+      "measured": [
+        {
+          "selector": "ul[aria-label=\"Landmarks\"] > li:nth-child(4)",
+          "text": "Recent patients (region): the patient list, on the Patients ",
+          "color": "rgb(15, 23, 42)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 17.85,
+          "required": 4.5,
+          "pass": true
+        },
+        {
+          "selector": "ul[aria-label=\"Landmarks\"] > li:nth-child(5)",
+          "text": "Patient list (search): the patient search, on the Patients v",
+          "color": "rgb(15, 23, 42)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 17.85,
+          "required": 4.5,
+          "pass": true
+        },
+        {
+          "selector": "li:nth-child(6)",
+          "text": "Care summary (region): the selected patient’s alert and curr",
+          "color": "rgb(15, 23, 42)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 17.85,
+          "required": 4.5,
+          "pass": true
+        }
+      ],
+      "passes": 22,
+      "impacts": {
+        "critical": 0,
+        "serious": 0,
+        "moderate": 0,
+        "minor": 0
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 3
+        }
+      ]
+    },
+    {
+      "id": "dialog-settings",
+      "label": "Settings (Ctrl+,)",
+      "measured": [
+        {
+          "selector": "#_r_18_-hint",
+          "text": "Shows shortcut keys beside buttons and the search field. Hol",
+          "color": "rgb(90, 107, 127)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 5.46,
+          "required": 4.5,
+          "pass": true
+        },
+        {
+          "selector": ".settings__system > .field__hint",
+          "text": "CareConnect follows the Windows contrast theme automatically",
+          "color": "rgb(90, 107, 127)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 5.46,
+          "required": 4.5,
+          "pass": true
+        },
+        {
+          "selector": "#_r_1b_-hint",
+          "text": "One notification when CareConnect opens, listing patients wi",
+          "color": "rgb(90, 107, 127)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 5.46,
+          "required": 4.5,
+          "pass": true
+        }
+      ],
+      "passes": 21,
+      "impacts": {
+        "critical": 0,
+        "serious": 0,
+        "moderate": 0,
+        "minor": 0
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 3
+        }
+      ]
+    },
+    {
+      "id": "dialog-new-patient-errors",
+      "label": "New patient (Ctrl+N) after submitting it empty",
+      "measured": [
+        {
+          "selector": "legend",
+          "text": "Status",
+          "color": "rgb(15, 23, 42)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 17.85,
+          "required": 4.5,
+          "pass": true
+        },
+        {
+          "selector": ".choice:nth-child(1)",
+          "text": "Open",
+          "color": "rgb(15, 23, 42)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 17.85,
+          "required": 4.5,
+          "pass": true
+        },
+        {
+          "selector": ".choice:nth-child(2)",
+          "text": "Needs review",
+          "color": "rgb(15, 23, 42)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 17.85,
+          "required": 4.5,
+          "pass": true
+        }
+      ],
+      "passes": 27,
+      "impacts": {
+        "critical": 0,
+        "serious": 0,
+        "moderate": 0,
+        "minor": 0
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 3
+        }
+      ]
+    },
+    {
+      "id": "dialog-add-note",
+      "label": "Add clinical note (N)",
+      "measured": [],
+      "passes": 22,
+      "impacts": {
+        "critical": 0,
+        "serious": 0,
+        "moderate": 0,
+        "minor": 0
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "id": "dialog-edit-summary",
+      "label": "Edit care summary (E)",
+      "measured": [],
+      "passes": 23,
+      "impacts": {
+        "critical": 0,
+        "serious": 0,
+        "moderate": 0,
+        "minor": 0
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "id": "dialog-compose-new",
+      "label": "New message (Ctrl+Shift+M)",
+      "measured": [],
+      "passes": 23,
+      "impacts": {
+        "critical": 0,
+        "serious": 0,
+        "moderate": 0,
+        "minor": 0
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "id": "dialog-compose-reply",
+      "label": "Reply in the Inbox (R)",
+      "measured": [],
+      "passes": 22,
+      "impacts": {
+        "critical": 0,
+        "serious": 0,
+        "moderate": 0,
+        "minor": 0
+      },
+      "violations": [],
+      "incomplete": []
+    }
+  ]
+}

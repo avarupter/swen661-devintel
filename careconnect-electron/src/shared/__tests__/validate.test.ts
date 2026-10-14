@@ -84,6 +84,15 @@ describe('validateWorkspace', () => {
     expect(result.drafts[0]).toEqual({ id: 'd-1', conversationId: null, patientId: null, to: '', subject: '', body: '', attachments: [], updatedAt: NOW.toISOString() })
   })
 
+  it('turns single-key shortcuts on for a workspace saved before the setting existed, and keeps an explicit choice', () => {
+    const older = seed()
+    delete (older.preferences as Partial<Workspace['preferences']>).singleKeyShortcuts
+    expect(validateWorkspace(older).preferences.singleKeyShortcuts).toBe(true)
+    const turnedOff = seed()
+    turnedOff.preferences.singleKeyShortcuts = false
+    expect(validateWorkspace(turnedOff).preferences.singleKeyShortcuts).toBe(false)
+  })
+
   it('never copies a __proto__ key from parsed JSON', () => {
     const patient = JSON.parse(JSON.stringify(avery()).replace(/^\{/, '{"__proto__":{"polluted":true},')) as Patient
     const result = validatePatient(patient)
@@ -118,6 +127,7 @@ describe('validateWorkspace', () => {
     ['a task with a non-boolean done flag', (w) => ((w.tasks[0] as { done: unknown }).done = 1, w), 'workspace.tasks[0].done', 'expected true or false'],
     ['missing preferences', (w) => ({ ...w, preferences: null }), 'workspace.preferences', 'expected an object'],
     ['a missing preference', (w) => ((w.preferences as Partial<Workspace['preferences']>).notifications = undefined, w), 'workspace.preferences.notifications', 'expected true or false'],
+    ['a non-boolean single-key shortcuts preference', (w) => ((w.preferences as { singleKeyShortcuts: unknown }).singleKeyShortcuts = 'off', w), 'workspace.preferences.singleKeyShortcuts', 'expected true or false'],
     ['a recent patient with a bad date', (w) => (w.recentPatients[1].at = 'earlier', w), 'workspace.recentPatients[1].at', 'expected an ISO 8601 date']
   ])('rejects %s and names the field', (_name, mutate, path, reason) => {
     expectRejected(() => validateWorkspace(mutate(seed())), path, reason)

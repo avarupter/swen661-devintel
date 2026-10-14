@@ -1,0 +1,48 @@
+- dialog "New patient":
+  - heading "New patient" [level=2]
+  - button "Close"
+  - paragraph: Creates a synthetic demo record. Never enter real patient information.
+  - alert "There are 3 problems":
+    - heading "There are 3 problems" [level=3]
+    - list:
+      - listitem:
+        - link "Enter the patient’s full name.":
+          - /url: "#new-patient-name"
+      - listitem:
+        - link "Enter a reason for the visit.":
+          - /url: "#new-patient-reason"
+      - listitem:
+        - link "Visit date is required. Enter a date, or choose “Schedule later.”":
+          - /url: "#new-patient-date"
+  - paragraph: Full name, reason for visit and a visit date (or “Schedule later”) are required.
+  - text: Full name
+  - paragraph: "Error: Enter the patient’s full name."
+  - textbox "Full name" [invalid]
+  - text: Pronouns
+  - combobox "Pronouns":
+    - option "they/them"
+    - option "she/her"
+    - option "he/him"
+    - option "Not recorded" [selected]
+  - text: Age group
+  - combobox "Age group":
+    - option "Adult" [selected]
+    - option "Older adult"
+    - option "Young adult"
+  - text: Reason for visit
+  - paragraph: "Error: Enter a reason for the visit."
+  - textbox "Reason for visit" [invalid]
+  - text: Visit date
+  - paragraph: "Error: Visit date is required. Enter a date, or choose “Schedule later.”"
+  - textbox "Visit date" [invalid]
+  - checkbox "Schedule later"
+  - text: Schedule later Visit time
+  - textbox "Visit time": 09:00
+  - group "Status":
+    - text: Status
+    - radio "Open" [checked]
+    - text: Open
+    - radio "Needs review"
+    - text: Needs review
+  - button "Cancel"
+  - button "Add patient"

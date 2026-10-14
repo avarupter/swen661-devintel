@@ -196,10 +196,14 @@ export function menuOwnsChord(chord: KeyChord, platform: KeyPlatform): boolean {
   return platform === 'mac' && (Boolean(chord.mod) || FUNCTION_KEY.test(chord.key))
 }
 
-/** `aria-keyshortcuts` value for a command ("Control+Shift+M"), or undefined for sequences. */
-export function ariaKeyShortcuts(command: CommandId, platform: KeyPlatform): string | undefined {
+/**
+ * `aria-keyshortcuts` value for a command ("Control+Shift+M"), or undefined for
+ * sequences. With single-key shortcuts turned off (`characterKeys` false), a
+ * plain character key such as E is not advertised either, because it no longer works.
+ */
+export function ariaKeyShortcuts(command: CommandId, platform: KeyPlatform, characterKeys = true): string | undefined {
   const chord = shortcutForCommand(command)?.chord
-  if (!chord) return undefined
+  if (!chord || (!characterKeys && isCharacterKey(chord))) return undefined
   const parts: string[] = []
   if (chord.mod) parts.push(platform === 'mac' ? 'Meta' : 'Control')
   if (chord.shift) parts.push('Shift')
@@ -234,6 +238,21 @@ export function matchesChord(event: KeyEventLike, chord: KeyChord, platform: Key
   const shiftMatters = chord.key.length > 1 || /^[a-z0-9]$/i.test(chord.key)
   if (shiftMatters && Boolean(chord.shift) !== event.shiftKey) return false
   return true
+}
+
+/**
+ * A character key in WCAG 2.1.4's sense: a single printable key with no Ctrl, ⌘
+ * or Alt (E, N, /). Shift doesn't change that. Function keys and modifier chords
+ * are not character keys.
+ */
+export function isCharacterKey(chord: KeyChord): boolean {
+  return !chord.mod && !chord.alt && chord.key.length === 1
+}
+
+/** Whether a shortcut is a character key, or a sequence of them (G then P). */
+export function isCharacterKeyShortcut(shortcut: ShortcutDefinition): boolean {
+  if (shortcut.sequence) return true
+  return Boolean(shortcut.chord && isCharacterKey(shortcut.chord))
 }
 
 /** Whether the event is a plain key with no Ctrl, ⌘ or Alt (Shift is allowed). */

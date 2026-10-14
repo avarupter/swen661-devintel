@@ -32,7 +32,9 @@ export type RegionMemory = Map<string, HTMLElement>
 export function rememberFocus(memory: RegionMemory, element: Element | null): void {
   const region = regionOf(element)
   const name = region?.dataset.region
-  if (name && element instanceof HTMLElement) memory.set(name, element)
+  // A region focused as a whole (a skip-link target) is not a place to return to: F6 should land on
+  // a control inside it, where arrow keys and Enter do something.
+  if (name && element instanceof HTMLElement && element !== region) memory.set(name, element)
 }
 
 function targetFor(region: HTMLElement, memory: RegionMemory): HTMLElement {

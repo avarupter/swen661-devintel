@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* global window, document -- page.evaluate callbacks run in the browser */
+/* global window, document, getComputedStyle -- page.evaluate callbacks run in the browser */
 /**
  * Automated WCAG 2.1 Level A/AA scan of every CareConnect screen and dialog
  * with axe-core (the engine inside axe DevTools), in Chromium, against the
@@ -39,6 +39,13 @@ async function closeDialogs(page) {
   }
 }
 
+async function setHighContrast(page, on) {
+  await openDialog(page, () => page.keyboard.press('Control+,'), 'Settings')
+  const toggle = page.getByRole('switch', { name: /high contrast theme/i })
+  if ((await toggle.isChecked()) !== on) await toggle.click()
+  await closeDialogs(page)
+}
+
 async function openDialog(page, open, name) {
   await closeDialogs(page)
   await open()
@@ -71,6 +78,15 @@ const TARGETS = [
   { id: 'tasks', label: 'Tasks view', reach: (p) => goTo(p, 'Tasks', 'Tasks') },
   { id: 'reports', label: 'Reports view', reach: (p) => goTo(p, 'Reports', 'Reports') },
   { id: 'resources', label: 'Resources view', reach: (p) => goTo(p, 'Resources', 'Resources') },
+  {
+    id: 'patients-high-contrast-theme',
+    label: 'Patients view with the in-app high contrast theme (Settings)',
+    reach: async (p) => {
+      await goTo(p, 'Patients', 'Patients')
+      await setHighContrast(p, true)
+    },
+    after: (p) => setHighContrast(p, false)
+  },
   {
     id: 'dialog-command-palette',
     label: 'Command palette (Ctrl+K), searching "pat"',
@@ -123,6 +139,63 @@ const TARGETS = [
   }
 ]
 
+/**
+ * axe marks colour contrast "needs review" when it cannot see a single solid
+ * background (text inside a scroll container or over a dialog backdrop). Measure
+ * those nodes directly: the text colour against the nearest opaque background.
+ */
+async function measureContrast(page, incomplete) {
+  const contrast = incomplete.find((item) => item.id === 'color-contrast')
+  if (!contrast) return []
+  const selectors = contrast.nodes.map((node) => node.target[0])
+  return page.evaluate((list) => {
+    const parse = (value) => {
+      const match = /rgba?\(([^)]+)\)/.exec(value)
+      if (!match) return null
+      const [r, g, b, a = 1] = match[1].split(',').map(Number)
+      return { r, g, b, a }
+    }
+    const luminance = ({ r, g, b }) => {
+      const channel = (c) => {
+        const s = c / 255
+        return s <= 0.04045 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4
+      }
+      return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b)
+    }
+    return list.map((selector) => {
+      const element = document.querySelector(selector)
+      if (!element) return { selector, error: 'not found' }
+      const style = getComputedStyle(element)
+      const fg = parse(style.color)
+      let node = element
+      let bg = null
+      while (node && node.nodeType === 1) {
+        const candidate = parse(getComputedStyle(node).backgroundColor)
+        if (candidate && candidate.a >= 1) {
+          bg = candidate
+          break
+        }
+        node = node.parentElement
+      }
+      bg = bg || { r: 255, g: 255, b: 255, a: 1 }
+      const [light, dark] = [luminance(fg), luminance(bg)].sort((x, y) => y - x)
+      const ratio = (light + 0.05) / (dark + 0.05)
+      const size = parseFloat(style.fontSize)
+      const bold = Number(style.fontWeight) >= 700
+      const required = size >= 24 || (bold && size >= 18.66) ? 3 : 4.5
+      return {
+        selector,
+        text: (element.textContent || '').trim().slice(0, 60),
+        color: style.color,
+        background: `rgb(${bg.r}, ${bg.g}, ${bg.b})`,
+        ratio: Math.round(ratio * 100) / 100,
+        required,
+        pass: ratio >= required
+      }
+    })
+  }, selectors)
+}
+
 function countByImpact(violations) {
   const counts = { critical: 0, serious: 0, moderate: 0, minor: 0 }
   for (const violation of violations) counts[violation.impact] = (counts[violation.impact] || 0) + violation.nodes.length
@@ -157,13 +230,21 @@ function markdownReport(meta, rows) {
     }
     lines.push('')
   }
-  const reviews = rows.filter((row) => row.incomplete.length > 0)
-  if (reviews.length > 0) {
-    lines.push('## Needs review (axe could not decide automatically)', '')
-    for (const row of reviews) {
-      for (const item of row.incomplete) {
-        lines.push(`- ${row.label}: **${item.id}**: ${item.help} (${item.nodes.length} node(s)), e.g. \`${item.nodes[0].target.join(' ')}\`: ${(item.nodes[0].any[0] && item.nodes[0].any[0].message) || ''}`)
-      }
+  const measured = rows.flatMap((row) => row.measured.map((m) => ({ ...m, screen: row.label })))
+  if (measured.length > 0) {
+    const failing = measured.filter((m) => !m.pass)
+    lines.push(
+      '## Needs review: colour contrast measured',
+      '',
+      'axe could not see one solid background for these nodes (text inside a scroll container or over a dialog backdrop), so the scan measures them itself: computed text colour against the nearest opaque background.',
+      '',
+      failing.length === 0 ? `**All ${measured.length} measured nodes meet their contrast minimum.**` : `**${failing.length} of ${measured.length} measured nodes are below their minimum.**`,
+      '',
+      '| Screen | Element | Text | Colour | Background | Ratio | Minimum |',
+      '|---|---|---|---|---|---|---|'
+    )
+    for (const m of measured) {
+      lines.push(`| ${m.screen} | \`${m.selector}\` | ${(m.text || '').replace(/\|/g, '/')} | ${m.color} | ${m.background} | ${m.ratio}:1 ${m.pass ? '✓' : '✗'} | ${m.required}:1 |`)
     }
     lines.push('')
   }
@@ -172,6 +253,7 @@ function markdownReport(meta, rows) {
 
 async function main() {
   fs.mkdirSync(path.join(OUT, 'screenshots'), { recursive: true })
+  fs.mkdirSync(path.join(OUT, 'accessibility-tree'), { recursive: true })
   const browser = await chromium.launch()
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 } })
   const page = await context.newPage()
@@ -187,17 +269,23 @@ async function main() {
     if ((await page.evaluate(() => typeof window.axe)) === 'undefined') await page.addScriptTag({ path: AXE_PATH })
     const result = await page.evaluate((tags) => window.axe.run(document, { runOnly: { type: 'tag', values: tags }, resultTypes: ['violations', 'incomplete'] }), WCAG_TAGS)
     await page.screenshot({ path: path.join(OUT, 'screenshots', `${target.id}.png`) })
+    // What a screen reader is given: Chromium's accessibility tree for the open dialog, or the whole window.
+    const scope = (await page.getByRole('dialog').count()) > 0 ? page.getByRole('dialog') : page.locator('body')
+    fs.writeFileSync(path.join(OUT, 'accessibility-tree', `${target.id}.yml`), `${await scope.ariaSnapshot()}\n`)
+    const measured = await measureContrast(page, result.incomplete)
     const row = {
       id: target.id,
       label: target.label,
       violations: result.violations,
       incomplete: result.incomplete,
+      measured,
       passes: result.passes.length,
       impacts: countByImpact(result.violations)
     }
     rows.push(row)
     fs.writeFileSync(path.join(OUT, `${target.id}.json`), `${JSON.stringify({ target: target.label, url: APP_URL, axeVersion: AXE_VERSION, ...result }, null, 2)}\n`)
-    console.log(`${row.violations.length === 0 ? 'PASS' : 'FAIL'}  ${target.label}: ${row.violations.length} violation rule(s), ${row.incomplete.length} to review, ${row.passes} passed`)
+    const contrastFails = measured.filter((m) => !m.pass).length
+    console.log(`${row.violations.length === 0 && contrastFails === 0 ? 'PASS' : 'FAIL'}  ${target.label}: ${row.violations.length} violation rule(s), ${row.incomplete.length} to review (${measured.length} contrast measured, ${contrastFails} below minimum), ${row.passes} passed`)
     if (target.after) await target.after(page)
   }
 
@@ -206,7 +294,7 @@ async function main() {
   fs.writeFileSync(path.join(OUT, 'README.md'), markdownReport(meta, rows))
   await browser.close()
   if (errors.length) console.log(`Page errors: ${errors.join(' | ')}`)
-  const failing = rows.filter((row) => row.violations.length > 0).length
+  const failing = rows.filter((row) => row.violations.length > 0 || row.measured.some((m) => !m.pass)).length
   console.log(failing === 0 ? '\nNo WCAG 2.1 A/AA violations.' : `\n${failing} screen(s) with violations. See ${path.relative(ROOT, path.join(OUT, 'README.md'))}`)
   process.exitCode = failing === 0 ? 0 : 1
 }

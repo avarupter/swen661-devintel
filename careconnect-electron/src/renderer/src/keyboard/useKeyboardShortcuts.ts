@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import type { CommandId, ViewId } from '../../../shared/commands'
 import {
+  isCharacterKey,
   isPlainKey,
   matchesChord,
   menuOwnsChord,
@@ -25,13 +26,16 @@ function chordsOf(shortcut: ShortcutDefinition) {
 
 /**
  * The shortcut a key press triggers outside any modal, or undefined.
- * Printable single keys (E, N, M, R, /) are ignored while typing in a field.
+ * Printable single keys (E, N, M, R, /) are ignored while typing in a field,
+ * and everywhere when single-key shortcuts are turned off.
  */
 export function findGlobalShortcut(
   event: KeyEventLike,
   view: ViewId,
   platform: KeyPlatform,
-  editable: boolean
+  editable: boolean,
+  /** Settings > Keyboard > Single-key shortcuts (WCAG 2.1.4). */
+  characterKeys = true
 ): ShortcutDefinition | undefined {
   return SHORTCUTS.find((shortcut) => {
     if (!shortcut.command || shortcut.scope === 'system' || shortcut.scope === 'compose') return false
@@ -40,7 +44,7 @@ export function findGlobalShortcut(
     return chordsOf(shortcut).some((chord) => {
       if (menuOwnsChord(chord, platform)) return false
       if (!matchesChord(event, chord, platform)) return false
-      return !(editable && !chord.mod && !chord.alt && chord.key.length === 1)
+      return !(isCharacterKey(chord) && (editable || !characterKeys))
     })
   })
 }
@@ -68,12 +72,13 @@ export function findSequenceCommand(first: string, second: string): CommandId | 
  * the modal owns the keyboard, so nothing here fires.
  */
 export function useKeyboardShortcuts(): void {
-  const { ui } = useAppState()
+  const { ui, workspace } = useAppState()
   const dispatch = useAppDispatch()
   const { run } = useCommands()
-  const latest = useRef({ ui, run })
+  const characterKeys = workspace?.preferences.singleKeyShortcuts ?? true
+  const latest = useRef({ ui, run, characterKeys })
   useEffect(() => {
-    latest.current = { ui, run }
+    latest.current = { ui, run, characterKeys }
   })
 
   useEffect(() => {
@@ -85,7 +90,7 @@ export function useKeyboardShortcuts(): void {
     }
 
     const onKeyDown = (event: KeyboardEvent): void => {
-      const { ui: current, run: runCommand } = latest.current
+      const { ui: current, run: runCommand, characterKeys: characterKeysOn } = latest.current
       if (event.key === 'Alt') {
         if (!event.repeat && !current.modal) dispatch({ type: 'ui/setRevealHints', reveal: true })
         return
@@ -97,7 +102,7 @@ export function useKeyboardShortcuts(): void {
       if (current.pendingSequence) {
         const first = current.pendingSequence
         clearSequence()
-        if (!modalOpen && !editable && isPlainKey(event) && !event.shiftKey) {
+        if (!modalOpen && !editable && characterKeysOn && isPlainKey(event) && !event.shiftKey) {
           const command = findSequenceCommand(first, event.key)
           if (command) {
             event.preventDefault()
@@ -109,7 +114,7 @@ export function useKeyboardShortcuts(): void {
 
       if (modalOpen) return
 
-      const shortcut = findGlobalShortcut(event, current.view, current.platform, editable)
+      const shortcut = findGlobalShortcut(event, current.view, current.platform, editable, characterKeysOn)
       if (shortcut?.command) {
         event.preventDefault()
         runCommand({ id: shortcut.command })
@@ -117,7 +122,7 @@ export function useKeyboardShortcuts(): void {
       }
 
       const key = event.key.toLowerCase()
-      if (!editable && isPlainKey(event) && !event.shiftKey && SEQUENCE_STARTERS.has(key)) {
+      if (!editable && characterKeysOn && isPlainKey(event) && !event.shiftKey && SEQUENCE_STARTERS.has(key)) {
         event.preventDefault()
         dispatch({ type: 'ui/setPendingSequence', key })
         sequenceTimer = setTimeout(clearSequence, SEQUENCE_TIMEOUT_MS)

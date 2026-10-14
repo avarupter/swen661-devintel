@@ -60,8 +60,9 @@ export interface PatientDetailProps {
  * no detail-pane landmark.
  */
 export function PatientDetail({ patient, now, onShowMenu }: PatientDetailProps): React.JSX.Element {
-  const { ui } = useAppState()
+  const { ui, workspace } = useAppState()
   const { run } = useCommands()
+  const characterKeys = workspace?.preferences.singleKeyShortcuts
   const sectionRef = useRef<HTMLElement>(null)
 
   // Shift+F10, the Menu key or a right-click anywhere in the pane opens the
@@ -156,7 +157,7 @@ export function PatientDetail({ patient, now, onShowMenu }: PatientDetailProps):
             <button
               type="button"
               className="link-button"
-              aria-keyshortcuts={ariaKeyShortcuts('patient.editSummary', ui.platform)}
+              aria-keyshortcuts={ariaKeyShortcuts('patient.editSummary', ui.platform, characterKeys)}
               onClick={() => runForPatient('patient.editSummary')}
             >
               Edit<span className="visually-hidden"> care summary for {patient.name}</span> <KeyHint command="patient.editSummary" />
@@ -212,7 +213,7 @@ export function PatientDetail({ patient, now, onShowMenu }: PatientDetailProps):
             <button
               type="button"
               className="button patient-activity__add"
-              aria-keyshortcuts={ariaKeyShortcuts('patient.addNote', ui.platform)}
+              aria-keyshortcuts={ariaKeyShortcuts('patient.addNote', ui.platform, characterKeys)}
               onClick={() => runForPatient('patient.addNote')}
             >
               <Icon name="plus" />

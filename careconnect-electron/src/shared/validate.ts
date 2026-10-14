@@ -222,6 +222,8 @@ function validatePreferences(value: unknown, path: string): Preferences {
   const source = record(value, path)
   return {
     showShortcutHints: bool(source.showShortcutHints, `${path}.showShortcutHints`),
+    // Added in Week 9; workspaces saved earlier have no value and keep the old behaviour.
+    singleKeyShortcuts: source.singleKeyShortcuts === undefined ? true : bool(source.singleKeyShortcuts, `${path}.singleKeyShortcuts`),
     reduceMotion: bool(source.reduceMotion, `${path}.reduceMotion`),
     highContrast: bool(source.highContrast, `${path}.highContrast`),
     notifications: bool(source.notifications, `${path}.notifications`)

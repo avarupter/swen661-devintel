@@ -1,0 +1,16 @@
+- dialog "Add clinical note":
+  - heading "Add clinical note" [level=2]
+  - button "Close"
+  - paragraph: For Avery Park · Care ID CC-1048
+  - text: Note type
+  - combobox "Note type":
+    - option "Visit note" [selected]
+    - option "Phone call"
+    - option "Care coordination"
+  - text: Note
+  - textbox "Note"
+  - checkbox "Clear the follow-up alert"
+  - text: Clear the follow-up alert
+  - paragraph: "Current alert: Follow-up due today"
+  - button "Cancel"
+  - button "Add note"

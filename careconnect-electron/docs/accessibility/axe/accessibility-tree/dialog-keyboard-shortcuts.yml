@@ -1,0 +1,154 @@
+- dialog "Keyboard shortcuts":
+  - heading "Keyboard shortcuts" [level=2]
+  - button "Close"
+  - list:
+    - listitem: Ctrl K Press together
+    - listitem: G P Press in sequence
+  - text: Find a command
+  - searchbox "Find a command"
+  - table "Navigation Move between primary destinations and regions without losing context.":
+    - caption:
+      - heading "Navigation" [level=3]
+      - paragraph: Move between primary destinations and regions without losing context.
+    - rowgroup:
+      - row "Action Windows / Linux (this computer) macOS":
+        - columnheader "Action"
+        - columnheader "Windows / Linux (this computer)"
+        - columnheader "macOS"
+    - rowgroup:
+      - row "Open Overview Sequence G then O G then O":
+        - rowheader "Open Overview Sequence"
+        - cell "G then O"
+        - cell "G then O"
+      - row "Open Schedule Sequence G then S G then S":
+        - rowheader "Open Schedule Sequence"
+        - cell "G then S"
+        - cell "G then S"
+      - row "Open Patients Sequence G then P G then P":
+        - rowheader "Open Patients Sequence"
+        - cell "G then P"
+        - cell "G then P"
+      - row "Open Inbox Sequence G then I G then I":
+        - rowheader "Open Inbox Sequence"
+        - cell "G then I"
+        - cell "G then I"
+      - row "Open Tasks Sequence G then T G then T":
+        - rowheader "Open Tasks Sequence"
+        - cell "G then T"
+        - cell "G then T"
+      - row "Next workspace region F6 Fn+F6":
+        - rowheader "Next workspace region"
+        - cell "F6"
+        - cell "Fn+F6"
+      - row "Previous workspace region Shift+F6 ⇧+Fn+F6":
+        - rowheader "Previous workspace region"
+        - cell "Shift+F6"
+        - cell "⇧+Fn+F6"
+  - table "Patient & workspace actions Act on the selected synthetic patient record or current clinical pane.":
+    - caption:
+      - heading "Patient & workspace actions" [level=3]
+      - paragraph: Act on the selected synthetic patient record or current clinical pane.
+    - rowgroup:
+      - row "Action Windows / Linux (this computer) macOS":
+        - columnheader "Action"
+        - columnheader "Windows / Linux (this computer)"
+        - columnheader "macOS"
+    - rowgroup:
+      - row "Create patient record Ctrl+N ⌘+N":
+        - rowheader "Create patient record"
+        - cell "Ctrl+N"
+        - cell "⌘+N"
+      - row "Search current list Ctrl+F or / ⌘+F or /":
+        - rowheader "Search current list"
+        - cell "Ctrl+F or /"
+        - cell "⌘+F or /"
+      - row "Filter patient list Ctrl+Shift+L ⌘+⇧+L":
+        - rowheader "Filter patient list"
+        - cell "Ctrl+Shift+L"
+        - cell "⌘+⇧+L"
+      - row "Edit care summary E E":
+        - rowheader "Edit care summary"
+        - cell "E"
+        - cell "E"
+      - row "Add clinical note N N":
+        - rowheader "Add clinical note"
+        - cell "N"
+        - cell "N"
+      - row "Message patient M M":
+        - rowheader "Message patient"
+        - cell "M"
+        - cell "M"
+      - row "Export patient summary Ctrl+Shift+E ⌘+⇧+E":
+        - rowheader "Export patient summary"
+        - cell "Ctrl+Shift+E"
+        - cell "⌘+⇧+E"
+      - row "Open context menu Shift+F10 or Menu ⇧+Fn+F10":
+        - rowheader "Open context menu"
+        - cell "Shift+F10 or Menu"
+        - cell "⇧+Fn+F10"
+  - table "Communication Compose, send, and navigate messages with predictable confirmations.":
+    - caption:
+      - heading "Communication" [level=3]
+      - paragraph: Compose, send, and navigate messages with predictable confirmations.
+    - rowgroup:
+      - row "Action Windows / Linux (this computer) macOS":
+        - columnheader "Action"
+        - columnheader "Windows / Linux (this computer)"
+        - columnheader "macOS"
+    - rowgroup:
+      - row "New message Ctrl+Shift+M ⌘+⇧+M":
+        - rowheader "New message"
+        - cell "Ctrl+Shift+M"
+        - cell "⌘+⇧+M"
+      - row "Reply R R":
+        - rowheader "Reply"
+        - cell "R"
+        - cell "R"
+      - row "Send message Ctrl+Enter ⌘+Return":
+        - rowheader "Send message"
+        - cell "Ctrl+Enter"
+        - cell "⌘+Return"
+      - row "Save draft Ctrl+S ⌘+S":
+        - rowheader "Save draft"
+        - cell "Ctrl+S"
+        - cell "⌘+S"
+      - row "Attach document Ctrl+Shift+A ⌘+⇧+A":
+        - rowheader "Attach document"
+        - cell "Ctrl+Shift+A"
+        - cell "⌘+⇧+A"
+  - table "Global commands Commands available from anywhere in the desktop application.":
+    - caption:
+      - heading "Global commands" [level=3]
+      - paragraph: Commands available from anywhere in the desktop application.
+    - rowgroup:
+      - row "Action Windows / Linux (this computer) macOS":
+        - columnheader "Action"
+        - columnheader "Windows / Linux (this computer)"
+        - columnheader "macOS"
+    - rowgroup:
+      - row "Open command palette Ctrl+K ⌘+K":
+        - rowheader "Open command palette"
+        - cell "Ctrl+K"
+        - cell "⌘+K"
+      - row "Keyboard shortcuts Ctrl+/ ⌘+/":
+        - rowheader "Keyboard shortcuts"
+        - cell "Ctrl+/"
+        - cell "⌘+/"
+      - row "Show access keys Alt ⌥":
+        - rowheader "Show access keys"
+        - cell "Alt"
+        - cell "⌥"
+      - row "Close dialog or menu Esc Esc":
+        - rowheader "Close dialog or menu"
+        - cell "Esc"
+        - cell "Esc"
+      - row "Open help F1 Fn+F1":
+        - rowheader "Open help"
+        - cell "F1"
+        - cell "Fn+F1"
+      - row "Open settings Ctrl+, ⌘+,":
+        - rowheader "Open settings"
+        - cell "Ctrl+,"
+        - cell "⌘+,"
+  - paragraph: Browser or assistive technology shortcuts take priority. CareConnect does not override reserved key combinations.
+  - button "Print reference"

@@ -261,7 +261,7 @@ describe('workspace actions', () => {
 
   it('preferences/changed merges partial changes', () => {
     const state = reduce(loaded(), { type: 'preferences/changed', changes: { highContrast: true } })
-    expect(ws(state).preferences).toEqual({ showShortcutHints: true, reduceMotion: false, highContrast: true, notifications: true })
+    expect(ws(state).preferences).toEqual({ showShortcutHints: true, singleKeyShortcuts: true, reduceMotion: false, highContrast: true, notifications: true })
   })
 })
 

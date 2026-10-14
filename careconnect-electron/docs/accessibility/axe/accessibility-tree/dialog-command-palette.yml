@@ -1,0 +1,23 @@
+- dialog "Command palette":
+  - heading "Command palette" [level=2]
+  - button "Close"
+  - combobox "Search commands" [expanded]: pat
+  - paragraph: Type a command, patient label, or destination
+  - listbox "Commands":
+    - group "Commands":
+      - text: Commands
+      - option "Create new patient record, Opens a blank synthetic record form" [selected]
+      - option "Filter patient list, Showing all patients"
+      - option "Sort patient list, Sorted by recent activity"
+      - option "Message patient, Avery Park · CC-1048"
+      - option "Export patient summary, Avery Park · CC-1048"
+      - option "Import patients, Add synthetic patients from a JSON file"
+      - option "Search current list, Find a patient by name, Care ID or reason"
+    - group "Patients":
+      - text: Patients
+      - option "Drew Patel, CC-1076 · Blood pressure check · Completed"
+    - group "Destinations":
+      - text: Destinations
+      - option "Open Patients, Navigate to patient workspace"
+  - paragraph: Searching CareConnect · synthetic demo data only
+  - paragraph: Open anytime Ctrl+K

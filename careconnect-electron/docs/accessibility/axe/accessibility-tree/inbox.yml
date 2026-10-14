@@ -1,0 +1,64 @@
+- link "Skip to main workspace":
+  - /url: "#main"
+- link "Skip to status":
+  - /url: "#status-bar"
+- navigation "Workspace":
+  - text: North Coast Clinic Clinical operations
+  - button "Switch clinic" [disabled]
+  - text: Only one clinic is available in this demo. Workspace
+  - list "Workspace":
+    - listitem:
+      - button "Overview"
+    - listitem:
+      - button "Schedule"
+    - listitem:
+      - button "Patients"
+    - listitem:
+      - button "Inbox, 3 unread"
+    - listitem:
+      - button "Tasks"
+  - text: Tools
+  - list "Tools":
+    - listitem:
+      - button "Reports"
+    - listitem:
+      - button "Resources"
+  - paragraph: Keyboard mode
+  - paragraph: Hold Alt to show access keys on interactive controls.
+  - button "Always show shortcut hints" [pressed]
+  - text: Jordan Lee, RN Care coordinator
+  - button "Settings"
+- banner:
+  - heading "Inbox" [level=1]
+  - text: 3 unread
+  - toolbar "Inbox tools":
+    - button "Reply"
+    - button "New message"
+- main "Inbox":
+  - region "Message list":
+    - heading "Conversations" [level=2]
+    - listbox "Conversations":
+      - option "Morgan Chen, Question about my care plan, 08:05" [selected]
+      - 'option "Dr. Sam Okafor, Lab results: Riley Singh, 07:48, unread"'
+      - 'option "North Coast Pharmacy, Refill authorization: Jamie Wu, Yesterday, unread"'
+      - option "Avery Park, Home monitoring readings, Yesterday, unread"
+      - option "Front desk, Schedule change for Friday, Oct 11"
+      - option "Taylor Lane, Referral paperwork, Oct 6"
+  - region "Reading pane":
+    - heading "Question about my care plan" [level=2]
+    - paragraph: With Morgan Chen · Care ID CC-1052 · 1 message
+    - toolbar "Actions for Question about my care plan":
+      - button "Reply to Morgan Chen"
+      - button "Mark as unread"
+      - button "Open patient record for Morgan Chen"
+    - list:
+      - listitem:
+        - article "Morgan Chen Today · 08:05":
+          - heading "Morgan Chen" [level=3]
+          - time: Today · 08:05
+          - paragraph: Can we go over the new exercise goals at the next visit? I’m not sure how many days a week I should aim for.
+- contentinfo "Status":
+  - text: All systems operational · 1 unsaved change Browser preview · data stays in this browser Synced 20:36
+  - button "Keyboard help"
+- status: 1 result
+- alert

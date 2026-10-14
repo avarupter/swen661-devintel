@@ -1,0 +1,15 @@
+- dialog "Reply":
+  - heading "Reply" [level=2]
+  - button "Close"
+  - paragraph: Your reply is added to the conversation with Morgan Chen.
+  - paragraph: Subject and message are required.
+  - paragraph:
+    - text: "To:"
+    - strong: Morgan Chen
+  - text: Subject
+  - textbox "Subject": "Re: Question about my care plan"
+  - text: Message
+  - textbox "Message"
+  - button "Attach document…"
+  - button "Save draft"
+  - button "Send"

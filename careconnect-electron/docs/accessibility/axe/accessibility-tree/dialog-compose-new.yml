@@ -1,0 +1,42 @@
+- dialog "New message":
+  - heading "New message" [level=2]
+  - button "Close"
+  - paragraph: Recipient, subject and message are required.
+  - text: To
+  - combobox "To":
+    - option "Choose a recipient" [selected]
+    - option "Alex Rivera"
+    - option "Avery Park"
+    - option "Blake Murphy"
+    - option "Cameron Price"
+    - option "Casey Morgan"
+    - option "Dakota Shah"
+    - option "Drew Patel"
+    - option "Elliot Ward"
+    - option "Emerson Brooks"
+    - option "Finley Ortiz"
+    - option "Harper Nguyen"
+    - option "Hayden Cruz"
+    - option "Jamie Wu"
+    - option "Jesse Coleman"
+    - option "Kai Thompson"
+    - option "Kendall Ross"
+    - option "Logan Reyes"
+    - option "Marlowe Ito"
+    - option "Morgan Chen"
+    - option "Peyton Grant"
+    - option "Quinn Foster"
+    - option "Reese Kim"
+    - option "Riley Singh"
+    - option "Rory Okoye"
+    - option "Rowan Hughes"
+    - option "Sage Bennett"
+    - option "Skyler Diaz"
+    - option "Taylor Lane"
+  - text: Subject
+  - textbox "Subject"
+  - text: Message
+  - textbox "Message"
+  - button "Attach document…"
+  - button "Save draft"
+  - button "Send"

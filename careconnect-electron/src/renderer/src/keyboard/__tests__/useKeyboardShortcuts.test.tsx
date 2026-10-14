@@ -311,6 +311,53 @@ describe('typing', () => {
   })
 })
 
+describe('single-key shortcuts turned off (WCAG 2.1.4)', () => {
+  function apiWithoutCharacterKeys() {
+    const api = createMemoryApi()
+    api.workspace.preferences.singleKeyShortcuts = false
+    return api
+  }
+
+  it('ignores E, N, M, /, R and G-sequences, and leaves the keys to the page', async () => {
+    const h = await renderWorkspace({ api: apiWithoutCharacterKeys(), initialUi: { view: 'patients' } })
+    const ran = recordCommands(h)
+    for (const key of ['e', 'n', 'm', '/']) expect(press({ key })).toBe(true)
+    expect(pressAll([{ key: 'g' }, { key: 'p' }])).toEqual([true, true])
+    expect(h.state().ui.pendingSequence).toBeNull()
+    h.dispatch({ type: 'ui/navigate', view: 'inbox' })
+    expect(press({ key: 'r' })).toBe(true)
+    expect(ran).toEqual([])
+  })
+
+  it('keeps every modifier and function-key shortcut', async () => {
+    const h = await renderWorkspace({ api: apiWithoutCharacterKeys(), initialUi: { view: 'patients' } })
+    const ran = recordCommands(h)
+    expect(press({ key: 'k', ctrlKey: true })).toBe(false)
+    expect(press({ key: 'f', ctrlKey: true })).toBe(false)
+    expect(press({ key: 'F6' })).toBe(false)
+    expect(press({ key: 'E', ctrlKey: true, shiftKey: true })).toBe(false)
+    expect(ran.map((command) => command.id)).toEqual(['app.commandPalette', 'patient.search', 'region.next', 'patient.export'])
+  })
+
+  it('takes effect at once when the setting changes', async () => {
+    const h = await renderWorkspace({ initialUi: { view: 'patients' } })
+    const ran = recordCommands(h)
+    h.dispatch({ type: 'preferences/changed', changes: { singleKeyShortcuts: false } })
+    expect(press({ key: 'e' })).toBe(true)
+    h.dispatch({ type: 'preferences/changed', changes: { singleKeyShortcuts: true } })
+    expect(press({ key: 'e' })).toBe(false)
+    expect(ran.map((command) => command.id)).toEqual(['patient.editSummary'])
+  })
+
+  it('drops a G already pressed when the setting is turned off before the second key', async () => {
+    const h = await renderWorkspace({ initialUi: { view: 'tasks' } })
+    expect(press({ key: 'g' })).toBe(false)
+    h.dispatch({ type: 'preferences/changed', changes: { singleKeyShortcuts: false } })
+    expect(press({ key: 'p' })).toBe(true)
+    expect(h.state().ui.view).toBe('tasks')
+  })
+})
+
 describe('modals own the keyboard', () => {
   it('runs nothing and prevents nothing while a dialog is open', async () => {
     const h = await renderWorkspace({ initialUi: { view: 'patients', modal: { kind: 'help' } } })
@@ -517,6 +564,14 @@ describe('lookup helpers', () => {
     expect(findGlobalShortcut(event('F10', { shiftKey: true }), 'patients', 'windows', false)).toBeUndefined()
     expect(findGlobalShortcut(event('Escape'), 'patients', 'windows', false)).toBeUndefined()
     expect(findGlobalShortcut(event('s', { ctrlKey: true }), 'patients', 'windows', false)).toBeUndefined()
+  })
+
+  it('findGlobalShortcut skips character keys when single-key shortcuts are off', () => {
+    expect(findGlobalShortcut(event('e'), 'patients', 'windows', false, false)).toBeUndefined()
+    expect(findGlobalShortcut(event('/'), 'patients', 'windows', false, false)).toBeUndefined()
+    expect(findGlobalShortcut(event('r'), 'inbox', 'windows', false, false)).toBeUndefined()
+    expect(findGlobalShortcut(event('f', { ctrlKey: true }), 'patients', 'windows', false, false)?.command).toBe('patient.search')
+    expect(findGlobalShortcut(event('F1'), 'patients', 'windows', false, false)?.command).toBe('app.help')
   })
 
   it('findScopedCommand finds compose shortcuts, and leaves them to the macOS menu', () => {

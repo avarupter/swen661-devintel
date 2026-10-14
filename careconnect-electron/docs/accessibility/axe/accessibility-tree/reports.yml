@@ -1,0 +1,136 @@
+- link "Skip to main workspace":
+  - /url: "#main"
+- link "Skip to status":
+  - /url: "#status-bar"
+- navigation "Workspace":
+  - text: North Coast Clinic Clinical operations
+  - button "Switch clinic" [disabled]
+  - text: Only one clinic is available in this demo. Workspace
+  - list "Workspace":
+    - listitem:
+      - button "Overview"
+    - listitem:
+      - button "Schedule"
+    - listitem:
+      - button "Patients"
+    - listitem:
+      - button "Inbox, 3 unread"
+    - listitem:
+      - button "Tasks"
+  - text: Tools
+  - list "Tools":
+    - listitem:
+      - button "Reports"
+    - listitem:
+      - button "Resources"
+  - paragraph: Keyboard mode
+  - paragraph: Hold Alt to show access keys on interactive controls.
+  - button "Always show shortcut hints" [pressed]
+  - text: Jordan Lee, RN Care coordinator
+  - button "Settings"
+- banner:
+  - heading "Reports" [level=1]
+  - text: Synthetic demo data
+  - toolbar "Reports tools":
+    - button "Command palette"
+    - button "New patient"
+- main "Reports":
+  - region "Patients by status":
+    - heading "Patients by status" [level=2]
+    - text: 28 patients
+    - 'table "Patients by status: count and share of 28 patients"':
+      - caption: "Patients by status: count and share of 28 patients"
+      - rowgroup:
+        - row "Status Patients Share":
+          - columnheader "Status"
+          - columnheader "Patients"
+          - columnheader "Share"
+      - rowgroup:
+        - row "Needs review 8 29%":
+          - rowheader "Needs review"
+          - cell "8"
+          - cell "29%"
+        - row "Open 12 43%":
+          - rowheader "Open"
+          - cell "12"
+          - cell "43%"
+        - row "Completed 8 29%":
+          - rowheader "Completed"
+          - cell "8"
+          - cell "29%"
+      - rowgroup:
+        - row "Total 28 100%":
+          - rowheader "Total"
+          - cell "28"
+          - cell "100%"
+  - region "Visits in the next 7 days":
+    - heading "Visits in the next 7 days" [level=2]
+    - text: 20 visits
+    - table "Visits in the next 7 days, by day":
+      - caption: Visits in the next 7 days, by day
+      - rowgroup:
+        - row "Day Visits":
+          - columnheader "Day"
+          - columnheader "Visits"
+      - rowgroup:
+        - row "Today · Tue, Oct 13 3":
+          - rowheader "Today · Tue, Oct 13"
+          - cell "3"
+        - row "Tomorrow · Wed, Oct 14 3":
+          - rowheader "Tomorrow · Wed, Oct 14"
+          - cell "3"
+        - row "Thu, Oct 15 3":
+          - rowheader "Thu, Oct 15"
+          - cell "3"
+        - row "Fri, Oct 16 4":
+          - rowheader "Fri, Oct 16"
+          - cell "4"
+        - row "Sat, Oct 17 2":
+          - rowheader "Sat, Oct 17"
+          - cell "2"
+        - row "Sun, Oct 18 2":
+          - rowheader "Sun, Oct 18"
+          - cell "2"
+        - row "Mon, Oct 19 3":
+          - rowheader "Mon, Oct 19"
+          - cell "3"
+      - rowgroup:
+        - row "Total 20":
+          - rowheader "Total"
+          - cell "20"
+  - region "Top reasons for care":
+    - heading "Top reasons for care" [level=2]
+    - table "Top 5 reasons for care, by number of patients":
+      - caption: Top 5 reasons for care, by number of patients
+      - rowgroup:
+        - row "Reason Patients Share":
+          - columnheader "Reason"
+          - columnheader "Patients"
+          - columnheader "Share"
+      - rowgroup:
+        - row "Annual wellness visit 3 11%":
+          - rowheader "Annual wellness visit"
+          - cell "3"
+          - cell "11%"
+        - row "Blood pressure check 3 11%":
+          - rowheader "Blood pressure check"
+          - cell "3"
+          - cell "11%"
+        - row "Chronic care review 3 11%":
+          - rowheader "Chronic care review"
+          - cell "3"
+          - cell "11%"
+        - row "Diabetes education 3 11%":
+          - rowheader "Diabetes education"
+          - cell "3"
+          - cell "11%"
+        - row "Mobility assessment 3 11%":
+          - rowheader "Mobility assessment"
+          - cell "3"
+          - cell "11%"
+  - paragraph: All figures come from synthetic demo data. Percentages are rounded, so they may not add up to exactly 100%.
+- contentinfo "Status":
+  - text: All systems operational · 0 unsaved changes Browser preview · data stays in this browser Synced 20:36
+  - button "Keyboard help"
+- status: 1 result
+- alert

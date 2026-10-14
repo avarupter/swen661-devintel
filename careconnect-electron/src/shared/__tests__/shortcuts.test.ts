@@ -5,6 +5,8 @@ import {
   chordKeys,
   describeShortcut,
   hintForCommand,
+  isCharacterKey,
+  isCharacterKeyShortcut,
   isPlainKey,
   keyLabel,
   keyPlatform,
@@ -376,6 +378,13 @@ describe('ariaKeyShortcuts', () => {
     expect(ariaKeyShortcuts(command, platform)).toBe(value)
   })
 
+  it('stops advertising single character keys when single-key shortcuts are off', () => {
+    expect(ariaKeyShortcuts('patient.editSummary', 'windows', false)).toBeUndefined()
+    expect(ariaKeyShortcuts('message.reply', 'mac', false)).toBeUndefined()
+    expect(ariaKeyShortcuts('patient.new', 'windows', false)).toBe('Control+N')
+    expect(ariaKeyShortcuts('region.previous', 'windows', false)).toBe('Shift+F6')
+  })
+
   it('gives every chord-based command a value made only of valid aria-keyshortcuts tokens', () => {
     for (const platform of PLATFORMS) {
       for (const command of COMMAND_IDS) {
@@ -384,5 +393,30 @@ describe('ariaKeyShortcuts', () => {
         if (value) expect(value).toMatch(/^((Control|Meta|Shift|Alt)\+)*([A-Z0-9]|F\d{1,2}|Enter|ContextMenu|[/,])$/)
       }
     }
+  })
+})
+
+describe('character-key shortcuts (WCAG 2.1.4)', () => {
+  it('are the single-key actions and the G-sequences, which Settings can turn off', () => {
+    expect(SHORTCUTS.filter(isCharacterKeyShortcut).map((shortcut) => shortcut.id)).toEqual([
+      'open-overview',
+      'open-schedule',
+      'open-patients',
+      'open-inbox',
+      'open-tasks',
+      'edit-summary',
+      'add-note',
+      'message-patient',
+      'reply'
+    ])
+  })
+
+  it('treat Shift as part of the character, but not Ctrl, ⌘ or Alt, and never a named key', () => {
+    expect(isCharacterKey({ key: '/' })).toBe(true)
+    expect(isCharacterKey({ key: 'e', shift: true })).toBe(true)
+    expect(isCharacterKey({ key: 'e', mod: true })).toBe(false)
+    expect(isCharacterKey({ key: 'e', alt: true })).toBe(false)
+    expect(isCharacterKey({ key: 'F6' })).toBe(false)
+    expect(isCharacterKey({ key: 'Escape' })).toBe(false)
   })
 })

@@ -121,7 +121,7 @@ export function ToolbarButton({
   hintKeys
 }: ToolbarButtonProps): React.JSX.Element {
   const { run } = useCommands()
-  const { ui } = useAppState()
+  const { ui, workspace } = useAppState()
   const reasonId = useId()
   const disabled = Boolean(disabledReason)
   // When the visible text is shorter than the name ("Message" for "Message Avery Park"), screen readers
@@ -139,7 +139,7 @@ export function ToolbarButton({
         aria-describedby={disabled ? reasonId : undefined}
         aria-pressed={pressed}
         aria-haspopup={hasPopup}
-        aria-keyshortcuts={command ? ariaKeyShortcuts(command, ui.platform) : undefined}
+        aria-keyshortcuts={command ? ariaKeyShortcuts(command, ui.platform, workspace?.preferences.singleKeyShortcuts) : undefined}
         title={disabledReason}
         onClick={() => {
           if (disabled) return

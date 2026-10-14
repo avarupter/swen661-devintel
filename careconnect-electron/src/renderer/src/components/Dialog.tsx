@@ -92,19 +92,27 @@ export function Dialog({
       }
     }
 
+    let pressedBackdrop = false
     const onBackdropMouseDown = (event: MouseEvent): void => {
-      if (event.target !== backdrop) return
-      if (latest.current.closeOnBackdrop) latest.current.onClose()
-      // Otherwise keep focus in the dialog: a press on the backdrop would move it to <body>,
+      pressedBackdrop = event.target === backdrop
+      // Keep focus in the dialog: a press on the backdrop would move it to <body>,
       // where Escape and the Tab trap no longer reach the dialog.
-      else event.preventDefault()
+      if (pressedBackdrop) event.preventDefault()
+    }
+    // Close on release, never on press (WCAG 2.5.2 Pointer Cancellation): moving off the
+    // backdrop before letting go cancels, and a drag that starts inside the dialog never closes it.
+    const onBackdropMouseUp = (event: MouseEvent): void => {
+      if (pressedBackdrop && event.target === backdrop && latest.current.closeOnBackdrop) latest.current.onClose()
+      pressedBackdrop = false
     }
 
     dialog.addEventListener('keydown', onDialogKeyDown)
     backdrop.addEventListener('mousedown', onBackdropMouseDown)
+    backdrop.addEventListener('mouseup', onBackdropMouseUp)
     return () => {
       dialog.removeEventListener('keydown', onDialogKeyDown)
       backdrop.removeEventListener('mousedown', onBackdropMouseDown)
+      backdrop.removeEventListener('mouseup', onBackdropMouseUp)
     }
   }, [])
 

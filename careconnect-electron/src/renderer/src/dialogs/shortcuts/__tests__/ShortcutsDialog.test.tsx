@@ -191,4 +191,16 @@ describe('ShortcutsDialog', () => {
     await user.type(filterInput(), 'zzz')
     expect(await axe(dialog, AXE_OPTIONS)).toHaveNoViolations()
   })
+
+  it('says when single-key shortcuts are turned off', async () => {
+    const api = createMemoryApi()
+    api.workspace.preferences.singleKeyShortcuts = false
+    const { dialog } = await openShortcuts({ api })
+    expect(within(dialog).getByText('Single-key shortcuts (E, N, M, R, / and G sequences) are turned off in Settings.')).toBeInTheDocument()
+  })
+
+  it('has no such note while they are on', async () => {
+    const { dialog } = await openShortcuts()
+    expect(within(dialog).queryByText(/are turned off in Settings/)).toBeNull()
+  })
 })

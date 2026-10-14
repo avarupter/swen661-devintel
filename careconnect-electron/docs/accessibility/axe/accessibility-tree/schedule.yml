@@ -1,0 +1,150 @@
+- link "Skip to main workspace":
+  - /url: "#main"
+- link "Skip to status":
+  - /url: "#status-bar"
+- navigation "Workspace":
+  - text: North Coast Clinic Clinical operations
+  - button "Switch clinic" [disabled]
+  - text: Only one clinic is available in this demo. Workspace
+  - list "Workspace":
+    - listitem:
+      - button "Overview"
+    - listitem:
+      - button "Schedule"
+    - listitem:
+      - button "Patients"
+    - listitem:
+      - button "Inbox, 4 unread"
+    - listitem:
+      - button "Tasks"
+  - text: Tools
+  - list "Tools":
+    - listitem:
+      - button "Reports"
+    - listitem:
+      - button "Resources"
+  - paragraph: Keyboard mode
+  - paragraph: Hold Alt to show access keys on interactive controls.
+  - button "Always show shortcut hints" [pressed]
+  - text: Jordan Lee, RN Care coordinator
+  - button "Settings"
+- banner:
+  - heading "Schedule" [level=1]
+  - text: Next 7 days
+  - toolbar "Schedule tools":
+    - button "Command palette"
+    - button "New patient"
+- main "Schedule":
+  - region "Today · Tue, Oct 13":
+    - heading "Today · Tue, Oct 13" [level=2]
+    - text: 3 visits
+    - list "Today · Tue, Oct 13":
+      - listitem:
+        - time: 10:30
+        - button "Avery Park, visit at 10:30": Avery Park
+        - text: Wellness follow-up Needs review
+      - listitem:
+        - time: 13:00
+        - button "Casey Morgan, visit at 13:00": Casey Morgan
+        - text: Chronic care review Needs review
+      - listitem:
+        - time: 15:45
+        - button "Emerson Brooks, visit at 15:45": Emerson Brooks
+        - text: Nutrition consult Open
+  - region "Tomorrow · Wed, Oct 14":
+    - heading "Tomorrow · Wed, Oct 14" [level=2]
+    - text: 3 visits
+    - list "Tomorrow · Wed, Oct 14":
+      - listitem:
+        - time: 08:30
+        - button "Alex Rivera, visit at 08:30": Alex Rivera
+        - text: Post-discharge check-in Open
+      - listitem:
+        - time: 14:30
+        - button "Skyler Diaz, visit at 14:30": Skyler Diaz
+        - text: Mobility assessment Open
+      - listitem:
+        - time: 16:15
+        - button "Kai Thompson, visit at 16:15": Kai Thompson
+        - text: Diabetes education Needs review
+  - region "Thu, Oct 15":
+    - heading "Thu, Oct 15" [level=2]
+    - text: 3 visits
+    - list "Thu, Oct 15":
+      - listitem:
+        - time: 08:30
+        - button "Logan Reyes, visit at 08:30": Logan Reyes
+        - text: Wellness follow-up Open
+      - listitem:
+        - time: 14:30
+        - button "Kendall Ross, visit at 14:30": Kendall Ross
+        - text: Nutrition consult Open
+      - listitem:
+        - time: 16:15
+        - button "Blake Murphy, visit at 16:15": Blake Murphy
+        - text: Annual wellness visit Needs review
+  - region "Fri, Oct 16":
+    - heading "Fri, Oct 16" [level=2]
+    - text: 4 visits
+    - list "Fri, Oct 16":
+      - listitem:
+        - time: 08:30
+        - button "Cameron Price, visit at 08:30": Cameron Price
+        - text: Diabetes education Open
+      - listitem:
+        - time: 09:00
+        - button "Morgan Chen, visit at 09:00": Morgan Chen
+        - text: Care plan update Open
+      - listitem:
+        - time: 13:00
+        - button "Quinn Foster, visit at 13:00": Quinn Foster
+        - text: Post-discharge check-in Needs review
+      - listitem:
+        - time: 16:15
+        - button "Marlowe Ito, visit at 16:15": Marlowe Ito
+        - text: Mobility assessment Needs review
+  - region "Sat, Oct 17":
+    - heading "Sat, Oct 17" [level=2]
+    - text: 2 visits
+    - list "Sat, Oct 17":
+      - listitem:
+        - time: 08:30
+        - button "Peyton Grant, visit at 08:30": Peyton Grant
+        - text: Annual wellness visit Open
+      - listitem:
+        - time: 13:00
+        - button "Dakota Shah, visit at 13:00": Dakota Shah
+        - text: Wellness follow-up Needs review
+  - region "Sun, Oct 18":
+    - heading "Sun, Oct 18" [level=2]
+    - text: 2 visits
+    - list "Sun, Oct 18":
+      - listitem:
+        - time: 13:00
+        - button "Rory Okoye, visit at 13:00": Rory Okoye
+        - text: Diabetes education Needs review
+      - listitem:
+        - time: 15:45
+        - button "Rowan Hughes, visit at 15:45": Rowan Hughes
+        - text: Blood pressure check Open
+  - region "Mon, Oct 19":
+    - heading "Mon, Oct 19" [level=2]
+    - text: 3 visits
+    - list "Mon, Oct 19":
+      - listitem:
+        - time: 13:30
+        - button "Taylor Lane, visit at 13:30": Taylor Lane
+        - text: New referral Open
+      - listitem:
+        - time: 14:30
+        - button "Harper Nguyen, visit at 14:30": Harper Nguyen
+        - text: Annual wellness visit Open
+      - listitem:
+        - time: 15:45
+        - button "Hayden Cruz, visit at 15:45": Hayden Cruz
+        - text: Chronic care review Open
+- contentinfo "Status":
+  - text: All systems operational · 0 unsaved changes Browser preview · data stays in this browser Synced 20:36
+  - button "Keyboard help"
+- status
+- alert

@@ -32,6 +32,17 @@ const DISPLAY_SETTINGS: readonly SwitchSetting[] = [
   { key: 'reduceMotion', label: 'Reduce motion', spoken: 'Reduce motion', hint: 'Turns off animations and transitions.' }
 ]
 
+const KEYBOARD_SETTINGS: readonly SwitchSetting[] = [
+  {
+    key: 'singleKeyShortcuts',
+    label: 'Single-key shortcuts',
+    spoken: 'Single-key shortcuts',
+    // WCAG 2.1.4 Character Key Shortcuts: single-character shortcuts must be possible to turn off.
+    hint: (platform) =>
+      `E, N, M, R, / and G-key sequences. Turn off if you use speech recognition, so spoken words never trigger commands. ${platform === 'mac' ? '⌘' : 'Ctrl'} shortcuts and function keys always work.`
+  }
+]
+
 const NOTIFICATION_SETTINGS: readonly SwitchSetting[] = [
   {
     key: 'notifications',
@@ -126,6 +137,10 @@ export function SettingsDialog({ onClose }: { onClose(): void }): React.JSX.Elem
           <p>Windows High Contrast: {ui.systemHighContrast ? 'On' : 'Off'}</p>
           <p className="field__hint">CareConnect follows the Windows contrast theme automatically. Change it in Windows Settings.</p>
         </div>
+      </fieldset>
+      <fieldset className="settings__group">
+        <legend className="settings__legend">Keyboard</legend>
+        {KEYBOARD_SETTINGS.map(renderSwitch)}
       </fieldset>
       <fieldset className="settings__group">
         <legend className="settings__legend">Notifications</legend>

@@ -83,7 +83,7 @@ function legendKeys(command: 'app.commandPalette' | 'navigate.patients', platfor
  * back to it from anywhere in the dialog.
  */
 export function ShortcutsDialog({ onClose }: { onClose(): void }): React.JSX.Element {
-  const { ui } = useAppState()
+  const { ui, workspace } = useAppState()
   const api = useApi()
   const setStatus = useStatus()
   const platform = ui.platform
@@ -168,6 +168,9 @@ export function ShortcutsDialog({ onClose }: { onClose(): void }): React.JSX.Ele
           />
         </div>
       </div>
+      {workspace?.preferences.singleKeyShortcuts === false && (
+        <p className="field__hint">Single-key shortcuts (E, N, M, R, / and G sequences) are turned off in Settings.</p>
+      )}
 
       {groups.length === 0 ? (
         <p className="shortcuts__empty">No shortcuts match “{query.trim()}”.</p>

@@ -1,0 +1,29 @@
+- dialog "Edit care summary":
+  - heading "Edit care summary" [level=2]
+  - button "Close"
+  - paragraph: For Avery Park · Care ID CC-1048
+  - group "Current plan":
+    - text: Current plan
+    - list:
+      - listitem:
+        - text: Plan item 1
+        - textbox "Plan item 1": Confirm symptom trend and energy level
+        - button "Remove plan item 1"
+      - listitem:
+        - text: Plan item 2
+        - textbox "Plan item 2": Review adherence to hydration goals
+        - button "Remove plan item 2"
+      - listitem:
+        - text: Plan item 3
+        - textbox "Plan item 3": Coordinate next wellness follow-up
+        - button "Remove plan item 3"
+    - button "Add plan item"
+  - group "Follow-up alert":
+    - text: Follow-up alert
+    - checkbox "Show follow-up alert" [checked]
+    - text: Show follow-up alert Title
+    - textbox "Title": Follow-up due today
+    - text: Details (optional)
+    - textbox "Details (optional)": Review home monitoring notes before the 10:30 check-in.
+  - button "Cancel"
+  - button "Save"

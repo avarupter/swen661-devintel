@@ -1,0 +1,20 @@
+- dialog "Settings":
+  - heading "Settings" [level=2]
+  - button "Close"
+  - group "Display":
+    - text: Display Show shortcut hints
+    - switch "Show shortcut hints" [checked]
+    - paragraph: Shows shortcut keys beside buttons and the search field. Hold Alt to see them at any time.
+    - text: High contrast theme
+    - switch "High contrast theme"
+    - paragraph: Black text and borders, with a black focus ring on yellow.
+    - text: Reduce motion
+    - switch "Reduce motion"
+    - paragraph: Turns off animations and transitions.
+    - paragraph: "Windows High Contrast: Off"
+    - paragraph: CareConnect follows the Windows contrast theme automatically. Change it in Windows Settings.
+  - group "Notifications":
+    - text: Notifications Desktop notifications for follow-ups due today
+    - switch "Desktop notifications for follow-ups due today" [checked]
+    - paragraph: One notification when CareConnect opens, listing patients with a follow-up due today.
+  - button "Done"

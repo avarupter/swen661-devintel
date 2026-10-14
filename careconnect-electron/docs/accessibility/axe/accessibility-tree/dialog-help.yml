@@ -1,0 +1,59 @@
+- dialog "CareConnect help":
+  - heading "CareConnect help" [level=2]
+  - button "Close"
+  - heading "Getting around" [level=3]
+  - paragraph: "Press F6 to move between the regions of the window, and Shift+F6 to go back. Each region remembers where you were. On the Patients view the order is:"
+  - list "Regions in F6 order":
+    - listitem: "Navigation: the sidebar with every destination"
+    - listitem: "Toolbar: the actions for the current view"
+    - listitem: "Patient list: the patients, with search above them (the conversation list in Inbox)"
+    - listitem: "Detail pane: the selected patient’s care summary and recent activity"
+    - listitem: "Status: messages, saving and keyboard help"
+  - paragraph: Other views have Navigation, Toolbar, Main and Status.
+  - paragraph: "The first Tab stops in the window are skip links: “Skip to main workspace”, “Skip to patient list” on the Patients view, and “Skip to status”."
+  - paragraph: "Go to a view by pressing G and then a letter:"
+  - list "Go to a view":
+    - listitem: "G then O: Overview"
+    - listitem: "G then S: Schedule"
+    - listitem: "G then P: Patients"
+    - listitem: "G then I: Inbox"
+    - listitem: "G then T: Tasks"
+  - paragraph: "Press Ctrl+K for the command palette: type a command, a patient’s name or Care ID, or a destination, choose with the Up and Down arrow keys, and press Enter."
+  - heading "Using a screen reader" [level=3]
+  - paragraph: "CareConnect is tested with NVDA on Windows 11, and also with Narrator. Every area of the window is a named landmark:"
+  - list "Landmarks":
+    - listitem: "Workspace (navigation): destinations, keyboard mode and settings"
+    - listitem: "Banner: the view title and its toolbar"
+    - listitem: "Main: the current view"
+    - listitem: "Recent patients (region): the patient list, on the Patients view"
+    - listitem: "Patient list (search): the patient search, on the Patients view"
+    - listitem: "Care summary (region): the selected patient’s alert and current plan"
+    - listitem: "Recent activity (complementary): the selected patient’s latest activity"
+    - listitem: "Status (content information): messages, saving and keyboard help"
+  - paragraph: "In NVDA browse mode, press D and Shift+D to move between landmarks, and H to move between headings. The patient list is a list box: move to it and press Enter, or Tab into it, and NVDA switches to focus mode. Then the Up and Down arrow keys move through patients, Home and End jump to the first and last, and the care summary follows your selection."
+  - paragraph:
+    - strong: "Tip:"
+    - text: if the arrow keys read the page instead of moving through the list, press Insert+Space to switch NVDA to focus mode. Press it again to go back to browse mode.
+  - paragraph: With Narrator, press Caps Lock+Space to turn scan mode on or off. In scan mode, D and H move by landmark and by heading, as in NVDA.
+  - heading "Status and errors" [level=3]
+  - paragraph: Messages such as “Note added for Avery Park.” appear in the status bar at the bottom of the window. They stay until you dismiss them or a new message replaces them. Screen readers announce confirmations politely and problems straight away.
+  - paragraph: "Status is never shown by colour alone: each status pairs an icon with a word, such as Needs review, Open or Completed."
+  - paragraph: When a form has problems, focus moves to a summary at its top that lists each one. Choose an item in the summary to go to the field to fix. Nothing you typed is lost.
+  - paragraph: The status bar also counts unsaved changes and shows when your work was last saved. If saving fails, a Retry save button appears.
+  - heading "Keyboard shortcuts" [level=3]
+  - paragraph: Every shortcut, with its Windows / Linux and macOS keys, on one page you can filter and print.
+  - button "Open keyboard shortcuts"
+  - heading "Accessibility resources" [level=3]
+  - list:
+    - listitem:
+      - button "WCAG 2.2 quick reference (opens in your browser)"
+      - paragraph: How to meet each Web Content Accessibility Guidelines success criterion.
+    - listitem:
+      - button "NVDA user guide (opens in your browser)"
+      - paragraph: Commands and settings for the NVDA screen reader on Windows.
+    - listitem:
+      - button "Complete guide to Narrator (opens in your browser)"
+      - paragraph: Microsoft’s guide to the screen reader built into Windows.
+    - listitem:
+      - button "Contrast themes in Windows (opens in your browser)"
+      - paragraph: Turn on a Windows contrast theme to check CareConnect in high contrast.

@@ -100,6 +100,11 @@ export interface CareTask {
 
 export interface Preferences {
   showShortcutHints: boolean
+  /**
+   * Single-character shortcuts (E, N, M, R, /, G-sequences). WCAG 2.1.4 needs a way
+   * to turn them off: speech-input users can trigger them by speaking a word.
+   */
+  singleKeyShortcuts: boolean
   reduceMotion: boolean
   highContrast: boolean
   notifications: boolean
@@ -107,6 +112,7 @@ export interface Preferences {
 
 export const DEFAULT_PREFERENCES: Preferences = {
   showShortcutHints: true,
+  singleKeyShortcuts: true,
   reduceMotion: false,
   highContrast: false,
   notifications: true

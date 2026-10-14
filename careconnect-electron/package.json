@@ -22,7 +22,8 @@
     "test:e2e": "electron-vite build && jest -c jest.e2e.config.cjs",
     "dist": "npm run build && electron-builder",
     "dev:web": "vite --config vite.web.config.ts",
-    "test:axe": "node scripts/axe-scan.cjs"
+    "test:axe": "node scripts/axe-scan.cjs",
+    "test:keyboard": "node scripts/keyboard-walkthrough.cjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

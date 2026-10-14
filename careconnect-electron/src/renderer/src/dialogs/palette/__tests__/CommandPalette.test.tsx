@@ -337,6 +337,8 @@ describe('CommandPalette behaviour (isolated shell)', () => {
     const { user } = await renderProbe()
     const dialog = await openPalette(user)
     fireEvent.mouseDown(dialog.parentElement as HTMLElement)
+    expect(screen.getByRole('dialog')).toBeInTheDocument()
+    fireEvent.mouseUp(dialog.parentElement as HTMLElement)
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   })
 

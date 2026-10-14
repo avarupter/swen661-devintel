@@ -1,0 +1,123 @@
+- link "Skip to main workspace":
+  - /url: "#main"
+- link "Skip to status":
+  - /url: "#status-bar"
+- navigation "Workspace":
+  - text: North Coast Clinic Clinical operations
+  - button "Switch clinic" [disabled]
+  - text: Only one clinic is available in this demo. Workspace
+  - list "Workspace":
+    - listitem:
+      - button "Overview"
+    - listitem:
+      - button "Schedule"
+    - listitem:
+      - button "Patients"
+    - listitem:
+      - button "Inbox, 4 unread"
+    - listitem:
+      - button "Tasks"
+  - text: Tools
+  - list "Tools":
+    - listitem:
+      - button "Reports"
+    - listitem:
+      - button "Resources"
+  - paragraph: Keyboard mode
+  - paragraph: Hold Alt to show access keys on interactive controls.
+  - button "Always show shortcut hints" [pressed]
+  - text: Jordan Lee, RN Care coordinator
+  - button "Settings"
+- banner:
+  - heading "Overview" [level=1]
+  - text: Tue, Oct 13
+  - toolbar "Overview tools":
+    - button "Command palette"
+    - button "New patient"
+- main "Overview":
+  - region "At a glance":
+    - heading "At a glance" [level=2]
+    - list:
+      - listitem:
+        - 'button "Needs review: 8 patients"'
+      - listitem:
+        - 'button "Open: 12 patients"'
+      - listitem:
+        - 'button "Completed: 8 patients"'
+      - listitem:
+        - 'button "Unread messages: 4"'
+      - listitem:
+        - 'button "Tasks due today: 4"'
+  - region "Today’s visits":
+    - heading "Today’s visits" [level=2]
+    - text: 3 visits
+    - list "Today’s visits":
+      - listitem:
+        - time: 10:30
+        - button "Avery Park, visit at 10:30": Avery Park
+        - text: Wellness follow-up Needs review
+      - listitem:
+        - time: 13:00
+        - button "Casey Morgan, visit at 13:00": Casey Morgan
+        - text: Chronic care review Needs review
+      - listitem:
+        - time: 15:45
+        - button "Emerson Brooks, visit at 15:45": Emerson Brooks
+        - text: Nutrition consult Open
+  - region "Needs attention":
+    - heading "Needs attention" [level=2]
+    - text: 8 patients
+    - list "Needs attention":
+      - listitem:
+        - button "Avery Park, Follow-up due today": Avery Park
+        - paragraph: Follow-up due today
+        - paragraph: Review home monitoring notes before the 10:30 check-in.
+        - paragraph: Next visit Today, 10:30
+        - text: Needs review
+      - listitem:
+        - button "Casey Morgan, Review needed": Casey Morgan
+        - paragraph: Review needed
+        - paragraph: Check the latest chronic care review notes before the next contact.
+        - paragraph: Next visit Today, 13:00
+        - text: Needs review
+      - listitem:
+        - button "Kai Thompson, Review needed": Kai Thompson
+        - paragraph: Review needed
+        - paragraph: Check the latest diabetes education notes before the next contact.
+        - paragraph: Next visit Tomorrow, 16:15
+        - text: Needs review
+      - listitem:
+        - button "Blake Murphy, Review needed": Blake Murphy
+        - paragraph: Review needed
+        - paragraph: Check the latest annual wellness visit notes before the next contact.
+        - paragraph: Next visit Oct 15, 16:15
+        - text: Needs review
+      - listitem:
+        - button "Quinn Foster, Review needed": Quinn Foster
+        - paragraph: Review needed
+        - paragraph: Check the latest post-discharge check-in notes before the next contact.
+        - paragraph: Next visit Oct 16, 13:00
+        - text: Needs review
+      - listitem:
+        - button "Marlowe Ito, Review needed": Marlowe Ito
+        - paragraph: Review needed
+        - paragraph: Check the latest mobility assessment notes before the next contact.
+        - paragraph: Next visit Oct 16, 16:15
+        - text: Needs review
+      - listitem:
+        - button "Dakota Shah, Review needed": Dakota Shah
+        - paragraph: Review needed
+        - paragraph: Check the latest wellness follow-up notes before the next contact.
+        - paragraph: Next visit Oct 17, 13:00
+        - text: Needs review
+      - listitem:
+        - button "Rory Okoye, Review needed": Rory Okoye
+        - paragraph: Review needed
+        - paragraph: Check the latest diabetes education notes before the next contact.
+        - paragraph: Next visit Oct 18, 13:00
+        - text: Needs review
+- contentinfo "Status":
+  - text: All systems operational · 0 unsaved changes Browser preview · data stays in this browser Synced 20:36
+  - button "Keyboard help"
+- status
+- alert

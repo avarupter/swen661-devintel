@@ -67,4 +67,27 @@ describe('KeyHint', () => {
     expect(hint()).toBeEmptyDOMElement()
     expect(screen.getByTestId('empty-keys')).toBeEmptyDOMElement()
   })
+
+  it('hides single-key hints while single-key shortcuts are off, and keeps the rest', async () => {
+    const api = createMemoryApi()
+    api.workspace.preferences.singleKeyShortcuts = false
+    await renderHarness(
+      <>
+        {(['patient.editSummary', 'navigate.patients', 'patient.new', 'app.help'] as const).map((command) => (
+          <p key={command} data-testid={command}>
+            <KeyHint command={command} />
+          </p>
+        ))}
+        <p data-testid="slash">
+          <KeyHint keys={['/']} variant="keys" />
+        </p>
+      </>,
+      { api }
+    )
+    expect(screen.getByTestId('patient.editSummary')).toBeEmptyDOMElement()
+    expect(screen.getByTestId('navigate.patients')).toBeEmptyDOMElement()
+    expect(screen.getByTestId('slash')).toBeEmptyDOMElement()
+    expect(screen.getByTestId('patient.new')).toHaveTextContent('Ctrl+N')
+    expect(screen.getByTestId('app.help')).toHaveTextContent('F1')
+  })
 })

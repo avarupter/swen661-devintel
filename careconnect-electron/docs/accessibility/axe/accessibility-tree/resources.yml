@@ -1,0 +1,82 @@
+- link "Skip to main workspace":
+  - /url: "#main"
+- link "Skip to status":
+  - /url: "#status-bar"
+- navigation "Workspace":
+  - text: North Coast Clinic Clinical operations
+  - button "Switch clinic" [disabled]
+  - text: Only one clinic is available in this demo. Workspace
+  - list "Workspace":
+    - listitem:
+      - button "Overview"
+    - listitem:
+      - button "Schedule"
+    - listitem:
+      - button "Patients"
+    - listitem:
+      - button "Inbox, 3 unread"
+    - listitem:
+      - button "Tasks"
+  - text: Tools
+  - list "Tools":
+    - listitem:
+      - button "Reports"
+    - listitem:
+      - button "Resources"
+  - paragraph: Keyboard mode
+  - paragraph: Hold Alt to show access keys on interactive controls.
+  - button "Always show shortcut hints" [pressed]
+  - text: Jordan Lee, RN Care coordinator
+  - button "Settings"
+- banner:
+  - heading "Resources" [level=1]
+  - text: Opens in your browser
+  - toolbar "Resources tools":
+    - button "Command palette"
+    - button "New patient"
+- main "Resources":
+  - paragraph: Trusted references for accessible, patient-centred care. Each link opens in your web browser.
+  - region "Accessibility":
+    - heading "Accessibility" [level=2]
+    - list "Accessibility":
+      - listitem:
+        - heading "WCAG 2.2 quick reference" [level=3]
+        - paragraph: How to meet each Web Content Accessibility Guidelines success criterion.
+        - paragraph: www.w3.org
+        - button "Open WCAG 2.2 quick reference (opens in your browser)": Open
+      - listitem:
+        - heading "NVDA user guide" [level=3]
+        - paragraph: Commands and settings for the NVDA screen reader on Windows.
+        - paragraph: www.nvaccess.org
+        - button "Open NVDA user guide (opens in your browser)": Open
+      - listitem:
+        - heading "Complete guide to Narrator" [level=3]
+        - paragraph: Microsoft’s guide to the screen reader built into Windows.
+        - paragraph: support.microsoft.com
+        - button "Open Complete guide to Narrator (opens in your browser)": Open
+      - listitem:
+        - heading "Contrast themes in Windows" [level=3]
+        - paragraph: Turn on a Windows contrast theme to check CareConnect in high contrast.
+        - paragraph: support.microsoft.com
+        - button "Open Contrast themes in Windows (opens in your browser)": Open
+  - region "Clinical reference":
+    - heading "Clinical reference" [level=2]
+    - list "Clinical reference":
+      - listitem:
+        - heading "MedlinePlus health topics" [level=3]
+        - paragraph: Plain-language health information from the U.S. National Library of Medicine.
+        - paragraph: medlineplus.gov
+        - button "Open MedlinePlus health topics (opens in your browser)": Open
+  - region "Product":
+    - heading "Product" [level=2]
+    - list "Product":
+      - listitem:
+        - heading "Electron accessibility" [level=3]
+        - paragraph: How Electron exposes app content to assistive technology.
+        - paragraph: www.electronjs.org
+        - button "Open Electron accessibility (opens in your browser)": Open
+- contentinfo "Status":
+  - text: All systems operational · 0 unsaved changes Browser preview · data stays in this browser Synced 20:36
+  - button "Keyboard help"
+- status: 1 result
+- alert

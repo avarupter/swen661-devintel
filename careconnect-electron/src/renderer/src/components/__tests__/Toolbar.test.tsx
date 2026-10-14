@@ -156,6 +156,17 @@ describe('ToolbarButton', () => {
     expect(screen.getByRole('button', { name: 'Show completed tasks' }).querySelector('.key-hint')).toBeNull()
   })
 
+  it('stops advertising single-key shortcuts once they are turned off', async () => {
+    const api = createMemoryApi()
+    api.workspace.preferences.singleKeyShortcuts = false
+    await renderHarness(<Tools />, { api })
+    const reply = screen.getByRole('button', { name: 'Reply' })
+    expect(reply).not.toHaveAttribute('aria-keyshortcuts')
+    expect(reply.querySelector('.key-hint')).toBeNull()
+    expect(screen.getByRole('button', { name: 'Search' }).querySelector('.key-hint')).toBeNull()
+    expect(screen.getByRole('button', { name: 'New patient' })).toHaveAttribute('aria-keyshortcuts', 'Control+N')
+  })
+
   it('uses the macOS key names on a Mac', async () => {
     await renderHarness(<Tools />, { api: createMemoryApi({ platform: 'darwin' }) })
     expect(await screen.findByRole('button', { name: 'New patient' })).toHaveAttribute('aria-keyshortcuts', 'Meta+N')
