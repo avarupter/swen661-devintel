@@ -16,7 +16,7 @@
     "orientationAngle": 0,
     "orientationType": "landscape-primary"
   },
-  "timestamp": "2026-10-14T00:36:30.714Z",
+  "timestamp": "2026-10-14T00:51:43.352Z",
   "toolOptions": {
     "runOnly": {
       "type": "tag",
@@ -833,7 +833,7 @@
             }
           ],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_u_\" class=\"dialog dialog--medium palette\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_10_\" class=\"dialog dialog--medium palette\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -869,7 +869,7 @@
           ],
           "none": [],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_u_\" class=\"dialog dialog--medium palette\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_10_\" class=\"dialog dialog--medium palette\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -905,7 +905,7 @@
             }
           ],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_u_\" class=\"dialog dialog--medium palette\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_10_\" class=\"dialog dialog--medium palette\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -1031,7 +1031,7 @@
             }
           ],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_u_\" class=\"dialog dialog--medium palette\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_10_\" class=\"dialog dialog--medium palette\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -1067,7 +1067,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_u_\" class=\"dialog dialog--medium palette\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_10_\" class=\"dialog dialog--medium palette\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -1103,9 +1103,9 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<div id=\"_r_t_palette-listbox\" role=\"listbox\" aria-label=\"Commands\" class=\"palette__results\">",
+          "html": "<div id=\"_r_v_palette-listbox\" role=\"listbox\" aria-label=\"Commands\" class=\"palette__results\">",
           "target": [
-            "#_r_t_palette-listbox"
+            "#_r_v_palette-listbox"
           ]
         }
       ]
@@ -1139,9 +1139,9 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<div id=\"_r_t_palette-commands-patient-new\" role=\"option\" tabindex=\"-1\" aria-selected=\"true\" aria-posinset=\"1\" aria-setsize=\"9\" aria-describedby=\"_r_t_palette-commands-patient-new-shortcut\" class=\"palette__option palette__option--active\">",
+          "html": "<div id=\"_r_v_palette-commands-patient-new\" role=\"option\" tabindex=\"-1\" aria-selected=\"true\" aria-posinset=\"1\" aria-setsize=\"9\" aria-describedby=\"_r_v_palette-commands-patient-new-shortcut\" class=\"palette__option palette__option--active\">",
           "target": [
-            "#_r_t_palette-commands-patient-new"
+            "#_r_v_palette-commands-patient-new"
           ]
         }
       ]
@@ -1189,7 +1189,7 @@
             }
           ],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_u_\" class=\"dialog dialog--medium palette\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_10_\" class=\"dialog dialog--medium palette\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -1236,9 +1236,9 @@
             }
           ],
           "impact": null,
-          "html": "<div id=\"_r_t_palette-commands-patient-new\" role=\"option\" tabindex=\"-1\" aria-selected=\"true\" aria-posinset=\"1\" aria-setsize=\"9\" aria-describedby=\"_r_t_palette-commands-patient-new-shortcut\" class=\"palette__option palette__option--active\">",
+          "html": "<div id=\"_r_v_palette-commands-patient-new\" role=\"option\" tabindex=\"-1\" aria-selected=\"true\" aria-posinset=\"1\" aria-setsize=\"9\" aria-describedby=\"_r_v_palette-commands-patient-new-shortcut\" class=\"palette__option palette__option--active\">",
           "target": [
-            "#_r_t_palette-commands-patient-new"
+            "#_r_v_palette-commands-patient-new"
           ]
         }
       ]
@@ -1286,7 +1286,7 @@
           ],
           "none": [],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_u_\" class=\"dialog dialog--medium palette\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_10_\" class=\"dialog dialog--medium palette\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -1322,7 +1322,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_u_\" class=\"dialog dialog--medium palette\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_10_\" class=\"dialog dialog--medium palette\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -1359,9 +1359,9 @@
           ],
           "none": [],
           "impact": null,
-          "html": "<input id=\"_r_t_palette-input\" role=\"combobox\" class=\"palette__input\" aria-label=\"Search commands\" aria-expanded=\"true\" aria-controls=\"_r_t_palette-listbox\" aria-autocomplete=\"list\" aria-activedescendan...=\"_r_t_palette-command...\" aria-describedby=\"_r_t_palette-helper\" autocomplete=\"off\" ...>",
+          "html": "<input id=\"_r_v_palette-input\" role=\"combobox\" class=\"palette__input\" aria-label=\"Search commands\" aria-expanded=\"true\" aria-controls=\"_r_v_palette-listbox\" aria-autocomplete=\"list\" aria-activedescendan...=\"_r_v_palette-command...\" aria-describedby=\"_r_v_palette-helper\" autocomplete=\"off\" ...>",
           "target": [
-            "#_r_t_palette-input"
+            "#_r_v_palette-input"
           ]
         }
       ]
@@ -1441,9 +1441,9 @@
               "data": null,
               "relatedNodes": [
                 {
-                  "html": "<h2 id=\"_r_u_\" class=\"dialog__title\">Command palette</h2>",
+                  "html": "<h2 id=\"_r_10_\" class=\"dialog__title\">Command palette</h2>",
                   "target": [
-                    "#_r_u_"
+                    "#_r_10_"
                   ]
                 }
               ],
@@ -1500,9 +1500,9 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<h2 id=\"_r_u_\" class=\"dialog__title\">Command palette</h2>",
+          "html": "<h2 id=\"_r_10_\" class=\"dialog__title\">Command palette</h2>",
           "target": [
-            "#_r_u_"
+            "#_r_10_"
           ]
         }
       ]
@@ -1613,9 +1613,9 @@
             }
           ],
           "impact": null,
-          "html": "<input id=\"_r_t_palette-input\" role=\"combobox\" class=\"palette__input\" aria-label=\"Search commands\" aria-expanded=\"true\" aria-controls=\"_r_t_palette-listbox\" aria-autocomplete=\"list\" aria-activedescendan...=\"_r_t_palette-command...\" aria-describedby=\"_r_t_palette-helper\" autocomplete=\"off\" ...>",
+          "html": "<input id=\"_r_v_palette-input\" role=\"combobox\" class=\"palette__input\" aria-label=\"Search commands\" aria-expanded=\"true\" aria-controls=\"_r_v_palette-listbox\" aria-autocomplete=\"list\" aria-activedescendan...=\"_r_v_palette-command...\" aria-describedby=\"_r_v_palette-helper\" autocomplete=\"off\" ...>",
           "target": [
-            "#_r_t_palette-input"
+            "#_r_v_palette-input"
           ]
         }
       ]
@@ -1747,9 +1747,9 @@
             }
           ],
           "impact": null,
-          "html": "<input id=\"_r_t_palette-input\" role=\"combobox\" class=\"palette__input\" aria-label=\"Search commands\" aria-expanded=\"true\" aria-controls=\"_r_t_palette-listbox\" aria-autocomplete=\"list\" aria-activedescendan...=\"_r_t_palette-command...\" aria-describedby=\"_r_t_palette-helper\" autocomplete=\"off\" ...>",
+          "html": "<input id=\"_r_v_palette-input\" role=\"combobox\" class=\"palette__input\" aria-label=\"Search commands\" aria-expanded=\"true\" aria-controls=\"_r_v_palette-listbox\" aria-autocomplete=\"list\" aria-activedescendan...=\"_r_v_palette-command...\" aria-describedby=\"_r_v_palette-helper\" autocomplete=\"off\" ...>",
           "target": [
-            "#_r_t_palette-input"
+            "#_r_v_palette-input"
           ]
         }
       ]
@@ -1930,7 +1930,7 @@
               },
               "relatedNodes": [
                 {
-                  "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_u_\" class=\"dialog dialog--medium palette\" tabindex=\"-1\">",
+                  "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_10_\" class=\"dialog dialog--medium palette\" tabindex=\"-1\">",
                   "target": [
                     ".dialog"
                   ]
@@ -1945,7 +1945,7 @@
           "impact": "serious",
           "html": "<span class=\"palette__option-subtitle\">CC-1076 · Blood pressure check · Completed</span>",
           "target": [
-            "#_r_t_palette-patients-p-drew-patel > .palette__option-text[aria-hidden=\"true\"] > .palette__option-subtitle"
+            "#_r_v_palette-patients-p-drew-patel > .palette__option-text[aria-hidden=\"true\"] > .palette__option-subtitle"
           ],
           "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
         },
@@ -1962,7 +1962,7 @@
               },
               "relatedNodes": [
                 {
-                  "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_u_\" class=\"dialog dialog--medium palette\" tabindex=\"-1\">",
+                  "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_10_\" class=\"dialog dialog--medium palette\" tabindex=\"-1\">",
                   "target": [
                     ".dialog"
                   ]
@@ -1975,9 +1975,9 @@
           "all": [],
           "none": [],
           "impact": "serious",
-          "html": "<div id=\"_r_t_palette-listbox-destinations\" class=\"palette__group-heading\">Destinations</div>",
+          "html": "<div id=\"_r_v_palette-listbox-destinations\" class=\"palette__group-heading\">Destinations</div>",
           "target": [
-            "#_r_t_palette-listbox-destinations"
+            "#_r_v_palette-listbox-destinations"
           ],
           "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
         },
@@ -1994,7 +1994,7 @@
               },
               "relatedNodes": [
                 {
-                  "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_u_\" class=\"dialog dialog--medium palette\" tabindex=\"-1\">",
+                  "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_10_\" class=\"dialog dialog--medium palette\" tabindex=\"-1\">",
                   "target": [
                     ".dialog"
                   ]
@@ -2009,7 +2009,7 @@
           "impact": "serious",
           "html": "<span class=\"palette__option-title\">Open Patients</span>",
           "target": [
-            "#_r_t_palette-destinations-navigate-patients > .palette__option-text[aria-hidden=\"true\"] > .palette__option-title"
+            "#_r_v_palette-destinations-navigate-patients > .palette__option-text[aria-hidden=\"true\"] > .palette__option-title"
           ],
           "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
         },
@@ -2026,7 +2026,7 @@
               },
               "relatedNodes": [
                 {
-                  "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_u_\" class=\"dialog dialog--medium palette\" tabindex=\"-1\">",
+                  "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_10_\" class=\"dialog dialog--medium palette\" tabindex=\"-1\">",
                   "target": [
                     ".dialog"
                   ]
@@ -2041,7 +2041,7 @@
           "impact": "serious",
           "html": "<span class=\"palette__option-subtitle\">Navigate to patient workspace</span>",
           "target": [
-            "#_r_t_palette-destinations-navigate-patients > .palette__option-text[aria-hidden=\"true\"] > .palette__option-subtitle"
+            "#_r_v_palette-destinations-navigate-patients > .palette__option-text[aria-hidden=\"true\"] > .palette__option-subtitle"
           ],
           "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
         }

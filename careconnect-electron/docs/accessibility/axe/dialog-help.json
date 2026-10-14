@@ -16,7 +16,7 @@
     "orientationAngle": 0,
     "orientationType": "landscape-primary"
   },
-  "timestamp": "2026-10-14T00:36:32.201Z",
+  "timestamp": "2026-10-14T00:51:44.832Z",
   "toolOptions": {
     "runOnly": {
       "type": "tag",
@@ -891,7 +891,7 @@
             }
           ],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_14_\" class=\"dialog dialog--medium help\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_16_\" class=\"dialog dialog--medium help\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -927,7 +927,7 @@
           ],
           "none": [],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_14_\" class=\"dialog dialog--medium help\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_16_\" class=\"dialog dialog--medium help\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -963,7 +963,7 @@
             }
           ],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_14_\" class=\"dialog dialog--medium help\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_16_\" class=\"dialog dialog--medium help\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -1089,7 +1089,7 @@
             }
           ],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_14_\" class=\"dialog dialog--medium help\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_16_\" class=\"dialog dialog--medium help\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -1125,7 +1125,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_14_\" class=\"dialog dialog--medium help\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_16_\" class=\"dialog dialog--medium help\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -1175,7 +1175,7 @@
             }
           ],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_14_\" class=\"dialog dialog--medium help\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_16_\" class=\"dialog dialog--medium help\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -1225,7 +1225,7 @@
           ],
           "none": [],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_14_\" class=\"dialog dialog--medium help\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_16_\" class=\"dialog dialog--medium help\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -1261,7 +1261,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_14_\" class=\"dialog dialog--medium help\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_16_\" class=\"dialog dialog--medium help\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -1343,15 +1343,15 @@
               "data": null,
               "relatedNodes": [
                 {
-                  "html": "<h2 id=\"_r_14_\" class=\"dialog__title\">CareConnect help</h2>",
+                  "html": "<h2 id=\"_r_16_\" class=\"dialog__title\">CareConnect help</h2>",
                   "target": [
-                    "#_r_14_"
+                    "#_r_16_"
                   ]
                 },
                 {
-                  "html": "<h3 id=\"_r_13_-getting-around\" class=\"help__heading\" tabindex=\"-1\">Getting around</h3>",
+                  "html": "<h3 id=\"_r_15_-getting-around\" class=\"help__heading\" tabindex=\"-1\">Getting around</h3>",
                   "target": [
-                    "#_r_13_-getting-around"
+                    "#_r_15_-getting-around"
                   ]
                 },
                 {
@@ -1432,9 +1432,9 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<h2 id=\"_r_14_\" class=\"dialog__title\">CareConnect help</h2>",
+          "html": "<h2 id=\"_r_16_\" class=\"dialog__title\">CareConnect help</h2>",
           "target": [
-            "#_r_14_"
+            "#_r_16_"
           ]
         }
       ]
@@ -1813,7 +1813,7 @@
               },
               "relatedNodes": [
                 {
-                  "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_14_\" class=\"dialog dialog--medium help\" tabindex=\"-1\">",
+                  "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_16_\" class=\"dialog dialog--medium help\" tabindex=\"-1\">",
                   "target": [
                     ".dialog"
                   ]
@@ -1845,7 +1845,7 @@
               },
               "relatedNodes": [
                 {
-                  "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_14_\" class=\"dialog dialog--medium help\" tabindex=\"-1\">",
+                  "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_16_\" class=\"dialog dialog--medium help\" tabindex=\"-1\">",
                   "target": [
                     ".dialog"
                   ]
@@ -1877,7 +1877,7 @@
               },
               "relatedNodes": [
                 {
-                  "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_14_\" class=\"dialog dialog--medium help\" tabindex=\"-1\">",
+                  "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_16_\" class=\"dialog dialog--medium help\" tabindex=\"-1\">",
                   "target": [
                     ".dialog"
                   ]

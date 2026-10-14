@@ -23,6 +23,7 @@
     "dist": "npm run build && electron-builder",
     "dev:web": "vite --config vite.web.config.ts",
     "test:axe": "node scripts/axe-scan.cjs",
+    "test:layout": "node scripts/layout-check.cjs",
     "test:keyboard": "node scripts/keyboard-walkthrough.cjs"
   },
   "devDependencies": {

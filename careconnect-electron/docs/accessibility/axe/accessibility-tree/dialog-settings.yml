@@ -13,6 +13,10 @@
     - paragraph: Turns off animations and transitions.
     - paragraph: "Windows High Contrast: Off"
     - paragraph: CareConnect follows the Windows contrast theme automatically. Change it in Windows Settings.
+  - group "Keyboard":
+    - text: Keyboard Single-key shortcuts
+    - switch "Single-key shortcuts" [checked]
+    - paragraph: E, N, M, R, / and G-key sequences. Turn off if you use speech recognition, so spoken words never trigger commands. Ctrl shortcuts and function keys always work.
   - group "Notifications":
     - text: Notifications Desktop notifications for follow-ups due today
     - switch "Desktop notifications for follow-ups due today" [checked]

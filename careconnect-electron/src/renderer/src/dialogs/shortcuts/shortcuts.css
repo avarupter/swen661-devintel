@@ -4,6 +4,8 @@
 .shortcuts .dialog__body {
   position: relative;
   display: grid;
+  /* minmax(0, 1fr): content wraps inside a 320 px window instead of widening the dialog (WCAG 1.4.10). */
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-5);
   align-content: start;
 }
@@ -117,6 +119,18 @@
 
   .shortcuts__table thead th:first-child {
     width: auto;
+  }
+}
+
+/* At 400 % zoom (320 CSS px) the three columns still fit: tighter cells, and keycaps wrap (WCAG 1.4.10). */
+@media (max-width: 480px) {
+  .shortcuts__table th,
+  .shortcuts__table td {
+    padding-inline: var(--space-1);
+  }
+
+  .shortcuts__caps {
+    flex-wrap: wrap;
   }
 }
 

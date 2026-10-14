@@ -16,7 +16,7 @@
     "orientationAngle": 0,
     "orientationType": "landscape-primary"
   },
-  "timestamp": "2026-10-14T00:36:34.531Z",
+  "timestamp": "2026-10-14T00:51:47.183Z",
   "toolOptions": {
     "runOnly": {
       "type": "tag",
@@ -883,7 +883,7 @@
             }
           ],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_1f_\" aria-describedby=\"_r_1g_\" class=\"dialog dialog--medium\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_1i_\" aria-describedby=\"_r_1j_\" class=\"dialog dialog--medium\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -919,7 +919,7 @@
           ],
           "none": [],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_1f_\" aria-describedby=\"_r_1g_\" class=\"dialog dialog--medium\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_1i_\" aria-describedby=\"_r_1j_\" class=\"dialog dialog--medium\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -955,7 +955,7 @@
             }
           ],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_1f_\" aria-describedby=\"_r_1g_\" class=\"dialog dialog--medium\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_1i_\" aria-describedby=\"_r_1j_\" class=\"dialog dialog--medium\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -1081,7 +1081,7 @@
             }
           ],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_1f_\" aria-describedby=\"_r_1g_\" class=\"dialog dialog--medium\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_1i_\" aria-describedby=\"_r_1j_\" class=\"dialog dialog--medium\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -1117,7 +1117,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_1f_\" aria-describedby=\"_r_1g_\" class=\"dialog dialog--medium\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_1i_\" aria-describedby=\"_r_1j_\" class=\"dialog dialog--medium\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -1167,7 +1167,7 @@
             }
           ],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_1f_\" aria-describedby=\"_r_1g_\" class=\"dialog dialog--medium\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_1i_\" aria-describedby=\"_r_1j_\" class=\"dialog dialog--medium\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -1217,7 +1217,7 @@
           ],
           "none": [],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_1f_\" aria-describedby=\"_r_1g_\" class=\"dialog dialog--medium\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_1i_\" aria-describedby=\"_r_1j_\" class=\"dialog dialog--medium\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -1253,7 +1253,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_1f_\" aria-describedby=\"_r_1g_\" class=\"dialog dialog--medium\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_1i_\" aria-describedby=\"_r_1j_\" class=\"dialog dialog--medium\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -1335,9 +1335,9 @@
               "data": null,
               "relatedNodes": [
                 {
-                  "html": "<h2 id=\"_r_1f_\" class=\"dialog__title\">Add clinical note</h2>",
+                  "html": "<h2 id=\"_r_1i_\" class=\"dialog__title\">Add clinical note</h2>",
                   "target": [
-                    "#_r_1f_"
+                    "#_r_1i_"
                   ]
                 }
               ],
@@ -1394,9 +1394,9 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<h2 id=\"_r_1f_\" class=\"dialog__title\">Add clinical note</h2>",
+          "html": "<h2 id=\"_r_1i_\" class=\"dialog__title\">Add clinical note</h2>",
           "target": [
-            "#_r_1f_"
+            "#_r_1i_"
           ]
         }
       ]

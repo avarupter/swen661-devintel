@@ -1,0 +1,216 @@
+{
+  "url": "http://localhost:5173/",
+  "chromium": "153.0.8010.12",
+  "date": "2026-10-14T00:51:20.117Z",
+  "results": [
+    {
+      "check": "reflow",
+      "target": "overview",
+      "pass": true,
+      "viewport": 320,
+      "scrollWidth": 320,
+      "beyond": []
+    },
+    {
+      "check": "reflow",
+      "target": "schedule",
+      "pass": true,
+      "viewport": 320,
+      "scrollWidth": 320,
+      "beyond": []
+    },
+    {
+      "check": "reflow",
+      "target": "patients",
+      "pass": true,
+      "viewport": 320,
+      "scrollWidth": 320,
+      "beyond": []
+    },
+    {
+      "check": "reflow",
+      "target": "inbox",
+      "pass": true,
+      "viewport": 320,
+      "scrollWidth": 320,
+      "beyond": []
+    },
+    {
+      "check": "reflow",
+      "target": "tasks",
+      "pass": true,
+      "viewport": 320,
+      "scrollWidth": 320,
+      "beyond": []
+    },
+    {
+      "check": "reflow",
+      "target": "reports",
+      "pass": true,
+      "viewport": 320,
+      "scrollWidth": 320,
+      "beyond": []
+    },
+    {
+      "check": "reflow",
+      "target": "resources",
+      "pass": true,
+      "viewport": 320,
+      "scrollWidth": 320,
+      "beyond": []
+    },
+    {
+      "check": "reflow",
+      "target": "dialog-command-palette",
+      "pass": true,
+      "viewport": 320,
+      "scrollWidth": 320,
+      "beyond": []
+    },
+    {
+      "check": "reflow",
+      "target": "dialog-keyboard-shortcuts",
+      "pass": true,
+      "viewport": 320,
+      "scrollWidth": 320,
+      "beyond": []
+    },
+    {
+      "check": "reflow",
+      "target": "dialog-help",
+      "pass": true,
+      "viewport": 320,
+      "scrollWidth": 320,
+      "beyond": []
+    },
+    {
+      "check": "reflow",
+      "target": "dialog-settings",
+      "pass": true,
+      "viewport": 320,
+      "scrollWidth": 320,
+      "beyond": []
+    },
+    {
+      "check": "reflow",
+      "target": "dialog-new-patient",
+      "pass": true,
+      "viewport": 320,
+      "scrollWidth": 320,
+      "beyond": []
+    },
+    {
+      "check": "reflow",
+      "target": "dialog-compose-new",
+      "pass": true,
+      "viewport": 320,
+      "scrollWidth": 320,
+      "beyond": []
+    },
+    {
+      "check": "text-spacing",
+      "target": "overview",
+      "pass": true,
+      "clipped": [],
+      "byDesign": []
+    },
+    {
+      "check": "text-spacing",
+      "target": "schedule",
+      "pass": true,
+      "clipped": [],
+      "byDesign": []
+    },
+    {
+      "check": "text-spacing",
+      "target": "patients",
+      "pass": true,
+      "clipped": [],
+      "byDesign": []
+    },
+    {
+      "check": "text-spacing",
+      "target": "inbox",
+      "pass": true,
+      "clipped": [],
+      "byDesign": [
+        "span.conversation-option__preview: \"Can we go over the new exercise goals at\"",
+        "span.conversation-option__preview: \"Riley’s results are back and within rang\"",
+        "span.conversation-option__preview: \"We received a refill request for Jamie W\"",
+        "span.conversation-option__preview: \"I uploaded this week’s blood pressure re\"",
+        "span.conversation-option__preview: \"Dr. Moreno’s Friday afternoon clinic mov\"",
+        "span.conversation-option__preview: \"You: Please bring a photo ID and a list \""
+      ]
+    },
+    {
+      "check": "text-spacing",
+      "target": "tasks",
+      "pass": true,
+      "clipped": [],
+      "byDesign": []
+    },
+    {
+      "check": "text-spacing",
+      "target": "reports",
+      "pass": true,
+      "clipped": [],
+      "byDesign": []
+    },
+    {
+      "check": "text-spacing",
+      "target": "resources",
+      "pass": true,
+      "clipped": [],
+      "byDesign": []
+    },
+    {
+      "check": "text-spacing",
+      "target": "dialog-command-palette",
+      "pass": true,
+      "clipped": [],
+      "byDesign": []
+    },
+    {
+      "check": "text-spacing",
+      "target": "dialog-keyboard-shortcuts",
+      "pass": true,
+      "clipped": [],
+      "byDesign": []
+    },
+    {
+      "check": "text-spacing",
+      "target": "dialog-help",
+      "pass": true,
+      "clipped": [],
+      "byDesign": []
+    },
+    {
+      "check": "text-spacing",
+      "target": "dialog-settings",
+      "pass": true,
+      "clipped": [],
+      "byDesign": []
+    },
+    {
+      "check": "text-spacing",
+      "target": "dialog-new-patient",
+      "pass": true,
+      "clipped": [],
+      "byDesign": []
+    },
+    {
+      "check": "text-spacing",
+      "target": "dialog-compose-new",
+      "pass": true,
+      "clipped": [],
+      "byDesign": []
+    },
+    {
+      "check": "text-spacing",
+      "target": "skip-links-focused",
+      "pass": true,
+      "clipped": [],
+      "byDesign": []
+    }
+  ]
+}

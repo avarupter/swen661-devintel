@@ -72,6 +72,12 @@
   .report-bar {
     display: none;
   }
+
+  /* Narrower cells keep all three columns inside a 320px viewport (WCAG 1.4.10). */
+  .report-table th,
+  .report-table td {
+    padding-inline: var(--space-2);
+  }
 }
 
 /* Bars carry no information, so forced-colours mode keeps them visible but plain. */

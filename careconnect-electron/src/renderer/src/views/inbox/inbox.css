@@ -131,10 +131,9 @@
   min-width: 0;
 }
 
+/* Names and subjects wrap rather than end in "…", so larger text spacing never cuts them off (WCAG 1.4.12). */
 .conversation-option__with {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 
 /* Time and the "New" chip share a right-hand column, so times line up whether or not a row is unread. */
@@ -151,10 +150,8 @@
 }
 
 .conversation-option__subject {
-  overflow: hidden;
+  overflow-wrap: anywhere;
   color: var(--color-text-secondary);
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .conversation-option__preview {

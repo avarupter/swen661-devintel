@@ -4,6 +4,8 @@
 .help .dialog__body {
   position: relative;
   display: grid;
+  /* minmax(0, 1fr): text wraps inside a 320 px window instead of widening the dialog (WCAG 1.4.10). */
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-6);
 }
 
@@ -64,6 +66,10 @@
 
 .help__shortcuts {
   justify-self: start;
+  /* The label wraps in a 320 px window instead of pushing past the dialog edge (WCAG 1.4.10). */
+  max-width: 100%;
+  white-space: normal;
+  text-align: left;
 }
 
 .help__resources {

@@ -16,7 +16,7 @@
     "orientationAngle": 0,
     "orientationType": "landscape-primary"
   },
-  "timestamp": "2026-10-14T00:36:31.488Z",
+  "timestamp": "2026-10-14T00:51:44.136Z",
   "toolOptions": {
     "runOnly": {
       "type": "tag",
@@ -790,7 +790,7 @@
             }
           ],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_11_\" class=\"dialog dialog--large shortcuts\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_13_\" class=\"dialog dialog--large shortcuts\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -826,7 +826,7 @@
           ],
           "none": [],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_11_\" class=\"dialog dialog--large shortcuts\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_13_\" class=\"dialog dialog--large shortcuts\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -862,7 +862,7 @@
             }
           ],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_11_\" class=\"dialog dialog--large shortcuts\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_13_\" class=\"dialog dialog--large shortcuts\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -988,7 +988,7 @@
             }
           ],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_11_\" class=\"dialog dialog--large shortcuts\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_13_\" class=\"dialog dialog--large shortcuts\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -1024,7 +1024,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_11_\" class=\"dialog dialog--large shortcuts\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_13_\" class=\"dialog dialog--large shortcuts\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -1074,7 +1074,7 @@
             }
           ],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_11_\" class=\"dialog dialog--large shortcuts\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_13_\" class=\"dialog dialog--large shortcuts\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -1124,7 +1124,7 @@
           ],
           "none": [],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_11_\" class=\"dialog dialog--large shortcuts\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_13_\" class=\"dialog dialog--large shortcuts\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -1160,7 +1160,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_11_\" class=\"dialog dialog--large shortcuts\" tabindex=\"-1\">",
+          "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_13_\" class=\"dialog dialog--large shortcuts\" tabindex=\"-1\">",
           "target": [
             ".dialog"
           ]
@@ -1197,9 +1197,9 @@
           ],
           "none": [],
           "impact": null,
-          "html": "<input id=\"_r_10_\" class=\"input\" placeholder=\"Action or key\" autocomplete=\"off\" spellcheck=\"false\" aria-keyshortcuts=\"Control+F\" type=\"search\" value=\"\">",
+          "html": "<input id=\"_r_12_\" class=\"input\" placeholder=\"Action or key\" autocomplete=\"off\" spellcheck=\"false\" aria-keyshortcuts=\"Control+F\" type=\"search\" value=\"\">",
           "target": [
-            "#_r_10_"
+            "#_r_12_"
           ]
         }
       ]
@@ -1279,9 +1279,9 @@
               "data": null,
               "relatedNodes": [
                 {
-                  "html": "<h2 id=\"_r_11_\" class=\"dialog__title\">Keyboard shortcuts</h2>",
+                  "html": "<h2 id=\"_r_13_\" class=\"dialog__title\">Keyboard shortcuts</h2>",
                   "target": [
-                    "#_r_11_"
+                    "#_r_13_"
                   ]
                 },
                 {
@@ -1362,9 +1362,9 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<h2 id=\"_r_11_\" class=\"dialog__title\">Keyboard shortcuts</h2>",
+          "html": "<h2 id=\"_r_13_\" class=\"dialog__title\">Keyboard shortcuts</h2>",
           "target": [
-            "#_r_11_"
+            "#_r_13_"
           ]
         }
       ]
@@ -1471,7 +1471,7 @@
               "data": null,
               "relatedNodes": [
                 {
-                  "html": "<label for=\"_r_10_\" class=\"field__label\">Find a command</label>",
+                  "html": "<label for=\"_r_12_\" class=\"field__label\">Find a command</label>",
                   "target": [
                     ".field__label"
                   ]
@@ -1482,9 +1482,9 @@
             }
           ],
           "impact": null,
-          "html": "<input id=\"_r_10_\" class=\"input\" placeholder=\"Action or key\" autocomplete=\"off\" spellcheck=\"false\" aria-keyshortcuts=\"Control+F\" type=\"search\" value=\"\">",
+          "html": "<input id=\"_r_12_\" class=\"input\" placeholder=\"Action or key\" autocomplete=\"off\" spellcheck=\"false\" aria-keyshortcuts=\"Control+F\" type=\"search\" value=\"\">",
           "target": [
-            "#_r_10_"
+            "#_r_12_"
           ]
         }
       ]
@@ -1597,7 +1597,7 @@
               },
               "relatedNodes": [
                 {
-                  "html": "<label for=\"_r_10_\" class=\"field__label\">Find a command</label>",
+                  "html": "<label for=\"_r_12_\" class=\"field__label\">Find a command</label>",
                   "target": [
                     ".field__label"
                   ]
@@ -1625,9 +1625,9 @@
             }
           ],
           "impact": null,
-          "html": "<input id=\"_r_10_\" class=\"input\" placeholder=\"Action or key\" autocomplete=\"off\" spellcheck=\"false\" aria-keyshortcuts=\"Control+F\" type=\"search\" value=\"\">",
+          "html": "<input id=\"_r_12_\" class=\"input\" placeholder=\"Action or key\" autocomplete=\"off\" spellcheck=\"false\" aria-keyshortcuts=\"Control+F\" type=\"search\" value=\"\">",
           "target": [
-            "#_r_10_"
+            "#_r_12_"
           ]
         }
       ]
@@ -2038,7 +2038,7 @@
               },
               "relatedNodes": [
                 {
-                  "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_11_\" class=\"dialog dialog--large shortcuts\" tabindex=\"-1\">",
+                  "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_13_\" class=\"dialog dialog--large shortcuts\" tabindex=\"-1\">",
                   "target": [
                     ".dialog"
                   ]
@@ -2070,7 +2070,7 @@
               },
               "relatedNodes": [
                 {
-                  "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_11_\" class=\"dialog dialog--large shortcuts\" tabindex=\"-1\">",
+                  "html": "<div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"_r_13_\" class=\"dialog dialog--large shortcuts\" tabindex=\"-1\">",
                   "target": [
                     ".dialog"
                   ]

@@ -2,7 +2,7 @@
   "axeVersion": "4.14.0",
   "browser": "Chromium 153.0.8010.12",
   "url": "http://localhost:5173/",
-  "when": "2026-10-14T00:36:36.702Z",
+  "when": "2026-10-14T00:51:49.434Z",
   "tags": [
     "wcag2a",
     "wcag2aa",
@@ -199,7 +199,7 @@
           "pass": true
         },
         {
-          "selector": "#_r_t_palette-patients-p-drew-patel > .palette__option-text[aria-hidden=\"true\"] > .palette__option-subtitle",
+          "selector": "#_r_v_palette-patients-p-drew-patel > .palette__option-text[aria-hidden=\"true\"] > .palette__option-subtitle",
           "text": "CC-1076 · Blood pressure check · Completed",
           "color": "rgb(71, 85, 105)",
           "background": "rgb(255, 255, 255)",
@@ -208,7 +208,7 @@
           "pass": true
         },
         {
-          "selector": "#_r_t_palette-listbox-destinations",
+          "selector": "#_r_v_palette-listbox-destinations",
           "text": "Destinations",
           "color": "rgb(90, 107, 127)",
           "background": "rgb(255, 255, 255)",
@@ -217,7 +217,7 @@
           "pass": true
         },
         {
-          "selector": "#_r_t_palette-destinations-navigate-patients > .palette__option-text[aria-hidden=\"true\"] > .palette__option-title",
+          "selector": "#_r_v_palette-destinations-navigate-patients > .palette__option-text[aria-hidden=\"true\"] > .palette__option-title",
           "text": "Open Patients",
           "color": "rgb(15, 23, 42)",
           "background": "rgb(255, 255, 255)",
@@ -226,7 +226,7 @@
           "pass": true
         },
         {
-          "selector": "#_r_t_palette-destinations-navigate-patients > .palette__option-text[aria-hidden=\"true\"] > .palette__option-subtitle",
+          "selector": "#_r_v_palette-destinations-navigate-patients > .palette__option-text[aria-hidden=\"true\"] > .palette__option-subtitle",
           "text": "Navigate to patient workspace",
           "color": "rgb(71, 85, 105)",
           "background": "rgb(255, 255, 255)",
@@ -385,25 +385,7 @@
       "label": "Settings (Ctrl+,)",
       "measured": [
         {
-          "selector": "#_r_18_-hint",
-          "text": "Shows shortcut keys beside buttons and the search field. Hol",
-          "color": "rgb(90, 107, 127)",
-          "background": "rgb(255, 255, 255)",
-          "ratio": 5.46,
-          "required": 4.5,
-          "pass": true
-        },
-        {
-          "selector": ".settings__system > .field__hint",
-          "text": "CareConnect follows the Windows contrast theme automatically",
-          "color": "rgb(90, 107, 127)",
-          "background": "rgb(255, 255, 255)",
-          "ratio": 5.46,
-          "required": 4.5,
-          "pass": true
-        },
-        {
-          "selector": "#_r_1b_-hint",
+          "selector": "#_r_1e_-hint",
           "text": "One notification when CareConnect opens, listing patients wi",
           "color": "rgb(90, 107, 127)",
           "background": "rgb(255, 255, 255)",
@@ -412,7 +394,7 @@
           "pass": true
         }
       ],
-      "passes": 21,
+      "passes": 22,
       "impacts": {
         "critical": 0,
         "serious": 0,
@@ -423,7 +405,7 @@
       "incomplete": [
         {
           "id": "color-contrast",
-          "nodes": 3
+          "nodes": 1
         }
       ]
     },
