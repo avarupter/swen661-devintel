@@ -19,6 +19,17 @@ describe('StatusBar', () => {
     expect(bar()).toHaveAttribute('tabindex', '-1')
   })
 
+  it('says when it is the browser preview rather than the secure desktop session', async () => {
+    await renderHarness(<StatusBar />, { initialUi: { browserPreview: true } })
+    expect(within(bar()).getByText(/Browser preview · data stays in this browser/)).toBeInTheDocument()
+    expect(within(bar()).queryByText('Secure session')).not.toBeInTheDocument()
+  })
+
+  it('shows the secure session in the desktop app', async () => {
+    await renderHarness(<StatusBar />)
+    expect(within(bar()).getByText(/Secure session/)).toBeInTheDocument()
+  })
+
   it('is not itself a live region: the announcer reads each status message once, from outside the bar', async () => {
     const h = await renderHarness(<StatusBar />)
     act(() => h.commands().run({ id: 'view.toggleReduceMotion' }))

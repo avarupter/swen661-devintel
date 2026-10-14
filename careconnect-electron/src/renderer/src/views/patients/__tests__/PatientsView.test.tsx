@@ -1,3 +1,4 @@
+import { computeAccessibleName } from 'dom-accessibility-api'
 import { act, fireEvent, screen, waitFor, within } from '@testing-library/react'
 import { axe } from 'jest-axe'
 import { createSeedWorkspace } from '../../../../../shared/seed'
@@ -32,7 +33,7 @@ function option(name: string): HTMLElement {
 
 /** The patient name an option announces first: "Avery Park, …" → "Avery Park". */
 function nameOf(element: HTMLElement): string {
-  return (element.getAttribute('aria-label') ?? '').split(',')[0]
+  return (computeAccessibleName(element)).split(',')[0]
 }
 
 function detailHeading(): HTMLElement {
@@ -429,7 +430,7 @@ describe('PatientsView: filter, sort and context menus', () => {
     })
     expect(sortButton).toEqual({ x: 1140, y: 96 })
     await waitFor(() => expect(options()[0]).toHaveTextContent('Alex Rivera'))
-    const names = options().map((element) => element.getAttribute('aria-label') ?? '')
+    const names = options().map((element) => computeAccessibleName(element))
     expect([...names].sort((a, b) => a.localeCompare(b))).toEqual(names)
     await waitFor(() => expect(liveRegionText()).toBe('Sorted by name'))
   })

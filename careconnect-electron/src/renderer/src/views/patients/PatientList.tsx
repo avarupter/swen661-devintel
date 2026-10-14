@@ -11,7 +11,7 @@ import { StatusChip } from '../../components/StatusChip'
 import { useAppDispatch, useAppState, useWorkspace } from '../../state/AppStateProvider'
 import { useClock } from '../../state/clock'
 import { patientSecondaryText, visiblePatients } from '../../state/selectors'
-import { filterAnnouncement, menuPosition, patientOptionId, patientOptionName, resultCountLabel, type MenuPosition } from './patientMenus'
+import { filterAnnouncement, menuPosition, patientOptionId, resultCountLabel, type MenuPosition, patientOptionName } from './patientMenus'
 
 /** The result count is announced once typing pauses for this long. */
 export const SEARCH_ANNOUNCE_DELAY_MS = 400
@@ -44,7 +44,6 @@ function PatientOption({ patient, now, selected, tabbable, onFocus, onClick, onK
       role="option"
       id={patientOptionId(patient.id)}
       aria-selected={selected}
-      aria-label={patientOptionName(patient, now)}
       tabIndex={tabbable ? 0 : -1}
       className={`patient-option focus-inset${selected ? ' patient-option--selected' : ''}`}
       onFocus={onFocus}
@@ -53,11 +52,14 @@ function PatientOption({ patient, now, selected, tabbable, onFocus, onClick, onK
       onContextMenu={onContextMenu}
     >
       <Avatar name={patient.name} tone={selected ? 'brand' : 'neutral'} />
-      <span className="patient-option__text">
+      {/* One exact spoken name (spec card 05). The visible parts are hidden from screen readers rather
+          than overridden with aria-label, so no visible text falls outside the name (WCAG 2.5.3). */}
+      <span className="visually-hidden">{patientOptionName(patient, now)}</span>
+      <span className="patient-option__text" aria-hidden="true">
         <span className="patient-option__name">{patient.name}</span>
         <span className="patient-option__secondary">{patientSecondaryText(patient, now)}</span>
       </span>
-      <StatusChip status={patient.status} />
+      <StatusChip status={patient.status} decorative />
     </div>
   )
 }

@@ -98,7 +98,10 @@ export interface ToolbarButtonProps {
   disabledReason?: string
   pressed?: boolean
   hasPopup?: 'menu' | 'dialog'
-  /** Visible label override; the accessible name stays `label`. */
+  /**
+   * Visible label override; the accessible name stays `label`, which must start
+   * with this visible text (WCAG 2.5.3, Label in Name).
+   */
   children?: ReactNode
   /** Key hint override, e.g. ["/"] where the design shows the alternate key. */
   hintKeys?: string[]
@@ -121,6 +124,10 @@ export function ToolbarButton({
   const { ui } = useAppState()
   const reasonId = useId()
   const disabled = Boolean(disabledReason)
+  // When the visible text is shorter than the name ("Message" for "Message Avery Park"), screen readers
+  // read one hidden copy of the full name and the visible text is hidden from them. No aria-label, so no
+  // visible text can fall outside the name (WCAG 2.5.3); callers keep the name starting with the visible text.
+  const hiddenName = children !== undefined && children !== label ? label : null
   return (
     <>
       <button
@@ -133,7 +140,6 @@ export function ToolbarButton({
         aria-pressed={pressed}
         aria-haspopup={hasPopup}
         aria-keyshortcuts={command ? ariaKeyShortcuts(command, ui.platform) : undefined}
-        aria-label={children ? label : undefined}
         title={disabledReason}
         onClick={() => {
           if (disabled) return
@@ -142,7 +148,10 @@ export function ToolbarButton({
         }}
       >
         {icon && <Icon name={icon} />}
-        <span className="button__label">{children ?? label}</span>
+        <span className="button__label" aria-hidden={hiddenName ? true : undefined}>
+          {children ?? label}
+        </span>
+        {hiddenName && <span className="visually-hidden">{hiddenName}</span>}
         {(command || hintKeys) && <KeyHint command={command} keys={hintKeys} />}
       </button>
       {disabled && (

@@ -39,7 +39,7 @@ export default defineConfig([
   js.configs.recommended,
   tseslint.configs.recommended,
   {
-    files: ['**/*.{cjs,mjs,js}', 'electron.vite.config.ts', 'scripts/**'],
+    files: ['**/*.{cjs,mjs,js}', 'electron.vite.config.ts', 'vite.web.config.ts', 'scripts/**'],
     languageOptions: { globals: globals.node }
   },
   {

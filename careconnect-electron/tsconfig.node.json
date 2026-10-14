@@ -25,6 +25,7 @@
     "tests/mocks/electron.ts",
     "tests/mocks/asset.ts",
     "src/main/env.d.ts",
-    "electron.vite.config.ts"
+    "electron.vite.config.ts",
+    "vite.web.config.ts"
   ]
 }

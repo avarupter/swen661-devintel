@@ -124,10 +124,8 @@ export function Dialog({
           <h2 id={titleId} className="dialog__title">
             {title}
           </h2>
-          <button type="button" className="button button--ghost dialog__close" onClick={onClose} aria-label="Close" aria-keyshortcuts="Escape">
-            <span className="dialog__close-text" aria-hidden="true">
-              Close
-            </span>
+          <button type="button" className="button button--ghost dialog__close" onClick={onClose} aria-keyshortcuts="Escape">
+            <span className="dialog__close-text">Close</span>
             <kbd aria-hidden="true">Esc</kbd>
           </button>
         </div>

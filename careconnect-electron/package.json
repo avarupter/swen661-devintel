@@ -20,7 +20,9 @@
     "dist:win": "npm run build && electron-builder --win --x64",
     "dist:win:docker": "npm run build && bash scripts/build-win-docker.sh",
     "test:e2e": "electron-vite build && jest -c jest.e2e.config.cjs",
-    "dist": "npm run build && electron-builder"
+    "dist": "npm run build && electron-builder",
+    "dev:web": "vite --config vite.web.config.ts",
+    "test:axe": "node scripts/axe-scan.cjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
@@ -35,6 +37,7 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^5.2.0",
+    "axe-core": "^4.14.0",
     "electron": "^44.5.1",
     "electron-builder": "^26.15.3",
     "electron-vite": "^5.0.0",

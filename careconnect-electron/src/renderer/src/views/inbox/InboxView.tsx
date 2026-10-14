@@ -201,11 +201,11 @@ export function InboxView(): React.JSX.Element {
                   <button
                     type="button"
                     className="draft-item focus-inset"
-                    aria-label={draftLabel(draft, now)}
                     onClick={() => openModal({ kind: 'compose', patientId: draft.patientId, conversationId: draft.conversationId, draftId: draft.id })}
                   >
                     <Icon name="edit" className="draft-item__icon" />
-                    <span className="draft-item__text">
+                    <span className="visually-hidden">{draftLabel(draft, now)}</span>
+                    <span className="draft-item__text" aria-hidden="true">
                       <span className="draft-item__top">
                         <span className="draft-item__to">To {draft.to.trim() || 'no recipient yet'}</span>
                         <time className="draft-item__time" dateTime={draft.updatedAt}>
@@ -240,7 +240,6 @@ export function InboxView(): React.JSX.Element {
                     role="option"
                     id={optionId(conversation.id)}
                     aria-selected={isSelected}
-                    aria-label={conversationLabel(conversation, now)}
                     aria-describedby={previewId}
                     tabIndex={conversation.id === activeId ? 0 : -1}
                     className={`conversation-option focus-inset${conversation.unread ? ' conversation-option--unread' : ''}`}
@@ -248,14 +247,17 @@ export function InboxView(): React.JSX.Element {
                     onKeyDown={(event) => onOptionKeyDown(event, index)}
                   >
                     <Avatar name={conversation.with} tone={isSelected ? 'brand' : 'neutral'} />
-                    <span className="conversation-option__text">
+                    {/* One exact spoken name; the visible parts are hidden from screen readers rather than
+                        overridden with aria-label (WCAG 2.5.3). The preview stays the description. */}
+                    <span className="visually-hidden">{conversationLabel(conversation, now)}</span>
+                    <span className="conversation-option__text" aria-hidden="true">
                       <span className="conversation-option__with">{conversation.with}</span>
                       <span className="conversation-option__subject">{conversation.subject}</span>
                       <span id={previewId} className="conversation-option__preview">
                         {conversationPreview(conversation)}
                       </span>
                     </span>
-                    <span className="conversation-option__meta">
+                    <span className="conversation-option__meta" aria-hidden="true">
                       {latest && (
                         <time className="conversation-option__time" dateTime={latest.at}>
                           {conversationTime(latest.at, now)}

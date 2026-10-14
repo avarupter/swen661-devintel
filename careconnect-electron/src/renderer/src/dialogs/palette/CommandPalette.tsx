@@ -201,7 +201,6 @@ export function CommandPalette({ onClose }: { onClose(): void }): React.JSX.Elem
                       aria-selected={isActive}
                       aria-posinset={index + 1}
                       aria-setsize={results.length}
-                      aria-label={item.subtitle ? `${item.title}, ${item.subtitle}` : item.title}
                       aria-describedby={spoken ? `${id}-shortcut` : undefined}
                       className={`palette__option${isActive ? ' palette__option--active' : ''}`}
                       onMouseMove={() => {
@@ -210,13 +209,16 @@ export function CommandPalette({ onClose }: { onClose(): void }): React.JSX.Elem
                       onClick={() => runItem(item)}
                     >
                       <Icon name={item.icon} className="palette__option-icon" />
-                      <span className="palette__option-text">
+                      {/* One exact spoken name; the visible text is hidden from screen readers rather than
+                          overridden with aria-label (WCAG 2.5.3). */}
+                      <span className="visually-hidden">{item.subtitle ? `${item.title}, ${item.subtitle}` : item.title}</span>
+                      <span className="palette__option-text" aria-hidden="true">
                         <span className="palette__option-title">{item.title}</span>
                         {item.subtitle && <span className="palette__option-subtitle">{item.subtitle}</span>}
                       </span>
                       {item.keys && <Keycaps keys={item.keys} />}
                       {spoken && (
-                        <span id={`${id}-shortcut`} className="visually-hidden">
+                        <span id={`${id}-shortcut`} className="visually-hidden" aria-hidden="true">
                           Shortcut: {spoken}
                         </span>
                       )}

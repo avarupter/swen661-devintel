@@ -156,11 +156,10 @@ export function PatientDetail({ patient, now, onShowMenu }: PatientDetailProps):
             <button
               type="button"
               className="link-button"
-              aria-label={`Edit care summary for ${patient.name}`}
               aria-keyshortcuts={ariaKeyShortcuts('patient.editSummary', ui.platform)}
               onClick={() => runForPatient('patient.editSummary')}
             >
-              Edit <KeyHint command="patient.editSummary" />
+              Edit<span className="visually-hidden"> care summary for {patient.name}</span> <KeyHint command="patient.editSummary" />
             </button>
           </div>
           {patient.alert && (
@@ -209,16 +208,17 @@ export function PatientDetail({ patient, now, onShowMenu }: PatientDetailProps):
             <p className="muted">No activity yet.</p>
           )}
           <div className="patient-activity__footer">
-            {/* The name starts with the visible "Add note" so speech input can reach it (WCAG 2.5.3), then names the patient (spec card 05). */}
+            {/* The name is the visible "Add note" plus hidden context (WCAG 2.5.3, spec card 05); the key hint stays out of it. */}
             <button
               type="button"
               className="button patient-activity__add"
-              aria-label={`Add note for ${patient.name}`}
               aria-keyshortcuts={ariaKeyShortcuts('patient.addNote', ui.platform)}
               onClick={() => runForPatient('patient.addNote')}
             >
               <Icon name="plus" />
-              <span className="patient-activity__add-label">Add note</span>
+              <span className="patient-activity__add-label">
+                Add note<span className="visually-hidden"> for {patient.name}</span>
+              </span>
               <KeyHint command="patient.addNote" variant="keys" />
             </button>
           </div>

@@ -52,6 +52,8 @@ export interface UiSlice {
   pendingSequence: string | null
   /** Windows High Contrast (or another forced-colours mode) is on. */
   systemHighContrast: boolean
+  /** Running in a plain browser through the dev server (no preload bridge, so no desktop features). */
+  browserPreview: boolean
   /** Which column of the shortcut reference applies (Linux uses the Windows keys). */
   platform: KeyPlatform
   /** Session copy of recently viewed patients; written back with each save. */
@@ -88,6 +90,7 @@ export const initialUi: UiSlice = {
   revealHints: false,
   pendingSequence: null,
   systemHighContrast: false,
+  browserPreview: false,
   platform: 'windows',
   recentPatients: []
 }

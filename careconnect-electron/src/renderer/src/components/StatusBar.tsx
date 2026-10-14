@@ -60,7 +60,15 @@ export function StatusBar(): React.JSX.Element {
 
       <div className="status-bar__meta">
         <span className="status-bar__item">
-          <Icon name="lock" /> Secure session
+          {state.ui.browserPreview ? (
+            <>
+              <Icon name="info" /> Browser preview · data stays in this browser
+            </>
+          ) : (
+            <>
+              <Icon name="lock" /> Secure session
+            </>
+          )}
         </span>
         <span className="status-bar__item">{state.lastSavedAt ? `Synced ${formatTime(state.lastSavedAt)}` : 'Not synced yet'}</span>
         <button type="button" className="link-button" aria-keyshortcuts="F1" onClick={() => run({ id: 'app.help' })}>

@@ -9,9 +9,9 @@ const STATUS_ICONS: Record<PatientStatus, IconName> = {
 }
 
 /** Status is never colour alone: every chip pairs colour with an icon and a word (spec card 08). */
-export function StatusChip({ status }: { status: PatientStatus }): React.JSX.Element {
+export function StatusChip({ status, decorative = false }: { status: PatientStatus; decorative?: boolean }): React.JSX.Element {
   return (
-    <span className={`chip chip--${status}`}>
+    <span className={`chip chip--${status}`} aria-hidden={decorative || undefined}>
       <Icon name={STATUS_ICONS[status]} className="chip__icon" />
       {STATUS_LABELS[status]}
     </span>

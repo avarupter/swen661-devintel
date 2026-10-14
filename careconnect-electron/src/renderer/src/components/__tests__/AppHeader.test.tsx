@@ -1,3 +1,4 @@
+import { computeAccessibleName } from 'dom-accessibility-api'
 import { screen, within } from '@testing-library/react'
 import { axe } from 'jest-axe'
 import { createMemoryApi } from '../../../../../tests/renderer/memoryApi'
@@ -8,7 +9,7 @@ import { AppHeader } from '../AppHeader'
 const toolbarNames = (view: ViewId): string[] =>
   within(screen.getByRole('toolbar', { name: `${VIEW_LABELS[view]} tools` }))
     .getAllByRole('button')
-    .map((button) => button.getAttribute('aria-label') ?? button.querySelector('.button__label')?.textContent ?? '')
+    .map((button) => computeAccessibleName(button))
 
 const EXPECTED: Record<ViewId, { chip: string; tools: string[] }> = {
   overview: { chip: 'Mon, Oct 5', tools: ['Command palette', 'New patient'] },

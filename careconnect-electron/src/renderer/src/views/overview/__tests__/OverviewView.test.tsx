@@ -1,3 +1,4 @@
+import { computeAccessibleName } from 'dom-accessibility-api'
 import { screen, waitFor, within } from '@testing-library/react'
 import { axe } from 'jest-axe'
 import { useEffect } from 'react'
@@ -55,7 +56,7 @@ describe('OverviewView', () => {
     const seed = createSeedWorkspace(FIXED_NOW)
     const counts = statusCounts(seed.patients)
     const cards = within(screen.getByRole('region', { name: 'At a glance' })).getAllByRole('button')
-    expect(cards.map((card) => card.getAttribute('aria-label'))).toEqual([
+    expect(cards.map((card) => computeAccessibleName(card))).toEqual([
       `Needs review: ${counts['needs-review']} patients`,
       `Open: ${counts.open} patients`,
       `Completed: ${counts.completed} patients`,

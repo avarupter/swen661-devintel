@@ -30,7 +30,8 @@ function metaLine(): HTMLElement {
 /** The words a sighted user reads on a control: its text without aria-hidden key hints and icons, or visually hidden text. */
 function visibleLabel(element: HTMLElement): string {
   const copy = element.cloneNode(true) as HTMLElement
-  copy.querySelectorAll('[aria-hidden="true"], .visually-hidden').forEach((node) => node.remove())
+  // What a sighted user reads: drop text only screen readers get, key hints and icons.
+  copy.querySelectorAll('.visually-hidden, .key-hint, kbd, svg').forEach((node) => node.remove())
   return (copy.textContent ?? '').replace(/\s+/g, ' ').trim()
 }
 

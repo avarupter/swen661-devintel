@@ -1,3 +1,4 @@
+import { computeAccessibleName } from 'dom-accessibility-api'
 import { act, screen, waitFor, within } from '@testing-library/react'
 import { axe } from 'jest-axe'
 import { useEffect } from 'react'
@@ -85,7 +86,7 @@ describe('InboxView', () => {
   it('lists six conversations newest first, four unread, each unread one marked with a "New" chip', async () => {
     const { listbox } = await renderInbox()
     const all = options(listbox)
-    expect(all.map((option) => option.getAttribute('aria-label'))).toEqual([
+    expect(all.map((option) => computeAccessibleName(option))).toEqual([
       'Morgan Chen, Question about my care plan, 08:05, unread',
       'Dr. Sam Okafor, Lab results: Riley Singh, 07:48, unread',
       'North Coast Pharmacy, Refill authorization: Jamie Wu, Yesterday, unread',
@@ -93,7 +94,7 @@ describe('InboxView', () => {
       'Front desk, Schedule change for Friday, Oct 3',
       'Taylor Lane, Referral paperwork, Sep 28'
     ])
-    const unread = all.filter((option) => option.getAttribute('aria-label')?.endsWith(', unread'))
+    const unread = all.filter((option) => computeAccessibleName(option).endsWith(', unread'))
     expect(unread).toHaveLength(4)
     for (const option of unread) expect(within(option).getByText('New')).toBeInTheDocument()
     expect(within(all[4]).queryByText('New')).not.toBeInTheDocument()
@@ -120,7 +121,7 @@ describe('InboxView', () => {
 
     const first = options(listbox)[0]
     expect(first).toHaveAttribute('aria-selected', 'true')
-    expect(first).toHaveAttribute('aria-label', 'Morgan Chen, Question about my care plan, 08:05')
+    expect(first).toHaveAccessibleName('Morgan Chen, Question about my care plan, 08:05')
     expect(screen.getByRole('button', { name: inboxNav(3) })).toBeInTheDocument()
 
     const pane = readingPane()
@@ -237,7 +238,7 @@ describe('InboxView', () => {
     expect(screen.getByRole('button', { name: inboxNav(3) })).toBeInTheDocument()
 
     await user.click(within(readingPane()).getByRole('button', { name: 'Mark as unread' }))
-    expect(options(listbox)[0]).toHaveAttribute('aria-label', 'Morgan Chen, Question about my care plan, 08:05, unread')
+    expect(options(listbox)[0]).toHaveAccessibleName('Morgan Chen, Question about my care plan, 08:05, unread')
     expect(screen.getByRole('button', { name: inboxNav(4) })).toBeInTheDocument()
     expect(current().ui.status?.text).toBe('Conversation marked as unread.')
     await waitFor(() => expect(liveRegionText()).toBe('Conversation marked as unread.'))

@@ -1,3 +1,4 @@
+import { computeAccessibleName } from 'dom-accessibility-api'
 import { act, fireEvent, screen, waitFor, within } from '@testing-library/react'
 import type { UserEvent } from '@testing-library/user-event'
 import { axe } from 'jest-axe'
@@ -109,7 +110,7 @@ describe('CommandPalette in the app', () => {
     await openPalette(user)
     await user.type(combobox(), 'inbox')
     expect(combobox()).toHaveFocus()
-    expect(options().map((option) => option.getAttribute('aria-label'))).toEqual(['Open Inbox, 4 unread conversations'])
+    expect(options().map((option) => computeAccessibleName(option))).toEqual(['Open Inbox, 4 unread conversations'])
     expect(within(resultList()).getByRole('group', { name: 'Destinations' })).toBeInTheDocument()
     expect(within(activeOption()).getByText('1 of 1')).toBeInTheDocument()
   })
@@ -240,7 +241,7 @@ describe('CommandPalette in the app', () => {
     }
     await user.keyboard('inbox')
     expect(combobox()).toHaveValue('inbox')
-    expect(options().map((option) => option.getAttribute('aria-label'))).toEqual(['Open Inbox, 4 unread conversations'])
+    expect(options().map((option) => computeAccessibleName(option))).toEqual(['Open Inbox, 4 unread conversations'])
   })
 
   it('still closes from its Close button', async () => {

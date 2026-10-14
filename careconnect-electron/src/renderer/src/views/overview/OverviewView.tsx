@@ -8,7 +8,7 @@ import { useAppDispatch, useWorkspace } from '../../state/AppStateProvider'
 import { useNow } from '../../state/clock'
 import { upcomingVisits } from '../../state/selectors'
 import { VisitList } from '../schedule/VisitList'
-import { needsAttention, statCardName, statCards, type StatCard, type StatCardId } from './overviewModel'
+import { needsAttention, statCards, type StatCard, type StatCardId, statCardName } from './overviewModel'
 import './overview.css'
 
 const CARD_ICONS: Record<StatCardId, IconName> = {
@@ -59,14 +59,17 @@ export function OverviewView(): React.JSX.Element {
         <ul className="stat-grid">
           {cards.map((card) => (
             <li key={card.id}>
-              <button type="button" className={`stat-card stat-card--${card.id}`} aria-label={statCardName(card)} onClick={() => openCard(card)}>
-                <span className="stat-card__label">
+              <button type="button" className={`stat-card stat-card--${card.id}`} onClick={() => openCard(card)}>
+                {/* One exact spoken name, "Needs review: 8 patients"; the visible parts are hidden from
+                    screen readers rather than overridden with aria-label (WCAG 2.5.3). */}
+                <span className="visually-hidden">{statCardName(card)}</span>
+                <span className="stat-card__label" aria-hidden="true">
                   <span className="stat-card__icon">
                     <Icon name={CARD_ICONS[card.id]} />
                   </span>
                   {card.label}
                 </span>
-                <span className="stat-card__value">
+                <span className="stat-card__value" aria-hidden="true">
                   <span className="stat-card__count">{card.count}</span>
                   {card.unit && <span className="stat-card__unit">{card.unit}</span>}
                 </span>
