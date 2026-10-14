@@ -6,9 +6,12 @@
     <title>Caregiver — Appointments</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
-      :root{--bg:#f6f9fb;--panel:#fff;--muted:#6b7a85;--blue:#1e7cff;--border:#e6edf3;--success:#e6fbef}
+      :root{--bg:#f6f9fb;--panel:#fff;--muted:#6b7a85;--blue:#1e7cff;--border:#e6edf3;--success:#e6fbef;--global-text:#0e1520}
       *{box-sizing:border-box}
-      body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:var(--bg);color:#12202b}
+      body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:var(--bg);color:#0e1520}
+      body, h1,h2,h3,h4,h5,h6,p,small,span,label,a,li,div,input,textarea,select { color:var(--global-text) !important; }
+      /* Button text forced to black on this page */
+      .btn, .cta, .sign-up, .ready, .call-btn { color:#000 !important; }
       .app{display:flex;min-height:100vh}
       .sidebar{width:220px;background:#fff;border-right:1px solid #eef2f5;padding:28px 18px}
       .brand{font-weight:700;display:flex;gap:10px;align-items:center}

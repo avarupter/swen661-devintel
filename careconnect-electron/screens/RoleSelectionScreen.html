@@ -6,10 +6,10 @@
     <title>CareConnect — Choose role</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
-      :root{--bg:#f6f9fb;--blue:#1e7cff;--muted:#6b7a85}
+      :root{--bg:#f6f9fb;--blue:#1e7cff;--muted:#6b7a85;--global-text:#0e1520}
       *{box-sizing:border-box}
       html,body{height:100%}
-      body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:var(--bg);color:#12202b}
+      body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:var(--bg);color:#0e1520}
       .topbar{background:linear-gradient(90deg,var(--blue),#0b63e6);height:64px;color:white;display:flex;align-items:center;padding:0 28px}
       .topbar .brand{display:flex;align-items:center;gap:12px;font-weight:700}
 
@@ -25,6 +25,8 @@
       .role p{margin:0;color:var(--muted)}
 
       .actions{display:flex;justify-content:space-between;align-items:center;margin-top:22px}
+      body, h1,h2,h3,h4,h5,h6,p,span,label,a,li,div,input,textarea,select { color:var(--global-text) !important; }
+      .btn, .cta, .sign-up, .ready, .call-btn { color:#fff !important; }
       .btn{padding:10px 14px;border-radius:10px;border:none;background:var(--blue);color:white;font-weight:700;cursor:pointer}
       .link{color:var(--blue);text-decoration:none}
 

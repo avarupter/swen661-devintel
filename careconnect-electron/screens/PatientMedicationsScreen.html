@@ -6,9 +6,11 @@
     <title>Patient — Medications</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
-      :root{--bg:#f6f9fb;--white:#fff;--muted:#6b7a85;--blue:#1e7cff;--border:#e6edf3;--success:#e6fbef}
+      :root{--bg:#f6f9fb;--white:#fff;--muted:#6b7a85;--blue:#1e7cff;--border:#e6edf3;--success:#e6fbef;--global-text:#0e1520}
       *{box-sizing:border-box}
-      body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:var(--bg);color:#12202b}
+      body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:var(--bg);color:#0e1520}
+      body, h1,h2,h3,h4,h5,h6,p,span,label,a,li,div,input,textarea,select { color:var(--global-text) !important; }
+      .btn, .cta, .sign-up, .ready, .call-btn { color:#000 !important; }
 
       .app{display:flex;min-height:100vh}
       .sidebar{width:220px;background:var(--white);border-right:1px solid #eef2f5;padding:28px}
@@ -33,7 +35,7 @@
       .med-title{font-weight:700;font-size:18px}
       .med-sub{color:var(--muted);font-size:13px}
 
-      .take-btn{display:block;width:100%;padding:12px;border-radius:10px;background:var(--blue);color:#fff;border:none;margin-top:14px;font-weight:700}
+      .take-btn{display:block;width:100%;padding:12px;border-radius:10px;background:var(--blue);color:#000;border:none;margin-top:14px;font-weight:700}
 
       .later{margin-top:18px}
       .later .item{display:flex;justify-content:space-between;align-items:center;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--white);margin-bottom:12px}
@@ -45,7 +47,7 @@
       .dot.active{background:var(--blue)}
 
       .support{margin-top:14px;padding:14px;border-radius:10px;background:#f8fbff;border:1px solid #eef6ff}
-      .support button{margin-top:10px;padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:#fff;color:var(--blue);cursor:pointer}
+      .support button{margin-top:10px;padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:#fff;color:#000;cursor:pointer}
 
       @media (max-width:980px){.layout{grid-template-columns:1fr}.sidebar{display:none}}
     </style>
