@@ -32,7 +32,7 @@ npm run dev        # Vite dev server + Electron, with hot reload for the rendere
 | `npm test` | Unit, component and integration tests (Jest) |
 | `npm test -- --coverage` | Same, plus a coverage report in `coverage/lcov-report/index.html`. The run fails below 60 %. |
 | `npm run test:e2e` | Builds, then drives the real app with Playwright (needs a display) |
-| `npm run dev:web` | Serves the renderer alone at http://localhost:5173 for Chrome and the axe DevTools extension; data stays in the browser |
+| `npm run dev:web` | Serves the renderer alone at http://localhost:5173 for Chrome and the axe DevTools extension; data stays in the browser. Chrome keeps Ctrl+N for itself, so open New patient from the toolbar or Ctrl+K there. |
 | `npm run test:axe` | With `dev:web` running: axe-core WCAG 2.1 A/AA scan of every screen and dialog, written to `docs/accessibility/axe/` |
 | `npm run test:layout` | With `dev:web` running: reflow at 320 CSS px and WCAG text spacing, written to `docs/accessibility/layout/` |
 | `npm run test:keyboard` | After `npm run build`: keyboard-only walkthrough of the desktop app, written to `docs/accessibility/keyboard/` |

@@ -23,6 +23,9 @@ NVDA switches to focus mode on its own in the patient list, the search field and
 On buttons, press NVDA+Space to enter focus mode first, or use the Ctrl shortcuts, which work in both modes.
 Screen reader users who don't want single-letter shortcuts can turn them off in Settings → Keyboard → Single-key shortcuts.
 
+**Chrome keeps Ctrl+N.** In the browser preview, Ctrl+N opens a new Chrome window; Chrome reserves it, so the page never receives it. There, open New patient from the command palette (Ctrl+K, "new patient", Enter) or the toolbar's New patient button.
+Every other shortcut in this script works in Chrome, and in the desktop app all of them work.
+
 ## Script and expected speech
 
 | # | Keys | What CareConnect exposes (from the accessibility tree) | Expected NVDA speech, roughly |
@@ -36,7 +39,7 @@ Screen reader users who don't want single-letter shortcuts can turn them off in 
 | 7 | Ctrl+K, type "pat", Down arrow, Esc | `dialog "Command palette"`. `combobox "Search commands" [expanded]`. Options such as `option "Filter patient list, Showing all patients"`, reached through `aria-activedescendant`. | "Command palette, dialog, Search commands, combo box, expanded", a result count, then "Filter patient list, Showing all patients". Esc closes the palette, and focus returns to where it was. |
 | 8 | Ctrl+, then Tab, Tab, Tab, Space, Space, Esc | `dialog "Settings"`. Groups "Display", "Keyboard" and "Notifications". `switch "Single-key shortcuts" [checked]`, described by its hint. | "Settings, dialog, Display, grouping, Show shortcut hints, switch, on …". On the Keyboard switch: "Keyboard, grouping, Single-key shortcuts, switch, on, E, N, M, R, / and G-key sequences …". Space says "off", and the live region says "Single-key shortcuts off". Space again: "Single-key shortcuts on". |
 | 9 | Ctrl+K, type "inb", Enter, then F6 until the conversation list, Space, R, type a reply, Ctrl+Enter | `listbox "Conversations"` with `option "Morgan Chen, Question about my care plan, 08:05"`. Then `dialog "Reply"` with `textbox "Message"`, and the status message after sending. | "Inbox · CareConnect …", "Conversations, list, Morgan Chen, Question about my care plan, 08:05", "Reply, dialog …", then "Message sent to Morgan Chen." |
-| 10 | Ctrl+N, Tab to "Add patient", Enter | `dialog "New patient"`. On submit, focus moves to `alert "There are 3 problems"`, which lists links to each field. Each field is `[invalid]` and described by its error. | "New patient, dialog, Full name, edit, required". On submit: "There are 3 problems", followed by the three messages. Following the first link: "Full name, edit, invalid entry, required, Error: Enter the patient’s full name." |
+| 10 | Ctrl+N (in Chrome: Ctrl+K, "new patient", Enter), Tab to "Add patient", Enter | `dialog "New patient"`. On submit, focus moves to `alert "There are 3 problems"`, which lists links to each field. Each field is `[invalid]` and described by its error. | "New patient, dialog, Full name, edit, required". On submit: "There are 3 problems", followed by the three messages. Following the first link: "Full name, edit, invalid entry, required, Error: Enter the patient’s full name." |
 | 11 | E, then Esc | `dialog "Edit care summary"`. Esc closes it and returns focus to the patient. | "Edit care summary …, dialog …", then back on "Avery Park, … selected" |
 
 The desktop app adds three things the browser preview doesn't have:

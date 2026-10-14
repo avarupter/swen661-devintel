@@ -45,6 +45,7 @@ Every number here comes from tools that run on the code in this repository. The 
 
 **Browser preview.** axe DevTools runs in Chrome, but CareConnect is a desktop app.
 `npm run dev:web` serves the same React screens on their own at http://localhost:5173. In the browser, a small API keeps the synthetic data in the browser's local storage.
+Chrome keeps a few keys for itself, such as Ctrl+N for a new window. In the browser preview, New patient therefore opens from the toolbar or the command palette.
 Desktop-only features have no browser version, so they are covered elsewhere:
 - file dialogs, the tray, notifications and the native menus are covered by the Jest integration tests and the keyboard walkthrough in Electron;
 - the native menu structure is read from the running app (see [keyboard/README.md](keyboard/README.md#native-menu-bar)).
