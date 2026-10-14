@@ -6,7 +6,7 @@ CareConnect's clinical workspace for care coordinators. It's a keyboard-first, s
 
 - Design spec and requirements traceability: [`docs/design.md`](docs/design.md)
 - Implementation plan: [`docs/implementation-plan.md`](docs/implementation-plan.md)
-- Test plan: [`docs/test-plan.md`](docs/test-plan.md)
+- Week 9 accessibility testing report: [`docs/accessibility/README.md`](docs/accessibility/README.md), with the [WCAG 2.1 AA conformance table](docs/accessibility/wcag-2.1-aa-conformance.md), [screen reader notes](docs/accessibility/screen-reader-notes.md) and [coverage report](docs/coverage/html/index.html)
 - Accessibility demo script (Part 3 video): [`docs/accessibility-demo-script.md`](docs/accessibility-demo-script.md)
 
 ## Requirements
@@ -32,6 +32,10 @@ npm run dev        # Vite dev server + Electron, with hot reload for the rendere
 | `npm test` | Unit, component and integration tests (Jest) |
 | `npm test -- --coverage` | Same, plus a coverage report in `coverage/lcov-report/index.html`. The run fails below 60 %. |
 | `npm run test:e2e` | Builds, then drives the real app with Playwright (needs a display) |
+| `npm run dev:web` | Serves the renderer alone at http://localhost:5173 for Chrome and the axe DevTools extension; data stays in the browser |
+| `npm run test:axe` | With `dev:web` running: axe-core WCAG 2.1 A/AA scan of every screen and dialog, written to `docs/accessibility/axe/` |
+| `npm run test:layout` | With `dev:web` running: reflow at 320 CSS px and WCAG text spacing, written to `docs/accessibility/layout/` |
+| `npm run test:keyboard` | After `npm run build`: keyboard-only walkthrough of the desktop app, written to `docs/accessibility/keyboard/` |
 | `npm run lint` | ESLint (typescript-eslint, react-hooks, jsx-a11y and process-boundary rules) |
 | `npm run typecheck` | TypeScript, separately for the Node side and the web side |
 | `npm run dist:win` | Windows NSIS installer, built on Windows |
@@ -151,9 +155,12 @@ The app implements every card of the Assignment 7 desktop accessibility specific
 - Status is always icon + word.
 - Polite and assertive live regions; status messages persist until dismissed.
 - Error summaries move focus and link to each field.
-- The layout reflows at 200 % zoom.
+- The layout reflows down to 320 CSS px (400 % zoom) and survives WCAG text spacing.
+- Single-key shortcuts (E, N, M, R, /, G-sequences) can be turned off in Settings → Keyboard, for speech-input users (WCAG 2.1.4).
 - Windows High Contrast is followed through `forced-colors`, and there is also an in-app High contrast theme and a Reduce motion setting.
-- jest-axe checks every view and dialog.
+- jest-axe checks every view and dialog. axe-core also scans every screen in Chromium (`npm run test:axe`), so colour contrast is checked against real rendering.
+
+The Week 9 testing is in [`docs/accessibility/`](docs/accessibility/README.md). It covers the axe results, the keyboard walkthrough, the reflow and text-spacing checks, NVDA notes and WCAG 2.1 AA conformance.
 
 ### Testing with assistive technology
 
