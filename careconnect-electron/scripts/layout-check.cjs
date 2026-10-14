@@ -43,7 +43,18 @@ const DIALOGS = [
   { id: 'dialog-help', name: 'Help', open: (p) => p.keyboard.press('F1') },
   { id: 'dialog-settings', name: 'Settings', open: (p) => p.keyboard.press('Control+,') },
   { id: 'dialog-new-patient', name: 'New patient', open: (p) => p.keyboard.press('Control+N') },
-  { id: 'dialog-compose-new', name: 'New message', open: (p) => p.keyboard.press('Control+Shift+M') }
+  { id: 'dialog-compose-new', name: 'New message', open: (p) => p.keyboard.press('Control+Shift+M') },
+  { id: 'dialog-add-note', name: /note/i, open: (p) => p.getByRole('button', { name: 'Add note for Avery Park' }).click() },
+  { id: 'dialog-edit-summary', name: /care summary/i, open: (p) => p.getByRole('button', { name: /^Edit care summary for Avery Park/ }).click() },
+  {
+    id: 'dialog-compose-reply',
+    name: 'Reply',
+    open: async (p) => {
+      await goTo(p, /^Inbox/)
+      await p.getByRole('option').first().click()
+      await p.keyboard.press('r')
+    }
+  }
 ]
 
 async function closeDialogs(page) {

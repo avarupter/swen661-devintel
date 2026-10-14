@@ -1,7 +1,7 @@
 {
   "url": "http://localhost:5173/",
   "chromium": "153.0.8010.12",
-  "date": "2026-10-14T00:51:20.117Z",
+  "date": "2026-10-14T00:56:59.835Z",
   "results": [
     {
       "check": "reflow",
@@ -108,6 +108,30 @@
       "beyond": []
     },
     {
+      "check": "reflow",
+      "target": "dialog-add-note",
+      "pass": true,
+      "viewport": 320,
+      "scrollWidth": 320,
+      "beyond": []
+    },
+    {
+      "check": "reflow",
+      "target": "dialog-edit-summary",
+      "pass": true,
+      "viewport": 320,
+      "scrollWidth": 320,
+      "beyond": []
+    },
+    {
+      "check": "reflow",
+      "target": "dialog-compose-reply",
+      "pass": true,
+      "viewport": 320,
+      "scrollWidth": 320,
+      "beyond": []
+    },
+    {
       "check": "text-spacing",
       "target": "overview",
       "pass": true,
@@ -207,10 +231,45 @@
     },
     {
       "check": "text-spacing",
-      "target": "skip-links-focused",
+      "target": "dialog-add-note",
       "pass": true,
       "clipped": [],
       "byDesign": []
+    },
+    {
+      "check": "text-spacing",
+      "target": "dialog-edit-summary",
+      "pass": true,
+      "clipped": [],
+      "byDesign": []
+    },
+    {
+      "check": "text-spacing",
+      "target": "dialog-compose-reply",
+      "pass": true,
+      "clipped": [],
+      "byDesign": [
+        "span.conversation-option__preview: \"Can we go over the new exercise goals at\"",
+        "span.conversation-option__preview: \"Riley’s results are back and within rang\"",
+        "span.conversation-option__preview: \"We received a refill request for Jamie W\"",
+        "span.conversation-option__preview: \"I uploaded this week’s blood pressure re\"",
+        "span.conversation-option__preview: \"Dr. Moreno’s Friday afternoon clinic mov\"",
+        "span.conversation-option__preview: \"You: Please bring a photo ID and a list \""
+      ]
+    },
+    {
+      "check": "text-spacing",
+      "target": "skip-links-focused",
+      "pass": true,
+      "clipped": [],
+      "byDesign": [
+        "span.conversation-option__preview: \"Can we go over the new exercise goals at\"",
+        "span.conversation-option__preview: \"Riley’s results are back and within rang\"",
+        "span.conversation-option__preview: \"We received a refill request for Jamie W\"",
+        "span.conversation-option__preview: \"I uploaded this week’s blood pressure re\"",
+        "span.conversation-option__preview: \"Dr. Moreno’s Friday afternoon clinic mov\"",
+        "span.conversation-option__preview: \"You: Please bring a photo ID and a list \""
+      ]
     }
   ]
 }
