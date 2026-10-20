@@ -46,7 +46,6 @@ const FRAGMENTS = new Set(["#main", "#"]);
 let route = "today";
 
 function readRoute() {
-  if (typeof window === "undefined") return route;
   const hash = window.location.hash;
   if (FRAGMENTS.has(hash)) return route;
   route = hash === "#specimens" ? "sheet" : "today";
@@ -54,7 +53,12 @@ function readRoute() {
 }
 
 export default function App() {
-  const showsSheet = useSyncExternalStore(subscribeToHash, readRoute, readRoute) === "sheet";
+  // No getServerSnapshot third argument: main.jsx mounts with createRoot, never
+  // hydrateRoot, so React has no server pass to take one. Passing readRoute
+  // there meant carrying a `typeof window === "undefined"` branch that nothing
+  // could ever execute. If this app ever does gain SSR, React throws a clear
+  // error here rather than silently serving a guessed route.
+  const showsSheet = useSyncExternalStore(subscribeToHash, readRoute) === "sheet";
 
   // The sheet is not one of the five destinations, so while it is open no
   // destination is the current page. Leaving aria-current on Home would tell a
@@ -87,9 +91,14 @@ export default function App() {
       <div className="cc-shell">
         <Nav variant="sidebar" current={showsSheet ? null : CURRENT_DESTINATION} />
 
+        {/* tabIndex -1: a <main> is not focusable, so without it the skip link
+            scrolls to the content but leaves keyboard focus where it was, and
+            the next Tab carries on from the app bar. -1 keeps it out of the tab
+            sequence while making it a legal focus target. */}
         <main
           className={`cc-page${showsSheet ? " cc-page--sheet" : ""}`}
           id="main"
+          tabIndex={-1}
         >
           {showsSheet ? <Specimens /> : <PatientToday />}
         </main>

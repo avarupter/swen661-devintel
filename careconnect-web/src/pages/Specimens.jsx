@@ -28,15 +28,33 @@ import { COLOR_TOKENS, STATUS_BADGES, TYPE_STEPS } from "../data/foundations.js"
  * without a reload, so state would only buy a second render and one frame of
  * placeholder dashes in the captions. The probe element is appended and removed
  * within this call, so React never sees a DOM it did not write.
+ *
+ * No guard against a missing `document`: this runs during render, and the app
+ * mounts with createRoot rather than hydrateRoot, so there is no pass in which
+ * a document does not exist.
  */
+
+/**
+ * Six digits, always. The production CSS minifier rewrites #ffffff as #fff, so
+ * reading the token back gives a different string in a built bundle than in dev
+ * — both truthful, but a reference sheet that prints #FFF next to #F7F9FC is
+ * reporting the minifier rather than the palette.
+ */
+function sixDigitHex(value) {
+  const m = /^#([0-9a-f])([0-9a-f])([0-9a-f])$/i.exec(value);
+  return m ? `#${m[1]}${m[1]}${m[2]}${m[2]}${m[3]}${m[3]}`.toUpperCase() : value;
+}
+
 let measured = null;
 function measure() {
   if (measured) return measured;
-  if (typeof document === "undefined") return { colors: {}, type: {} };
 
   const root = getComputedStyle(document.documentElement);
   const colors = Object.fromEntries(
-    COLOR_TOKENS.map((c) => [c.token, root.getPropertyValue(c.token).trim().toUpperCase()])
+    COLOR_TOKENS.map((c) => [
+      c.token,
+      sixDigitHex(root.getPropertyValue(c.token).trim()).toUpperCase(),
+    ])
   );
 
   const probe = document.createElement("p");

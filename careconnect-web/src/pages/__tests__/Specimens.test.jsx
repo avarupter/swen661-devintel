@@ -131,6 +131,28 @@ describe("Specimens", () => {
       });
     });
 
+    it("prints a shorthand hex at full six-digit width", async () => {
+      // The production CSS minifier rewrites #ffffff as #fff, so a built bundle
+      // hands measure() a three-digit value where dev hands it six. Both are
+      // truthful, but a reference sheet that prints #FFF beside #F7F9FC is
+      // reporting the minifier rather than the palette. Caught by the Chromium
+      // sweep against `npm run preview`, which jsdom could not have seen —
+      // vitest never runs the minifier.
+      vi.resetModules();
+      document.documentElement.style.setProperty(COLOR_TOKENS[0].token, "#abc");
+      try {
+        const { default: Shorthand } = await import("../Specimens.jsx");
+        const { container } = render(<Shorthand />);
+        expect(container.querySelector(".cc-swatch__hex").textContent).toBe("#AABBCC");
+      } finally {
+        document.documentElement.style.setProperty(
+          COLOR_TOKENS[0].token,
+          SEEDED[COLOR_TOKENS[0].token]
+        );
+        vi.resetModules();
+      }
+    });
+
     it("keeps the hex slot even when the token resolves to nothing", async () => {
       // The old version of this test only counted `.cc-swatch__hex` elements
       // while beforeAll had seeded every token, so the "unresolved" half of its

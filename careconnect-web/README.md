@@ -162,10 +162,11 @@ below the 16px floor, no `outline: none`.
 
 ### 2. `npm run coverage` — the Vitest suite
 
-405 tests across 17 files, in jsdom. 97% statements, 98% branches, 100%
-functions and lines; the gate is set at 90% and the run fails below it. The two
-uncovered branches are the server-rendering guards in `App.jsx` and
-`Specimens.jsx`, which jsdom cannot reach.
+406 tests across 17 files, in jsdom. **100% of statements, branches, functions
+and lines**, with the gate set at 90% so the run fails below it. Nothing is
+excluded from the report to get there — the last two uncovered branches were
+server-rendering guards that `createRoot` can never execute, and they were
+deleted rather than tested around.
 
 Coverage runs with `all: true`. That setting is the point: without it a source
 file with no test file of its own is simply absent from the report rather than
@@ -182,19 +183,22 @@ reached the markup, and it says so. The pixels are layer 3's job.
 ### 3. The browser sweep — Chromium, via Playwright
 
 Loads both routes at seven widths — 393, 767, 768, 1024, 1199, 1200, 1440 —
-and measures fifteen things at each from the live DOM:
+and measures eighteen things at each from the live DOM:
 
 no text below 16px · targets ≥44px · buttons and fields ≥52px · mobile bar
 destinations ≥72px · exactly one visible "Main" landmark · the right number of
 `aria-current="page"` for the route · all five destinations present with the
 right accessible names · the mobile bar really showing abbreviations while
-tablet and desktop show full labels · all 19 content-parity strings · the
+tablet and desktop show full labels · all 20 content-parity strings · the
 appointment card genuinely rearranging at 768 (read from computed
 `grid-template-columns` and `flex-direction`, so a renamed layout class cannot
 pass) · the current destination's computed background differing from an
-unselected one · no text clipped by its own box · computed sRGB contrast of
-every visible text node · no horizontal overflow · and, scrolled to the very
-bottom, nothing carrying text sitting underneath the fixed mobile bar.
+unselected one · no text clipped by its own box · the progress fill painting
+the width its text claims · every swatch on the sheet resolving to a real
+colour and a six-digit hex · the skip link being the first tab stop and Enter
+really moving focus into `<main>` · computed sRGB contrast of every visible
+text node · no horizontal overflow · and, scrolled to the very bottom, nothing
+carrying text sitting underneath the fixed mobile bar.
 
 All fourteen runs (7 widths × 2 routes) pass against the production build as
 well as the dev server. The script is not committed — it lives with the team's
@@ -206,7 +210,12 @@ over, and the reference widths alone would not catch a handover that is off by
 a pixel. And every check in it was probe-tested against the bug it describes —
 re-break the thing, confirm the check goes red — because a check that cannot
 fail is worse than no check, and two of the checks here were found to be
-exactly that.
+exactly that. The probe scripts live beside `verify.mjs`.
+
+The sweep also earns its keep against the BUILD specifically. The swatch check
+was added and immediately failed in production only: the CSS minifier rewrites
+`#ffffff` as `#fff`, so the foundations sheet was printing `#FFF` beside
+`#F7F9FC`. No unit test could have seen it — vitest never runs the minifier.
 
 ## What is done, and what is not
 
@@ -219,7 +228,7 @@ exactly that.
 - The foundations & component-states sheet, including real `:focus-visible`
   specimens rather than painted imitations of a ring.
 - Accessibility work above, verified mechanically at seven widths.
-- 405 unit tests at 97% coverage, plus the browser sweep.
+- 406 unit tests at 100% coverage, plus an 18-check browser sweep.
 - Production build verified, not just the dev server.
 
 **Not done**
