@@ -1,0 +1,397 @@
+/* ===========================================================================
+   Layout — one DOM order, three arrangements.
+
+   Mobile-first. The base rules below ARE the mobile layout; the two media
+   queries add tablet and desktop. Written this way because the mobile layout is
+   the simplest (one column, everything in reading order), so the base
+   stylesheet stays small and each breakpoint only adds arrangement.
+
+   Boundaries come straight from the board: mobile < 768, tablet 768–1199,
+   desktop >= 1200. min-width: 1200px starts exactly where the board's desktop
+   range starts, so 1199px gets the tablet layout and 1200px gets desktop with
+   no gap and no overlap — which is why both queries are min-width and neither
+   uses max-width.
+   =========================================================================== */
+/* Wrapped in its cascade layer. See the layer-order note in src/styles/index.css:
+   CSS written OUTSIDE a @layer block outranks every layer, including the
+   a11y layer that owns the focus ring, so every file in src/styles/ wraps
+   its own contents. `npm run lint:tokens` fails if this wrapper goes
+   missing. */
+@layer layout {
+  .cc-app {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* --- App bar ------------------------------------------------------------- */
+  .cc-appbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cc-space-4);
+    padding: var(--cc-space-3) var(--cc-inset);
+    background: var(--cc-surface);
+    border-bottom: 1px solid var(--cc-border);
+  }
+
+  .cc-appbar__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--cc-space-3);
+  }
+
+  .cc-appbar__name {
+    font-size: var(--cc-title-size);
+    line-height: var(--cc-title-line);
+    font-weight: 700;
+  }
+
+  .cc-appbar__account {
+    display: flex;
+    align-items: center;
+    gap: var(--cc-space-3);
+    color: var(--cc-muted);
+  }
+
+  /* On mobile the account is the avatar only; the full name returns at tablet. */
+  .cc-appbar__accountText {
+    display: none;
+  }
+
+  .cc-appbar__avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--cc-target-min);
+    height: var(--cc-target-min);
+    border-radius: var(--cc-radius-pill);
+    background: var(--cc-selected);
+    color: var(--cc-primary);
+    font-weight: 700;
+  }
+
+  /* --- Shell --------------------------------------------------------------- */
+  .cc-shell {
+    flex: 1;
+    display: flex;
+    min-width: 0;
+  }
+
+  /* --- The page grid · MOBILE ---------------------------------------------
+   Single column, 16px side insets, everything in reading order. The bottom
+   padding is the fixed-bar clearance plus the safe-area inset, so the privacy
+   line is never hidden behind the bar on a device with a home indicator.     */
+  .cc-page {
+    flex: 1;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--cc-space-5);
+    align-content: start;
+    padding: var(--cc-space-5) var(--cc-inset);
+    padding-bottom: calc(
+      var(--cc-bottom-bar-clearance) + env(safe-area-inset-bottom, 0px)
+    );
+  }
+
+  /* The page is two flows: the daily plan and the supporting cards. Wrapping
+   them is what stops the grid coupling their row heights — with all seven
+   blocks as direct grid children, the plan row stretched to match the glance
+   card and left a tall empty gap under the progress bar on desktop. */
+  .cc-page__main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cc-space-5);
+    min-width: 0;
+  }
+
+  .cc-page__support {
+    display: grid;
+    gap: var(--cc-space-5);
+    min-width: 0;
+  }
+
+  .cc-page__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cc-space-2);
+  }
+
+  .cc-page__headerAction {
+    margin-top: var(--cc-space-2);
+  }
+
+  .cc-plan {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cc-space-3);
+  }
+
+  .cc-plan__note {
+    color: var(--cc-primary);
+    font-weight: 500;
+  }
+
+  /* --- Navigation · MOBILE = fixed bottom bar ------------------------------
+   Five destinations in 72px targets. The two other presentations are hidden,
+   which also takes them out of the accessibility tree so only one "Main"
+   landmark exists at this width.                                            */
+  .cc-nav--sidebar,
+  .cc-nav--tabs {
+    display: none;
+  }
+
+  .cc-nav--bar {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 20;
+    background: var(--cc-surface);
+    border-top: 1px solid var(--cc-border);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .cc-nav--bar .cc-nav__list {
+    justify-content: space-between;
+    padding: 0 var(--cc-space-2);
+  }
+
+  .cc-nav--bar .cc-nav__item {
+    flex: 1;
+  }
+
+  .cc-nav--bar .cc-nav__link {
+    flex-direction: column;
+    gap: var(--cc-space-1);
+    min-height: var(--cc-tab-target);
+    padding: var(--cc-space-2) var(--cc-space-1);
+    text-align: center;
+    font-size: var(--cc-body-size); /* 16px, not shrunk to fit five labels */
+  }
+
+  /* ===========================================================================
+   TABLET · 768–1199
+   Top tabs with full destination labels, 40px page insets, the appointment
+   details sharing a row, later items paired, and the two support cards in a
+   supporting row. No oversized mobile bottom bar.
+   =========================================================================== */
+
+  /* --- Foundations sheet ---------------------------------------------------
+   Mobile first: one specimen per row, because a 393px viewport cannot show two
+   52px controls side by side without shrinking something.                     */
+  .cc-sheet__group {
+    display: grid;
+    gap: var(--cc-space-4);
+    align-content: start;
+  }
+
+  .cc-swatches,
+  .cc-specimens,
+  .cc-typelist {
+    display: grid;
+    gap: var(--cc-space-4);
+  }
+
+  .cc-specimens {
+    gap: var(--cc-space-5);
+  }
+
+  .cc-specimen {
+    display: grid;
+    gap: var(--cc-space-2);
+  }
+
+  .cc-badgerow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cc-space-3);
+  }
+
+  @media (min-width: 768px) {
+    .cc-nav--bar {
+      display: none;
+    }
+
+    .cc-nav--tabs {
+      display: block;
+      background: var(--cc-surface);
+      border-bottom: 1px solid var(--cc-border);
+      padding: var(--cc-space-2) var(--cc-inset);
+    }
+
+    /* Wrap rather than compress: at 768 the five full labels can run out of room,
+     and the board is explicit that labels are never shortened to fit. */
+    .cc-nav--tabs .cc-nav__list {
+      flex-wrap: wrap;
+      gap: var(--cc-space-2);
+    }
+
+    .cc-appbar__accountText {
+      display: inline;
+    }
+
+    .cc-appbar__avatar {
+      display: none;
+    }
+
+    .cc-page {
+      padding: var(--cc-space-6) var(--cc-inset) var(--cc-space-7);
+    }
+
+    /* The support cards become a row of two ("Support row" on the parity table).
+     The main column stays a single flow. */
+    .cc-page__support {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    /* Two specimens fit side by side once a 52px control and its caption have
+     room; the swatch list goes wider still because a chip and three short lines
+     need less than half a tablet. */
+    .cc-specimens {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cc-swatches {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--cc-space-5);
+    }
+
+    .cc-sheet__group {
+      gap: var(--cc-space-5);
+    }
+
+    /* Welcome text and caregiver action share the header. */
+    .cc-page__header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas:
+        "meta   action"
+        "title  action"
+        "crumbs action";
+      align-items: start;
+      column-gap: var(--cc-space-5);
+    }
+    .cc-page__header > :nth-child(1) {
+      grid-area: meta;
+    }
+    .cc-page__header > :nth-child(2) {
+      grid-area: title;
+    }
+    .cc-page__header > :nth-child(3) {
+      grid-area: crumbs;
+    }
+    .cc-page__headerAction {
+      grid-area: action;
+      margin-top: 0;
+      align-self: center;
+    }
+    .cc-page__headerAction .cc-btn {
+      width: auto;
+    }
+
+    /* Appointment details share a row, divided by a rule. */
+    .cc-appointment__body {
+      grid-template-columns: auto minmax(0, 1fr);
+      column-gap: var(--cc-space-5);
+      align-items: center;
+    }
+    .cc-appointment__what {
+      border-inline-start: 1px solid var(--cc-border);
+      padding-inline-start: var(--cc-space-5);
+    }
+
+    .cc-appointment__foot {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .cc-appointment__foot .cc-btn {
+      width: auto;
+    }
+
+    /* Later items form a pair. */
+    .cc-later__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--cc-space-4);
+    }
+
+    .cc-care .cc-btn {
+      width: auto;
+      align-self: flex-start;
+    }
+  }
+
+  /* ===========================================================================
+   DESKTOP · >= 1200
+   264px sidebar, 40px workspace insets, the daily plan taking the remaining
+   width beside a 324px supporting column with a 24px gap.
+   =========================================================================== */
+  @media (min-width: 1200px) {
+    .cc-nav--tabs {
+      display: none;
+    }
+
+    .cc-nav--sidebar {
+      display: block;
+      flex: none;
+      width: var(--cc-sidebar-w);
+      padding: var(--cc-space-6) var(--cc-space-4);
+      background: var(--cc-surface);
+      border-inline-end: 1px solid var(--cc-border);
+    }
+
+    .cc-nav--sidebar .cc-nav__list {
+      flex-direction: column;
+      gap: var(--cc-space-1);
+      position: sticky;
+      top: var(--cc-space-6);
+    }
+
+    /* Daily plan + supporting column. The support cards stay later in the DOM —
+     the column is created by placing them in the second grid column, not by
+     reordering, so tab order still follows reading order. */
+    .cc-page {
+      grid-template-columns: minmax(0, 1fr) var(--cc-support-w);
+      column-gap: var(--cc-column-gap);
+      padding: var(--cc-space-7);
+    }
+
+    /* The sheet has no supporting column — its sections are the main flow, so
+     it opts out of the two-column page grid rather than having every section
+     land in alternating columns. */
+    .cc-page--sheet {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .cc-page__main {
+      grid-column: 1 / 2;
+    }
+
+    /* "Support column": the two cards stack in the right-hand column. They are
+     still later in the DOM than the plan, so tab order follows reading order —
+     the column is created by placing the wrapper, not by reordering. */
+    .cc-page__support {
+      grid-column: 2 / 3;
+      grid-template-columns: minmax(0, 1fr);
+      align-content: start;
+    }
+
+    .cc-privacy {
+      grid-column: 1 / -1;
+    }
+
+    /* Two later-today items sit together. */
+    .cc-later__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cc-swatches {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .cc-page {
+      padding-bottom: var(--cc-space-7);
+    }
+  }
+}
