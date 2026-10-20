@@ -69,7 +69,7 @@
    contrast minimum, and this pairing measures 3.86:1 — legible, but it is an
    exemption rather than a pass, which is why disabled is never used to convey
    information here. */
-  .cc-btn:disabled {
+  .cc-btn[aria-disabled="true"] {
     background: var(--cc-disabled);
     color: var(--cc-muted);
     border-color: var(--cc-disabled);
@@ -326,8 +326,15 @@
     display: flex;
     align-items: flex-start;
     gap: var(--cc-space-3);
-    padding: var(--cc-space-5);
+    padding: var(--cc-space-item);
     border-radius: var(--cc-radius-item);
+  }
+
+  /* A flex item will not shrink below its longest unbreakable word unless it is
+     told it may. At 768 two of these share a row, so without this a long
+     medication name pushes the pair wider than the grid track. */
+  .cc-later__text {
+    min-width: 0;
   }
 
   .cc-later__icon,

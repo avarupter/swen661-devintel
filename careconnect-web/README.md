@@ -23,6 +23,9 @@ Other scripts:
 | `npm run build` | Production build into `dist/` |
 | `npm run preview` | Serve the production build — worth doing, see "Cascade layers" below |
 | `npm run lint` | `oxlint` for JS, then `scripts/lint-tokens.mjs` for the stylesheets |
+| `npm test` | The Vitest suite, once |
+| `npm run test:watch` | The suite in watch mode |
+| `npm run coverage` | The suite with v8 coverage; fails below 90% on any metric |
 
 Two routes, no router:
 
@@ -33,6 +36,13 @@ Two routes, no router:
 `#specimens` is read straight from `location.hash`. A router would add a
 dependency and a build concept for one evidence page, and the five navigation
 destinations are inert in this cut, so there is nothing else to route.
+
+One wrinkle worth knowing before you touch `App.jsx`: the hash is not only a
+route. `#main` is the skip link's target. Treating every hash as a route meant
+that skipping to the main content while the sheet was open navigated straight
+off it — the first control a keyboard user reaches was the one that threw away
+their place. So a hash naming a *fragment* leaves the route alone, and only a
+hash naming a *view* changes it.
 
 ## Responsive behaviour
 
@@ -141,22 +151,62 @@ reorder one, reorder both, or `npm run build` will stop matching `npm run dev`.
 
 ## Verification
 
-`npm run lint` is the static half. The behavioural half is a headless
-Playwright script that loads both routes at seven widths — 393, 767, 768, 1024,
-1199, 1200 and 1440 — and checks, at each one:
+Three layers, and they deliberately do not overlap.
+
+### 1. `npm run lint` — static
+
+`oxlint` for the JavaScript, then `scripts/lint-tokens.mjs` for the
+stylesheets: no stylesheet outside `src/styles/`, no rule outside a `@layer`,
+no colour outside `tokens.css`, no spacing off the 4px scale, no `font-size`
+below the 16px floor, no `outline: none`.
+
+### 2. `npm run coverage` — the Vitest suite
+
+405 tests across 17 files, in jsdom. 97% statements, 98% branches, 100%
+functions and lines; the gate is set at 90% and the run fails below it. The two
+uncovered branches are the server-rendering guards in `App.jsx` and
+`Specimens.jsx`, which jsdom cannot reach.
+
+Coverage runs with `all: true`. That setting is the point: without it a source
+file with no test file of its own is simply absent from the report rather than
+counted at zero, and the percentage stops meaning anything about completeness.
+
+**What these tests deliberately do not claim.** jsdom has no layout engine and
+the suite runs with `css: false`, so no unit test here can tell you a target is
+72px, which of the three layouts is showing, what a contrast ratio computes to,
+or whether an element is visually hidden. Tests that assert a class name as a
+proxy for any of that would pass with the stylesheet deleted, so they are not
+written. Where a test names a modifier class it is pinning that the prop
+reached the markup, and it says so. The pixels are layer 3's job.
+
+### 3. The browser sweep — Chromium, via Playwright
+
+Loads both routes at seven widths — 393, 767, 768, 1024, 1199, 1200, 1440 —
+and measures fifteen things at each from the live DOM:
 
 no text below 16px · targets ≥44px · buttons and fields ≥52px · mobile bar
-destinations ≥72px · exactly one visible "Main" navigation landmark · exactly
-one `aria-current="page"` · all five destinations present with the right
-accessible names · all 18 parity strings present on Patient Today · computed
-sRGB contrast of every visible text node · no horizontal overflow.
+destinations ≥72px · exactly one visible "Main" landmark · the right number of
+`aria-current="page"` for the route · all five destinations present with the
+right accessible names · the mobile bar really showing abbreviations while
+tablet and desktop show full labels · all 19 content-parity strings · the
+appointment card genuinely rearranging at 768 (read from computed
+`grid-template-columns` and `flex-direction`, so a renamed layout class cannot
+pass) · the current destination's computed background differing from an
+unselected one · no text clipped by its own box · computed sRGB contrast of
+every visible text node · no horizontal overflow · and, scrolled to the very
+bottom, nothing carrying text sitting underneath the fixed mobile bar.
 
-The boundary widths are the point: 767/768 and 1199/1200 are where a layout
-hands over, and both sides of each are checked. All fourteen runs (7 widths ×
-2 routes) pass against the dev server and against the production build.
+All fourteen runs (7 widths × 2 routes) pass against the production build as
+well as the dev server. The script is not committed — it lives with the team's
+other demo tooling outside the repo, per the convention set in week 4.
 
-The script is not committed — it lives with the team's other demo tooling
-outside the repo, alongside the screenshots, per the convention set in week 4.
+Two things about that list are worth copying into the next project. The
+boundary widths are the point: 767/768 and 1199/1200 are where a layout hands
+over, and the reference widths alone would not catch a handover that is off by
+a pixel. And every check in it was probe-tested against the bug it describes —
+re-break the thing, confirm the check goes red — because a check that cannot
+fail is worse than no check, and two of the checks here were found to be
+exactly that.
 
 ## What is done, and what is not
 
@@ -169,6 +219,7 @@ outside the repo, alongside the screenshots, per the convention set in week 4.
 - The foundations & component-states sheet, including real `:focus-visible`
   specimens rather than painted imitations of a ring.
 - Accessibility work above, verified mechanically at seven widths.
+- 405 unit tests at 97% coverage, plus the browser sweep.
 - Production build verified, not just the dev server.
 
 **Not done**
@@ -179,14 +230,14 @@ outside the repo, alongside the screenshots, per the convention set in week 4.
   screen, and inventing behaviour would mean inventing data.
 - **One screen of five.** Medications, Appointments, Messages and Help exist as
   destinations only.
-- **No tests.** The verification above is a Playwright script run by hand, not
-  a suite in CI. It should become one.
+- **The browser sweep is not in CI.** It exits non-zero and is ready to be, but
+  today it is run by hand. Only the unit suite runs on demand.
 - **No persistence, no data layer, no API.** All copy is a literal in
   `data/patientToday.js`.
 
 ## Where the implementation departs from the Figma boards
 
-Three deliberate differences, each because the board's own rules conflict:
+Two deliberate differences, each because the board's own rules conflict:
 
 1. **Navigation items have no border.** The component-states board draws the
    default nav item as a bordered chip, but the border token is `--cc-border` at
@@ -194,10 +245,20 @@ Three deliberate differences, each because the board's own rules conflict:
    control. The layout renders show the sidebar items borderless, so that is
    what is implemented; selection is carried by the tint plus `aria-current`,
    and focus by the ring.
-2. **Disabled buttons use the native `disabled` attribute**, not
-   `aria-disabled`. The board says "remains legible and is not actionable", and
-   `aria-disabled` leaves the click handler live. The accepted cost is that the
-   control leaves the tab order.
-3. **The error field is not a live region.** With nothing wired there is no
+2. **The error field is not a live region.** With nothing wired there is no
    validation event to announce, and a live region here would announce on first
    render — worse than silence. It becomes a live region when the form is wired.
+
+### One asymmetry that is not a departure
+
+`Button` uses `aria-disabled` with the click handler detached; `TextField` uses
+the native `disabled` attribute. Both match the board, and the difference is
+deliberate.
+
+The usual objection to `aria-disabled` is that it leaves the handler live — so
+the button does not pass one. What it buys is that the control stays in the tab
+order: a keyboard user reaches it and hears "unavailable" rather than having it
+vanish silently from the sequence, and the disabled specimen on the foundations
+sheet can actually be focused to show that its label still reads. A disabled
+input is a different case: it must also be skipped by form submission and must
+not be editable, and only the native attribute gives that.

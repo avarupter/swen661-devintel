@@ -116,6 +116,18 @@
     font-weight: var(--cc-weight-regular);
   }
 
+  /* A 16px semibold label. Used for the next-thing eyebrow and for each
+     "today at a glance" value — both of which are the heavier half of a
+     two-line pair, so the weight is the whole point of the class. It was
+     referenced in the markup before it was defined here, which is a silent
+     failure: the class simply did nothing and both spots rendered as plain
+     body text. */
+  .cc-label {
+    font-size: var(--cc-body-size);
+    line-height: var(--cc-body-line);
+    font-weight: var(--cc-weight-semibold);
+  }
+
   /* --- Weight and colour modifiers ----------------------------------------
      Separate from size so that "a 16px semibold label" is a composition of two
      classes rather than a sixth size token. The board lists body and labels at

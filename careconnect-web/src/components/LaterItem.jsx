@@ -10,9 +10,14 @@ import Icon from "./Icon.jsx";
 export default function LaterItem({ item }) {
   return (
     <Card as="li" className="cc-later">
-      <span className="cc-later__icon">
-        <Icon name={item.icon} size={22} />
-      </span>
+      {/* The chip is a painted circle in CSS, so rendering it around a missing
+          or unrecognised glyph leaves a coloured blank beside the text. No
+          icon, no chip. */}
+      {item.icon ? (
+        <span className="cc-later__icon">
+          <Icon name={item.icon} size={22} />
+        </span>
+      ) : null}
       <div className="cc-later__text">
         <p className="cc-later__time">{item.time}</p>
         <p className="cc-later__title">{item.title}</p>

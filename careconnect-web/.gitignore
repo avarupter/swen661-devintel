@@ -22,3 +22,16 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Test coverage output
+coverage
+
+# The repo root ignores **/vite.config.js and **/package-lock.json — patterns
+# inherited from the Flutter and React Native projects alongside this one.
+# Both files are load-bearing here: without vite.config.js a clone has no React
+# plugin and no test config and cannot build, and without the lockfile an
+# install is not reproducible. A .gitignore nearer the file wins over one in a
+# parent directory, so these two negations rescue them without touching the
+# shared root file.
+!vite.config.js
+!package-lock.json

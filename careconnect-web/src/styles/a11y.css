@@ -73,7 +73,7 @@
      outside its first child — the mobile bottom bar and the tab row are both
      at risk, since their first and last tabs touch the container edge. Any
      element that holds focusable children scrolls rather than clips. */
-  :where(nav, [role="tablist"], .cc-tabs, .cc-bottom-bar) {
+  :where(nav, [role="tablist"], .cc-nav--tabs, .cc-nav--bar) {
     overflow: visible;
   }
 
@@ -176,7 +176,7 @@
       outline-color: Highlight;
     }
 
-    .cc-nav__item[aria-current],
+    .cc-nav__link[aria-current],
     .cc-tab[aria-current] {
       border: 2px solid Highlight;
     }

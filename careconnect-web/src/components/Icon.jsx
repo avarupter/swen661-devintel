@@ -67,7 +67,9 @@ export default function Icon({
   strokeWidth = 1.8,
   className,
 }) {
-  const path = PATHS[name];
+  // Object.hasOwn, not a bare lookup: PATHS inherits from Object.prototype, so
+  // `name="toString"` would otherwise resolve to a function and be rendered.
+  const path = Object.hasOwn(PATHS, name) ? PATHS[name] : null;
   if (!path) return null;
   return (
     <svg

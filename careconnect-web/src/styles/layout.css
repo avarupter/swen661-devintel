@@ -18,10 +18,18 @@
    its own contents. `npm run lint:tokens` fails if this wrapper goes
    missing. */
 @layer layout {
+  /* The fixed bottom bar overlaps whatever is last in the document, which on
+     mobile is the evidence footer rather than the page. The clearance therefore
+     belongs to the shell, not to .cc-page: scoped to the page it protected the
+     privacy line and left the footer underneath the bar. Zeroed at 768, where
+     the bar is replaced by the top tab row and nothing is fixed. */
   .cc-app {
     min-height: 100dvh;
     display: flex;
     flex-direction: column;
+    padding-bottom: calc(
+      var(--cc-bottom-bar-clearance) + env(safe-area-inset-bottom, 0px)
+    );
   }
 
   /* --- App bar ------------------------------------------------------------- */
@@ -54,9 +62,21 @@
     color: var(--cc-muted);
   }
 
-  /* On mobile the account is the avatar only; the full name returns at tablet. */
+  /* On mobile the board shows the avatar only. Visually hidden rather than
+     display:none, because the avatar initials are aria-hidden — with the name
+     removed outright, a screen-reader user is told nothing whatsoever about
+     whose account this is. Clipped, not deleted: it still reaches assistive
+     technology and still satisfies the content-parity check. */
   .cc-appbar__accountText {
-    display: none;
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    clip-path: inset(50%);
   }
 
   .cc-appbar__avatar {
@@ -79,9 +99,8 @@
   }
 
   /* --- The page grid · MOBILE ---------------------------------------------
-   Single column, 16px side insets, everything in reading order. The bottom
-   padding is the fixed-bar clearance plus the safe-area inset, so the privacy
-   line is never hidden behind the bar on a device with a home indicator.     */
+   Single column, 16px side insets, everything in reading order. Clearance for
+   the fixed bar is on .cc-app, not here — see the note there.                */
   .cc-page {
     flex: 1;
     min-width: 0;
@@ -90,9 +109,6 @@
     gap: var(--cc-space-5);
     align-content: start;
     padding: var(--cc-space-5) var(--cc-inset);
-    padding-bottom: calc(
-      var(--cc-bottom-bar-clearance) + env(safe-area-inset-bottom, 0px)
-    );
   }
 
   /* The page is two flows: the daily plan and the supporting cards. Wrapping
@@ -209,6 +225,11 @@
   }
 
   @media (min-width: 768px) {
+    /* Nothing is fixed from here up, so the shell owes the bar no clearance. */
+    .cc-app {
+      padding-bottom: 0;
+    }
+
     .cc-nav--bar {
       display: none;
     }
@@ -227,8 +248,16 @@
       gap: var(--cc-space-2);
     }
 
+    /* Back into the layout at tablet — every property the mobile rule clipped
+       with has to be undone, not just `display`. */
     .cc-appbar__accountText {
-      display: inline;
+      position: static;
+      inline-size: auto;
+      block-size: auto;
+      margin: 0;
+      overflow: visible;
+      white-space: normal;
+      clip-path: none;
     }
 
     .cc-appbar__avatar {

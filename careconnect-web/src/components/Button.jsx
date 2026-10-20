@@ -3,11 +3,17 @@ import Icon from "./Icon.jsx";
 /**
  * Primary is the clearest next action; secondary is outlined.
  *
- * Disabled uses the native `disabled` attribute. The board's wording is
- * "remains legible and is not actionable", and native disabled is the only
- * thing that genuinely makes a button non-actionable — aria-disabled leaves the
- * click handler live. The cost is that the control leaves the tab order, which
- * is the accepted trade for a control that is not meant to be used yet.
+ * Disabled is `aria-disabled`, which is what the board specifies, with the
+ * handler detached so the control is genuinely inert. The objection to
+ * aria-disabled is that it leaves the click handler live — so this does not
+ * pass one. What it buys over the native attribute is that the control stays
+ * in the tab order: a keyboard user reaches it and hears "unavailable" instead
+ * of it silently vanishing from the sequence, and the disabled specimen on the
+ * foundations sheet can actually be focused to show that its label still reads.
+ *
+ * `TextField` keeps the native `disabled` attribute. The asymmetry is
+ * deliberate: a disabled input must also be skipped by form submission and
+ * must not be editable, which only the native attribute gives.
  *
  * @param {{
  *   children: import('react').ReactNode,
@@ -35,8 +41,8 @@ export default function Button({
     <button
       type={type}
       className={classes.join(" ")}
-      disabled={disabled}
-      onClick={onClick}
+      aria-disabled={disabled || undefined}
+      onClick={disabled ? undefined : onClick}
     >
       {icon ? <Icon name={icon} size={20} /> : null}
       <span>{children}</span>

@@ -28,6 +28,7 @@ export const TYPE_STEPS = [
   { className: "cc-title", name: "Title", sample: "Next thing to do" },
   { className: "cc-section", name: "Section", sample: "Later today" },
   { className: "cc-body", name: "Body", sample: "Give your care team a short summary.", note: "16px is the floor for all body and control text" },
+  { className: "cc-label", name: "Label", sample: "Next thing to do", note: "body size at semibold — the heavier half of a two-line pair" },
 ];
 
 /* Tone mapping follows the board's wording, not a traffic-light reflex:

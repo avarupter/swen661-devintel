@@ -26,7 +26,7 @@ export default function AppointmentCard({ data }) {
         <h2 className="cc-label" id="cc-next-heading">
           {data.eyebrow}
         </h2>
-        <Badge tone="neutral">{data.badge}</Badge>
+        {data.badge ? <Badge tone="neutral">{data.badge}</Badge> : null}
       </header>
 
       <div className="cc-appointment__body">
@@ -44,11 +44,16 @@ export default function AppointmentCard({ data }) {
         </div>
       </div>
 
+      {/* Both of these are pills and icon rows that CSS paints. Rendered around
+          absent copy they leave a bordered blank rather than nothing, so the
+          slot goes away with its content — same rule as the later-today chip. */}
       <footer className="cc-appointment__foot">
-        <p className="cc-appointment__ready">
-          <Icon name="check" size={20} />
-          <span>{data.readiness}</span>
-        </p>
+        {data.readiness ? (
+          <p className="cc-appointment__ready">
+            <Icon name="check" size={20} />
+            <span>{data.readiness}</span>
+          </p>
+        ) : null}
         <Button variant="primary">{data.action}</Button>
       </footer>
     </Card>

@@ -21,16 +21,44 @@ import "./styles/index.css";
  * the hash is enough for that — a router would add a dependency and a build
  * concept for one evidence page. useSyncExternalStore is how React 19 reads an
  * external value like location.hash without an effect that renders twice.
+ *
+ * The hash is not only a route, though. "#main" is the skip link's target, and
+ * treating every hash as a route meant skipping to the main content while the
+ * sheet was open navigated straight back off it. So a hash that names a
+ * FRAGMENT leaves the route alone, and only a hash that names a view changes
+ * it. Without that distinction the most important keyboard affordance on the
+ * page is also the one that throws your place away.
  */
 function subscribeToHash(onChange) {
   window.addEventListener("hashchange", onChange);
   return () => window.removeEventListener("hashchange", onChange);
 }
 
-const readHash = () => (typeof window === "undefined" ? "" : window.location.hash);
+/** Ids that exist to be scrolled to, never to select a view. */
+const FRAGMENTS = new Set(["#main", "#"]);
+
+/**
+ * Remembered across reads so a fragment hash keeps the current view. The cache
+ * is also what makes this a legal getSnapshot: it returns the same string on
+ * every call until a route hash actually changes it, so React never sees the
+ * value flip during a render.
+ */
+let route = "today";
+
+function readRoute() {
+  if (typeof window === "undefined") return route;
+  const hash = window.location.hash;
+  if (FRAGMENTS.has(hash)) return route;
+  route = hash === "#specimens" ? "sheet" : "today";
+  return route;
+}
 
 export default function App() {
-  const showsSheet = useSyncExternalStore(subscribeToHash, readHash, readHash) === "#specimens";
+  const showsSheet = useSyncExternalStore(subscribeToHash, readRoute, readRoute) === "sheet";
+
+  // The sheet is not one of the five destinations, so while it is open no
+  // destination is the current page. Leaving aria-current on Home would tell a
+  // screen-reader user they are somewhere they are not.
 
   return (
     <div className="cc-app">
@@ -54,10 +82,10 @@ export default function App() {
         </p>
       </header>
 
-      <Nav variant="tabs" current={CURRENT_DESTINATION} />
+      <Nav variant="tabs" current={showsSheet ? null : CURRENT_DESTINATION} />
 
       <div className="cc-shell">
-        <Nav variant="sidebar" current={CURRENT_DESTINATION} />
+        <Nav variant="sidebar" current={showsSheet ? null : CURRENT_DESTINATION} />
 
         <main
           className={`cc-page${showsSheet ? " cc-page--sheet" : ""}`}
@@ -75,7 +103,7 @@ export default function App() {
         </a>
       </footer>
 
-      <Nav variant="bar" current={CURRENT_DESTINATION} />
+      <Nav variant="bar" current={showsSheet ? null : CURRENT_DESTINATION} />
     </div>
   );
 }
