@@ -1,0 +1,54 @@
+/* layer: reset ==============================================================
+   Minimal normalisation. First layer, so everything else overrides it without
+   effort. Deliberately small: this is not normalize.css, only the handful of
+   UA defaults that fight the layouts on this board.
+   =========================================================================== */
+
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  body,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  figure,
+  blockquote,
+  dl,
+  dd {
+    margin: 0;
+  }
+
+  ul[class],
+  ol[class] {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  button {
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+
+  /* Inline images and SVG baseline-align by default, which leaves a few px of
+     descender space under every icon and knocks card rows off the 4px rhythm. */
+  img,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  /* No font-size here, ever. The reset layer must not touch type — type.css
+     owns every size in the project. See the long note at the top of that
+     file. */
+}

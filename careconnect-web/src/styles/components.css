@@ -1,0 +1,569 @@
+/* ===========================================================================
+   Components — buttons, fields, navigation, badges, cards, care content.
+   All sizing comes from tokens.css. No hex literals in this file.
+   =========================================================================== */
+/* Wrapped in its cascade layer. See the layer-order note in src/styles/index.css:
+   CSS written OUTSIDE a @layer block outranks every layer, including the
+   a11y layer that owns the focus ring, so every file in src/styles/ wraps
+   its own contents. `npm run lint:tokens` fails if this wrapper goes
+   missing. */
+@layer components {
+  /* --- Skip link ----------------------------------------------------------- */
+  /* Parked with a transform rather than a negative `top`, so the distance is
+     derived from the control's own height instead of a magic number that has
+     to be re-guessed whenever the label or font changes. */
+  .cc-skip {
+    position: absolute;
+    left: var(--cc-space-4);
+    top: var(--cc-space-4);
+    transform: translateY(calc(-100% - var(--cc-space-4)));
+    z-index: 100;
+    padding: var(--cc-space-3) var(--cc-space-4);
+    background: var(--cc-surface);
+    color: var(--cc-primary);
+    font-weight: 600;
+    border-radius: var(--cc-radius-control);
+    transition: transform 0.15s ease;
+  }
+  .cc-skip:focus-visible {
+    transform: none;
+  }
+
+  /* --- Buttons -------------------------------------------------------------
+   min-height is a floor, not a height: a long label wraps and the button grows
+   rather than clipping or shrinking its type.                                */
+  .cc-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--cc-space-2);
+    min-height: var(--cc-control-min);
+    padding: var(--cc-space-3) var(--cc-space-5);
+    border-radius: var(--cc-radius-control);
+    border: 2px solid transparent;
+    font-size: var(--cc-body-size);
+    line-height: var(--cc-body-line);
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  .cc-btn--full {
+    width: 100%;
+  }
+
+  .cc-btn--primary {
+    background: var(--cc-primary);
+    color: var(--cc-surface); /* white on primary — 5.75:1 */
+    border-color: var(--cc-primary);
+  }
+
+  .cc-btn--secondary {
+    background: var(--cc-surface);
+    color: var(--cc-primary);
+    border-color: var(--cc-primary);
+  }
+
+  /* Disabled stays legible: a muted label on the disabled fill, not a washed-out
+   version of the primary button. WCAG exempts inactive controls from the
+   contrast minimum, and this pairing measures 3.86:1 — legible, but it is an
+   exemption rather than a pass, which is why disabled is never used to convey
+   information here. */
+  .cc-btn[aria-disabled="true"] {
+    background: var(--cc-disabled);
+    color: var(--cc-muted);
+    border-color: var(--cc-disabled);
+    cursor: not-allowed;
+  }
+
+  /* --- Text fields --------------------------------------------------------- */
+  .cc-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cc-space-2);
+  }
+
+  .cc-field__label {
+    font-size: var(--cc-body-size);
+    line-height: var(--cc-body-line);
+    font-weight: 600;
+  }
+
+  .cc-field__input {
+    min-height: var(--cc-control-min);
+    padding: var(--cc-space-3) var(--cc-space-4);
+    border-radius: var(--cc-radius-control);
+    /* The input boundary is --cc-muted (4.76:1), never --cc-border: a decorative
+     #DCE5F0 edge on white is under 1.5:1 and leaves no perceivable field. */
+    border: 1px solid var(--cc-muted);
+    background: var(--cc-surface);
+    color: var(--cc-text);
+    font-family: inherit;
+    font-size: var(--cc-body-size);
+    line-height: var(--cc-body-line);
+    width: 100%;
+  }
+
+  .cc-field__input::placeholder {
+    color: var(--cc-muted);
+    opacity: 1; /* Firefox dims placeholders by default, which breaks the ratio */
+  }
+
+  .cc-field__input:disabled {
+    background: var(--cc-disabled);
+    border-color: var(--cc-muted);
+    color: var(--cc-muted);
+    cursor: not-allowed;
+  }
+
+  .cc-field__helper {
+    font-size: var(--cc-body-size);
+    line-height: var(--cc-body-line);
+    color: var(--cc-muted);
+  }
+
+  .cc-field__error {
+    font-size: var(--cc-body-size);
+    line-height: var(--cc-body-line);
+    font-weight: 600;
+    color: var(--cc-error);
+  }
+
+  .cc-field--error .cc-field__input {
+    border-color: var(--cc-error);
+    border-width: 2px;
+  }
+
+  /* --- Navigation ----------------------------------------------------------
+   Shared link appearance; each variant positions the list.                   */
+  .cc-nav__list {
+    display: flex;
+  }
+
+  .cc-nav__link {
+    display: flex;
+    align-items: center;
+    gap: var(--cc-space-3);
+    min-height: var(--cc-target-min);
+    padding: var(--cc-space-3) var(--cc-space-4);
+    border-radius: var(--cc-radius-control);
+    color: var(--cc-text);
+    text-decoration: none;
+    font-size: var(--cc-body-size);
+    line-height: var(--cc-body-line);
+    font-weight: 500;
+  }
+
+  /* Selection: a tinted surface plus a heavier, primary-coloured label. Two
+   signals, so selection does not rest on colour alone. */
+  .cc-nav__link.is-current {
+    background: var(--cc-selected);
+    color: var(--cc-primary); /* primary on selected — 5.01:1 */
+    font-weight: 700;
+  }
+
+  .cc-nav__icon {
+    position: relative;
+    display: inline-flex;
+    flex: none;
+  }
+
+  .cc-nav__count {
+    position: absolute;
+    top: calc(var(--cc-space-2) * -1);
+    inset-inline-start: var(--cc-space-3);
+    min-width: var(--cc-space-item);
+    height: var(--cc-space-item);
+    padding: 0 var(--cc-space-1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--cc-radius-pill);
+    background: var(--cc-primary);
+    color: var(--cc-surface);
+    font-size: var(--cc-body-size);
+    line-height: 1;
+    font-weight: 700;
+  }
+
+  /* --- Badges -------------------------------------------------------------- */
+  .cc-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cc-space-1);
+    padding: var(--cc-space-1) var(--cc-space-3);
+    border-radius: var(--cc-radius-pill);
+    border: 1px solid currentColor;
+    font-size: var(--cc-body-size);
+    line-height: var(--cc-body-line);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .cc-badge--info {
+    color: var(--cc-primary);
+    background: var(--cc-selected);
+  }
+  .cc-badge--neutral {
+    color: var(--cc-text);
+    background: var(--cc-surface);
+  }
+  .cc-badge--success {
+    color: var(--cc-success);
+    background: var(--cc-success-bg);
+  }
+  .cc-badge--error {
+    color: var(--cc-error);
+    background: var(--cc-error-bg);
+  }
+
+  /* --- Cards --------------------------------------------------------------- */
+  .cc-card {
+    padding: var(--cc-space-5);
+    border-radius: var(--cc-radius-card);
+    border: 1px solid var(--cc-border); /* decorative edge — fine on a card */
+  }
+
+  .cc-card--surface {
+    background: var(--cc-surface);
+  }
+  .cc-card--soft {
+    background: var(--cc-soft);
+  }
+
+  /* --- Progress ------------------------------------------------------------ */
+  .cc-progress {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cc-space-2);
+  }
+
+  .cc-progress__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--cc-space-3);
+  }
+
+  .cc-progress__label {
+    color: var(--cc-muted);
+  }
+
+  .cc-progress__value {
+    font-weight: 700;
+    color: var(--cc-primary);
+  }
+
+  .cc-progress__track {
+    height: 8px;
+    border-radius: var(--cc-radius-pill);
+    background: var(--cc-disabled);
+    overflow: hidden;
+  }
+
+  .cc-progress__fill {
+    height: 100%;
+    border-radius: var(--cc-radius-pill);
+    background: var(--cc-brand); /* the one sanctioned use of brand blue */
+  }
+
+  /* --- Appointment card ---------------------------------------------------- */
+  .cc-appointment__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cc-space-3);
+    margin-bottom: var(--cc-space-4);
+  }
+
+  /* Mobile: the time and the call details stack. From tablet up they share a row
+   with a rule between them. Arrangement lives here, not in the component. */
+  .cc-appointment__body {
+    display: grid;
+    gap: var(--cc-space-3);
+  }
+
+  .cc-appointment__when {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cc-space-1);
+  }
+
+  .cc-appointment__title {
+    display: flex;
+    align-items: center;
+    gap: var(--cc-space-2);
+    font-size: var(--cc-title-size);
+    line-height: var(--cc-title-line);
+    font-weight: 700;
+  }
+
+  .cc-appointment__foot {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cc-space-4);
+    margin-top: var(--cc-space-5);
+  }
+
+  .cc-appointment__ready {
+    display: flex;
+    align-items: center;
+    gap: var(--cc-space-2);
+    color: var(
+      --cc-success
+    ); /* success on white — 5.31:1 on its tint, 6.0+ here */
+    font-weight: 600;
+  }
+
+  /* --- Later today --------------------------------------------------------- */
+  .cc-later__list {
+    display: grid;
+    gap: var(--cc-space-3);
+    margin-top: var(--cc-space-3);
+  }
+
+  .cc-later {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--cc-space-3);
+    padding: var(--cc-space-item);
+    border-radius: var(--cc-radius-item);
+  }
+
+  /* A flex item will not shrink below its longest unbreakable word unless it is
+     told it may. At 768 two of these share a row, so without this a long
+     medication name pushes the pair wider than the grid track. */
+  .cc-later__text {
+    min-width: 0;
+  }
+
+  .cc-later__icon,
+  .cc-glance__icon,
+  .cc-care__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--cc-radius-control);
+    background: var(--cc-selected);
+    color: var(--cc-primary);
+  }
+
+  .cc-later__time {
+    color: var(--cc-primary);
+    font-weight: 600;
+  }
+
+  .cc-later__title {
+    font-weight: 700;
+  }
+
+  /* --- Today at a glance --------------------------------------------------- */
+  .cc-glance__list {
+    display: grid;
+    gap: var(--cc-space-4);
+    margin-top: var(--cc-space-4);
+  }
+
+  .cc-glance__row {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    grid-template-areas:
+      "icon label"
+      "icon value";
+    column-gap: var(--cc-space-3);
+    align-items: center;
+  }
+
+  .cc-glance__icon {
+    grid-area: icon;
+  }
+  .cc-glance__row dt {
+    grid-area: label;
+  }
+  .cc-glance__row dd {
+    grid-area: value;
+    margin: 0;
+  }
+
+  /* --- Care team ----------------------------------------------------------- */
+  .cc-care {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cc-space-4);
+  }
+
+  .cc-care__head {
+    display: flex;
+    align-items: center;
+    gap: var(--cc-space-3);
+  }
+
+  .cc-care__available {
+    color: var(--cc-success);
+    font-weight: 600;
+  }
+
+  /* --- Breadcrumb and privacy ---------------------------------------------- */
+  .cc-breadcrumb ol {
+    /* The only <ol> in the app; the reset layer only clears <ul>. */
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cc-space-2);
+  }
+
+  .cc-breadcrumb li + li::before {
+    content: "·";
+    margin-inline-end: var(--cc-space-2);
+    color: var(--cc-muted);
+  }
+
+  .cc-breadcrumb a {
+    /* Breadcrumb links are interactive, so they carry the same 44px floor as
+       every other target. inline-flex + min-height grows the hit area without
+       moving the text off its baseline. */
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--cc-target-min);
+    color: var(--cc-primary);
+    font-weight: 500;
+  }
+
+  .cc-breadcrumb [aria-current="page"] {
+    color: var(--cc-muted);
+  }
+
+  .cc-privacy {
+    display: flex;
+    align-items: center;
+    gap: var(--cc-space-2);
+    color: var(--cc-muted);
+  }
+
+  /* --- Foundations sheet ---------------------------------------------------
+   Appearance only: how a specimen and its caption look. Where the specimens
+   sit at each width is layout.css's job.
+
+   Every caption here is full body size. A specimen sheet is the easiest place
+   to slip a 12px caption in, and the whole point of the sheet is to show that
+   nothing in this interface asks to be read below 16px.                       */
+  .cc-sheet__eyebrow {
+    color: var(--cc-muted);
+    font-size: var(--cc-body-size);
+    line-height: var(--cc-body-line);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .cc-sheet__lede {
+    max-width: 62ch;
+  }
+
+  .cc-sheet__meta {
+    color: var(--cc-muted);
+    font-size: var(--cc-body-size);
+    line-height: var(--cc-body-line);
+  }
+
+  .cc-sheet__hint {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 var(--cc-space-2);
+    border-radius: var(--cc-radius-pill);
+    background: var(--cc-selected);
+    color: var(--cc-primary);
+    font-weight: 600;
+  }
+
+  /* A specimen is a stage plus a caption. The stage carries the surface so a
+   control is judged against the background it really sits on, and it is sized
+   by its content rather than stretched, so a focus ring has somewhere to go. */
+  .cc-specimen__stage {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--cc-space-3);
+    padding: var(--cc-space-5);
+    border-radius: var(--cc-radius-card);
+    border: 1px solid var(--cc-border);
+    background: var(--cc-surface);
+  }
+
+  .cc-specimen__stage > * {
+    min-width: 0;
+  }
+
+  .cc-swatch {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--cc-space-3);
+  }
+
+  /* The chip is bordered because three of the twelve tokens are near-white and
+   would otherwise have no visible edge against the card. */
+  .cc-swatch__chip {
+    flex: none;
+    inline-size: var(--cc-space-8);
+    block-size: var(--cc-space-8);
+    border-radius: var(--cc-radius-control);
+    border: 1px solid var(--cc-border);
+  }
+
+  .cc-swatch__text {
+    display: grid;
+    gap: var(--cc-space-1);
+    font-size: var(--cc-body-size);
+    line-height: var(--cc-body-line);
+  }
+
+  .cc-swatch__name {
+    font-weight: 600;
+    color: var(--cc-text);
+  }
+
+  .cc-swatch__hex {
+    font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, monospace;
+    color: var(--cc-text);
+  }
+
+  .cc-swatch__role,
+  .cc-swatch__note {
+    color: var(--cc-muted);
+  }
+
+  .cc-typerow {
+    display: grid;
+    gap: var(--cc-space-2);
+    padding-bottom: var(--cc-space-4);
+    border-bottom: 1px solid var(--cc-border);
+  }
+
+  /* An evidence affordance, not part of the patient-facing design: the Figma
+   boards have no link to a specimen sheet, so this stays visually separate
+   from everything the boards specify. */
+  .cc-evidence-nav {
+    display: flex;
+    justify-content: flex-end;
+    padding: var(--cc-space-4) var(--cc-inset);
+    border-top: 1px solid var(--cc-border);
+  }
+
+  .cc-evidence-nav a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cc-space-2);
+    min-height: var(--cc-target-min);
+    padding: 0 var(--cc-space-3);
+    border-radius: var(--cc-radius-control);
+    color: var(--cc-primary);
+    font-size: var(--cc-body-size);
+    line-height: var(--cc-body-line);
+    font-weight: 600;
+  }
+}

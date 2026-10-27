@@ -1,0 +1,184 @@
+/* layer: a11y ===============================================================
+   Focus, target floors, and assistive-technology affordances.
+
+   LAST LAYER BY DESIGN. Because cascade layers rank by layer before
+   specificity, nothing in components.css can outrank these rules — not
+   `.cc-nav__item.is-selected:focus-visible`, not an id selector. Removing a
+   focus indicator in this project takes editing this file, which is a review
+   signal rather than an accident.
+   =========================================================================== */
+
+@layer a11y {
+  /* =========================================================================
+     THE FOCUS RING — one rule for the whole application.
+
+     COLOUR is --cc-text (#1E293B). Not a choice: the board's token table gives
+     #1E293B the role "Headings & focus".
+
+     WHY :focus-visible AND NOT :focus. A bare :focus fires on mouse press too,
+     which leaves a ring sitting on a card after a click and trains the team to
+     start deleting rings. :focus-visible delegates "did this person navigate
+     by keyboard" to the engine, so keyboard users always get the ring and
+     pointer users never see a stale one.
+
+     WHY outline AND NOT box-shadow. Two reasons, both load-bearing:
+       - In Windows High Contrast / forced-colors mode box-shadow is not
+         rendered at all. A box-shadow ring vanishes completely for precisely
+         the users who most need it. outline survives, and its colour can be
+         remapped to the system Highlight (see the forced-colors block below).
+       - outline follows the element's own border-radius automatically, so one
+         rule fits a 12px control, an 18px item and a 999px badge without
+         restating any radius. The ring must NOT set a border-radius of its
+         own: doing so reshapes the element on focus, so a focused card would
+         visibly change corner from 24px to 12px.
+
+     WHY THE 2px OFFSET IS LOAD-BEARING, NOT COSMETIC. This is the part that is
+     easy to get wrong. Measured against #1E293B:
+
+         on --cc-canvas  (#F7F9FC)   13.87:1
+         on --cc-surface (#FFFFFF)   14.63:1
+         on --cc-selected(#E8F0FE)   12.77:1   <- the tinted selected nav item
+         on --cc-primary (#1565C0)    2.55:1   <- FAILS WCAG 2.2 1.4.11 (3:1)
+
+     A dark ring drawn directly ON the primary button fill measures 2.55:1 and
+     fails. outline-offset: 2px moves the ring off the fill and onto the page
+     behind it, where it reads at 13.87:1, and the 2px gap it opens is filled
+     by that same page colour — so both of the ring's adjacent colours are the
+     canvas and neither pairing is the failing one. The offset is the reason
+     the primary button is compliant.
+
+     HOW IT STAYS DISTINCT FROM SELECTION. The board requires keyboard focus to
+     be distinguishable from the selected navigation state. They are different
+     KINDS of change, not different shades: selection repaints the item's
+     BACKGROUND to the #E8F0FE tint and strengthens its label; focus adds an
+     outline OUTSIDE the item's box. A focused, selected Home tab shows both at
+     once and the two cannot be confused with one another, which is also why
+     this rule deliberately does not special-case `.is-selected`.
+     ========================================================================= */
+
+  :where(
+    a,
+    button,
+    input,
+    select,
+    textarea,
+    summary,
+    [tabindex]
+  ):focus-visible {
+    outline: var(--cc-focus-width) solid var(--cc-focus-color);
+    outline-offset: var(--cc-focus-offset);
+  }
+
+  /* A container that clips its overflow also clips a 3px ring sitting 2px
+     outside its first child — the mobile bottom bar and the tab row are both
+     at risk, since their first and last tabs touch the container edge. Any
+     element that holds focusable children scrolls rather than clips. */
+  :where(nav, [role="tablist"], .cc-nav--tabs, .cc-nav--bar) {
+    overflow: visible;
+  }
+
+}
+
+/* ===========================================================================
+   TARGET FLOORS — registered in `base`, not `a11y`
+
+   Every interactive target clears 44px without each component having to
+   remember to.
+
+   These sit in the `base` layer (opened by type.css, third in order) rather
+   than in `a11y`. `a11y` is imported LAST, and a later layer beats an earlier
+   one however specific either selector is — :where()'s zero specificity only
+   settles ties WITHIN a layer. Parked in `a11y` this floor silently capped
+   every raise: the mobile bottom bar measured 68px because a 44px
+   `min-block-size` here outranked `min-height: 4.5rem` over in `layout`.
+
+   In `base` a floor stays a floor: `components` and `layout` raise a target
+   with an ordinary class and no !important.
+
+   An <a> inside a sentence stays inline, and min-block-size does not apply to
+   inline boxes, so prose links are unaffected. That matches WCAG 2.2 2.5.8,
+   which exempts targets in a sentence.
+   =========================================================================== */
+
+@layer base {
+  :where(button, [role="button"], a[href], input, select, textarea, summary) {
+    min-block-size: var(--cc-target-min);
+    min-inline-size: var(--cc-target-min);
+  }
+
+  /* Buttons and fields are specified taller than the generic floor. Expressed
+     as min-block-size, not height, so a two-line label grows the control
+     instead of overflowing it — "reflow, don't reduce" applied to boxes. */
+  :where(.cc-btn, .cc-field__input) {
+    min-block-size: var(--cc-control-min);
+  }
+}
+
+@layer a11y {
+
+  /* =========================================================================
+     ASSISTIVE TECHNOLOGY
+     ========================================================================= */
+
+  /* Visible to screen readers only. This carries the full destination names
+     behind the abbreviated mobile tab labels: the tab shows "Meds", this span
+     makes it announce "Medications". clip-path rather than the old
+     clip: rect() so the text is not read out of order by Safari + VoiceOver. */
+  .cc-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* aria-disabled rather than the disabled attribute keeps the control in the
+     tab order so a keyboard user can reach it and hear why it is unavailable,
+     which is what the board's disabled specimens intend. CSS has to supply the
+     part the attribute does not: no pointer affordance. */
+  [aria-disabled="true"] {
+    cursor: default;
+  }
+
+  /* =========================================================================
+     USER PREFERENCES
+     ========================================================================= */
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Forced colours replace the palette wholesale. The ring must survive, so it
+     is remapped to the system highlight; the selected navigation tint is a
+     background, which forced colours flattens, so selection is re-stated with
+     a border the mode cannot remove. */
+  @media (forced-colors: active) {
+    :where(
+      a,
+      button,
+      input,
+      select,
+      textarea,
+      summary,
+      [tabindex]
+    ):focus-visible {
+      outline-color: Highlight;
+    }
+
+    .cc-nav__link[aria-current],
+    .cc-tab[aria-current] {
+      border: 2px solid Highlight;
+    }
+  }
+}

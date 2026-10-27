@@ -1,0 +1,168 @@
+/* layer: base ===============================================================
+   CareConnect — the type scale.
+
+   ===========================================================================
+   THE 16px FLOOR, AND WHY IT IS STRUCTURAL RATHER THAN A HABIT
+   ===========================================================================
+
+   The board's rule is "reflow, don't reduce": body and control text is never
+   below 16px at any breakpoint. That rule survives a four-person team and a
+   semester of edits only if breaking it is awkward. Four interlocking
+   mechanisms, in order of how much work each does:
+
+   1. EVERY FONT-SIZE IN THE PROJECT IS DECLARED IN THIS FILE.
+      Components style colour, weight, spacing and layout; they never set a
+      size. A component that needs different text composes a class from this
+      file. The payoff is a review signal that costs nothing to read: a new
+      font-size arrives in a pull request as a change to a file that had no
+      business changing, visible in the diff's file list before a single line
+      of CSS is read.
+
+   2. rem, NEVER px.
+      1rem is whatever the reader set as their browser's default text size, so
+      a reader who raised it to 20px gets 20px body text and a proportionally
+      taller control to hold it. A px font-size ignores that preference
+      outright, which is WCAG 2.2 1.4.4 Resize Text. It also makes the floor
+      literally the number one: a contributor writing `0.875rem` is spotted in
+      a diff as "0.something" without doing arithmetic, which `14px` does not
+      give you.
+
+   3. NOTHING SETS A ROOT FONT-SIZE.
+      html stays at the browser default. The familiar `html { font-size: 62.5% }`
+      trick to make 1rem = 10px is forbidden here: it would rebase every rem in
+      the project at once and silently put the whole scale under the floor.
+      This is the only file allowed to touch html's font-size, and it only ever
+      pins it to 100%.
+
+   4. A LINT THAT FAILS THE BUILD.
+      `npm run lint:tokens` rejects a font-size declared outside this file, any
+      rem below 1, and any px font-size below 16 wherever it appears. The three
+      rules above make violations rare; the lint makes them impossible to land.
+
+   ---------------------------------------------------------------------------
+   ONE DELIBERATE EXCEPTION, SO NOBODY "FIXES" IT LATER: Display and Time are
+   smaller on mobile (28px) than on tablet and desktop (36px and 34px). That is
+   not a floor violation. The board's rule governs body and control text and
+   labels; Display and Time are large headings and 28px sits 12px ABOVE the
+   floor at its smallest. The board also compensates by raising their weight
+   from 400 to 600 on mobile, which is why weight is tokenised alongside size
+   rather than hard-coded in the rule below.
+   =========================================================================== */
+
+@layer base {
+  html {
+    /* Pinned to the reader's own default, never rebased. See mechanism 3. */
+    font-size: 100%;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: var(--cc-font);
+    font-size: var(--cc-body-size);
+    line-height: var(--cc-body-line);
+    font-weight: var(--cc-weight-regular);
+    color: var(--cc-text);
+    background-color: var(--cc-canvas);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Form controls do not inherit type from body in any engine. Without this
+     a <button> or <input> falls back to the UA's own ~13px, which is the
+     commonest way a 16px floor gets broken without anyone writing a
+     font-size at all. */
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+    color: inherit;
+    letter-spacing: inherit;
+  }
+
+  /* --- The scale ----------------------------------------------------------
+     Five styles, matching the board one for one. Sizes and weights come from
+     tokens.css so the mobile Display/Time overrides happen in one place.      */
+
+  .cc-display {
+    font-size: var(--cc-display-size);
+    line-height: var(--cc-display-line);
+    font-weight: var(--cc-weight-display);
+    letter-spacing: -0.01em;
+  }
+
+  .cc-title {
+    font-size: var(--cc-title-size);
+    line-height: var(--cc-title-line);
+    font-weight: var(--cc-weight-bold);
+  }
+
+  .cc-section {
+    font-size: var(--cc-section-size);
+    line-height: var(--cc-section-line);
+    font-weight: var(--cc-weight-semibold);
+  }
+
+  .cc-time {
+    font-size: var(--cc-time-size);
+    line-height: var(--cc-time-line);
+    font-weight: var(--cc-weight-time);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cc-body {
+    font-size: var(--cc-body-size);
+    line-height: var(--cc-body-line);
+    font-weight: var(--cc-weight-regular);
+  }
+
+  /* A 16px semibold label. Used for the next-thing eyebrow and for each
+     "today at a glance" value — both of which are the heavier half of a
+     two-line pair, so the weight is the whole point of the class. It was
+     referenced in the markup before it was defined here, which is a silent
+     failure: the class simply did nothing and both spots rendered as plain
+     body text. */
+  .cc-label {
+    font-size: var(--cc-body-size);
+    line-height: var(--cc-body-line);
+    font-weight: var(--cc-weight-semibold);
+  }
+
+  /* --- Weight and colour modifiers ----------------------------------------
+     Separate from size so that "a 16px semibold label" is a composition of two
+     classes rather than a sixth size token. The board lists body and labels at
+     400 / 500 / 600 / 700 of one size, which is exactly this shape.           */
+
+  .cc-weight-medium {
+    font-weight: var(--cc-weight-medium);
+  }
+  .cc-weight-semibold {
+    font-weight: var(--cc-weight-semibold);
+  }
+  .cc-weight-bold {
+    font-weight: var(--cc-weight-bold);
+  }
+
+  .cc-muted {
+    color: var(--cc-muted);
+  }
+  .cc-action {
+    color: var(--cc-primary);
+  }
+
+  /* Headings carry no size of their own: an <h2> is sized by whichever scale
+     class it is given, so the heading LEVEL stays a document-outline decision
+     and does not drag a visual size along with it. That separation is what
+     lets the mobile and desktop layouts keep an identical heading order while
+     looking different. */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+  }
+}

@@ -1,0 +1,34 @@
+/* Single entry point for the stylesheet. Only App.jsx imports this file.
+ *
+ * The layer order is declared ONCE, here, before anything else. Everything a
+ * later file says about layers only ADDS rules to a layer named below; it can
+ * never reorder them. That matters because a later layer beats an earlier one
+ * no matter how specific either selector is, so this one line decides every
+ * cross-file conflict in the app:
+ *
+ *   reset       browser defaults, flattened
+ *   tokens      custom properties only, no rules that paint
+ *   base        element typography and the 44px/52px target FLOORS
+ *   components  how a component looks on its own
+ *   layout      how components are arranged at a breakpoint — RAISES floors,
+ *               e.g. the mobile bottom bar's 72px destinations
+ *   a11y        focus rings, .cc-sr-only, reduced motion — last on purpose, so
+ *               nothing downstream can accidentally remove a focus indicator
+ *
+ * The @import order below is kept identical to that list, and it has to be.
+ * In dev the statement is emitted above the inlined imports and is what binds;
+ * in a production build the CSS minifier drops the statement as redundant, so
+ * the bundle's layer order comes from first appearance — i.e. from the import
+ * order — alone. Both routes currently agree, which is the only reason dev and
+ * `npm run build` render the same. Reorder the imports and production will
+ * silently diverge from dev, so if you change one, change both.
+ */
+
+@layer reset, tokens, base, components, layout, a11y;
+
+@import "./reset.css";
+@import "./tokens.css";
+@import "./type.css";
+@import "./components.css";
+@import "./layout.css";
+@import "./a11y.css";
