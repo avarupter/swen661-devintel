@@ -1,8 +1,10 @@
+import { useDocumentTitle } from "../app/useDocumentTitle.js";
 import Badge from "../components/Badge.jsx";
 import Button from "../components/Button.jsx";
 import Icon from "../components/Icon.jsx";
 import TextField from "../components/TextField.jsx";
 import { COLOR_TOKENS, STATUS_BADGES, TYPE_STEPS } from "../data/foundations.js";
+import { TITLES } from "../data/shell.js";
 
 /**
  * The foundations & component-states sheet from the Figma handoff.
@@ -76,13 +78,18 @@ function measure() {
 }
 
 export default function Specimens() {
+  useDocumentTitle(TITLES.sheet);
   const resolved = measure();
 
   return (
     <>
       <header className="cc-page__header">
         <p className="cc-sheet__eyebrow">Design system</p>
-        <h1 className="cc-display">Foundations &amp; component states</h1>
+        {/* The page's focus target after a navigation (useRouteFocus.js);
+            tabIndex -1 makes it focusable without adding a Tab stop. */}
+        <h1 className="cc-display" tabIndex={-1} data-route-focus>
+          Foundations &amp; component states
+        </h1>
         <p className="cc-body cc-muted cc-sheet__lede">
           Every state below is a static specimen rendered by the same components
           the Patient Today screen uses. They are examples of the interface, not

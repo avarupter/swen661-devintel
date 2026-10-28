@@ -1,0 +1,49 @@
+/* layer: components ==========================================================
+   Banners: the persistent notices in the region under the app bar (D11).
+
+   STML rules out anything transient, so a banner is not a toast. It stays on
+   screen for as long as what it reports is true, and none dismisses itself.
+   The region belongs to the shell, above every page, so a notice about the
+   whole app, such as storage refusing to save, is on every page and always in
+   the same place.
+
+   A banner is plain text. Announcing it is the live regions' job
+   (a11y/Announcer.jsx), so a screen reader hears it once, not twice.
+   All sizing comes from tokens.css. No hex literals in this file.
+   =========================================================================== */
+@layer components {
+  .cc-banners {
+    display: grid;
+    gap: var(--cc-space-2);
+    padding: var(--cc-space-3) var(--cc-inset);
+  }
+
+  /* Nothing to say, no box: an empty region would still put its padding
+     between the app bar and the page. */
+  .cc-banners:empty {
+    display: none;
+  }
+
+  /* Text and, for a notice that offers a choice, its buttons, which wrap
+     under the text when the line runs out rather than squeezing it. */
+  .cc-banner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cc-space-3);
+    padding: var(--cc-space-3) var(--cc-space-4);
+    border: 2px solid var(--cc-border);
+    border-radius: var(--cc-radius-item);
+    background: var(--cc-surface);
+    color: var(--cc-text);
+  }
+
+  /* Something is being lost. The error tone marks it; the words carry the
+     meaning, in the page's own text colour for the most contrast: 12.6:1 on
+     --cc-error-bg, against 5.35:1 for --cc-error. The edge is 5.9:1 on the
+     canvas. */
+  .cc-banner--error {
+    border-color: var(--cc-error);
+    background: var(--cc-error-bg);
+  }
+}

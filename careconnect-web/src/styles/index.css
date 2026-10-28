@@ -22,6 +22,9 @@
  * order — alone. Both routes currently agree, which is the only reason dev and
  * `npm run build` render the same. Reorder the imports and production will
  * silently diverge from dev, so if you change one, change both.
+ *
+ * The screens' own sheets and the banners add to the `components` layer, so
+ * they sit with components.css. That adds no layer and moves none.
  */
 
 @layer reset, tokens, base, components, layout, a11y;
@@ -30,5 +33,10 @@
 @import "./tokens.css";
 @import "./type.css";
 @import "./components.css";
+@import "./medications.css";
+@import "./appointments.css";
+@import "./messages.css";
+@import "./help.css";
+@import "./banners.css";
 @import "./layout.css";
 @import "./a11y.css";

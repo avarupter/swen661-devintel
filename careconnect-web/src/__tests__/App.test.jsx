@@ -240,10 +240,11 @@ describe("App hash routing", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("falls back to Patient Today for a destination hash that has no view", () => {
-    // The five destinations are inert in this cut: #medications is a real href
-    // in the nav, so landing on it must not blank the page.
-    window.location.hash = "#medications";
+  it("falls back to Patient Today for an unknown hash", () => {
+    // Only the hashes in the route grammar (app/routes.js) select a view. Any
+    // other hash is a fragment, so a page first opened at one must not blank:
+    // it shows the default view.
+    window.location.hash = "#no-such-page";
     render(<App />);
 
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(

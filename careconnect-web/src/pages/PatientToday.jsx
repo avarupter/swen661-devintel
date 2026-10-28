@@ -1,3 +1,4 @@
+import { useDocumentTitle } from "../app/useDocumentTitle.js";
 import AppointmentCard from "../components/AppointmentCard.jsx";
 import Button from "../components/Button.jsx";
 import CareTeamCard from "../components/CareTeamCard.jsx";
@@ -6,6 +7,7 @@ import Icon from "../components/Icon.jsx";
 import LaterItem from "../components/LaterItem.jsx";
 import ProgressBar from "../components/ProgressBar.jsx";
 import { patientToday as d } from "../data/patientToday.js";
+import { TITLES } from "../data/shell.js";
 
 /**
  * Patient Today.
@@ -25,14 +27,21 @@ import { patientToday as d } from "../data/patientToday.js";
  * right-hand supporting column, which `grid-template-areas` does without
  * moving them in the DOM — the visual column is to the right, but tab order
  * still goes plan-then-support, which is the order the content makes sense in.
+ *
+ * The h1 is the page's focus target: tabIndex -1 lets the shell focus it after
+ * a navigation (see useRouteFocus.js) without adding a Tab stop.
  */
 export default function PatientToday() {
+  useDocumentTitle(TITLES.home);
+
   return (
     <>
       <div className="cc-page__main">
         <header className="cc-page__header">
           <p className="cc-body cc-muted">{d.header.meta}</p>
-          <h1 className="cc-display">{d.header.greeting}</h1>
+          <h1 className="cc-display" tabIndex={-1} data-route-focus>
+            {d.header.greeting}
+          </h1>
           <nav className="cc-breadcrumb" aria-label="Breadcrumb">
             <ol>
               {d.header.breadcrumb.map((crumb, i) => {
