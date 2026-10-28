@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom";
 import { cleanup } from "@testing-library/react";
 import { afterEach } from "@jest/globals";
+import { __resetDemoStoreForTests } from "../store/demoStore.js";
 
 /**
  * jsdom implements neither matchMedia nor layout, which matters here because
@@ -30,7 +31,12 @@ if (!window.matchMedia) {
   });
 }
 
+// The demo store keeps its state in a module variable, which outlives a test
+// just as localStorage does. Clearing only one of them lets a dose marked in one
+// test leak into the next, and Patient Today's seeded counts with it.
 afterEach(() => {
   cleanup();
   window.location.hash = "";
+  localStorage.clear();
+  __resetDemoStoreForTests();
 });

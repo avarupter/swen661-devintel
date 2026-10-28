@@ -50,6 +50,12 @@ export const patientToday = {
     detail: 'Your daughter — she will call you',
     readiness: 'Everything is set',
     action: "I'm ready",
+    // D3: once "I'm ready" is pressed the badge reads readyBadge, the button
+    // becomes the aria-disabled readyAction, and undo appears beside it.
+    // Appointments reads these too, so the two screens share one wording (R5).
+    readyBadge: 'Ready',
+    readyAction: 'Ready',
+    undo: "Undo — I'm not ready",
   },
 
   later: {
