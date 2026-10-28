@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "@jest/globals";
 
 import ProgressBar from "../ProgressBar.jsx";
 import { patientToday } from "../../data/patientToday.js";
@@ -98,7 +98,7 @@ describe("ProgressBar", () => {
         const { fill, value } = renderBar({ percent, label: "Progress" });
 
         expect(fill.style.width).toBe(`${percent}%`);
-        expect(value.textContent, `percent=${percent}`).toBe(`${percent}%`);
+        expect({ percent, text: value.textContent }).toEqual({ percent, text: `${percent}%` });
       }
     });
 
@@ -130,12 +130,11 @@ describe("ProgressBar", () => {
         const { fill, value } = renderBar({ percent, label: "Progress" });
         const width = Number.parseFloat(fill.style.width);
 
-        expect(width, `percent=${percent}`).toBeGreaterThanOrEqual(0);
-        expect(width, `percent=${percent}`).toBeLessThanOrEqual(100);
+        expect({ percent, width, inRange: width >= 0 && width <= 100 }).toEqual({ percent, width, inRange: true });
         // The text cannot disagree with the bar -- and it has to be compared
         // exactly, or "0%" passes against a span reading "100%" and the
         // cross-check this test exists for is no check at all.
-        expect(value.textContent, `percent=${percent}`).toBe(`${width}%`);
+        expect({ percent, text: value.textContent }).toEqual({ percent, text: `${width}%` });
       }
     });
 

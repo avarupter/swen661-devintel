@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "@jest/globals";
 import { patientToday } from "../../data/patientToday.js";
 import AppointmentCard from "../AppointmentCard.jsx";
 
@@ -152,9 +152,9 @@ describe("AppointmentCard", () => {
   });
 
   // "in the markup", as Button.test.jsx says it: no code path here can cut a
-  // string, and jsdom loads no stylesheet (vite.config.js sets css: false), so
-  // whether the rendered line clips is invisible to this layer. The clipping
-  // check itself belongs in the Playwright sweep.
+  // string, and jsdom loads no stylesheet (jest.config.js stubs every .css
+  // import), so whether the rendered line clips is invisible to this layer.
+  // The clipping check itself belongs in the Playwright sweep.
   it("renders a long title in full rather than truncating it in the markup", () => {
     const title =
       "Video call with Maria, your daughter, who is calling from Lagos this afternoon and has asked to speak about the new prescription";

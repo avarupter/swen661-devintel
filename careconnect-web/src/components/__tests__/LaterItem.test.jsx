@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "@jest/globals";
 import { patientToday } from "../../data/patientToday.js";
 import LaterItem from "../LaterItem.jsx";
 
@@ -88,10 +88,11 @@ describe("LaterItem", () => {
   });
 
   // "in the markup" is all this layer can say: nothing in the component cuts a
-  // string, and jsdom loads no stylesheet (vite.config.js sets css: false), so
-  // the hazard the title names — a long unbreakable word pushing the pair past
-  // its grid track at 768, which is why components.css gives .cc-later__text
-  // min-width: 0 — is invisible here and belongs to the Playwright sweep.
+  // string, and jsdom loads no stylesheet (jest.config.js stubs every .css
+  // import), so the hazard the title names — a long unbreakable word pushing
+  // the pair past its grid track at 768, which is why components.css gives
+  // .cc-later__text min-width: 0 — is invisible here and belongs to the
+  // Playwright sweep.
   it("renders a long title in full rather than truncating it in the markup", () => {
     const title =
       "Evening medication — the small white tablet from the blue box on the kitchen shelf, not the one in the bathroom cabinet";

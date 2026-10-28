@@ -1,5 +1,5 @@
 import { render, screen, within } from "@testing-library/react";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, jest } from "@jest/globals";
 import Nav from "../Nav.jsx";
 import { CURRENT_DESTINATION, DESTINATIONS } from "../../data/patientToday.js";
 
@@ -363,13 +363,13 @@ describe("Nav — unrecognised variant", () => {
  */
 describe("Nav — against a stand-in destination list", () => {
   afterEach(() => {
-    vi.doUnmock("../../data/patientToday.js");
-    vi.resetModules();
+    jest.dontMock("../../data/patientToday.js");
+    jest.resetModules();
   });
 
   async function renderWith(destinations) {
-    vi.resetModules();
-    vi.doMock("../../data/patientToday.js", () => ({
+    jest.resetModules();
+    jest.doMock("../../data/patientToday.js", () => ({
       DESTINATIONS: destinations,
       CURRENT_DESTINATION: "one",
     }));
@@ -453,11 +453,8 @@ describe("Nav — the destination data contract", () => {
   });
 
   it("gives every destination a label, a short label and an icon", () => {
-    DESTINATIONS.forEach((d) => {
-      expect(d.label, `${d.id} label`).toBeTruthy();
-      expect(d.shortLabel, `${d.id} shortLabel`).toBeTruthy();
-      expect(d.icon, `${d.id} icon`).toBeTruthy();
-    });
+    const incomplete = DESTINATIONS.filter((d) => !d.label || !d.shortLabel || !d.icon).map((d) => d.id);
+    expect(incomplete).toEqual([]);
   });
 
   it("gives Messages the only badge count", () => {

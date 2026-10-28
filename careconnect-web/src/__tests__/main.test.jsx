@@ -1,8 +1,9 @@
 import { act, within } from "@testing-library/react";
 import { readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { join } from "node:path";
+import * as React from "react";
+import * as ReactDOMClient from "react-dom/client";
+import { afterEach, describe, expect, it, jest } from "@jest/globals";
 import { patientToday } from "../data/patientToday.js";
 
 /**
@@ -26,11 +27,10 @@ import { patientToday } from "../data/patientToday.js";
  * node index.html provides.
  */
 
-// Resolved with fileURLToPath rather than `new URL(path, import.meta.url)`:
-// Vite rewrites that pattern into an asset URL, which is not readable from
-// disk, so the familiar ESM idiom quietly yields nothing here.
+// Jest compiles this file to CommonJS, so `__dirname` exists and `import.meta`
+// does not (a test that uses it fails to load).
 const INDEX_HTML = readFileSync(
-  join(dirname(fileURLToPath(import.meta.url)), "..", "..", "index.html"),
+  join(__dirname, "..", "..", "index.html"),
   "utf8",
 );
 
@@ -42,7 +42,9 @@ const MOUNT_IDS = [
 describe("main.jsx", () => {
   afterEach(() => {
     for (const id of MOUNT_IDS) document.getElementById(id)?.remove();
-    vi.resetModules();
+    jest.dontMock("react");
+    jest.dontMock("react-dom/client");
+    jest.resetModules();
   });
 
   it("mounts the app into the node index.html provides", async () => {
@@ -54,7 +56,11 @@ describe("main.jsx", () => {
     host.id = MOUNT_IDS[0];
     document.body.append(host);
 
-    vi.resetModules();
+    jest.resetModules();
+    // Jest resets node_modules too: keep the React and ReactDOM that RTL's act
+    // drives, or main.jsx renders through a second copy act cannot flush.
+    jest.doMock("react", () => React);
+    jest.doMock("react-dom/client", () => ReactDOMClient);
     await act(async () => {
       await import("../main.jsx");
     });

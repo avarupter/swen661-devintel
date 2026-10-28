@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "@jest/globals";
 import { patientToday } from "../../data/patientToday.js";
 import CareTeamCard from "../CareTeamCard.jsx";
 

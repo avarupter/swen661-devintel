@@ -1,6 +1,7 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { beforeAll, afterAll, describe, expect, it, vi } from "vitest";
+import * as React from "react";
+import { beforeAll, afterAll, describe, expect, it, jest } from "@jest/globals";
 import Specimens from "../Specimens.jsx";
 import {
   COLOR_TOKENS,
@@ -18,15 +19,16 @@ import {
  *    type metrics are therefore seeded in a top-level beforeAll, which runs
  *    before any render, and the memo itself is asserted rather than worked
  *    around. The one test that needs an UNmemoised read imports a second copy
- *    of the module after `vi.resetModules()`.
+ *    of the module after `jest.resetModules()`.
  *
  * 2. The seeded values below are deliberately NOT the real palette and NOT the
  *    real type scale. The sheet's whole point is that it echoes whatever the
  *    stylesheet resolves to, so the test gives it values no stylesheet would
- *    ever contain and checks they come back out. Vitest loads no CSS
- *    (`css: false`), so without seeding jsdom returns an empty string for every
- *    custom property and a flat `16px / normal · 400` for every type step —
- *    which would make both the hex and the metric assertions vacuous.
+ *    ever contain and checks they come back out. Jest loads no CSS (its config
+ *    stubs every `.css` import), so without seeding jsdom returns an empty
+ *    string for every custom property and a flat `16px / normal · 400` for
+ *    every type step — which would make both the hex and the metric assertions
+ *    vacuous.
  *
  * What this file CANNOT prove: jsdom has no layout engine, so nothing here
  * knows what a specimen looks like. That a focus ring is visible, that a tone
@@ -137,8 +139,9 @@ describe("Specimens", () => {
       // truthful, but a reference sheet that prints #FFF beside #F7F9FC is
       // reporting the minifier rather than the palette. Caught by the Chromium
       // sweep against `npm run preview`, which jsdom could not have seen —
-      // vitest never runs the minifier.
-      vi.resetModules();
+      // Jest never runs the minifier.
+      jest.resetModules();
+      jest.doMock("react", () => React);
       document.documentElement.style.setProperty(COLOR_TOKENS[0].token, "#abc");
       try {
         const { default: Shorthand } = await import("../Specimens.jsx");
@@ -149,7 +152,8 @@ describe("Specimens", () => {
           COLOR_TOKENS[0].token,
           SEEDED[COLOR_TOKENS[0].token]
         );
-        vi.resetModules();
+        jest.dontMock("react");
+        jest.resetModules();
       }
     });
 
@@ -161,7 +165,8 @@ describe("Specimens", () => {
       // UNSEEDED read is a second copy of the module whose memo has not run.
       // The statically imported `Specimens` keeps its own memo, so the tests
       // after this one are unaffected.
-      vi.resetModules();
+      jest.resetModules();
+      jest.doMock("react", () => React);
       document.documentElement.style.removeProperty(COLOR_TOKENS[0].token);
       try {
         const { default: Unseeded } = await import("../Specimens.jsx");
@@ -184,6 +189,7 @@ describe("Specimens", () => {
           COLOR_TOKENS[0].token,
           SEEDED[COLOR_TOKENS[0].token]
         );
+        jest.dontMock("react");
       }
     });
 

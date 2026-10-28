@@ -1,6 +1,6 @@
 import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, jest } from "@jest/globals";
 import App from "../App.jsx";
 
 /**
@@ -330,8 +330,8 @@ describe("App hash routing", () => {
   });
 
   it("removes the exact hashchange listener it added when it unmounts", () => {
-    const added = vi.spyOn(window, "addEventListener");
-    const removed = vi.spyOn(window, "removeEventListener");
+    const added = jest.spyOn(window, "addEventListener");
+    const removed = jest.spyOn(window, "removeEventListener");
     const hashchange = (spy) => spy.mock.calls.filter(([type]) => type === "hashchange");
 
     const { unmount } = render(<App />);

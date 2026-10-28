@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 import { createElement } from "react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "@jest/globals";
 import Icon from "../../components/Icon.jsx";
 import {
   CURRENT_DESTINATION,

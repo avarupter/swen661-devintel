@@ -2,7 +2,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { render } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "@jest/globals";
 
 import Icon, { Mark } from "../Icon.jsx";
 import { DESTINATIONS, patientToday } from "../../data/patientToday.js";
@@ -21,8 +21,8 @@ import { DESTINATIONS, patientToday } from "../../data/patientToday.js";
  * added rather than whenever someone remembers to extend a list.
  */
 
-const COMPONENTS_DIR = join(import.meta.dirname, "..");
-const PAGES_DIR = join(import.meta.dirname, "..", "..", "pages");
+const COMPONENTS_DIR = join(__dirname, "..");
+const PAGES_DIR = join(__dirname, "..", "..", "pages");
 const ICON_SOURCE = readFileSync(join(COMPONENTS_DIR, "Icon.jsx"), "utf8");
 
 /** The body of the PATHS object literal, as text. */
@@ -200,7 +200,7 @@ describe("Icon", () => {
       // container is EMPTY, rather than merely free of geometry, is what tells
       // the two apart. The old "no geometry" assertion passed under both.
       for (const name of ["toString", "constructor", "hasOwnProperty", "valueOf"]) {
-        expect(renderIcon({ name }), name).toBeEmptyDOMElement();
+        expect({ name, html: renderIcon({ name }).innerHTML }).toEqual({ name, html: "" });
       }
     });
   });
@@ -229,7 +229,7 @@ describe("Icon", () => {
       expect(dataIconNames.length).toBeGreaterThan(0);
 
       for (const name of dataIconNames) {
-        expect(GLYPHS, `data asks for an icon named "${name}"`).toContain(name);
+        expect(GLYPHS).toContain(name);
         expect(renderIcon({ name }).querySelectorAll(GEOMETRY).length).toBeGreaterThan(0);
       }
     });
@@ -249,7 +249,7 @@ describe("Icon", () => {
       expect(literals.size).toBeGreaterThan(0);
 
       for (const name of literals) {
-        expect(GLYPHS, `a component asks for an icon named "${name}"`).toContain(name);
+        expect(GLYPHS).toContain(name);
       }
     });
   });

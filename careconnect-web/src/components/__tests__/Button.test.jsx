@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, jest } from "@jest/globals";
 import Button from "../Button.jsx";
 
 /**
@@ -115,7 +115,7 @@ describe("Button", () => {
     });
 
     it("does not fire onClick when disabled", async () => {
-      const onClick = vi.fn();
+      const onClick = jest.fn();
       const user = userEvent.setup();
       render(
         <Button disabled onClick={onClick}>
@@ -160,7 +160,7 @@ describe("Button", () => {
       // The standing objection to aria-disabled is that it leaves the handler
       // live. It is only true if you leave it attached, so this pins both
       // activation routes a focusable button has.
-      const onClick = vi.fn();
+      const onClick = jest.fn();
       const user = userEvent.setup();
       render(
         <Button disabled onClick={onClick}>
@@ -179,7 +179,7 @@ describe("Button", () => {
 
   describe("activation", () => {
     it("calls onClick once per click", async () => {
-      const onClick = vi.fn();
+      const onClick = jest.fn();
       const user = userEvent.setup();
       render(<Button onClick={onClick}>I&rsquo;m ready</Button>);
 
@@ -188,7 +188,7 @@ describe("Button", () => {
     });
 
     it("is activated by the keyboard as a native button", async () => {
-      const onClick = vi.fn();
+      const onClick = jest.fn();
       const user = userEvent.setup();
       render(<Button onClick={onClick}>I&rsquo;m ready</Button>);
 
@@ -202,7 +202,7 @@ describe("Button", () => {
       // user.click() resolves to undefined whatever the handler does, so the
       // promise proves nothing on its own. A throw out of a React event
       // handler reaches window as an error event, so listen for that instead.
-      const onError = vi.fn();
+      const onError = jest.fn();
       const user = userEvent.setup();
       window.addEventListener("error", onError);
       try {
@@ -216,7 +216,7 @@ describe("Button", () => {
     });
 
     it("defaults to type=button so it cannot submit a form around it", async () => {
-      const onSubmit = vi.fn((event) => event.preventDefault());
+      const onSubmit = jest.fn((event) => event.preventDefault());
       const user = userEvent.setup();
       render(
         <form onSubmit={onSubmit}>
@@ -230,7 +230,7 @@ describe("Button", () => {
     });
 
     it("submits the surrounding form when type is submit", async () => {
-      const onSubmit = vi.fn((event) => event.preventDefault());
+      const onSubmit = jest.fn((event) => event.preventDefault());
       const user = userEvent.setup();
       render(
         <form onSubmit={onSubmit}>

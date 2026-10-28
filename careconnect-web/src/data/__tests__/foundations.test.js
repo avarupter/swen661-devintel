@@ -1,9 +1,8 @@
 import { render } from "@testing-library/react";
 import { readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { join } from "node:path";
 import { createElement } from "react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "@jest/globals";
 import Badge from "../../components/Badge.jsx";
 import { COLOR_TOKENS, STATUS_BADGES, TYPE_STEPS } from "../foundations.js";
 
@@ -18,17 +17,16 @@ import { COLOR_TOKENS, STATUS_BADGES, TYPE_STEPS } from "../foundations.js";
  * itself forever.
  *
  * (The stylesheets are read as text rather than queried through
- * getComputedStyle because vitest runs with `css: false` and jsdom resolves no
- * custom properties: every token would come back as the empty string, so a
- * computed-style check here would pass whatever the name was. The real values
- * are measured in Chromium by the Playwright verification script.)
+ * getComputedStyle because Jest loads no CSS (jest.config.js stubs every
+ * `.css` import) and jsdom resolves no custom properties: every token would
+ * come back as the empty string, so a computed-style check here would pass
+ * whatever the name was. The real values are measured in Chromium by the
+ * Playwright verification script.)
  */
 
-// Resolved with fileURLToPath rather than `new URL(path, import.meta.url)`:
-// Vite rewrites that pattern into an asset URL (it comes back as
-// http://localhost/src/styles/..., which is not readable from disk), so the
-// familiar ESM idiom quietly yields nothing here.
-const STYLES_DIR = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "styles");
+// Jest compiles this file to CommonJS, so `__dirname` exists and `import.meta`
+// does not (a test that uses it fails to load).
+const STYLES_DIR = join(__dirname, "..", "..", "styles");
 
 const sheet = (name) => {
   const css = readFileSync(join(STYLES_DIR, name), "utf8");

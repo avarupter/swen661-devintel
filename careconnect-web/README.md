@@ -23,9 +23,9 @@ Other scripts:
 | `npm run build` | Production build into `dist/` |
 | `npm run preview` | Serve the production build — worth doing, see "Cascade layers" below |
 | `npm run lint` | `oxlint` for JS, then `scripts/lint-tokens.mjs` for the stylesheets |
-| `npm test` | The Vitest suite, once |
+| `npm test` | The Jest suite, once |
 | `npm run test:watch` | The suite in watch mode |
-| `npm run coverage` | The suite with v8 coverage; fails below 90% on any metric |
+| `npm run coverage` | The suite with Istanbul coverage; fails below 90% on any metric |
 
 Two routes, no router:
 
@@ -160,7 +160,7 @@ stylesheets: no stylesheet outside `src/styles/`, no rule outside a `@layer`,
 no colour outside `tokens.css`, no spacing off the 4px scale, no `font-size`
 below the 16px floor, no `outline: none`.
 
-### 2. `npm run coverage` — the Vitest suite
+### 2. `npm run coverage` — the Jest suite
 
 406 tests across 17 files, in jsdom. **100% of statements, branches, functions
 and lines**, with the gate set at 90% so the run fails below it. Nothing is
@@ -168,17 +168,19 @@ excluded from the report to get there — the last two uncovered branches were
 server-rendering guards that `createRoot` can never execute, and they were
 deleted rather than tested around.
 
-Coverage runs with `all: true`. That setting is the point: without it a source
-file with no test file of its own is simply absent from the report rather than
-counted at zero, and the percentage stops meaning anything about completeness.
+Coverage is collected from every source file, through `collectCoverageFrom` in
+`jest.config.js`. That setting is the point: without it a source file with no
+test file of its own is simply absent from the report rather than counted at
+zero, and the percentage stops meaning anything about completeness.
 
 **What these tests deliberately do not claim.** jsdom has no layout engine and
-the suite runs with `css: false`, so no unit test here can tell you a target is
-72px, which of the three layouts is showing, what a contrast ratio computes to,
-or whether an element is visually hidden. Tests that assert a class name as a
-proxy for any of that would pass with the stylesheet deleted, so they are not
-written. Where a test names a modifier class it is pinning that the prop
-reached the markup, and it says so. The pixels are layer 3's job.
+the suite loads no CSS (`jest.config.js` stubs every `.css` import), so no unit
+test here can tell you a target is 72px, which of the three layouts is showing,
+what a contrast ratio computes to, or whether an element is visually hidden.
+Tests that assert a class name as a proxy for any of that would pass with the
+stylesheet deleted, so they are not written. Where a test names a modifier
+class it is pinning that the prop reached the markup, and it says so. The
+pixels are layer 3's job.
 
 ### 3. The browser sweep — Chromium, via Playwright
 
@@ -215,7 +217,7 @@ exactly that. The probe scripts live beside `verify.mjs`.
 The sweep also earns its keep against the BUILD specifically. The swatch check
 was added and immediately failed in production only: the CSS minifier rewrites
 `#ffffff` as `#fff`, so the foundations sheet was printing `#FFF` beside
-`#F7F9FC`. No unit test could have seen it — vitest never runs the minifier.
+`#F7F9FC`. No unit test could have seen it — Jest never runs the minifier.
 
 ## What is done, and what is not
 
