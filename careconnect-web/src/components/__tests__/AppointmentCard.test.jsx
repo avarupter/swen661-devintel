@@ -54,7 +54,7 @@ describe("AppointmentCard", () => {
     expect(heading).not.toContainElement(badge);
   });
 
-  it("renders the badge on the neutral tone, with no decorative check mark", () => {
+  it("renders the badge on the neutral tone, with its glyph hidden", () => {
     render(<AppointmentCard data={appointment()} />);
 
     const badge = screen.getByText("Starting soon");
@@ -64,9 +64,9 @@ describe("AppointmentCard", () => {
     // components.css keys on, not that the chip looks any particular way.
     // Without it, tone="error" on a "Coming up" status would ship green.
     expect(badge).toHaveClass("cc-badge", "cc-badge--neutral");
-    // tone="success" would add an aria-hidden check inside the chip; neutral
-    // must not, or the badge becomes an icon nobody can read.
-    expect(badge.querySelector("svg")).toBeNull();
+    // Every tone draws a glyph of its own (D9). It must stay aria-hidden, or
+    // the badge is announced as an icon plus its word.
+    expect(badge.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
   });
 
   it("renders what kind of thing it is, and when", () => {
@@ -137,14 +137,14 @@ describe("AppointmentCard", () => {
     );
   });
 
-  // Not "and keeps them out of names": neither icon sits inside a named
-  // element in this card, so there is no name here for one to leak into.
+  // Not "and keeps them out of names": no icon sits inside a named element in
+  // this card, so there is no name here for one to leak into.
   // Button.test.jsx pins that where the icon really is inside the control.
-  it("hides both of its icons from assistive technology", () => {
+  it("hides all three of its icons, the badge's glyph included, from assistive technology", () => {
     const { container } = render(<AppointmentCard data={appointment()} />);
 
     const icons = container.querySelectorAll("svg");
-    expect(icons).toHaveLength(2);
+    expect(icons).toHaveLength(3);
     for (const icon of icons) {
       expect(icon).toHaveAttribute("aria-hidden", "true");
       expect(icon).toHaveAttribute("focusable", "false");

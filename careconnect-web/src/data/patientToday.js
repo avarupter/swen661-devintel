@@ -12,16 +12,17 @@
 
 export const DESTINATIONS = [
   // `label` is what shows on tablet and desktop. `shortLabel` is the mobile
-  // abbreviation from the board. `label` is always the accessible name, so a
-  // mobile tab reading "Meds" still announces "Medications".
+  // abbreviation from the board. Where they differ, the mobile tab is named
+  // "<shortLabel> (<label>)", "Meds (Medications)" (D8): the visible word
+  // first, then the full destination. The Messages count is not here: it is
+  // the number of unread conversations in the demo store, which App passes to
+  // Nav, and the current destination comes from the route (app/routes.js).
   { id: 'home', label: 'Home', shortLabel: 'Home', icon: 'home' },
   { id: 'medications', label: 'Medications', shortLabel: 'Meds', icon: 'pill' },
   { id: 'appointments', label: 'Appointments', shortLabel: 'Visits', icon: 'calendar' },
-  { id: 'messages', label: 'Messages', shortLabel: 'Inbox', icon: 'chat', badgeCount: 2 },
+  { id: 'messages', label: 'Messages', shortLabel: 'Inbox', icon: 'chat' },
   { id: 'help', label: 'Help', shortLabel: 'Help', icon: 'help' },
 ];
-
-export const CURRENT_DESTINATION = 'home';
 
 export const patientToday = {
   appName: 'Patient Today',

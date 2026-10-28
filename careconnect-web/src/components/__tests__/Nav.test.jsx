@@ -1,7 +1,8 @@
 import { render, screen, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, jest } from "@jest/globals";
 import Nav from "../Nav.jsx";
-import { CURRENT_DESTINATION, DESTINATIONS } from "../../data/patientToday.js";
+import { DESTINATION_IDS as ROUTE_DESTINATIONS } from "../../app/routes.js";
+import { DESTINATIONS } from "../../data/patientToday.js";
 
 /**
  * Nav renders one list of destinations in three presentations. These tests
@@ -20,10 +21,12 @@ import { CURRENT_DESTINATION, DESTINATIONS } from "../../data/patientToday.js";
 
 const VARIANTS = ["sidebar", "tabs", "bar"];
 
+/** The unread count App passes from the demo store: the seed has two unread. */
+const COUNTS = { messages: 2 };
+
 /**
- * The accessible names are the same in all three presentations — that is the
- * whole point of the mobile abbreviation being aria-hidden. The Messages count
- * is announced after the destination, never before it.
+ * The accessible names in the sidebar and the tabs. The Messages count is
+ * announced after the destination, never before it.
  */
 const ACCESSIBLE_NAMES = [
   "Home",
@@ -32,6 +35,20 @@ const ACCESSIBLE_NAMES = [
   "Messages, 2 unread",
   "Help",
 ];
+
+/**
+ * The bar's names: an abbreviated destination is named with the word it shows
+ * first, then the full destination (D8, WCAG 2.5.3 Label in Name).
+ */
+const BAR_NAMES = [
+  "Home",
+  "Meds (Medications)",
+  "Visits (Appointments)",
+  "Inbox (Messages), 2 unread",
+  "Help",
+];
+
+const NAMES = { sidebar: ACCESSIBLE_NAMES, tabs: ACCESSIBLE_NAMES, bar: BAR_NAMES };
 
 const DESTINATION_IDS = [
   "home",
@@ -86,36 +103,33 @@ describe.each(VARIANTS)("Nav — %s variant", (variant) => {
     });
   });
 
-  it.each(ACCESSIBLE_NAMES)(
-    "gives the destination the accessible name %s whatever the presentation",
+  it.each(NAMES[variant])(
+    "gives a destination the accessible name %s in this presentation",
     (name) => {
-      render(<Nav variant={variant} current="home" />);
+      render(<Nav variant={variant} current="home" counts={COUNTS} />);
 
       expect(within(getNav()).getByRole("link", { name })).toBeInTheDocument();
     },
   );
 
-  it.each([
-    ["home", "Home"],
-    ["medications", "Medications"],
-    ["appointments", "Appointments"],
-    ["messages", "Messages, 2 unread"],
-    ["help", "Help"],
-  ])("marks %s as the current page, and only that one", (current, name) => {
-    render(<Nav variant={variant} current={current} />);
+  it.each(DESTINATION_IDS.map((id, i) => [id, NAMES[variant][i]]))(
+    "marks %s as the current page, and only that one",
+    (current, name) => {
+      render(<Nav variant={variant} current={current} counts={COUNTS} />);
 
-    const marked = screen.getAllByRole("link", { current: "page" });
+      const marked = screen.getAllByRole("link", { current: "page" });
 
-    expect(marked).toHaveLength(1);
-    expect(marked[0]).toHaveAccessibleName(name);
-    expect(marked[0]).toHaveAttribute("href", `#${current}`);
-    // The visual half of the same fact. aria-current is pinned three ways
-    // over above; the class the tint hangs off was pinned nowhere, here or in
-    // the Playwright sweep, so losing it would strip the sighted cue in
-    // silence. What the tint then looks like is Chromium's to measure.
-    expect(marked[0]).toHaveClass("is-current");
-    expect(getNav().querySelectorAll(".is-current")).toHaveLength(1);
-  });
+      expect(marked).toHaveLength(1);
+      expect(marked[0]).toHaveAccessibleName(name);
+      expect(marked[0]).toHaveAttribute("href", `#${current}`);
+      // The visual half of the same fact. aria-current is pinned three ways
+      // over above; the class the tint hangs off was pinned nowhere, here or in
+      // the Playwright sweep, so losing it would strip the sighted cue in
+      // silence. What the tint then looks like is Chromium's to measure.
+      expect(marked[0]).toHaveClass("is-current");
+      expect(getNav().querySelectorAll(".is-current")).toHaveLength(1);
+    },
+  );
 
   it("writes aria-current on exactly one element and leaves it off the rest", () => {
     render(<Nav variant={variant} current="appointments" />);
@@ -127,7 +141,9 @@ describe.each(VARIANTS)("Nav — %s variant", (variant) => {
 
     expect(marked).toHaveLength(1);
     expect(marked[0]).toHaveAttribute("aria-current", "page");
-    expect(marked[0]).toHaveAccessibleName("Appointments");
+    expect(marked[0]).toHaveAccessibleName(
+      NAMES[variant][DESTINATION_IDS.indexOf("appointments")],
+    );
   });
 
   it("marks nothing when current matches no destination", () => {
@@ -168,7 +184,7 @@ describe.each(VARIANTS)("Nav — %s variant", (variant) => {
   });
 
   it("announces the Messages count after the destination, and only once", () => {
-    render(<Nav variant={variant} current="home" />);
+    render(<Nav variant={variant} current="home" counts={COUNTS} />);
 
     // Found by a loose name, asserted against an exact one. Looking the link
     // up by the exact name it is then asserted to have would make every
@@ -192,15 +208,18 @@ describe.each(VARIANTS)("Nav — %s variant", (variant) => {
 
     // The count never leads: "2 unread Messages" is the failure this
     // component's comment is about.
-    expect(messages).toHaveAccessibleName("Messages, 2 unread");
+    expect(messages).toHaveAccessibleName(
+      NAMES[variant][DESTINATION_IDS.indexOf("messages")],
+    );
     expect(screen.queryByRole("link", { name: /unread.*Messages/ })).toBeNull();
   });
 
   it.each(["Home", "Medications", "Appointments", "Help"])(
     "renders no count and no unread text for %s",
-    (name) => {
-      render(<Nav variant={variant} current="home" />);
+    (label) => {
+      render(<Nav variant={variant} current="home" counts={COUNTS} />);
 
+      const name = NAMES[variant][ACCESSIBLE_NAMES.indexOf(label)];
       const link = screen.getByRole("link", { name });
 
       expect(link.textContent).not.toMatch(/\d/);
@@ -209,7 +228,7 @@ describe.each(VARIANTS)("Nav — %s variant", (variant) => {
   );
 
   it("mentions unread on the one destination that has a badge count", () => {
-    render(<Nav variant={variant} current="home" />);
+    render(<Nav variant={variant} current="home" counts={COUNTS} />);
 
     expect(screen.getAllByText(/unread/)).toHaveLength(1);
   });
@@ -217,15 +236,15 @@ describe.each(VARIANTS)("Nav — %s variant", (variant) => {
 
 describe("Nav — bar variant abbreviations", () => {
   const ABBREVIATED = [
-    { label: "Medications", shortLabel: "Meds", name: "Medications" },
-    { label: "Appointments", shortLabel: "Visits", name: "Appointments" },
-    { label: "Messages", shortLabel: "Inbox", name: "Messages, 2 unread" },
+    { label: "Medications", shortLabel: "Meds", name: "Meds (Medications)" },
+    { label: "Appointments", shortLabel: "Visits", name: "Visits (Appointments)" },
+    { label: "Messages", shortLabel: "Inbox", name: "Inbox (Messages), 2 unread" },
   ];
 
   it.each(ABBREVIATED)(
-    "puts $shortLabel in the aria-hidden span and $label in the sr-only one, announcing $name",
+    "puts $shortLabel in the aria-hidden span and the whole name, with $label, in the sr-only one, announcing $name",
     ({ label, shortLabel, name }) => {
-      render(<Nav variant="bar" current="home" />);
+      render(<Nav variant="bar" current="home" counts={COUNTS} />);
 
       const link = screen.getByRole("link", { name });
 
@@ -235,9 +254,11 @@ describe("Nav — bar variant abbreviations", () => {
       expect(visible).toHaveAttribute("aria-hidden", "true");
       expect(visible).not.toHaveClass("cc-sr-only");
 
-      // Announced half: the full destination is present as real text, not as an
-      // aria-label, so it is translated and found by text search.
-      const announced = within(link).getByText(label);
+      // Announced half: the whole name, which starts with the abbreviation
+      // and carries the full destination (D8), is present as real text, not as
+      // an aria-label, so it is translated and found by text search.
+      const announced = within(link).getByText(name);
+      expect(announced).toHaveTextContent(label);
       expect(announced).not.toHaveAttribute("aria-hidden");
       expect(announced).not.toBe(visible);
 
@@ -277,7 +298,7 @@ describe("Nav — bar variant abbreviations", () => {
   );
 
   it("hides nothing from assistive technology but the abbreviations and the badge number", () => {
-    render(<Nav variant="bar" current="home" />);
+    render(<Nav variant="bar" current="home" counts={COUNTS} />);
 
     const hiddenText = Array.from(
       getNav().querySelectorAll("[aria-hidden='true']"),
@@ -289,24 +310,27 @@ describe("Nav — bar variant abbreviations", () => {
 });
 
 describe.each(["sidebar", "tabs"])("Nav — %s variant labels", (variant) => {
+  // `hidden`: a name that adds a count to the label is one sr-only span, so
+  // the visible label is aria-hidden and the name is read once (R9). Every
+  // other label is its own name and is never hidden.
   const FULL = [
-    { label: "Home", name: "Home" },
-    { label: "Medications", name: "Medications" },
-    { label: "Appointments", name: "Appointments" },
-    { label: "Messages", name: "Messages, 2 unread" },
-    { label: "Help", name: "Help" },
+    { label: "Home", name: "Home", hidden: false },
+    { label: "Medications", name: "Medications", hidden: false },
+    { label: "Appointments", name: "Appointments", hidden: false },
+    { label: "Messages", name: "Messages, 2 unread", hidden: true },
+    { label: "Help", name: "Help", hidden: false },
   ];
 
   it.each(FULL)(
-    "renders $label once, unhidden and not sr-only, with no second copy",
-    ({ label, name }) => {
-      render(<Nav variant={variant} current="home" />);
+    "renders $label once and not sr-only, with no second copy, hidden only when its name adds a count",
+    ({ label, name, hidden }) => {
+      render(<Nav variant={variant} current="home" counts={COUNTS} />);
 
       const link = screen.getByRole("link", { name });
       const labels = within(link).getAllByText(label);
 
       expect(labels).toHaveLength(1);
-      expect(labels[0]).not.toHaveAttribute("aria-hidden");
+      expect(labels[0].getAttribute("aria-hidden")).toBe(hidden ? "true" : null);
       // Not the visually hidden span either: the unabbreviated branch is the
       // one the eye reads on tablet and desktop, and sending it down the
       // sr-only path leaves one text node, unhidden from AT, and a nav with
@@ -356,10 +380,11 @@ describe("Nav — unrecognised variant", () => {
 
 /**
  * Nav reads the destinations from the data module rather than taking them as a
- * prop, so the two cases the shipped list cannot produce — a badge count of
- * zero and a label long enough to be worth worrying about — are covered by
- * standing in a different list. These also prove Nav renders whatever the
- * module declares instead of a hand-written copy of the five destinations.
+ * prop, so a label long enough to be worth worrying about is covered by
+ * standing in a different list, and the counts the shipped seed never has (0,
+ * and more than nine) ride along through the `counts` prop. These also prove
+ * Nav renders whatever the module declares instead of a hand-written copy of
+ * the five destinations.
  */
 describe("Nav — against a stand-in destination list", () => {
   afterEach(() => {
@@ -367,47 +392,49 @@ describe("Nav — against a stand-in destination list", () => {
     jest.resetModules();
   });
 
-  async function renderWith(destinations) {
+  async function renderWith(destinations, counts) {
     jest.resetModules();
     jest.doMock("../../data/patientToday.js", () => ({
       DESTINATIONS: destinations,
-      CURRENT_DESTINATION: "one",
     }));
     const { default: MockedNav } = await import("../Nav.jsx");
-    return render(<MockedNav variant="bar" current="one" />);
+    return render(<MockedNav variant="bar" current="one" counts={counts} />);
   }
 
   it("renders a zero badge count as nothing at all", async () => {
-    await renderWith([
-      { id: "one", label: "Messages", shortLabel: "Inbox", icon: "chat", badgeCount: 0 },
-    ]);
+    await renderWith(
+      [{ id: "messages", label: "Messages", shortLabel: "Inbox", icon: "chat" }],
+      { messages: 0 },
+    );
 
-    const link = screen.getByRole("link", { name: "Messages" });
+    const link = screen.getByRole("link", { name: "Inbox (Messages)" });
 
-    expect(link.textContent).toBe("InboxMessages");
+    expect(link.textContent).toBe("InboxInbox (Messages)");
     expect(within(link).queryByText("0")).toBeNull();
     expect(screen.queryByText(/unread/)).toBeNull();
   });
 
   it("renders a count greater than nine in full, with the matching name", async () => {
-    await renderWith([
-      { id: "one", label: "Messages", shortLabel: "Inbox", icon: "chat", badgeCount: 12 },
-    ]);
+    await renderWith(
+      [{ id: "messages", label: "Messages", shortLabel: "Inbox", icon: "chat" }],
+      { messages: 12 },
+    );
 
     expect(
-      screen.getByRole("link", { name: "Messages, 12 unread" }),
+      screen.getByRole("link", { name: "Inbox (Messages), 12 unread" }),
     ).toBeInTheDocument();
     expect(screen.getByText("12")).toBeInTheDocument();
   });
 
   it("renders a long label in full rather than truncating it", async () => {
     const label = "Appointments and video visits with your care team";
+    const name = `Visits (${label})`;
     await renderWith([
       { id: "one", label, shortLabel: "Visits", icon: "calendar" },
     ]);
 
-    expect(screen.getByRole("link", { name: label })).toBeInTheDocument();
-    expect(screen.getByText(label)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name })).toBeInTheDocument();
+    expect(screen.getByText(name)).toBeInTheDocument();
     expect(screen.getByText("Visits")).toHaveAttribute("aria-hidden", "true");
   });
 
@@ -423,7 +450,7 @@ describe("Nav — against a stand-in destination list", () => {
       "#one",
       "#two",
     ]);
-    expect(screen.getByRole("link", { name: "Second" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "2nd (Second)" })).toBeInTheDocument();
     expect(screen.getAllByRole("link", { current: "page" })).toHaveLength(1);
   });
 
@@ -457,13 +484,17 @@ describe("Nav — the destination data contract", () => {
     expect(incomplete).toEqual([]);
   });
 
-  it("gives Messages the only badge count", () => {
+  it("carries no badge count: the count comes from the store, as the counts prop", () => {
+    // App passes Nav the number of unread conversations in the demo store. A
+    // count written here as well would be a second source, and a stale one.
     expect(
-      DESTINATIONS.filter((d) => d.badgeCount).map((d) => [d.id, d.badgeCount]),
-    ).toEqual([["messages", 2]]);
+      DESTINATIONS.filter((d) => Object.hasOwn(d, "badgeCount")).map((d) => d.id),
+    ).toEqual([]);
   });
 
-  it("points CURRENT_DESTINATION at a destination that exists", () => {
-    expect(DESTINATIONS.some((d) => d.id === CURRENT_DESTINATION)).toBe(true);
+  it("declares exactly the destinations the route can make current", () => {
+    // App passes the route's destination (app/routes.js) as `current`. An id
+    // the router produces that is missing here would mark nothing at all.
+    expect(DESTINATIONS.map((d) => d.id)).toEqual(ROUTE_DESTINATIONS);
   });
 });

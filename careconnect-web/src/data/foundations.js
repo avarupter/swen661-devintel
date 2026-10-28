@@ -41,3 +41,9 @@ export const STATUS_BADGES = [
   { tone: "success", label: "Ready" },
   { tone: "error", label: "Missed" },
 ];
+
+/* The lede above the badges. Every tone draws a glyph of its own (D9: a clock,
+   a calendar, a check and an alert), not only success its check, so it says
+   what the glyphs are for and why they are not read out. */
+export const STATUS_BADGES_NOTE =
+  "Informational, not controls. The word carries the meaning, and each tone adds a glyph of its own, so a status never rests on colour alone. The glyphs are decorative and hidden from assistive technology, so “Taken” is never announced as “check Taken”.";

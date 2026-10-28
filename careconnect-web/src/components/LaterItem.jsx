@@ -1,3 +1,4 @@
+import Badge from "./Badge.jsx";
 import Card from "./Card.jsx";
 import Icon from "./Icon.jsx";
 
@@ -5,9 +6,19 @@ import Icon from "./Icon.jsx";
  * One "later today" item. Two of these sit in a list that is a single column on
  * mobile and a pair from tablet up — again the parent's grid, not a prop.
  *
- * @param {{ item: { time: string, title: string, detail: string, icon: string } }} props
+ * A live list can add a status and its actions. `badge` ({ tone, label }) shows
+ * under the detail, in words as well as colour and glyph (STML), and
+ * `children` (the item's buttons) come after it, so the reading order is time,
+ * title, detail, status, then what you can do about it. With neither, the item
+ * is exactly the Week 10 row.
+ *
+ * @param {{
+ *   item: { time: string, title: string, detail: string, icon: string },
+ *   badge?: { tone: 'info' | 'neutral' | 'success' | 'error', label: string },
+ *   children?: import('react').ReactNode,
+ * }} props
  */
-export default function LaterItem({ item }) {
+export default function LaterItem({ item, badge, children }) {
   return (
     <Card as="li" className="cc-later">
       {/* The chip is a painted circle in CSS, so rendering it around a missing
@@ -22,6 +33,12 @@ export default function LaterItem({ item }) {
         <p className="cc-later__time">{item.time}</p>
         <p className="cc-later__title">{item.title}</p>
         <p className="cc-body cc-muted">{item.detail}</p>
+        {badge ? (
+          <p className="cc-later__status">
+            <Badge tone={badge.tone}>{badge.label}</Badge>
+          </p>
+        ) : null}
+        {children ? <div className="cc-later__actions">{children}</div> : null}
       </div>
     </Card>
   );

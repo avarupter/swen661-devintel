@@ -3,7 +3,12 @@ import Badge from "../components/Badge.jsx";
 import Button from "../components/Button.jsx";
 import Icon from "../components/Icon.jsx";
 import TextField from "../components/TextField.jsx";
-import { COLOR_TOKENS, STATUS_BADGES, TYPE_STEPS } from "../data/foundations.js";
+import {
+  COLOR_TOKENS,
+  STATUS_BADGES,
+  STATUS_BADGES_NOTE,
+  TYPE_STEPS,
+} from "../data/foundations.js";
 import { TITLES } from "../data/shell.js";
 
 /**
@@ -276,12 +281,7 @@ export default function Specimens() {
         <h2 className="cc-section" id="sheet-badges">
           Status badges
         </h2>
-        <p className="cc-body cc-muted cc-sheet__lede">
-          Informational, not controls. The word carries the meaning; the check
-          mark on the success tones is decorative and hidden from assistive
-          technology, so &ldquo;Taken&rdquo; is never announced as
-          &ldquo;check Taken&rdquo;.
-        </p>
+        <p className="cc-body cc-muted cc-sheet__lede">{STATUS_BADGES_NOTE}</p>
         <ul className="cc-badgerow">
           {STATUS_BADGES.map((b) => (
             <li key={b.label}>

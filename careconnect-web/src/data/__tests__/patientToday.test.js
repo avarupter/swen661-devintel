@@ -1,12 +1,11 @@
 import { render } from "@testing-library/react";
 import { createElement } from "react";
 import { describe, expect, it } from "@jest/globals";
+import { DESTINATION_IDS } from "../../app/routes.js";
 import Icon from "../../components/Icon.jsx";
-import {
-  CURRENT_DESTINATION,
-  DESTINATIONS,
-  patientToday,
-} from "../patientToday.js";
+import { unreadCount } from "../messageModel.js";
+import { SEED_CONVERSATIONS } from "../messages.js";
+import { DESTINATIONS, patientToday } from "../patientToday.js";
 
 /**
  * The data contract, not the copy.
@@ -88,24 +87,12 @@ describe("DESTINATIONS", () => {
     expect(unimplemented).toEqual([]);
   });
 
-  it("carries at least one unread count, each a positive whole number", () => {
-    // Nav renders the count only when it is truthy, so a stray `badgeCount: 0`
-    // is dead weight: a field that reads as a count and displays as nothing.
-    //
-    // WHICH destination carries one is the board's to change, so it is not
-    // pinned here — Nav renders the ", N unread" suffix inside that
-    // destination's own link, so a second badged destination announces
-    // "Appointments, 3 unread" correctly rather than doubling anything up. What
-    // is pinned is that at least one count exists, which is the only reason the
-    // field belongs in a structural test: it is what keeps Nav's
-    // `d.badgeCount ? ... : null` branch fed by real data.
-    const counted = DESTINATIONS.filter((d) => Object.hasOwn(d, "badgeCount"));
-    expect(counted.length).toBeGreaterThan(0);
-
-    const unusable = counted
-      .filter((d) => !Number.isInteger(d.badgeCount) || d.badgeCount <= 0)
-      .map((d) => `${d.id}: ${d.badgeCount}`);
-    expect(unusable).toEqual([]);
+  it("leaves the unread count to the seed conversations, which start with two unread", () => {
+    // The count is no longer a field here: App passes Nav the number of unread
+    // conversations in the demo store. So the 2 the nav shows on first load
+    // comes from the seed, which is what keeps Nav's count branch fed by real
+    // data.
+    expect(unreadCount(SEED_CONVERSATIONS)).toBe(2);
   });
 
   it("keeps every id clear of the hashes App reserves", () => {
@@ -124,11 +111,12 @@ describe("DESTINATIONS", () => {
   });
 });
 
-describe("CURRENT_DESTINATION", () => {
-  it("names one of the declared destinations", () => {
-    // Nav marks aria-current="page" by comparing against this id. A typo here
-    // marks nothing at all, and every layout quietly loses its current page.
-    expect(DESTINATIONS.map((d) => d.id)).toContain(CURRENT_DESTINATION);
+describe("the current destination", () => {
+  it("is always one of the declared destinations, because the route names only those", () => {
+    // Nav marks aria-current="page" by comparing the route's destination
+    // (app/routes.js) against these ids. A route id missing here marks nothing
+    // at all, and every layout quietly loses its current page.
+    expect(DESTINATIONS.map((d) => d.id)).toEqual(DESTINATION_IDS);
   });
 });
 
@@ -238,7 +226,8 @@ describe("patientToday copy", () => {
     // Each crumb is its own React key.
     expect(new Set(crumbs).size).toBe(crumbs.length);
 
-    const current = DESTINATIONS.find((d) => d.id === CURRENT_DESTINATION);
+    // Patient Today is the view of the "home" route.
+    const current = DESTINATIONS.find((d) => d.id === "home");
     expect(crumbs.at(-1)).toBe(current.label);
   });
 

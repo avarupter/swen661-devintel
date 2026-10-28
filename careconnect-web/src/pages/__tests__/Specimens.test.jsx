@@ -603,11 +603,12 @@ describe("Specimens", () => {
         // de-duplicated render would still look plausible and would be wrong.
         expect(badge).toHaveTextContent(label);
         // ...and tones, not labels alone: dropping `tone={b.tone}` collapses
-        // all five to neutral, which a label-only check cannot see. The check
-        // mark is the rendered consequence the section's own lede promises, so
-        // it is asserted as an output rather than as a class on its own.
+        // all five to neutral, which a label-only check cannot see. Every tone
+        // draws a glyph of its own (D9), the rendered consequence the
+        // section's own lede promises, so it is asserted as an output rather
+        // than as a class on its own.
         expect(badge.firstElementChild).toHaveClass(`cc-badge--${tone}`);
-        expect(badge.querySelector("svg") !== null).toBe(tone === "success");
+        expect(badge.querySelector("svg")).not.toBeNull();
       });
       expect(STATUS_BADGES.filter((b) => b.tone === "success")).toHaveLength(2);
     });

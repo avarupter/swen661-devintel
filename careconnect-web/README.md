@@ -85,10 +85,13 @@ Targeted at WCAG 2.1 AA, verified mechanically rather than by eye (see
   `--cc-primary` (#1565C0) at 5.75:1.
 - Interactive targets are at least 44px; buttons and fields at least 52px;
   mobile bar destinations 72px.
-- The mobile bar shows "Meds" but announces "Medications": the abbreviation is
-  `aria-hidden` and the full destination is in a visually hidden span, so one
-  name reaches assistive technology instead of both. The Messages count reads
-  after the destination — "Messages, 2 unread", not "2 unread messages Messages".
+- Every nav name starts with the words on screen (WCAG 2.5.3 Label in Name).
+  The mobile bar shows "Meds" and is named "Meds (Medications)", so a
+  voice-control user can say what they see and a screen reader still hears
+  where it goes. The Messages count reads after the destination — "Messages,
+  2 unread", not "2 unread Messages" — and drops as conversations are read.
+  A name that adds to the visible label is one visually hidden span, with the
+  label and badge `aria-hidden`, so it is read once and in one piece.
 - Selection is `aria-current="page"`, not just the tint. Focus is a dark 3px
   ring with an offset, so it sits on the surrounding surface and stays visible
   on the primary fill and on the selected tint.

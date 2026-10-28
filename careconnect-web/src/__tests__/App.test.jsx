@@ -37,6 +37,18 @@ const DESTINATION_NAMES = [
   "Help",
 ];
 
+/**
+ * The same five in the mobile bar, which names an abbreviated destination with
+ * the word it shows first, then the full destination (D8, WCAG 2.5.3).
+ */
+const BAR_NAMES = [
+  "Home",
+  "Meds (Medications)",
+  "Visits (Appointments)",
+  "Inbox (Messages), 2 unread",
+  "Help",
+];
+
 const mainNavs = () => screen.getAllByRole("navigation", { name: "Main" });
 
 /**
@@ -153,13 +165,15 @@ describe("App navigation presentations", () => {
   it("gives every presentation the same five destinations in the same order", () => {
     render(<App />);
 
-    for (const nav of mainNavs()) {
+    // In the shell's DOM order: the tabs, the sidebar, then the bar.
+    const expected = [DESTINATION_NAMES, DESTINATION_NAMES, BAR_NAMES];
+    mainNavs().forEach((nav, n) => {
       const links = within(nav).getAllByRole("link");
-      expect(links).toHaveLength(DESTINATION_NAMES.length);
+      expect(links).toHaveLength(expected[n].length);
       links.forEach((link, i) => {
-        expect(link).toHaveAccessibleName(DESTINATION_NAMES[i]);
+        expect(link).toHaveAccessibleName(expected[n][i]);
       });
-    }
+    });
   });
 
   it("marks exactly one current destination per presentation, and it is Home", () => {
@@ -191,15 +205,21 @@ describe("App navigation presentations", () => {
       expect(screen.queryAllByRole("link", { name: abbreviation })).toHaveLength(0);
     }
 
-    // One link per presentation, each announcing the full destination.
-    expect(screen.getAllByRole("link", { name: "Medications" })).toHaveLength(3);
-    expect(screen.getAllByRole("link", { name: "Appointments" })).toHaveLength(3);
+    // One link per presentation, each announcing the full destination: the
+    // tabs and the sidebar by its label, the bar after its abbreviation (D8).
+    expect(screen.getAllByRole("link", { name: "Medications" })).toHaveLength(2);
+    expect(screen.getAllByRole("link", { name: "Meds (Medications)" })).toHaveLength(1);
+    expect(screen.getAllByRole("link", { name: "Appointments" })).toHaveLength(2);
+    expect(screen.getAllByRole("link", { name: "Visits (Appointments)" })).toHaveLength(1);
   });
 
   it("announces the unread count after the destination, never before it", () => {
     render(<App />);
 
-    expect(screen.getAllByRole("link", { name: "Messages, 2 unread" })).toHaveLength(3);
+    expect(screen.getAllByRole("link", { name: "Messages, 2 unread" })).toHaveLength(2);
+    expect(
+      screen.getAllByRole("link", { name: "Inbox (Messages), 2 unread" }),
+    ).toHaveLength(1);
     expect(screen.queryAllByRole("link", { name: /^2 unread/ })).toHaveLength(0);
     expect(screen.queryAllByRole("link", { name: "Messages" })).toHaveLength(0);
 

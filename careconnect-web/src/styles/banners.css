@@ -38,12 +38,29 @@
     color: var(--cc-text);
   }
 
-  /* Something is being lost. The error tone marks it; the words carry the
-     meaning, in the page's own text colour for the most contrast: 12.6:1 on
-     --cc-error-bg, against 5.35:1 for --cc-error. The edge is 5.9:1 on the
+  /* A banner's glyph comes first and keeps its size. The text takes the rest
+     of the line and wraps inside it, rather than dropping under the glyph as a
+     whole sentence would; anything after the text still wraps under it once
+     less than 12rem is left beside it. */
+  .cc-banner > svg {
+    flex: none;
+  }
+
+  .cc-banner > p {
+    flex: 1 1 12rem;
+  }
+
+  /* Something is being lost. The error tone, the alert glyph and the words say
+     it together (STML). The words are in the page's own text colour for the
+     most contrast: 12.6:1 on --cc-error-bg, against 5.35:1 for --cc-error,
+     which the glyph uses (a graphic needs 3:1). The edge is 5.9:1 on the
      canvas. */
   .cc-banner--error {
     border-color: var(--cc-error);
     background: var(--cc-error-bg);
+  }
+
+  .cc-banner--error > svg {
+    color: var(--cc-error);
   }
 }

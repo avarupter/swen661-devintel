@@ -46,6 +46,9 @@
     font-weight: 600;
     cursor: pointer;
     text-align: center;
+    /* ButtonLink puts these classes on an <a>; without this it would keep the
+       link underline. A <button> has none, so it is unchanged. */
+    text-decoration: none;
   }
 
   .cc-btn--full {
@@ -305,6 +308,19 @@
     margin-top: var(--cc-space-5);
   }
 
+  /* A live card's buttons: "I'm ready", or "Ready" with Undo beside it. On
+     mobile they fill the row as the single action does, and wrap one under the
+     other when both do not fit. */
+  .cc-appointment__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cc-space-3);
+  }
+
+  .cc-appointment__actions .cc-btn {
+    flex: 1 1 auto;
+  }
+
   .cc-appointment__ready {
     display: flex;
     align-items: center;
@@ -360,6 +376,19 @@
     font-weight: 700;
   }
 
+  /* A live item's status and its buttons, under the detail. The buttons wrap
+     to a row each when the item is too narrow for them side by side. */
+  .cc-later__status {
+    margin-top: var(--cc-space-2);
+  }
+
+  .cc-later__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cc-space-3);
+    margin-top: var(--cc-space-3);
+  }
+
   /* --- Today at a glance --------------------------------------------------- */
   .cc-glance__list {
     display: grid;
@@ -367,6 +396,12 @@
     margin-top: var(--cc-space-4);
   }
 
+  /* A row of a <dl> may hold only terms and definitions, so the chip lives
+     inside the <dt>. The <dt> spans the whole row as a subgrid and shares its
+     tracks: the chip takes the icon area across both lines, centred, the label
+     falls into the first free cell beside it, and the <dd> keeps the second
+     line. That is the Week 10 arrangement, re-mapped with nothing positioned,
+     so nothing in the row is painted on a layer of its own. */
   .cc-glance__row {
     display: grid;
     grid-template-columns: 40px 1fr;
@@ -377,11 +412,16 @@
     align-items: center;
   }
 
+  .cc-glance__row dt {
+    grid-column: 1 / -1;
+    grid-row: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-template-rows: subgrid;
+    align-items: center;
+  }
   .cc-glance__icon {
     grid-area: icon;
-  }
-  .cc-glance__row dt {
-    grid-area: label;
   }
   .cc-glance__row dd {
     grid-area: value;

@@ -15,6 +15,11 @@ import Icon from "./Icon.jsx";
  * deliberate: a disabled input must also be skipped by form submission and
  * must not be editable, which only the native attribute gives.
  *
+ * Every other prop (`id`, `ref`, `form`, `aria-*`) reaches the <button>, so a
+ * page can return focus to it, attach a description or tie it to a form.
+ * They are spread first, so they can never override the props above: a
+ * disabled Button stays inert whatever else it is given.
+ *
  * @param {{
  *   children: import('react').ReactNode,
  *   variant?: 'primary' | 'secondary',
@@ -22,7 +27,8 @@ import Icon from "./Icon.jsx";
  *   disabled?: boolean,
  *   fullWidth?: boolean,
  *   type?: 'button' | 'submit',
- *   onClick?: () => void,
+ *   onClick?: (event: import('react').MouseEvent<HTMLButtonElement>) => void,
+ *   className?: string,
  * }} props
  */
 export default function Button({
@@ -33,12 +39,16 @@ export default function Button({
   fullWidth = false,
   type = "button",
   onClick,
+  className = "",
+  ...rest
 }) {
   const classes = ["cc-btn", `cc-btn--${variant}`];
   if (fullWidth) classes.push("cc-btn--full");
+  if (className) classes.push(className);
 
   return (
     <button
+      {...rest}
       type={type}
       className={classes.join(" ")}
       aria-disabled={disabled || undefined}

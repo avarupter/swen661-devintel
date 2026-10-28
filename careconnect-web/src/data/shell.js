@@ -1,6 +1,6 @@
 /**
- * The shell's own copy: the document title of every view, and the notices the
- * shell shows above every page.
+ * The shell's own copy: the document title of every view, its own links, and
+ * the notices the shell shows above every page.
  *
  * Titles follow the pattern index.html already uses, "<view> · CareConnect",
  * with the most specific part first, so a screen reader and a crowded tab strip
@@ -20,6 +20,18 @@ export const TITLES = {
 export const threadTitle = (subject) => `${subject} · Messages · CareConnect`;
 
 export const COMPOSE_TITLE = 'New message · Messages · CareConnect';
+
+/** The first Tab stop on every page. */
+export const SKIP_LINK = 'Skip to main content';
+
+/**
+ * The footer's evidence link: to the design-system sheet from every other
+ * view, and back to Patient Today from the sheet.
+ */
+export const EVIDENCE_LINK = {
+  toSheet: 'Design system',
+  toHome: 'Back to Patient Today',
+};
 
 /**
  * Shown in the banner region under the app bar, on every page, for as long as

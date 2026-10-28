@@ -4,15 +4,16 @@ import { destinationOf, routeHref } from "./app/routes.js";
 import { useRoute } from "./app/useRoute.js";
 import { useRouteFocus } from "./app/useRouteFocus.js";
 import Nav from "./components/Nav.jsx";
-import { Mark } from "./components/Icon.jsx";
+import Icon, { Mark } from "./components/Icon.jsx";
 import Appointments from "./pages/Appointments.jsx";
 import Help from "./pages/Help.jsx";
 import Medications from "./pages/Medications.jsx";
 import Messages from "./pages/Messages.jsx";
 import PatientToday from "./pages/PatientToday.jsx";
 import Specimens from "./pages/Specimens.jsx";
+import { unreadCount } from "./data/messageModel.js";
 import { patientToday as d } from "./data/patientToday.js";
-import { STORAGE_BANNER } from "./data/shell.js";
+import { EVIDENCE_LINK, SKIP_LINK, STORAGE_BANNER } from "./data/shell.js";
 import { useDemoStore } from "./store/useDemoStore.js";
 import "./styles/index.css";
 
@@ -70,10 +71,12 @@ function skipToMain(event) {
  * Shown on every page for as long as storage refuses to save, and announced
  * once, assertively, each time it appears (R3). The banner itself is not a
  * live region: the announcer makes the one announcement, and a second live
- * region here would read it twice.
+ * region here would read it twice. The alert glyph is decorative: the error
+ * tone, the glyph and the words say it together (STML), and only the words are
+ * read.
  *
- * Its own component so that only it re-renders when the store changes, and
- * because the announcer it calls is provided by App's own markup.
+ * Its own component because the announcer it calls is provided by App's own
+ * markup, so App itself cannot call useAnnounce.
  */
 function StorageBanner() {
   const { storageOk } = useDemoStore();
@@ -86,6 +89,7 @@ function StorageBanner() {
   if (storageOk) return null;
   return (
     <div className="cc-banner cc-banner--error">
+      <Icon name="alert" />
       <p>{STORAGE_BANNER}</p>
     </div>
   );
@@ -102,11 +106,16 @@ export default function App() {
   const current = destinationOf(route);
   const showsSheet = route === "sheet";
 
+  // One count for all three presentations, read from the store, so the badge
+  // drops as conversations are read, here or in another tab, and cannot
+  // differ between the bar, the tabs and the sidebar.
+  const counts = { messages: unreadCount(useDemoStore().conversations) };
+
   return (
     <AnnouncerProvider>
       <div className="cc-app">
         <a className="cc-skip" href="#main" onClick={skipToMain}>
-          Skip to main content
+          {SKIP_LINK}
         </a>
 
         <header className="cc-appbar">
@@ -131,10 +140,10 @@ export default function App() {
           <StorageBanner />
         </div>
 
-        <Nav variant="tabs" current={current} />
+        <Nav variant="tabs" current={current} counts={counts} />
 
         <div className="cc-shell">
-          <Nav variant="sidebar" current={current} />
+          <Nav variant="sidebar" current={current} counts={counts} />
 
           {/* tabIndex -1: a <main> is not focusable, so without it the skip link
               and a navigation that finds no heading could not put focus here.
@@ -153,11 +162,11 @@ export default function App() {
             .cc-evidence-nav in components.css. */}
         <footer className="cc-evidence-nav">
           <a href={routeHref(showsSheet ? "home" : "sheet")}>
-            {showsSheet ? "Back to Patient Today" : "Design system"}
+            {showsSheet ? EVIDENCE_LINK.toHome : EVIDENCE_LINK.toSheet}
           </a>
         </footer>
 
-        <Nav variant="bar" current={current} />
+        <Nav variant="bar" current={current} counts={counts} />
       </div>
     </AnnouncerProvider>
   );
