@@ -5,6 +5,7 @@ import { describe, expect, it, jest } from "@jest/globals";
 import { patientToday } from "../../data/patientToday.js";
 import AppointmentCard from "../AppointmentCard.jsx";
 import Icon from "../Icon.jsx";
+import { readableTextNodes } from "../../test/a11y.js";
 
 /**
  * The fixture deliberately uses copy that appears nowhere in
@@ -242,23 +243,6 @@ function LiveCard({ data = live(), actionTarget = TARGET, onReady = () => {}, on
       actionTarget={actionTarget}
     />
   );
-}
-
-/**
- * The text nodes inside `element` that a screen reader reaches: anything under
- * aria-hidden is skipped. One node means the name is one piece of text, which
- * Chromium cannot split; .cc-sr-only is position: absolute, and Chromium puts
- * a space between text in separate boxes ("I'm ready : …").
- */
-function readableTextNodes(element) {
-  const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
-  const nodes = [];
-  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
-    if (node.textContent.trim() && !node.parentElement.closest('[aria-hidden="true"]')) {
-      nodes.push(node);
-    }
-  }
-  return nodes;
 }
 
 /** The markup Icon draws for `name` at `size`. */

@@ -4,27 +4,7 @@ import Badge from "./Badge.jsx";
 import Button from "./Button.jsx";
 import Card from "./Card.jsx";
 import Icon from "./Icon.jsx";
-
-/**
- * A button label with its target: the visible words, then which appointment.
- *
- * The whole name is ONE visually hidden span, "I'm ready: Video call with
- * Maria, 3:00 pm", and the visible words are aria-hidden, rather than the
- * visible words followed by a hidden ": Video call…" span. .cc-sr-only is
- * position: absolute, and Chromium puts a space between text in separate boxes,
- * so the split form is named "I'm ready : Video call…". The name still starts
- * with the visible words (Label in Name). Without a target the label is just
- * the words.
- */
-function Labelled({ label, target }) {
-  if (!target) return label;
-  return (
-    <>
-      <span aria-hidden="true">{label}</span>
-      <span className="cc-sr-only">{`${label}: ${target}`}</span>
-    </>
-  );
-}
+import Labelled from "./Labelled.jsx";
 
 /**
  * "Next thing to do" — the appointment recipe.
@@ -40,8 +20,8 @@ function Labelled({ label, target }) {
  * With it, the card is live (D3). "I'm ready" calls `onReady`. Once `ready`,
  * the badge reads `data.readyBadge` in the success tone, the same button
  * becomes the aria-disabled `data.readyAction`, so pressing it again does
- * nothing, and a separate `data.undo` button appears beside it. Each button's
- * name ends with `actionTarget` (Labelled, above).
+ * nothing, and a separate `data.undo` button appears beside it. Each button is
+ * named "<words>: <actionTarget>" in one hidden span (Labelled, R15).
  *
  * Focus is never dropped. "I'm ready" and "Ready" are the same button, so
  * focus stays on it when it changes. Undo disappears once the page has undone

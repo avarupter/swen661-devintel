@@ -190,17 +190,22 @@ describe("LaterItem — status and actions", () => {
     expect(within(screen.getByRole("listitem")).getAllByRole("button")).toHaveLength(2);
   });
 
-  it("renders a status with no actions, and actions with no status", () => {
-    const { unmount } = render(
+  // The two wrappers are spaced boxes (components.css), so an empty one would
+  // show as a gap under the detail. These check each is present only with
+  // something in it.
+  it("renders a status with no actions, and actions with no status, without the other's wrapper", () => {
+    const status = render(
       <ul>
         <LaterItem item={laterItem()} badge={{ tone: "neutral", label: "Coming up" }} />
       </ul>,
     );
     expect(screen.getByText("Coming up")).toBeInTheDocument();
     expect(screen.queryAllByRole("button")).toHaveLength(0);
-    unmount();
+    expect(status.container.querySelector(".cc-later__status")).not.toBeNull();
+    expect(status.container.querySelector(".cc-later__actions")).toBeNull();
+    status.unmount();
 
-    render(
+    const actions = render(
       <ul>
         <LaterItem item={laterItem()}>
           <Button>Only an action</Button>
@@ -208,7 +213,34 @@ describe("LaterItem — status and actions", () => {
       </ul>,
     );
     expect(screen.getByRole("button", { name: "Only an action" })).toBeInTheDocument();
-    // No status paragraph waiting for a badge: the item ends at its detail and action.
-    expect(screen.getByRole("listitem").querySelector(".cc-badge")).toBeNull();
+    expect(actions.container.querySelector(".cc-later__actions")).not.toBeNull();
+    // No status paragraph waiting for a badge.
+    expect(actions.container.querySelector(".cc-later__status")).toBeNull();
+    expect(actions.container.querySelector(".cc-badge")).toBeNull();
+  });
+
+  it("renders neither wrapper when there is no badge and every child is false", () => {
+    // How a page writes conditional buttons. With both conditions false the
+    // children are [false, false]: truthy, but nothing to render.
+    function Row({ taken }) {
+      return (
+        <ul>
+          <LaterItem item={laterItem()}>
+            {taken && <Button>Taken</Button>}
+            {taken && <Button variant="secondary">Undo</Button>}
+          </LaterItem>
+        </ul>
+      );
+    }
+    const { container, rerender } = render(<Row taken={false} />);
+
+    expect(container.querySelector(".cc-later__actions")).toBeNull();
+    expect(container.querySelector(".cc-later__status")).toBeNull();
+    expect(screen.queryAllByRole("button")).toHaveLength(0);
+
+    // The same row with its buttons rendered gets its one actions box back.
+    rerender(<Row taken />);
+    expect(container.querySelectorAll(".cc-later__actions")).toHaveLength(1);
+    expect(screen.getAllByRole("button")).toHaveLength(2);
   });
 });

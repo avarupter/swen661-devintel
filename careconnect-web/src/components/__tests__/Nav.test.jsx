@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, jest } from "@jest/globals";
 import Nav from "../Nav.jsx";
 import { DESTINATION_IDS as ROUTE_DESTINATIONS } from "../../app/routes.js";
 import { DESTINATIONS } from "../../data/patientToday.js";
+import { readableTextNodes } from "../../test/a11y.js";
 
 /**
  * Nav renders one list of destinations in three presentations. These tests
@@ -195,15 +196,17 @@ describe.each(VARIANTS)("Nav — %s variant", (variant) => {
     const messages = within(getNav()).getByRole("link", { name: /Messages/ });
 
     // The visible badge is a single node inside the aria-hidden icon wrapper,
-    // so the number reaches the screen reader once — from the sr-only suffix.
+    // so the number reaches the screen reader once — from the one sr-only span
+    // that holds the whole name (R9).
     const count = within(messages).getByText("2");
     expect(within(messages).getAllByText("2")).toHaveLength(1);
     expect(count.parentElement).toHaveAttribute("aria-hidden", "true");
 
-    // The suffix is the sr-only one. Without the class it becomes visible text
-    // reading ", 2 unread" beside the badge in all three presentations, and
-    // every aria-hidden sweep in this file walks past it. Whether the class
-    // then hides it is the Playwright sweep's to measure.
+    // The name, count included, is that one sr-only span. Without the class
+    // it becomes visible text reading "Messages, 2 unread" beside the label in
+    // all three presentations, and every aria-hidden sweep in this file walks
+    // past it. Whether the class then hides it is the Playwright sweep's to
+    // measure.
     expect(within(messages).getByText(/unread/)).toHaveClass("cc-sr-only");
 
     // The count never leads: "2 unread Messages" is the failure this
@@ -348,17 +351,27 @@ describe.each(["sidebar", "tabs"])("Nav — %s variant labels", (variant) => {
     },
   );
 
-  it("hides no text label from assistive technology", () => {
-    render(<Nav variant={variant} current="home" />);
+  it("hides no text label from assistive technology, except where one span carries the whole name", () => {
+    render(<Nav variant={variant} current="home" counts={COUNTS} />);
+    const links = within(getNav()).getAllByRole("link");
 
-    // The only aria-hidden text anywhere in these two presentations is the
-    // numeric badge; a hidden label here would mean a destination announced
-    // twice or not at all.
-    Array.from(getNav().querySelectorAll("[aria-hidden='true']")).forEach(
-      (node) => {
+    // R9: a link whose name adds a count to its label ("Messages, 2 unread") is
+    // named by one visually hidden span, so its label and badge are hidden on
+    // purpose; "a composed name is one visually hidden span" below pins that
+    // case. Every other label is its own name, and hiding one would leave its
+    // destination announced not at all.
+    const plain = links.filter((link) => link.querySelector(".cc-sr-only") === null);
+    expect(plain.map((link) => link.getAttribute("href"))).toEqual([
+      "#home",
+      "#medications",
+      "#appointments",
+      "#help",
+    ]);
+    plain.forEach((link) => {
+      link.querySelectorAll("[aria-hidden='true']").forEach((node) => {
         expect(node.textContent).not.toMatch(/[a-z]/i);
-      },
-    );
+      });
+    });
   });
 });
 
@@ -499,40 +512,24 @@ describe("Nav — the destination data contract", () => {
   });
 });
 
-/**
- * The text nodes inside `element` that a screen reader reaches: anything under
- * aria-hidden is skipped. One node means the name is one piece of text, which
- * Chromium cannot split: .cc-sr-only is position: absolute, and Chromium puts a
- * space between text in separate boxes, which once named the Messages link
- * "Messages , 2 unread" (R9). jsdom joins the pieces without that space, so the
- * accessible-name assertions alone cannot catch it; this can.
- */
-function readableTextNodes(element) {
-  const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
-  const nodes = [];
-  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
-    if (node.textContent.trim() && !node.parentElement.closest('[aria-hidden="true"]')) {
-      nodes.push(node);
-    }
-  }
-  return nodes;
-}
-
 describe("Nav — Label in Name in the bar (Task 2, D8)", () => {
   it.each([
-    ["Meds", "Meds (Medications)"],
-    ["Visits", "Visits (Appointments)"],
-    ["Inbox", "Inbox (Messages), 2 unread"],
-  ])("names the bar's %s destination with its visible label first", (visible, name) => {
+    ["Meds", "medications", "Meds (Medications)"],
+    ["Visits", "appointments", "Visits (Appointments)"],
+    ["Inbox", "messages", "Inbox (Messages), 2 unread"],
+  ])("names the bar's %s destination with its visible label first", (visible, id, name) => {
     render(<Nav variant="bar" current="home" counts={COUNTS} />);
-    const link = screen.getByRole("link", { name });
+    // Found by where it goes, not by its name, so the name is measured below
+    // rather than assumed by the lookup.
+    const link = getNav().querySelector(`a[href="#${id}"]`);
+    // The words on screen: the link's label, read from the page.
+    const shown = link.querySelector(".cc-nav__label").textContent;
 
-    // The words on screen: the one element in the link that holds exactly them.
-    const shown = within(link).getByText(visible);
-    expect(shown).not.toHaveClass("cc-sr-only");
-    // The accessible name starts with them, so a voice-control user can say
-    // what they see, and goes on to the full destination.
-    expect(name.startsWith(`${shown.textContent} (`)).toBe(true);
+    expect(shown).toBe(visible);
+    expect(link).toHaveAccessibleName(name);
+    // Label in Name: the computed name starts with the words on screen, so a
+    // voice-control user can say what they see, then names the destination.
+    expect(link).toHaveAccessibleName(new RegExp(`^${shown} \\(`));
   });
 
   it.each(["sidebar", "tabs"])("keeps the full names in the %s", (variant) => {

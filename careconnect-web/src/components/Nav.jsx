@@ -1,4 +1,6 @@
 import Icon from "./Icon.jsx";
+import Labelled from "./Labelled.jsx";
+import { messagesPage } from "../data/messages.js";
 import { DESTINATIONS } from "../data/patientToday.js";
 
 /**
@@ -23,11 +25,11 @@ import { DESTINATIONS } from "../data/patientToday.js";
  *    which also says where it goes. The count follows the destination:
  *    "Messages, 2 unread", never "2 unread Messages".
  *  - A name that is not just the visible label is ONE visually hidden span
- *    holding all of it, and the visible label and badge are aria-hidden, so the
- *    name is read once. One span, not the label followed by a hidden ", 2
- *    unread": .cc-sr-only is position: absolute, and Chromium puts a space
- *    between text in separate boxes, which named the link "Messages , 2
- *    unread". A plain label is its own name and is never hidden.
+ *    holding all of it (Labelled, R15), and the visible label and badge are
+ *    aria-hidden, so the name is read once. One span, not the label followed
+ *    by a hidden ", 2 unread": .cc-sr-only is position: absolute, and Chromium
+ *    puts a space between text in separate boxes, which named the link
+ *    "Messages , 2 unread". A plain label is its own name and is never hidden.
  *
  * @param {{
  *   variant: 'sidebar' | 'tabs' | 'bar',
@@ -48,7 +50,9 @@ export default function Nav({ variant, current, counts = {} }) {
 
           const label = abbreviated ? d.shortLabel : d.label;
           const named = abbreviated ? `${d.shortLabel} (${d.label})` : d.label;
-          const name = unread ? `${named}, ${count} unread` : named;
+          // The word is Messages' own ("unread"), so the nav and the
+          // conversation list cannot disagree on it.
+          const name = unread ? `${named}, ${count} ${messagesPage.unreadSuffix}` : named;
 
           return (
             <li key={d.id} className="cc-nav__item">
@@ -62,16 +66,7 @@ export default function Nav({ variant, current, counts = {} }) {
                   {unread ? <span className="cc-nav__count">{count}</span> : null}
                 </span>
 
-                {name === label ? (
-                  <span className="cc-nav__label">{label}</span>
-                ) : (
-                  <>
-                    <span className="cc-nav__label" aria-hidden="true">
-                      {label}
-                    </span>
-                    <span className="cc-sr-only">{name}</span>
-                  </>
-                )}
+                <Labelled className="cc-nav__label" label={label} name={name} />
               </a>
             </li>
           );

@@ -1,3 +1,4 @@
+import { Children } from "react";
 import Badge from "./Badge.jsx";
 import Card from "./Card.jsx";
 import Icon from "./Icon.jsx";
@@ -38,7 +39,13 @@ export default function LaterItem({ item, badge, children }) {
             <Badge tone={badge.tone}>{badge.label}</Badge>
           </p>
         ) : null}
-        {children ? <div className="cc-later__actions">{children}</div> : null}
+        {/* Counted, not tested for truth: a page writes its buttons as
+            `{taken && <Button …/>}`, and two false conditions are [false,
+            false], which is truthy but renders nothing, leaving an empty
+            spaced box. */}
+        {Children.toArray(children).length > 0 ? (
+          <div className="cc-later__actions">{children}</div>
+        ) : null}
       </div>
     </Card>
   );
