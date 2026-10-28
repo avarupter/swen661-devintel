@@ -1,6 +1,8 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "@jest/globals";
+import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { describe, expect, it, jest } from "@jest/globals";
 import { patientToday } from "../../data/patientToday.js";
+import Button from "../Button.jsx";
 import LaterItem from "../LaterItem.jsx";
 
 /**
@@ -128,5 +130,85 @@ describe("LaterItem", () => {
     }
 
     expect(patientToday.later.items.length).toBeGreaterThan(0);
+  });
+});
+
+/**
+ * Week 11: a live list shows each item's status and what can be done about it.
+ * `badge` is the status, in words as well as tone and glyph; `children` are the
+ * item's buttons. They come after the detail, so an item still reads time,
+ * title, detail first, then its status, then its actions.
+ */
+describe("LaterItem — status and actions", () => {
+  const isFollowedBy = (first, second) =>
+    Boolean(first.compareDocumentPosition(second) & Node.DOCUMENT_POSITION_FOLLOWING);
+
+  it("renders a badge and its action children", async () => {
+    const onMark = jest.fn();
+    const user = userEvent.setup();
+    render(
+      <ul>
+        <LaterItem item={laterItem()} badge={{ tone: "info", label: "Due now" }}>
+          <Button onClick={onMark}>Mark it done</Button>
+        </LaterItem>
+      </ul>,
+    );
+    const item = screen.getByRole("listitem");
+
+    // The status is the word, on its tone's hook, with the tone's own glyph hidden.
+    const status = within(item).getByText("Due now");
+    expect(status).toHaveClass("cc-badge", "cc-badge--info");
+    expect(status.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
+
+    // The action is a real control inside the item, and it works.
+    await user.click(within(item).getByRole("button", { name: "Mark it done" }));
+    expect(onMark).toHaveBeenCalledTimes(1);
+  });
+
+  it("reads time, title, detail, then the status, then the actions", () => {
+    const item = laterItem();
+    render(
+      <ul>
+        <LaterItem item={item} badge={{ tone: "success", label: "Done" }}>
+          <Button>First action</Button>
+          <Button variant="secondary">Second action</Button>
+        </LaterItem>
+      </ul>,
+    );
+    const inOrder = [
+      screen.getByText(item.time),
+      screen.getByText(item.title),
+      screen.getByText(item.detail),
+      screen.getByText("Done"),
+      screen.getByRole("button", { name: "First action" }),
+      screen.getByRole("button", { name: "Second action" }),
+    ];
+
+    inOrder.slice(1).forEach((element, i) => {
+      expect(isFollowedBy(inOrder[i], element)).toBe(true);
+    });
+    expect(within(screen.getByRole("listitem")).getAllByRole("button")).toHaveLength(2);
+  });
+
+  it("renders a status with no actions, and actions with no status", () => {
+    const { unmount } = render(
+      <ul>
+        <LaterItem item={laterItem()} badge={{ tone: "neutral", label: "Coming up" }} />
+      </ul>,
+    );
+    expect(screen.getByText("Coming up")).toBeInTheDocument();
+    expect(screen.queryAllByRole("button")).toHaveLength(0);
+    unmount();
+
+    render(
+      <ul>
+        <LaterItem item={laterItem()}>
+          <Button>Only an action</Button>
+        </LaterItem>
+      </ul>,
+    );
+    expect(screen.getByRole("button", { name: "Only an action" })).toBeInTheDocument();
+    // No status paragraph waiting for a badge: the item ends at its detail and action.
+    expect(screen.getByRole("listitem").querySelector(".cc-badge")).toBeNull();
   });
 });

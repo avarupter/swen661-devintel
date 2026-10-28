@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { createRef } from "react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, jest } from "@jest/globals";
 import Button from "../Button.jsx";
@@ -242,5 +243,79 @@ describe("Button", () => {
       await user.click(screen.getByRole("button", { name: "Send" }));
       expect(onSubmit).toHaveBeenCalledTimes(1);
     });
+  });
+});
+
+/**
+ * Week 11: a page has to return focus to a button, describe it and tie it to a
+ * form, so every prop Button does not use itself reaches the <button>. The
+ * ones it does use (type, the classes, aria-disabled, onClick) are set after
+ * that spread, so nothing passed in can talk a disabled Button out of being
+ * inert.
+ */
+describe("Button — other props", () => {
+  it("passes id, aria-describedby and ref through to the button", () => {
+    const ref = createRef();
+    render(
+      <>
+        <Button id="send-reply" aria-describedby="send-hint" ref={ref}>
+          Send message
+        </Button>
+        <p id="send-hint">Not for emergencies.</p>
+      </>,
+    );
+    const button = screen.getByRole("button", { name: "Send message" });
+
+    expect(button).toHaveAttribute("id", "send-reply");
+    expect(button).toHaveAccessibleDescription("Not for emergencies.");
+    // The ref is how a page puts focus back on the button after a change.
+    expect(ref.current).toBe(button);
+  });
+
+  it("submits the form its form attribute names, from outside that form", async () => {
+    const onSubmit = jest.fn((event) => event.preventDefault());
+    const user = userEvent.setup();
+    render(
+      <>
+        <form id="reply-form" aria-label="Reply" onSubmit={onSubmit} />
+        <Button type="submit" form="reply-form">
+          Send message
+        </Button>
+      </>,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Send message" }));
+    expect(onSubmit).toHaveBeenCalledTimes(1);
+  });
+
+  it("adds a className after its own classes, and none by default", () => {
+    // The default is pinned exactly: the foundations sheet renders Buttons
+    // with no className, and must keep rendering them unchanged.
+    const { rerender } = render(<Button>Send message</Button>);
+    expect(screen.getByRole("button").className).toBe("cc-btn cc-btn--primary");
+
+    rerender(
+      <Button variant="secondary" fullWidth className="cc-reply__send">
+        Send message
+      </Button>,
+    );
+    expect(screen.getByRole("button").className).toBe(
+      "cc-btn cc-btn--secondary cc-btn--full cc-reply__send",
+    );
+  });
+
+  it("stays disabled and inert even when other props say otherwise", async () => {
+    const onClick = jest.fn();
+    const user = userEvent.setup();
+    render(
+      <Button disabled aria-disabled="false" onClick={onClick}>
+        Ready
+      </Button>,
+    );
+    const button = screen.getByRole("button", { name: "Ready" });
+
+    expect(button).toHaveAttribute("aria-disabled", "true");
+    await user.click(button);
+    expect(onClick).not.toHaveBeenCalled();
   });
 });

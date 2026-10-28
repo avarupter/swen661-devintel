@@ -195,3 +195,55 @@ describe("CareTeamCard", () => {
     });
   });
 });
+
+/**
+ * Week 11: "Message care team" goes somewhere (the new-message form), so with
+ * `actionHref` the action is a link, not a button that navigates. Help reuses
+ * the card with the care team's hours and numbers as `children`, between the
+ * body and the action.
+ */
+describe("CareTeamCard — live", () => {
+  const isFollowedBy = (first, second) =>
+    Boolean(first.compareDocumentPosition(second) & Node.DOCUMENT_POSITION_FOLLOWING);
+
+  it("with actionHref renders a link named Message care team", () => {
+    render(<CareTeamCard data={patientToday.careTeam} actionHref="#messages/new" />);
+    const link = screen.getByRole("link", { name: "Message care team" });
+
+    expect(link).toHaveAttribute("href", "#messages/new");
+    expect(screen.queryAllByRole("button")).toHaveLength(0);
+    // The same hooks and the same hidden chat glyph as the button it replaces.
+    expect(link).toHaveClass("cc-btn", "cc-btn--secondary", "cc-btn--full");
+    expect(link.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
+  });
+
+  it("puts its children between the body and the action, inside the card", () => {
+    render(
+      <CareTeamCard data={careTeam} actionHref="#messages/new">
+        <p>Hours from the data</p>
+      </CareTeamCard>,
+    );
+    const body = screen.getByText(careTeam.body);
+    const extra = screen.getByText("Hours from the data");
+    const action = screen.getByRole("link", { name: careTeam.action });
+
+    expect(isFollowedBy(body, extra)).toBe(true);
+    expect(isFollowedBy(extra, action)).toBe(true);
+    expect(screen.getByRole("region", { name: careTeam.heading })).toContainElement(extra);
+  });
+
+  it("gives two cards on one page different heading ids, each naming its own region", () => {
+    render(
+      <>
+        <CareTeamCard data={careTeam} />
+        <CareTeamCard data={{ ...careTeam, heading: "A second heading" }} />
+      </>,
+    );
+    const first = screen.getByRole("heading", { level: 2, name: careTeam.heading });
+    const second = screen.getByRole("heading", { level: 2, name: "A second heading" });
+
+    expect(first.id).not.toBe(second.id);
+    expect(screen.getByRole("region", { name: careTeam.heading })).toContainElement(first);
+    expect(screen.getByRole("region", { name: "A second heading" })).toContainElement(second);
+  });
+});

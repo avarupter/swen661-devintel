@@ -312,3 +312,29 @@ describe("Icon", () => {
     });
   });
 });
+
+/**
+ * Week 11 adds four glyphs: back (Back to messages), send (Send message), alert
+ * (the storage banner and the error badge) and clock (the info badge). The
+ * it.each blocks above already cover every glyph PATHS declares; these pin
+ * that the four are among them and are each drawn as something of their own.
+ */
+describe("Icon — the four glyphs Week 11 adds", () => {
+  const ADDED = ["back", "send", "alert", "clock"];
+
+  it.each(ADDED)("the four new icons render: %s", (name) => {
+    const svg = renderIcon({ name }).querySelector("svg");
+
+    expect(svg).not.toBeNull();
+    expect(svg.querySelectorAll(GEOMETRY).length).toBeGreaterThan(0);
+    expect(svg).toHaveAttribute("aria-hidden", "true");
+    expect(svg).toHaveAttribute("stroke", "currentColor");
+  });
+
+  it("draws each glyph in the set differently, the four new ones included", () => {
+    expect(GLYPHS).toEqual(expect.arrayContaining(ADDED));
+
+    const markup = GLYPHS.map((name) => renderIcon({ name }).querySelector("svg").innerHTML);
+    expect(new Set(markup).size).toBe(GLYPHS.length);
+  });
+});

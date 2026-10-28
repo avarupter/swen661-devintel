@@ -1,7 +1,14 @@
 import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 import { describe, expect, it, jest } from "@jest/globals";
 import App from "../App.jsx";
+import Icon from "../components/Icon.jsx";
+import { SEED_DOSE_LOG } from "../data/medications.js";
+import { SEED_CONVERSATIONS } from "../data/messages.js";
+import { STORAGE_BANNER } from "../data/shell.js";
+import { markConversationRead, STORAGE_KEY, STORAGE_VERSION } from "../store/demoStore.js";
 
 /**
  * The app shell: skip link, app bar, all three navigation presentations, the
@@ -410,5 +417,109 @@ describe("App hash routing", () => {
       const { container } = render(<App />);
       expect(container.querySelectorAll('[aria-current="page"]')).toHaveLength(0);
     });
+  });
+});
+
+describe("App storage banner", () => {
+  it("leads with an aria-hidden alert glyph, so tone, glyph and words say it together", () => {
+    const { container: drawn, unmount } = render(<Icon name="alert" />);
+    const alertGlyph = drawn.innerHTML;
+    unmount();
+    // Storage that refuses even to be read: the store runs on the seed in
+    // memory and says changes can't be kept.
+    jest.spyOn(Storage.prototype, "getItem").mockImplementation(() => {
+      throw new Error("The operation is insecure.");
+    });
+
+    render(<App />);
+    const words = screen.getByText(STORAGE_BANNER);
+    const glyph = words.previousElementSibling;
+
+    expect(glyph.outerHTML).toBe(alertGlyph);
+    expect(glyph).toHaveAttribute("aria-hidden", "true");
+    // The glyph adds nothing to read: the banner says its sentence alone.
+    expect(words.parentElement.textContent).toBe(STORAGE_BANNER);
+  });
+
+  it("shows no banner, and so no glyph, while storage works", () => {
+    render(<App />);
+
+    expect(screen.queryByText(STORAGE_BANNER)).toBeNull();
+  });
+});
+
+describe("App unread counts", () => {
+  /** What the store saves, with the given conversations marked read. */
+  function storedWithRead(...ids) {
+    const conversations = SEED_CONVERSATIONS.map((conversation) =>
+      ids.includes(conversation.id) ? { ...conversation, unread: false } : conversation,
+    );
+    return JSON.stringify({
+      version: STORAGE_VERSION,
+      doses: SEED_DOSE_LOG,
+      ready: {},
+      conversations,
+      drafts: {},
+    });
+  }
+
+  it("passes the store's unread count to all three navigations", () => {
+    localStorage.setItem(STORAGE_KEY, storedWithRead("video-call"));
+    render(<App />);
+
+    expect(screen.getAllByRole("link", { name: "Messages, 1 unread" })).toHaveLength(2);
+    expect(screen.getAllByRole("link", { name: "Inbox (Messages), 1 unread" })).toHaveLength(1);
+  });
+
+  it("drops the count in every navigation as soon as a conversation is read", () => {
+    render(<App />);
+    expect(screen.getAllByRole("link", { name: /2 unread$/ })).toHaveLength(3);
+
+    act(() => markConversationRead("video-call"));
+    expect(screen.getAllByRole("link", { name: "Messages, 1 unread" })).toHaveLength(2);
+    expect(screen.getAllByRole("link", { name: "Inbox (Messages), 1 unread" })).toHaveLength(1);
+
+    act(() => markConversationRead("health-review"));
+    expect(screen.getAllByRole("link", { name: "Messages" })).toHaveLength(2);
+    expect(screen.getAllByRole("link", { name: "Inbox (Messages)" })).toHaveLength(1);
+    for (const nav of mainNavs()) {
+      expect(within(nav).queryByText(/^\d+$/)).toBeNull();
+    }
+  });
+});
+
+describe("App shell copy", () => {
+  it("reads the skip link and the footer link from data/shell.js", async () => {
+    // A second copy of App, against a stand-in shell.js, proves the shell
+    // renders whatever the data module says rather than copies of it. React
+    // and ReactDOM are pinned so that copy shares this file's renderer.
+    jest.resetModules();
+    jest.doMock("react", () => React);
+    jest.doMock("react-dom", () => ReactDOM);
+    jest.doMock("../data/shell.js", () => ({
+      ...jest.requireActual("../data/shell.js"),
+      SKIP_LINK: "Jump to the page",
+      EVIDENCE_LINK: { toSheet: "See the foundations", toHome: "Return to today" },
+    }));
+    try {
+      const { default: StandInApp } = await import("../App.jsx");
+      render(<StandInApp />);
+
+      expect(screen.getByRole("link", { name: "Jump to the page" })).toHaveAttribute(
+        "href",
+        "#main",
+      );
+      const footer = () => within(evidenceFooter()).getByRole("link");
+      expect(footer()).toHaveAccessibleName("See the foundations");
+
+      navigateTo("#specimens");
+      expect(footer()).toHaveAccessibleName("Return to today");
+      expect(footer()).toHaveAttribute("href", "#home");
+    } finally {
+      jest.dontMock("react");
+      jest.dontMock("react-dom");
+      jest.dontMock("../data/shell.js");
+      jest.resetModules();
+    }
   });
 });

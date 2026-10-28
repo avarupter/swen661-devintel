@@ -498,3 +498,130 @@ describe("Nav — the destination data contract", () => {
     expect(DESTINATIONS.map((d) => d.id)).toEqual(ROUTE_DESTINATIONS);
   });
 });
+
+/**
+ * The text nodes inside `element` that a screen reader reaches: anything under
+ * aria-hidden is skipped. One node means the name is one piece of text, which
+ * Chromium cannot split: .cc-sr-only is position: absolute, and Chromium puts a
+ * space between text in separate boxes, which once named the Messages link
+ * "Messages , 2 unread" (R9). jsdom joins the pieces without that space, so the
+ * accessible-name assertions alone cannot catch it; this can.
+ */
+function readableTextNodes(element) {
+  const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+  const nodes = [];
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+    if (node.textContent.trim() && !node.parentElement.closest('[aria-hidden="true"]')) {
+      nodes.push(node);
+    }
+  }
+  return nodes;
+}
+
+describe("Nav — Label in Name in the bar (Task 2, D8)", () => {
+  it.each([
+    ["Meds", "Meds (Medications)"],
+    ["Visits", "Visits (Appointments)"],
+    ["Inbox", "Inbox (Messages), 2 unread"],
+  ])("names the bar's %s destination with its visible label first", (visible, name) => {
+    render(<Nav variant="bar" current="home" counts={COUNTS} />);
+    const link = screen.getByRole("link", { name });
+
+    // The words on screen: the one element in the link that holds exactly them.
+    const shown = within(link).getByText(visible);
+    expect(shown).not.toHaveClass("cc-sr-only");
+    // The accessible name starts with them, so a voice-control user can say
+    // what they see, and goes on to the full destination.
+    expect(name.startsWith(`${shown.textContent} (`)).toBe(true);
+  });
+
+  it.each(["sidebar", "tabs"])("keeps the full names in the %s", (variant) => {
+    render(<Nav variant={variant} current="home" counts={COUNTS} />);
+    const links = within(getNav()).getAllByRole("link");
+
+    expect(links).toHaveLength(ACCESSIBLE_NAMES.length);
+    links.forEach((link, i) => {
+      expect(link).toHaveAccessibleName(ACCESSIBLE_NAMES[i]);
+    });
+    // Only the bar abbreviates, so only the bar names a link "<short> (<label>)".
+    expect(screen.queryByRole("link", { name: /\(/ })).toBeNull();
+  });
+});
+
+describe.each(VARIANTS)("Nav — %s variant, counts.messages", (variant) => {
+  const destination = variant === "bar" ? "Inbox (Messages)" : "Messages";
+
+  it.each([
+    [0, destination, []],
+    [1, `${destination}, 1 unread`, ["1"]],
+    [2, `${destination}, 2 unread`, ["2"]],
+    [12, `${destination}, 12 unread`, ["12"]],
+  ])("with %i unread, names the link %j and shows %j", (count, name, shown) => {
+    render(<Nav variant={variant} current="home" counts={{ messages: count }} />);
+    const link = screen.getByRole("link", { name });
+    const numbers = within(link).queryAllByText(/^\d+$/);
+
+    expect(numbers.map((node) => node.textContent)).toEqual(shown);
+    // The number on screen is hidden; the name says it, once.
+    numbers.forEach((node) => {
+      expect(node.closest('[aria-hidden="true"]')).not.toBeNull();
+    });
+    expect(screen.queryAllByRole("link", { name: /unread/ })).toHaveLength(count > 0 ? 1 : 0);
+  });
+
+  it.each([
+    ["{}", {}],
+    ["omitted", undefined],
+    ["null", null],
+  ])("names Messages with no count when counts is %s", (_case, counts) => {
+    render(<Nav variant={variant} current="home" counts={counts} />);
+
+    expect(screen.getByRole("link", { name: destination })).toBeInTheDocument();
+    expect(screen.queryByText(/unread/)).toBeNull();
+    expect(screen.queryByText(/^\d+$/)).toBeNull();
+  });
+
+  it("reads every destination's name from exactly one text node (R9)", () => {
+    render(<Nav variant={variant} current="home" counts={COUNTS} />);
+
+    within(getNav())
+      .getAllByRole("link")
+      .forEach((link, i) => {
+        expect(readableTextNodes(link).map((node) => node.textContent)).toEqual([
+          NAMES[variant][i],
+        ]);
+      });
+  });
+});
+
+describe("Nav — a composed name is one visually hidden span (R9)", () => {
+  // The visible parts each composed link shows: its label, and the count.
+  it.each([
+    ["sidebar", "Messages, 2 unread", ["2", "Messages"]],
+    ["tabs", "Messages, 2 unread", ["2", "Messages"]],
+    ["bar", "Meds (Medications)", ["Meds"]],
+    ["bar", "Visits (Appointments)", ["Visits"]],
+    ["bar", "Inbox (Messages), 2 unread", ["2", "Inbox"]],
+  ])("in the %s, puts %j in one sr-only span and hides what is on screen", (variant, name, visible) => {
+    render(<Nav variant={variant} current="home" counts={COUNTS} />);
+    const link = screen.getByRole("link", { name });
+    const [node] = readableTextNodes(link);
+
+    expect(node.parentElement).toHaveClass("cc-sr-only");
+    expect(link.querySelectorAll(".cc-sr-only")).toHaveLength(1);
+    expect(
+      Array.from(link.querySelectorAll('[aria-hidden="true"]'), (el) => el.textContent)
+        .filter(Boolean)
+        .sort(),
+    ).toEqual(visible);
+  });
+
+  it.each(VARIANTS)("in the %s, leaves a plain label as its own, unhidden name", (variant) => {
+    render(<Nav variant={variant} current="home" counts={COUNTS} />);
+    const link = screen.getByRole("link", { name: "Home" });
+    const [node] = readableTextNodes(link);
+
+    expect(node.parentElement).not.toHaveClass("cc-sr-only");
+    expect(link.querySelector(".cc-sr-only")).toBeNull();
+  });
+});

@@ -228,3 +228,46 @@ describe("GlanceCard", () => {
     });
   });
 });
+
+/**
+ * Task 2: a row of a <dl> may hold only terms and definitions. Week 10 put the
+ * chip beside the <dt>, which axe-core reports as "definition-list" (serious),
+ * so the chip moved inside the <dt>. It must still contribute no text, so the
+ * term reads as its label alone.
+ */
+describe("GlanceCard — the description list axe accepts", () => {
+  it("puts only a dt and a dd in each row of the description list (axe definition-list)", () => {
+    const { container } = render(<GlanceCard data={patientToday.glance} />);
+    const rows = container.querySelectorAll("dl > div");
+
+    expect(rows).toHaveLength(patientToday.glance.items.length);
+    for (const row of rows) {
+      expect([...row.children].map((child) => child.tagName)).toEqual(["DT", "DD"]);
+      // The chip, and its glyph, are inside the term now.
+      expect(row.querySelector("dt .cc-glance__icon svg")).toHaveAttribute("aria-hidden", "true");
+    }
+  });
+
+  it("keeps the chip out of each term's text, so the term reads as its label", () => {
+    render(<GlanceCard data={patientToday.glance} />);
+
+    expect(screen.getAllByRole("term").map((term) => term.textContent)).toEqual(
+      patientToday.glance.items.map((item) => item.label),
+    );
+  });
+
+  it("gives two cards on one page different heading ids, each naming its own region", () => {
+    render(
+      <>
+        <GlanceCard data={twoRows} />
+        <GlanceCard data={{ ...twoRows, heading: "A second glance" }} />
+      </>,
+    );
+    const first = screen.getByRole("heading", { level: 2, name: "A glance heading" });
+    const second = screen.getByRole("heading", { level: 2, name: "A second glance" });
+
+    expect(first.id).not.toBe(second.id);
+    expect(screen.getByRole("region", { name: "A glance heading" })).toContainElement(first);
+    expect(screen.getByRole("region", { name: "A second glance" })).toContainElement(second);
+  });
+});

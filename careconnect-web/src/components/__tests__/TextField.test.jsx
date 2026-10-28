@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
+import { createRef, useState } from "react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "@jest/globals";
+import { describe, expect, it, jest } from "@jest/globals";
 import TextField from "../TextField.jsx";
 
 const LABEL = "Message subject";
@@ -225,6 +226,165 @@ describe("TextField", () => {
       // The label is a sibling of the input, not a placeholder, so it survives
       // the disabled state.
       expect(screen.getByText(LABEL)).toBeInTheDocument();
+    });
+  });
+});
+
+/**
+ * Week 11: the compose and reply forms need fields that hold their text in the
+ * page's state (so a draft can be saved and restored), carry the attributes a
+ * form submits, take a stable id or a ref so focus can be sent to the first
+ * invalid field, and come as a multi-line message box. All of it on the same
+ * label, helper and error wiring as the single-line field.
+ */
+describe("TextField — live forms", () => {
+  /** A page holding the field's text in state, as compose does for its draft. */
+  function Draft({ initial = "", multiline = false }) {
+    const [text, setText] = useState(initial);
+    return (
+      <>
+        <TextField
+          label={LABEL}
+          value={text}
+          onChange={(event) => setText(event.target.value)}
+          multiline={multiline}
+        />
+        <output aria-label="Saved draft">{text}</output>
+      </>
+    );
+  }
+
+  describe("controlled", () => {
+    it("is controlled by value and onChange", async () => {
+      const user = userEvent.setup();
+      render(<Draft initial="Question" />);
+      const input = screen.getByRole("textbox", { name: LABEL });
+
+      expect(input).toHaveValue("Question");
+      await user.type(input, " about my day");
+
+      expect(input).toHaveValue("Question about my day");
+      // The page's state saw every keystroke, which is what a draft is saved from.
+      expect(screen.getByRole("status", { name: "Saved draft" })).toHaveTextContent(
+        "Question about my day",
+      );
+    });
+
+    it("shows what value says, not what was typed, until onChange updates it", async () => {
+      const onChange = jest.fn();
+      const user = userEvent.setup();
+      render(<TextField label={LABEL} value="Fixed" onChange={onChange} />);
+      const input = screen.getByRole("textbox", { name: LABEL });
+
+      await user.type(input, "x");
+
+      expect(onChange).toHaveBeenCalledTimes(1);
+      expect(onChange.mock.calls[0][0].target).toBe(input);
+      expect(input).toHaveValue("Fixed");
+    });
+  });
+
+  describe("what a form needs", () => {
+    it("passes name, required, maxLength and autoComplete to the input", () => {
+      render(
+        <TextField label={LABEL} name="subject" required maxLength={200} autoComplete="off" />,
+      );
+      const input = screen.getByRole("textbox", { name: LABEL });
+
+      expect(input).toHaveAttribute("name", "subject");
+      expect(input).toBeRequired();
+      expect(input).toHaveAttribute("maxlength", "200");
+      expect(input).toHaveAttribute("autocomplete", "off");
+    });
+
+    it("leaves every one of them off when not given, as the specimens rely on", () => {
+      render(<TextField label={LABEL} />);
+      const input = screen.getByRole("textbox", { name: LABEL });
+
+      expect(input).not.toBeRequired();
+      for (const attribute of ["name", "maxlength", "autocomplete"]) {
+        expect(input).not.toHaveAttribute(attribute);
+      }
+    });
+
+    it("uses a given id for the input, and keeps the label and descriptions wired to it", () => {
+      render(<TextField id="compose-subject" label={LABEL} helperText={HELPER} errorText={ERROR} />);
+      const input = screen.getByRole("textbox", { name: LABEL });
+
+      expect(input).toHaveAttribute("id", "compose-subject");
+      expect(input).toHaveAttribute(
+        "aria-describedby",
+        "compose-subject-helper compose-subject-error",
+      );
+      expect(input).toHaveAccessibleDescription(`${HELPER} ${ERROR}`);
+    });
+
+    it("hands inputRef the input, so a page can move focus to it", () => {
+      const ref = createRef();
+      render(<TextField label={LABEL} inputRef={ref} />);
+
+      expect(ref.current).toBe(screen.getByRole("textbox", { name: LABEL }));
+      ref.current.focus();
+      expect(screen.getByRole("textbox", { name: LABEL })).toHaveFocus();
+    });
+  });
+
+  describe("multiline", () => {
+    it("renders a textarea with the same described-by order", () => {
+      render(<TextField label="Message" helperText={HELPER} errorText={ERROR} multiline />);
+      const area = screen.getByRole("textbox", { name: "Message" });
+      const helper = screen.getByText(HELPER);
+      const error = screen.getByText(ERROR);
+
+      expect(area.tagName).toBe("TEXTAREA");
+      // Guidance before problem, exactly as the single-line field.
+      expect(area.getAttribute("aria-describedby")).toBe(`${helper.id} ${error.id}`);
+      expect(area).toHaveAccessibleDescription(`${HELPER} ${ERROR}`);
+      expect(area).toHaveAttribute("aria-invalid", "true");
+      expect(area).toHaveAccessibleName("Message");
+    });
+
+    it("is four lines tall unless told otherwise, and takes no input type", () => {
+      const { rerender } = render(<TextField label="Message" multiline />);
+      const area = screen.getByRole("textbox", { name: "Message" });
+
+      expect(area).toHaveAttribute("rows", "4");
+      expect(area).not.toHaveAttribute("type");
+
+      rerender(<TextField label="Message" multiline rows={6} />);
+      expect(screen.getByRole("textbox", { name: "Message" })).toHaveAttribute("rows", "6");
+    });
+
+    it("is controlled, keeps line breaks, and takes the same form attributes as the input", async () => {
+      const user = userEvent.setup();
+      render(<Draft multiline />);
+      const area = screen.getByRole("textbox", { name: LABEL });
+
+      await user.type(area, "Thank you.{Enter}See you then.");
+      expect(area).toHaveValue("Thank you.\nSee you then.");
+
+      render(<TextField label="Reply" multiline name="body" required maxLength={10000} />);
+      const reply = screen.getByRole("textbox", { name: "Reply" });
+      expect(reply).toHaveAttribute("name", "body");
+      expect(reply).toBeRequired();
+      expect(reply).toHaveAttribute("maxlength", "10000");
+    });
+
+    it("hands inputRef the textarea", () => {
+      const ref = createRef();
+      render(<TextField label="Message" multiline inputRef={ref} />);
+
+      expect(ref.current).toBe(screen.getByRole("textbox", { name: "Message" }));
+    });
+
+    it("takes no input when disabled, with the native attribute like the input", async () => {
+      const user = userEvent.setup();
+      render(<TextField label="Message" multiline disabled />);
+      const area = screen.getByRole("textbox", { name: "Message" });
+
+      expect(area).toBeDisabled();
+      await user.type(area, "Hello");
+      expect(area).toHaveValue("");
     });
   });
 });
