@@ -1,0 +1,62 @@
+{
+  "name": "CareConnect",
+  "short_name": "CareConnect",
+  "description": "A compassionate daily companion that helps care recipients and caregivers stay connected, organised, and calm throughout the day.",
+  "id": "/",
+  "start_url": "/app",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["health", "lifestyle", "medical"],
+  "theme_color": "#146488",
+  "background_color": "#f7f8fa",
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Today's schedule",
+      "short_name": "Today",
+      "description": "See what's happening today",
+      "url": "/app/schedule"
+    },
+    {
+      "name": "Medicines",
+      "short_name": "Medicines",
+      "description": "View and mark today's medicines",
+      "url": "/app/medications"
+    }
+  ]
+}

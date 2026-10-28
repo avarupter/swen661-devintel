@@ -1,275 +1,367 @@
-# CareConnect — responsive web implementation
+CareConnect
+![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
+![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-build-646CFF?logo=vite&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)
+![WCAG 2.1 AA](https://img.shields.io/badge/WCAG-2.1%20AA-success)
+![PWA](https://img.shields.io/badge/PWA-installable-5A0FC8)
+A responsive, accessible medical companion web application for care recipients (patients) living with short-term memory loss and their caregivers. Built React-first as an installable Progressive Web App with WCAG 2.1 Level AA accessibility engineered into every screen.
 
-A React implementation of the CareConnect responsive design system. This cut
-covers the **Patient Today** screen in all three layouts (mobile, tablet,
-desktop) and a **foundations & component-states sheet** that renders every
-state the Figma handoff specifies, using the same components the screen uses.
+> Developed as a course artifact for **SWEN 661 — UI Implementation** (Assignment 10: Web Design & Early Implementation).
 
-## Install and run
+---
 
-Requires Node 20 or newer (developed on Node 26).
+Table of contents
+About
+Who it's for
+Key features
+Accessibility
+Tech stack
+Project structure
+Application flow
+Getting started
+Available scripts
+Screens & walkthrough
+Testing
+Deployment
+Roadmap
+Authors
+License
+Acknowledgments
+Disclaimer
+
+---
+
+About
+CareConnect lowers the daily cognitive load for people who need help remembering, while giving caregivers clear visibility and control over medications and appointments. The patient experience is built around recognition over recall: a persistent orientation bar (who you are, the day and time, where you are), one primary task per screen, always-visible and timestamped medication status, and an undo path on every action. The caregiver experience is a denser dashboard for managing schedules and monitoring adherence.
+The two experiences share a single accessible component library and design-token system, so behavior and styling stay consistent across the app.
+Who it's for
+Care recipients (patients) with short-term memory loss — calm, low-clutter screens, large targets, plain language, and no time pressure.
+Caregivers — an information-rich dashboard with adherence tracking, alerts, and full schedule management.
+Key features
+Patient
+Today home with a prominent "Next thing to do" card and the day's remaining items.
+Medications with pill images, plain-language doses, always-visible status, and a 10-second undo on every dose.
+Appointments in chronological order with full-word dates, locations, and "who is taking me."
+A persistent "Call my caregiver" action on every patient screen.
+Caregiver
+Dashboard with adherence summary, an alerts region for missed/overdue items, and a recent-activity timeline.
+Manage medications and manage appointments with accessible create/edit forms, inline validation, and delete confirmation.
+All caregiver edits propagate to the patient screens.
+Shared
+Public landing page with an accessible, scoped AI assistant (explains the app and guides sign in/up; never gives medical advice).
+Installable PWA with offline access to the day's schedule.
+Accessibility
+CareConnect is designed and verified against 21 WCAG 2.1 A/AA success criteria, with full conformance mapping in `ACCESSIBILITY.md`.
+Highlights: 4.5:1 text contrast, full keyboard operability, visible focus indicators, semantic landmarks, ARIA live regions (`role="status"` / `role="alert"`), 44x44px minimum targets, 320px reflow with no horizontal scroll, and `prefers-reduced-motion` support.
+Tech stack
+Layer Technology
+Framework React 18 + Vite
+Language TypeScript (strict)
+Styling Tailwind CSS with accessibility-first design tokens
+Routing React Router (protected routes)
+State / persistence React Context + `localStorage` (mock data)
+AI assistant Anthropic API via a serverless/edge function
+PWA Web App Manifest + Service Worker
+Testing Jest + React Testing Library + Playwright (E2E)
+
+---
+
+Project structure
+
+```
+careconnect/
+├── public/
+│   ├── icons/                       # PWA maskable icons
+│   ├── manifest.webmanifest         # PWA manifest
+│   └── favicon.svg
+├── docs/
+│   └── screenshots/                 # README images (01-landing.png … 14-caregiver-activity.png)
+├── scripts/
+│   └── screenshots.ts               # Playwright screenshot automation
+├── api/
+│   └── assistant.ts                 # serverless function — Anthropic API proxy (key stays server-side)
+├── src/
+│   ├── components/                  # Accessible component library
+│   │   ├── Button.tsx
+│   │   ├── Card.tsx
+│   │   ├── BigActionTile.tsx
+│   │   ├── Field.tsx
+│   │   ├── Banner.tsx
+│   │   └── ConfirmDialog.tsx
+│   ├── context/
+│   │   ├── AuthContext.tsx          # mock auth, persisted to localStorage
+│   │   └── RoleContext.tsx          # role + current patient profile
+│   ├── shell/
+│   │   ├── AppShell.tsx             # layout + semantic landmarks
+│   │   ├── OrientationBar.tsx       # persistent date/time/greeting/"you are here"
+│   │   ├── Navigation.tsx           # bottom nav (patient) / sidebar (caregiver)
+│   │   └── ProtectedRoute.tsx       # redirects unauthenticated users
+│   ├── pages/
+│   │   ├── landing/
+│   │   │   ├── LandingPage.tsx
+│   │   │   ├── SignIn.tsx
+│   │   │   ├── SignUp.tsx
+│   │   │   └── Assistant.tsx        # accessible AI chatbot
+│   │   ├── RoleChooser.tsx
+│   │   ├── patient/
+│   │   │   ├── Today.tsx
+│   │   │   ├── Medications.tsx
+│   │   │   └── Appointments.tsx
+│   │   └── caregiver/
+│   │       ├── Dashboard.tsx
+│   │       ├── ManageMedications.tsx
+│   │       ├── ManageAppointments.tsx
+│   │       └── Activity.tsx
+│   ├── data/
+│   │   └── mockData.ts              # seed medications & appointments
+│   ├── lib/
+│   │   └── storage.ts               # localStorage helpers
+│   ├── styles/
+│   │   └── tokens.css               # design tokens + global focus styles
+│   ├── App.tsx                      # route definitions
+│   ├── main.tsx                     # app entry
+│   └── serviceWorker.ts             # PWA offline caching
+├── .env                             # local secrets (gitignored — never commit)
+├── .env.example                     # placeholder environment variables
+├── .gitignore
+├── ACCESSIBILITY.md                 # WCAG 2.1 AA conformance mapping
+├── LICENSE                          # MIT
+├── README.md
+├── index.html
+├── package.json
+├── tailwind.config.js
+├── tsconfig.json
+└── vite.config.ts
+```
+
+> The tree above reflects the intended architecture. To regenerate the exact tree from your machine, run `tree -I "node_modules|dist" -L 3` (install `tree` if needed) or copy the structure from the VS Code Explorer.
+> Application flow
+
+```mermaid
+flowchart TD
+    A[Landing page] -->|Sign up / Sign in| B{Authenticated?}
+    B -->|No| A
+    B -->|Yes, first time| C[Role chooser]
+    C -->|Care recipient| D[Patient: Today / Medications / Appointments]
+    C -->|Caregiver| E[Caregiver: Dashboard / Manage / Activity]
+    B -->|Yes, returning| F[Stored role -> straight to home]
+    F --> D
+    F --> E
+    E -. edits schedule .-> D
+```
+
+---
+
+Getting started
+Prerequisites
+Node.js 18+ and npm
+A modern browser
+(Optional) An Anthropic API key for the landing-page assistant
+Get the code
+Clone with Git (HTTPS):
 
 ```bash
-cd careconnect-web
+git clone https://github.com/aliminagar/careconnect-swen661.git
+cd careconnect-swen661
+```
+
+Clone with SSH:
+
+```bash
+git clone git@github.com:aliminagar/careconnect-swen661.git
+cd careconnect-swen661
+```
+
+Clone with GitHub CLI:
+
+```bash
+gh repo clone aliminagar/careconnect-swen661
+cd careconnect-swen661
+```
+
+Download without Git: on the GitHub repo page, click Code → Download ZIP, then unzip and open the folder.
+Install and configure
+
+```bash
 npm install
-npm run dev          # http://localhost:5173
+cp .env.example .env     # then fill in your values
 ```
 
-Other scripts:
-
-| Script | What it does |
-|---|---|
-| `npm run dev` | Dev server with hot reload |
-| `npm run build` | Production build into `dist/` |
-| `npm run preview` | Serve the production build — worth doing, see "Cascade layers" below |
-| `npm run lint` | `oxlint` for JS, then `scripts/lint-tokens.mjs` for the stylesheets |
-| `npm test` | The Jest suite, once |
-| `npm run test:watch` | The suite in watch mode |
-| `npm run coverage` | The suite with Istanbul coverage; fails below 90% on any metric |
-
-Two routes, no router:
-
-- `/` — Patient Today
-- `/#specimens` — the foundations sheet (the "Design system" link in the
-  bottom-right corner of every page)
-
-`#specimens` is read straight from `location.hash`. A router would add a
-dependency and a build concept for one evidence page, and the five navigation
-destinations are inert in this cut, so there is nothing else to route.
-
-One wrinkle worth knowing before you touch `App.jsx`: the hash is not only a
-route. `#main` is the skip link's target. Treating every hash as a route meant
-that skipping to the main content while the sheet was open navigated straight
-off it — the first control a keyboard user reaches was the one that threw away
-their place. So a hash naming a *fragment* leaves the route alone, and only a
-hash naming a *view* changes it.
-
-## Responsive behaviour
-
-Three layouts, two breakpoints, mobile-first. Both queries are `min-width`, so
-there is no width that matches neither or both:
-
-| | Mobile `< 768px` | Tablet `768–1199px` | Desktop `≥ 1200px` |
-|---|---|---|---|
-| Navigation | Fixed bottom bar, 5 destinations, 72px targets | Top tab row, full labels | 264px left sidebar |
-| Page | Single column | Single column, support cards paired | Fluid plan + 324px support column |
-| Page inset | 16px | 40px | 40px |
-| Nav labels | Abbreviated — Meds, Visits, Inbox | Full | Full |
-
-**Reflow, don't reduce.** No breakpoint shrinks text to make something fit. The
-display heading reflows from 36px to 28px on mobile and gets *heavier* (400 to
-600) rather than smaller, and 16px is a hard floor for all body and control
-text. Where something cannot fit, it wraps or stacks.
-
-**One DOM order.** All three layouts render the same markup in the same order;
-only CSS differs. The support cards are placed into the second grid column at
-desktop rather than being moved in the DOM, so tab order still follows reading
-order. All three navigation presentations are always rendered and CSS hides two
-of them with `display: none`, which also removes them from the accessibility
-tree — so there is exactly one "Main" navigation landmark at any width, not
-three, and the current page is marked once.
-
-## Accessibility
-
-Targeted at WCAG 2.1 AA, verified mechanically rather than by eye (see
-"Verification"):
-
-- Every rendered text node meets 4.5:1 against its effective background. The
-  one exception is the disabled button label (3.86:1), which 1.4.3 exempts for
-  inactive controls and which is `--cc-muted` rather than a lighter grey so it
-  stays readable anyway.
-- `--cc-border` (#DCE5F0) is decorative only — 1.27:1 on white. No control is
-  bounded by it alone; input edges use `--cc-muted`, which measures 4.76:1.
-- `--cc-brand` (#1A73E8) is 4.51:1 on white and clears AA by 0.01, so it is
-  restricted to the mark and the progress fill. Actions and links use
-  `--cc-primary` (#1565C0) at 5.75:1.
-- Interactive targets are at least 44px; buttons and fields at least 52px;
-  mobile bar destinations 72px.
-- The mobile bar shows "Meds" but announces "Medications": the abbreviation is
-  `aria-hidden` and the full destination is in a visually hidden span, so one
-  name reaches assistive technology instead of both. The Messages count reads
-  after the destination — "Messages, 2 unread", not "2 unread messages Messages".
-- Selection is `aria-current="page"`, not just the tint. Focus is a dark 3px
-  ring with an offset, so it sits on the surrounding surface and stays visible
-  on the primary fill and on the selected tint.
-- Field errors are stated in words ("Error: Enter a subject before sending."),
-  not by colour alone, and wired with `aria-describedby`.
-
-## Project layout
+`.env` variables:
 
 ```
-src/
-  App.jsx                 shell: skip link, app bar, 3 nav presentations, routes
-  data/
-    patientToday.js       every user-visible string + the destination list
-    foundations.js        specimen copy; no colour or type values (see below)
-  components/             Button, TextField, Badge, Card, ProgressBar, Icon, Nav,
-                          AppointmentCard, LaterItem, GlanceCard, CareTeamCard
-  pages/
-    PatientToday.jsx      the screen
-    Specimens.jsx         the foundations & component-states sheet
-  styles/
-    index.css             the single entry point — layer order lives here
-    reset / tokens / type / components / layout / a11y .css
+VITE_SUPABASE_URL=your_supabase_url            # only if using Supabase
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key  # public/anon key (protected by RLS)
+# Server-side only — NEVER prefix with VITE_:
+ANTHROPIC_API_KEY=your_anthropic_key           # used by api/assistant.ts
 ```
 
-`data/patientToday.js` is the only place a user-visible string or a destination
-is written down. Three layouts reading one list is what makes "same content,
-same destinations at every width" a fact rather than a promise.
+> The app runs on mock `localStorage` data without any backend keys. If the Anthropic key is absent, the assistant falls back to a scripted guided helper.
+> Run
 
-`data/foundations.js` deliberately holds **no** hex values and **no** type
-metrics. The sheet reads those from the live computed styles at render, so a
-swatch cannot claim a colour the stylesheet no longer uses.
-
-## Cascade layers
-
-`src/styles/index.css` declares the layer order once:
-
-```css
-@layer reset, tokens, base, components, layout, a11y;
+```bash
+npm run dev      # http://localhost:5173
 ```
 
-Reading it matters because **a later layer beats an earlier one no matter how
-specific either selector is**, which is the opposite of the usual specificity
-intuition:
+Publish your own copy to GitHub
+If the project isn't on GitHub yet:
 
-- `base` holds the 44px/52px target *floors*. They are floors precisely because
-  `components` and `layout` come later and can raise them — that is how the
-  mobile bar reaches 72px with an ordinary class and no `!important`.
-- `layout` beats `components` so a breakpoint can rearrange a component.
-- `a11y` is last so nothing downstream can accidentally remove a focus ring.
+```bash
+git init
+git add .
+git commit -m "Initial commit: CareConnect"
+git branch -M main
+git remote add origin https://github.com/aliminagar/careconnect-swen661.git
+git push -u origin main
+```
 
-One trap worth knowing: in a production build the CSS minifier **drops** that
-statement as redundant, and the bundle's layer order then comes from the order
-the layers first appear in — that is, from the `@import` order. The imports are
-listed in the same order as the statement for exactly that reason. If you
-reorder one, reorder both, or `npm run build` will stop matching `npm run dev`.
+> Confirm `.env` is listed in `.gitignore` before your first push so secrets never reach the repo.
 
-`scripts/lint-tokens.mjs` enforces the rest: stylesheets must live in
-`src/styles/`, every rule must be inside a `@layer`, colours must come from
-`tokens.css`, and spacing must come from the 4px scale.
+---
 
-## Verification
+Available scripts
+Script Description
+`npm run dev` Start the Vite dev server
+`npm run build` Production build to `/dist`
+`npm run preview` Preview the production build locally
+`npm test` Run Jest + React Testing Library unit/component tests
+`npm run screenshots` Generate README screenshots via Playwright
 
-Three layers, and they deliberately do not overlap.
+---
 
-### 1. `npm run lint` — static
+Screens & walkthrough
 
-`oxlint` for the JavaScript, then `scripts/lint-tokens.mjs` for the
-stylesheets: no stylesheet outside `src/styles/`, no rule outside a `@layer`,
-no colour outside `tokens.css`, no spacing off the 4px scale, no `font-size`
-below the 16px floor, no `outline: none`.
+> **Capturing screenshots:** run `npm run dev`, then `npm run screenshots` (Playwright), or capture manually with your OS tool. Images live in `docs/screenshots/` and are embedded below.
 
-### 2. `npm run coverage` — the Jest suite
+### 1. Landing page
 
-406 tests across 17 files, in jsdom. **100% of statements, branches, functions
-and lines**, with the gate set at 90% so the run fails below it. Nothing is
-excluded from the report to get there — the last two uncovered branches were
-server-rendering guards that `createRoot` can never execute, and they were
-deleted rather than tested around.
+Public entry: hero, "How it helps" cards, privacy reassurance, Sign up / Sign in CTAs.
 
-Coverage is collected from every source file, through `collectCoverageFrom` in
-`jest.config.js`. That setting is the point: without it a source file with no
-test file of its own is simply absent from the report rather than counted at
-zero, and the percentage stops meaning anything about completeness.
+![Landing page](docs/screenshots/01-landing.png)
 
-**What these tests deliberately do not claim.** jsdom has no layout engine and
-the suite loads no CSS (`jest.config.js` stubs every `.css` import), so no unit
-test here can tell you a target is 72px, which of the three layouts is showing,
-what a contrast ratio computes to, or whether an element is visually hidden.
-Tests that assert a class name as a proxy for any of that would pass with the
-stylesheet deleted, so they are not written. Where a test names a modifier
-class it is pinning that the prop reached the markup, and it says so. The
-pixels are layer 3's job.
+### 2. AI assistant
 
-### 3. The browser sweep — Chromium, via Playwright
+Accessible chatbot panel (aria-live, focus management) scoped to onboarding — no medical advice.
 
-Loads both routes at seven widths — 393, 767, 768, 1024, 1199, 1200, 1440 —
-and measures eighteen things at each from the live DOM:
+![AI assistant panel](docs/screenshots/02-assistant.png)
 
-no text below 16px · targets ≥44px · buttons and fields ≥52px · mobile bar
-destinations ≥72px · exactly one visible "Main" landmark · the right number of
-`aria-current="page"` for the route · all five destinations present with the
-right accessible names · the mobile bar really showing abbreviations while
-tablet and desktop show full labels · all 20 content-parity strings · the
-appointment card genuinely rearranging at 768 (read from computed
-`grid-template-columns` and `flex-direction`, so a renamed layout class cannot
-pass) · the current destination's computed background differing from an
-unselected one · no text clipped by its own box · the progress fill painting
-the width its text claims · every swatch on the sheet resolving to a real
-colour and a six-digit hex · the skip link being the first tab stop and Enter
-really moving focus into `<main>` · computed sRGB contrast of every visible
-text node · no horizontal overflow · and, scrolled to the very bottom, nothing
-carrying text sitting underneath the fixed mobile bar.
+### 3. Sign up
 
-All fourteen runs (7 widths × 2 routes) pass against the production build as
-well as the dev server. The script is not committed — it lives with the team's
-other demo tooling outside the repo, per the convention set in week 4.
+Accessible registration form with visible labels and inline validation.
 
-Two things about that list are worth copying into the next project. The
-boundary widths are the point: 767/768 and 1199/1200 are where a layout hands
-over, and the reference widths alone would not catch a handover that is off by
-a pixel. And every check in it was probe-tested against the bug it describes —
-re-break the thing, confirm the check goes red — because a check that cannot
-fail is worse than no check, and two of the checks here were found to be
-exactly that. The probe scripts live beside `verify.mjs`.
+![Sign up form](docs/screenshots/03-signup.png)
 
-The sweep also earns its keep against the BUILD specifically. The swatch check
-was added and immediately failed in production only: the CSS minifier rewrites
-`#ffffff` as `#fff`, so the foundations sheet was printing `#FFF` beside
-`#F7F9FC`. No unit test could have seen it — Jest never runs the minifier.
+### 4. Sign in
 
-## What is done, and what is not
+Mock auth with the same accessible form pattern.
 
-**Done**
+![Sign in form](docs/screenshots/04-signin.png)
 
-- Design tokens — 14 colours, the Inter type scale with its mobile overrides,
-  the 4px space scale, radii and control floors — as CSS custom properties.
-- Eleven components, each one state-complete against the Figma board.
-- Patient Today in all three layouts, from one DOM order.
-- The foundations & component-states sheet, including real `:focus-visible`
-  specimens rather than painted imitations of a ring.
-- Accessibility work above, verified mechanically at seven widths.
-- 406 unit tests at 100% coverage, plus an 18-check browser sweep.
-- Production build verified, not just the dev server.
+### 5. Role chooser
 
-**Not done**
+Post sign-in choice between Care Recipient and Caregiver; persists for future logins.
 
-- **Nothing is wired.** Every control is a static specimen: "I'm ready" does not
-  mark anything done, the five destinations do not navigate, and the message
-  field does not send. The Figma handoff scopes this cut to the Patient Today
-  screen, and inventing behaviour would mean inventing data.
-- **One screen of five.** Medications, Appointments, Messages and Help exist as
-  destinations only.
-- **The browser sweep is not in CI.** It exits non-zero and is ready to be, but
-  today it is run by hand. Only the unit suite runs on demand.
-- **No persistence, no data layer, no API.** All copy is a literal in
-  `data/patientToday.js`.
+![Role chooser](docs/screenshots/05-role-chooser.png)
 
-## Where the implementation departs from the Figma boards
+### 6. Patient — Today
 
-Two deliberate differences, each because the board's own rules conflict:
+Calm home with "Next thing to do" and the day's remaining items.
 
-1. **Navigation items have no border.** The component-states board draws the
-   default nav item as a bordered chip, but the border token is `--cc-border` at
-   1.27:1 — and the same board says that token is decorative and cannot bound a
-   control. The layout renders show the sidebar items borderless, so that is
-   what is implemented; selection is carried by the tint plus `aria-current`,
-   and focus by the ring.
-2. **The error field is not a live region.** With nothing wired there is no
-   validation event to announce, and a live region here would announce on first
-   render — worse than silence. It becomes a live region when the form is wired.
+![Patient Today home](docs/screenshots/06-patient-today.png)
 
-### One asymmetry that is not a departure
+### 7. Patient — Medications
 
-`Button` uses `aria-disabled` with the click handler detached; `TextField` uses
-the native `disabled` attribute. Both match the board, and the difference is
-deliberate.
+Pill images, plain-language doses, always-visible status.
 
-The usual objection to `aria-disabled` is that it leaves the handler live — so
-the button does not pass one. What it buys is that the control stays in the tab
-order: a keyboard user reaches it and hears "unavailable" rather than having it
-vanish silently from the sequence, and the disabled specimen on the foundations
-sheet can actually be focused to show that its label still reads. A disabled
-input is a different case: it must also be skipped by form submission and must
-not be editable, and only the native attribute gives that.
+![Patient medications list](docs/screenshots/07-patient-medications.png)
+
+### 8. Medication taken
+
+Polite confirmation plus a 10-second undo.
+
+![Medication marked as taken](docs/screenshots/08-medication-taken.png)
+
+### 9. Patient — Appointments
+
+Chronological appointments with full-word dates and directions.
+
+![Patient appointments](docs/screenshots/09-patient-appointments.png)
+
+### 10. Caregiver — Dashboard
+
+Adherence summary, alerts region, recent activity.
+
+![Caregiver dashboard](docs/screenshots/10-caregiver-dashboard.png)
+
+### 11. Caregiver — Manage medications
+
+Medication list with edit and confirm-on-delete.
+
+![Caregiver manage medications](docs/screenshots/11-caregiver-medications.png)
+
+### 12. Caregiver — Medication form
+
+Accessible add/edit form with full validation.
+
+![Caregiver medication form](docs/screenshots/12-caregiver-medication-form.png)
+
+### 13. Caregiver — Appointments
+
+Appointment list and accessible add/edit form.
+
+![Caregiver manage appointments](docs/screenshots/13-caregiver-appointments.png)
+
+### 14. Caregiver — Activity
+
+Timestamped log of taken/skipped doses and check-ins.
+
+![Caregiver activity log](docs/screenshots/14-caregiver-activity.png)
+
+---
+
+Testing
+Unit & component: Jest + React Testing Library (`npm test`), targeting 60–75% coverage per the course milestones.
+End-to-end: Playwright specs for core flows (sign in → take medication → caregiver sees adherence).
+Accessibility: axe DevTools, Lighthouse (target 95+ accessibility), and manual screen-reader testing (NVDA / VoiceOver) plus keyboard-only navigation.
+Deployment
+
+```bash
+npm run build       # outputs to /dist
+```
+
+Deploy `/dist` to Netlify or Vercel. Configure the assistant's serverless function and set `ANTHROPIC_API_KEY` in the host's environment settings (never client-side).
+Roadmap
+Real backend with Supabase + Row Level Security
+Multi-patient support for caregivers
+Push-notification medication reminders
+Localization / bilingual support
+
+---
+
+Authors
+Alireza Minagar — Author & Developer
+AI/ML Software Engineer · Founder & CTO, Perfect Strokes LLC · Adjunct Professor, UMGC.
+Physician-scientist turned software engineer, with graduate work in Bioinformatics, Software Engineering, and Cybersecurity, focused on the intersection of healthcare and applied AI/ML.
+GitHub: `https://github.com/aliminagar`
+LinkedIn: `https://www.linkedin.com/in/alireza-minagar-ai`
+Website: `https://alirezaminagar-md.netlify.app/`
+Additional contributors (SWEN 661 team), if applicable:
+`Name` — role
+`Name` — role
+
+> Replace the placeholder links and add team members as needed.
+> License
+> Distributed under the MIT License. See `LICENSE` for full text.
+
+```
+Copyright (c) 2026 Alireza Minagar / Perfect Strokes LLC
+```
+
+> MIT is permissive and ideal for a portfolio/course project. If you prefer an explicit patent grant use **Apache-2.0**; if you want copyleft (derivatives must stay open) use **GPL-3.0**. Tell me and I'll swap the LICENSE file.
+> Acknowledgments
+> University of Maryland Global Campus — SWEN 661 (UI Implementation)
+> The WCAG 2.1 guidelines and the WAI-ARIA Authoring Practices
+> Initial scaffolding accelerated with Bolt.new; completed and hardened locally
+> Disclaimer
+> CareConnect is an educational prototype built as a course artifact. It is not a medical device, provides no medical, dosage, or clinical advice, and must not be used for real patient care or to manage actual medications. It uses mock data only and is not intended to store real protected health information (PHI). For any real health decision, consult a licensed clinician.
