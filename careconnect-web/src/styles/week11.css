@@ -1,0 +1,847 @@
+/* ============================================================
+   CareConnect Week 11 functionality
+   Extends the established CareConnect visual system.
+   ============================================================ */
+
+.cc-feature-page {
+  width: 100%;
+  display: grid;
+  gap: 28px;
+}
+
+.cc-feature-header {
+  display: grid;
+  gap: 10px;
+}
+
+.cc-feature-section {
+  display: grid;
+  gap: 24px;
+}
+
+.cc-section-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.cc-primary-action,
+.cc-secondary-action,
+.cc-signout,
+.cc-chip,
+.cc-view-toggle button,
+.cc-calendar-event,
+.cc-toast button {
+  min-height: 44px;
+  min-width: 44px;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.cc-primary-action {
+  border: 2px solid var(--cc-brand);
+  background: var(--cc-brand);
+  color: white;
+}
+
+.cc-secondary-action,
+.cc-signout {
+  border: 2px solid var(--cc-brand);
+  background: Canvas;
+  color: var(--cc-brand);
+}
+
+.cc-primary-action:disabled,
+.cc-secondary-action:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.cc-primary-action:focus-visible,
+.cc-secondary-action:focus-visible,
+.cc-signout:focus-visible,
+.cc-chip:focus-visible,
+.cc-view-toggle button:focus-visible,
+.cc-calendar-event:focus-visible,
+.cc-field input:focus-visible,
+.cc-field textarea:focus-visible,
+.cc-toast button:focus-visible,
+.cc-dialog button:focus-visible {
+  outline: 3px solid var(--cc-brand);
+  outline-offset: 3px;
+}
+
+/* LOGIN */
+
+.cc-login {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background:
+    color-mix(
+      in srgb,
+      var(--cc-brand) 6%,
+      Canvas
+    );
+  color: CanvasText;
+}
+
+.cc-login__shell {
+  width: min(100%, 1080px);
+  overflow: hidden;
+  display: grid;
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--cc-brand) 20%,
+      transparent
+    );
+  border-radius: 24px;
+  background: Canvas;
+  box-shadow:
+    0 16px 48px
+    color-mix(
+      in srgb,
+      CanvasText 12%,
+      transparent
+    );
+}
+
+.cc-login__welcome,
+.cc-login__card {
+  padding: clamp(28px, 6vw, 56px);
+}
+
+.cc-login__welcome {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+  background:
+    color-mix(
+      in srgb,
+      var(--cc-brand) 11%,
+      Canvas
+    );
+}
+
+.cc-login__logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.cc-login__brand {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 750;
+}
+
+.cc-login__subbrand {
+  margin: 2px 0 0;
+  font-size: 16px;
+}
+
+.cc-login__benefits {
+  margin: 0;
+  padding-left: 24px;
+  display: grid;
+  gap: 14px;
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+.cc-login__card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+
+.cc-login__demo {
+  display: grid;
+  gap: 5px;
+  padding: 16px;
+  border-radius: 14px;
+  background:
+    color-mix(
+      in srgb,
+      var(--cc-brand) 7%,
+      Canvas
+    );
+}
+
+.cc-form {
+  display: grid;
+  gap: 20px;
+}
+
+.cc-form-message {
+  padding: 14px 16px;
+  border: 2px solid currentColor;
+  border-radius: 12px;
+}
+
+.cc-form-message.is-error {
+  color: firebrick;
+}
+
+.cc-field {
+  display: grid;
+  gap: 8px;
+}
+
+.cc-field label {
+  font-size: 16px;
+  font-weight: 650;
+}
+
+.cc-field input,
+.cc-field textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 50px;
+  padding: 12px 14px;
+  border:
+    2px solid
+    color-mix(
+      in srgb,
+      CanvasText 35%,
+      transparent
+    );
+  border-radius: 12px;
+  background: Canvas;
+  color: CanvasText;
+  font: inherit;
+  font-size: 16px;
+}
+
+.cc-field textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* ACCOUNT */
+
+.cc-account-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cc-signout {
+  white-space: nowrap;
+}
+
+/* NOTIFICATIONS */
+
+.cc-toast {
+  position: fixed;
+  z-index: 1000;
+  right: 18px;
+  bottom: 90px;
+  width: min(360px, calc(100vw - 36px));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 16px;
+  border: 2px solid currentColor;
+  border-radius: 14px;
+  background: Canvas;
+  color: CanvasText;
+  box-shadow:
+    0 12px 32px
+    color-mix(
+      in srgb,
+      CanvasText 18%,
+      transparent
+    );
+}
+
+.cc-toast.is-success {
+  color: darkgreen;
+}
+
+.cc-toast.is-error {
+  color: firebrick;
+}
+
+.cc-toast.is-info {
+  color: var(--cc-brand);
+}
+
+.cc-toast button {
+  border: 0;
+  background: transparent;
+  color: currentColor;
+}
+
+/* ROUTINES / MEDICATIONS */
+
+.cc-routine-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.cc-routine-card {
+  display: grid;
+  gap: 16px;
+  padding: 22px;
+  border:
+    2px solid
+    color-mix(
+      in srgb,
+      CanvasText 15%,
+      transparent
+    );
+  border-radius: 18px;
+  background: Canvas;
+}
+
+.cc-routine-card.is-taken {
+  border-color: darkgreen;
+  background:
+    color-mix(
+      in srgb,
+      darkgreen 6%,
+      Canvas
+    );
+}
+
+.cc-routine-card.is-missed {
+  border-color: firebrick;
+  background:
+    color-mix(
+      in srgb,
+      firebrick 6%,
+      Canvas
+    );
+}
+
+.cc-routine-card.is-soon {
+  border-color: darkgoldenrod;
+}
+
+.cc-routine-card__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.cc-routine-type {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.cc-routine-time {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 750;
+}
+
+.cc-status-pill {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  padding: 4px 10px;
+  border: 2px solid currentColor;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.cc-status-pill.is-taken {
+  color: darkgreen;
+}
+
+.cc-status-pill.is-missed {
+  color: firebrick;
+}
+
+.cc-status-pill.is-soon {
+  color: darkgoldenrod;
+}
+
+.cc-status-pill.is-upcoming {
+  color: var(--cc-brand);
+}
+
+.cc-feedback {
+  margin: 0;
+  padding: 16px 0 0;
+  border: 0;
+  border-top:
+    1px solid
+    color-mix(
+      in srgb,
+      CanvasText 14%,
+      transparent
+    );
+}
+
+.cc-feedback legend {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.cc-chip-group,
+.cc-quick-prompts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.cc-chip {
+  border:
+    2px solid
+    color-mix(
+      in srgb,
+      var(--cc-brand) 45%,
+      transparent
+    );
+  background: Canvas;
+  color: CanvasText;
+}
+
+.cc-chip.is-selected,
+.cc-chip[aria-pressed="true"] {
+  border-color: var(--cc-brand);
+  background:
+    color-mix(
+      in srgb,
+      var(--cc-brand) 12%,
+      Canvas
+    );
+  color: CanvasText;
+}
+
+/* APPOINTMENTS */
+
+.cc-view-toggle {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cc-view-toggle button {
+  border: 2px solid var(--cc-brand);
+  background: Canvas;
+  color: var(--cc-brand);
+}
+
+.cc-view-toggle button[aria-pressed="true"] {
+  background: var(--cc-brand);
+  color: white;
+}
+
+.cc-calendar-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cc-calendar-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 16px;
+}
+
+.cc-calendar {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  background: Canvas;
+}
+
+.cc-calendar th,
+.cc-calendar td {
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      CanvasText 18%,
+      transparent
+    );
+  padding: 10px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.cc-calendar th {
+  background:
+    color-mix(
+      in srgb,
+      var(--cc-brand) 8%,
+      Canvas
+    );
+}
+
+.cc-calendar td {
+  height: 112px;
+}
+
+.cc-calendar td.is-empty {
+  background:
+    color-mix(
+      in srgb,
+      CanvasText 3%,
+      Canvas
+    );
+}
+
+.cc-calendar-day {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 750;
+}
+
+.cc-calendar-event {
+  width: 100%;
+  height: auto;
+  display: grid;
+  gap: 3px;
+  margin: 4px 0;
+  border: 1px solid var(--cc-brand);
+  background:
+    color-mix(
+      in srgb,
+      var(--cc-brand) 10%,
+      Canvas
+    );
+  color: CanvasText;
+  text-align: left;
+  font-size: 13px;
+}
+
+.cc-calendar-event span {
+  font-weight: 500;
+}
+
+.cc-selected-appointment {
+  display: grid;
+  gap: 12px;
+}
+
+.cc-appointment-list {
+  display: grid;
+  gap: 18px;
+}
+
+.cc-appointment-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 22px;
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      CanvasText 16%,
+      transparent
+    );
+  border-radius: 16px;
+  background: Canvas;
+}
+
+.cc-appointment-status {
+  font-weight: 700;
+}
+
+/* MESSAGES */
+
+.cc-message-list {
+  display: grid;
+  gap: 14px;
+}
+
+.cc-message {
+  width: min(100%, 680px);
+  padding: 16px 18px;
+  border-radius: 16px;
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      CanvasText 15%,
+      transparent
+    );
+}
+
+.cc-message.is-inbound {
+  justify-self: start;
+  background:
+    color-mix(
+      in srgb,
+      var(--cc-brand) 7%,
+      Canvas
+    );
+}
+
+.cc-message.is-outbound {
+  justify-self: end;
+  background:
+    color-mix(
+      in srgb,
+      CanvasText 5%,
+      Canvas
+    );
+}
+
+.cc-message__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 14px;
+}
+
+.cc-message__unread {
+  display: inline-block;
+  margin-top: 6px;
+  color: var(--cc-brand);
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.cc-composer {
+  display: grid;
+  gap: 14px;
+  padding-top: 18px;
+}
+
+/* ASSISTANT */
+
+.cc-assistant {
+  display: grid;
+  gap: 20px;
+  padding: clamp(18px, 4vw, 28px);
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--cc-brand) 20%,
+      transparent
+    );
+  border-radius: 20px;
+  background: Canvas;
+}
+
+.cc-assistant__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.cc-assistant__eyebrow {
+  margin: 0 0 4px;
+  color: var(--cc-brand);
+  font-weight: 750;
+}
+
+.cc-assistant__status {
+  display: inline-flex;
+  padding: 5px 10px;
+  border: 2px solid darkgreen;
+  border-radius: 999px;
+  color: darkgreen;
+  font-weight: 700;
+}
+
+.cc-assistant__messages {
+  display: grid;
+  gap: 12px;
+  max-height: 430px;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.cc-assistant-message {
+  width: min(100%, 680px);
+  padding: 14px 16px;
+  border-radius: 16px;
+}
+
+.cc-assistant-message p {
+  margin-bottom: 0;
+}
+
+.cc-assistant-message.is-assistant {
+  justify-self: start;
+  background:
+    color-mix(
+      in srgb,
+      var(--cc-brand) 8%,
+      Canvas
+    );
+}
+
+.cc-assistant-message.is-user {
+  justify-self: end;
+  background:
+    color-mix(
+      in srgb,
+      CanvasText 7%,
+      Canvas
+    );
+}
+
+.cc-human-help {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 18px;
+  border-top:
+    1px solid
+    color-mix(
+      in srgb,
+      CanvasText 14%,
+      transparent
+    );
+}
+
+/* SIGN OUT DIALOG */
+
+.cc-dialog-backdrop {
+  position: fixed;
+  z-index: 1100;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background:
+    color-mix(
+      in srgb,
+      CanvasText 48%,
+      transparent
+    );
+}
+
+.cc-dialog {
+  width: min(100%, 520px);
+  display: grid;
+  gap: 18px;
+  padding: 28px;
+  border-radius: 20px;
+  background: Canvas;
+  color: CanvasText;
+  box-shadow:
+    0 18px 54px
+    color-mix(
+      in srgb,
+      CanvasText 28%,
+      transparent
+    );
+}
+
+.cc-dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* RESPONSIVE PARITY:
+   same features/content at every breakpoint;
+   only layout changes. */
+
+@media (min-width: 768px) {
+  .cc-login__shell {
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(360px, 0.85fr);
+  }
+
+  .cc-routine-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+  .cc-appointment-item {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+@media (min-width: 1200px) {
+  .cc-routine-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+  .cc-toast {
+    bottom: 24px;
+  }
+}
+
+@media (max-width: 767px) {
+  .cc-account-actions {
+    gap: 6px;
+  }
+
+  .cc-signout {
+    min-height: 40px;
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+
+  .cc-section-heading,
+  .cc-calendar-controls,
+  .cc-assistant__header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .cc-view-toggle {
+    width: 100%;
+  }
+
+  .cc-view-toggle button {
+    flex: 1 1 0;
+  }
+
+  .cc-dialog__actions {
+    flex-direction: column-reverse;
+  }
+
+  .cc-dialog__actions button {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

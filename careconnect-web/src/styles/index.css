@@ -10,16 +10,16 @@
  *   tokens      custom properties only, no rules that paint
  *   base        element typography and the 44px/52px target FLOORS
  *   components  how a component looks on its own
- *   layout      how components are arranged at a breakpoint — RAISES floors,
+ *   layout      how components are arranged at a breakpoint â€” RAISES floors,
  *               e.g. the mobile bottom bar's 72px destinations
- *   a11y        focus rings, .cc-sr-only, reduced motion — last on purpose, so
+ *   a11y        focus rings, .cc-sr-only, reduced motion â€” last on purpose, so
  *               nothing downstream can accidentally remove a focus indicator
  *
  * The @import order below is kept identical to that list, and it has to be.
  * In dev the statement is emitted above the inlined imports and is what binds;
  * in a production build the CSS minifier drops the statement as redundant, so
- * the bundle's layer order comes from first appearance — i.e. from the import
- * order — alone. Both routes currently agree, which is the only reason dev and
+ * the bundle's layer order comes from first appearance â€” i.e. from the import
+ * order â€” alone. Both routes currently agree, which is the only reason dev and
  * `npm run build` render the same. Reorder the imports and production will
  * silently diverge from dev, so if you change one, change both.
  */
@@ -32,3 +32,186 @@
 @import "./components.css";
 @import "./layout.css";
 @import "./a11y.css";
+
+/* =========================================================
+   Week 11 functional web application additions
+   Uses the existing CareConnect visual system.
+   ========================================================= */
+
+.cc-functional-status {
+  margin: 0 0 24px;
+  padding: 12px 16px;
+  border: 2px solid #1565c0;
+  border-radius: 12px;
+  background: #f7f9fc;
+  color: #1e2631;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.cc-functional-section {
+  display: grid;
+  gap: 24px;
+}
+
+.cc-functional-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.cc-functional-card {
+  padding: 24px;
+  border: 1px solid #dce5f0;
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+.cc-functional-card > *:first-child {
+  margin-top: 0;
+}
+
+.cc-functional-card > *:last-child {
+  margin-bottom: 0;
+}
+
+.cc-functional-state {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.cc-functional-button,
+.cc-functional-signout {
+  min-height: 52px;
+  min-width: 44px;
+  border: 2px solid #1565c0;
+  border-radius: 12px;
+  padding: 12px 20px;
+  background: #1565c0;
+  color: #ffffff;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cc-functional-button:hover,
+.cc-functional-signout:hover {
+  filter: brightness(0.92);
+}
+
+.cc-functional-button:focus-visible,
+.cc-functional-signout:focus-visible,
+.cc-functional-field input:focus-visible,
+.cc-functional-field textarea:focus-visible {
+  outline: 3px solid #1e2631;
+  outline-offset: 3px;
+}
+
+.cc-functional-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.cc-functional-form {
+  display: grid;
+  gap: 20px;
+}
+
+.cc-functional-field {
+  display: grid;
+  gap: 8px;
+}
+
+.cc-functional-field label {
+  color: #1e2631;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.cc-functional-field input,
+.cc-functional-field textarea {
+  width: 100%;
+  min-height: 52px;
+  border: 2px solid #60697a;
+  border-radius: 12px;
+  padding: 12px 16px;
+  background: #ffffff;
+  color: #1e2631;
+  font: inherit;
+  font-size: 16px;
+}
+
+.cc-functional-field textarea {
+  min-height: 112px;
+  resize: vertical;
+}
+
+.cc-functional-messages {
+  display: grid;
+  gap: 16px;
+}
+
+.cc-functional-account {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cc-functional-signout {
+  min-height: 44px;
+  padding: 8px 14px;
+  background: transparent;
+  color: #1565c0;
+}
+
+.cc-login {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: #f7f9fc;
+}
+
+.cc-login__card {
+  width: min(100%, 520px);
+  display: grid;
+  gap: 20px;
+  padding: 32px;
+  border: 1px solid #dce5f0;
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+.cc-login__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #1e2631;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+details.cc-functional-card summary {
+  min-height: 44px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+details.cc-functional-card summary:focus-visible {
+  outline: 3px solid #1e2631;
+  outline-offset: 3px;
+}
+
+@media (min-width: 768px) {
+  .cc-functional-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .cc-functional-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
