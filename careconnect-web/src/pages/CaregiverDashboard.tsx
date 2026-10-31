@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import {
   CheckCircle2,
   AlertTriangle,
-  Clock,
   Pill,
   CalendarDays,
   UserCheck,

@@ -59,8 +59,9 @@ export type AuthResult =
 export async function signUp(
   name: string,
   email: string,
-  _password: string,
+  password: string,
 ): Promise<AuthResult> {
+  void password;
   const users = getStoredUsers();
   if (users.some((u) => u.email.toLowerCase() === email.toLowerCase())) {
     return { error: 'An account with this email already exists. Try signing in instead.' };
@@ -77,8 +78,9 @@ export async function signUp(
 /** Signs in an existing account. Returns error if email not found. */
 export async function signIn(
   email: string,
-  _password: string,
+  password: string,
 ): Promise<AuthResult> {
+  void password;
   const users = getStoredUsers();
   const user = users.find((u) => u.email.toLowerCase() === email.toLowerCase().trim());
   if (!user) {
