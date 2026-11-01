@@ -4,6 +4,12 @@ import { useAuth } from '../auth/AuthContext';
 
 export interface PatientProfile {
   name: string;
+  dateOfBirth: string;
+  homeAddress: string;
+  caregiverName: string;
+  caregiverPhone: string;
+  importantPeople: string;
+  importantFacts: string;
 }
 
 interface AppContextValue {
@@ -13,12 +19,33 @@ interface AppContextValue {
 
 const PATIENT_KEY = 'careconnect_patient';
 
+const DEFAULT_PATIENT: PatientProfile = {
+  name: 'Patient',
+  dateOfBirth: '',
+  homeAddress: '',
+  caregiverName: '',
+  caregiverPhone: '',
+  importantPeople: '',
+  importantFacts: '',
+};
+
 function loadPatient(): PatientProfile {
   try {
     const raw = localStorage.getItem(PATIENT_KEY);
-    return raw ? (JSON.parse(raw) as PatientProfile) : { name: 'Margaret' };
+
+    if (!raw) {
+      return DEFAULT_PATIENT;
+    }
+
+    const stored = JSON.parse(raw) as Partial<PatientProfile>;
+
+    return {
+      ...DEFAULT_PATIENT,
+      ...stored,
+      name: stored.name?.trim() || DEFAULT_PATIENT.name,
+    };
   } catch {
-    return { name: 'Margaret' };
+    return DEFAULT_PATIENT;
   }
 }
 
@@ -30,12 +57,17 @@ const AppContext = createContext<AppContextValue | null>(null);
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const { user, role } = useAuth();
-  const [patient, setPatientState] = useState<PatientProfile>(loadPatient);
+  const [patient, setPatientState] =
+    useState<PatientProfile>(loadPatient);
 
-  // In patient mode, the care-recipient identity is the signed-in account.
-  // Caregiver mode can retain a separate care-recipient profile.
+  // In patient mode, the patient identity always follows
+  // the signed-in account name.
   useEffect(() => {
-    if (role === 'patient' && user?.name && patient.name !== user.name) {
+    if (
+      role === 'patient' &&
+      user?.name &&
+      patient.name !== user.name
+    ) {
       setPatientState((current) => ({
         ...current,
         name: user.name,

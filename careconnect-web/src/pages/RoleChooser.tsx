@@ -2,16 +2,13 @@ import { useNavigate } from 'react-router-dom';
 import { Heart, ShieldCheck } from 'lucide-react';
 import { BigActionTile } from '../components';
 import { useAuth } from '../auth/AuthContext';
-import { useApp } from '../context/AppContext';
 
 export default function RoleChooser() {
   const { setRole, user } = useAuth();
-  const { setPatient } = useApp();
   const navigate = useNavigate();
 
   function choose(role: 'patient' | 'caregiver') {
     // Persist the mock patient profile (always "Margaret")
-    setPatient({ name: 'Margaret' });
     setRole(role);
     navigate('/app');
   }
