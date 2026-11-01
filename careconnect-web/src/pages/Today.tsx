@@ -15,6 +15,7 @@ import type { LucideIcon } from 'lucide-react';
 import { BigActionTile, Banner, Card } from '../components';
 import { scheduleItems } from '../data/mockData';
 import { appendActivityEvent } from '../data/caregiverStore';
+import { useApp } from '../context/AppContext';
 import type { ScheduleItem } from '../types';
 
 // ── Time helpers ───────────────────────────────────────────────────────────────
@@ -132,7 +133,7 @@ function StatusBadge({ status }: { status: ItemStatus }) {
 
 // ── All-done card ──────────────────────────────────────────────────────────────
 
-function AllDoneCard() {
+function AllDoneCard({ patientName }: { patientName: string }) {
   return (
     <div className="bg-success-50 rounded-2xl border-2 border-success-200 p-8 text-center space-y-4">
       <span
@@ -144,7 +145,7 @@ function AllDoneCard() {
       <div>
         <p className="text-2xl font-bold text-success-800">All done for today!</p>
         <p className="text-base text-success-700 mt-2">
-          You've completed everything on your list. What a wonderful day, Margaret.
+          You've completed everything on your list. What a wonderful day, {patientName}.
         </p>
       </div>
     </div>
@@ -281,6 +282,7 @@ function RemainingCard({
 
 export default function Today() {
   const navigate = useNavigate();
+  const { patient } = useApp();
 
   // Persist done IDs to localStorage so the caregiver dashboard can read adherence
   const [localDone, setLocalDone] = useState<Set<string>>(() => {
@@ -367,7 +369,7 @@ export default function Today() {
           date/time/name context, so the h1 here is the primary page title. */}
       <div>
         <h1 className="text-3xl font-bold text-neutral-800 leading-tight">
-          Here's your day, Margaret
+          Here's your day, {patient.name}
         </h1>
         <p className="mt-1 text-lg text-neutral-500">
           {doneCount} of {items.length} things done today
@@ -398,7 +400,7 @@ export default function Today() {
                 onDone={() => markDone(featured.id)}
               />
             ) : (
-              <AllDoneCard />
+              <AllDoneCard patientName={patient.name} />
             )}
           </section>
 

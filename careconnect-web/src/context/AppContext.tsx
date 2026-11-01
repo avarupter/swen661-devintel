@@ -1,20 +1,15 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
-
-// ── Types ──────────────────────────────────────────────────────────────────────
+import { useAuth } from '../auth/AuthContext';
 
 export interface PatientProfile {
   name: string;
 }
 
 interface AppContextValue {
-  /** The care-recipient profile — always "Margaret" in the mock */
   patient: PatientProfile;
-  /** Overwrite the patient profile and persist to localStorage */
   setPatient: (profile: PatientProfile) => void;
 }
-
-// ── Storage ────────────────────────────────────────────────────────────────────
 
 const PATIENT_KEY = 'careconnect_patient';
 
@@ -27,18 +22,27 @@ function loadPatient(): PatientProfile {
   }
 }
 
-function savePatient(p: PatientProfile) {
-  localStorage.setItem(PATIENT_KEY, JSON.stringify(p));
+function savePatient(profile: PatientProfile) {
+  localStorage.setItem(PATIENT_KEY, JSON.stringify(profile));
 }
-
-// ── Context ────────────────────────────────────────────────────────────────────
 
 const AppContext = createContext<AppContextValue | null>(null);
 
 export function AppProvider({ children }: { children: ReactNode }) {
+  const { user, role } = useAuth();
   const [patient, setPatientState] = useState<PatientProfile>(loadPatient);
 
-  // Persist every time the profile changes
+  // In patient mode, the care-recipient identity is the signed-in account.
+  // Caregiver mode can retain a separate care-recipient profile.
+  useEffect(() => {
+    if (role === 'patient' && user?.name && patient.name !== user.name) {
+      setPatientState((current) => ({
+        ...current,
+        name: user.name,
+      }));
+    }
+  }, [role, user?.name, patient.name]);
+
   useEffect(() => {
     savePatient(patient);
   }, [patient]);
@@ -56,6 +60,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
 export function useApp(): AppContextValue {
   const ctx = useContext(AppContext);
-  if (!ctx) throw new Error('useApp must be used inside AppProvider');
+
+  if (!ctx) {
+    throw new Error('useApp must be used inside AppProvider');
+  }
+
   return ctx;
 }
