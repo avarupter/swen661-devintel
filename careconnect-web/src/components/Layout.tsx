@@ -14,11 +14,13 @@ import {
   PhoneCall,
   LayoutDashboard,
   Activity,
+  MessageCircle,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useAuth } from '../auth/AuthContext';
 import { useApp } from '../context/AppContext';
 import type { AppView } from '../types';
+import ChatBot from './ChatBot';
 
 // ── Nav definitions ────────────────────────────────────────────────────────────
 
@@ -35,6 +37,7 @@ const patientNav: NavItem[] = [
   { to: '/app/medications',  label: 'Medicines',    Icon: Pill },
   { to: '/app/memories',     label: 'Memories',     Icon: BookOpen },
   { to: '/app/contacts',     label: 'Contacts',     Icon: Phone },
+  { to: '/app/help',             label: 'Help',          Icon: MessageCircle },
 ];
 
 const caregiverNav: NavItem[] = [
@@ -54,6 +57,7 @@ const SCREEN_TITLES: Record<string, string> = {
   '/app/medications':         'Medicines',
   '/app/memories':            'Memories',
   '/app/contacts':            'Contacts',
+  '/app/help':                'Help',
   '/app/caregiver':           'Caregiver Notes',
   '/app/activity':            'Activity Log',
   '/app/manage-medications':  'Manage Medications',
@@ -381,6 +385,9 @@ export default function Layout({
             </nav>
           )}
         </div>
+        {isPatient && <ChatBot variant="floating" />}
+
+        
 
         {/* ── PATIENT BOTTOM NAV — tab stop #4, fixed at bottom ─────────── */}
         {isPatient && (

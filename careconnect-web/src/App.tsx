@@ -19,6 +19,7 @@ import Appointments from './pages/Appointments';
 import Medications  from './pages/Medications';
 import Memories     from './pages/Memories';
 import Contacts     from './pages/Contacts';
+import Help         from './pages/Help';
 import Caregiver    from './pages/Caregiver';
 import CaregiverDashboard    from './pages/CaregiverDashboard';
 import ActivityLog           from './pages/ActivityLog';
@@ -61,6 +62,7 @@ function AppShell() {
           <Route path="medications"           element={<Medications />} />
           <Route path="memories"              element={<Memories />} />
           <Route path="contacts"              element={<Contacts />} />
+          <Route path="help"                  element={<Help />} />
           <Route path="caregiver"             element={<Caregiver />} />
           <Route path="activity"              element={<ActivityLog />} />
           <Route path="manage-medications"    element={<ManageMedications />} />
