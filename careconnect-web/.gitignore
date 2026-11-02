@@ -11,6 +11,9 @@ dist
 dist-ssr
 *.local
 
+# Jest coverage output (npm run coverage)
+coverage
+
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.json
