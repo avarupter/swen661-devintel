@@ -1,9 +1,0 @@
-/* layer: components ==========================================================
-   Appointments: how the screen's own parts look.
-
-   Empty until the screen is built. It is imported from index.css already, so
-   building the screen only adds rules here and never has to touch the import
-   list or the layer order. All sizing comes from tokens.css; no hex literals.
-   =========================================================================== */
-@layer components {
-}
