@@ -1,255 +1,389 @@
-import { useState, useMemo } from 'react';
 import {
+  useMemo,
+  useState,
+} from 'react';
+
+import {
+  Building2,
+  CalendarDays,
+  CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  Home,
+  Info,
+  List,
   MapPin,
   Phone,
-  Home,
-  Building2,
-  User2,
-  CheckCircle2,
-  CalendarDays,
-  Clock,
-  Info,
   PlusCircle,
+  User2,
+  type LucideIcon,
 } from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
-import { Card, Button } from '../components';
-import { getAppointments } from '../data/apptStore';
-import type { Appointment, AppointmentLocationType } from '../data/appointmentsData';
 
-// ── Time / date helpers ────────────────────────────────────────────────────────
+import { Card } from '../components';
+import {
+  getAppointments,
+  saveAppointments,
+} from '../data/apptStore';
 
-function fmt12(hhmm: string): string {
-  const [h, m] = hhmm.split(':').map(Number);
-  const suffix = h >= 12 ? 'pm' : 'am';
-  return `${h % 12 || 12}:${String(m).padStart(2, '0')} ${suffix}`;
-}
+import type {
+  Appointment,
+  AppointmentLocationType,
+} from '../data/appointmentsData';
 
-/** Full English date: "Thursday, 4 June" */
-function formatFullDate(dateStr: string): string {
-  // Use noon to avoid any daylight-saving edge cases
-  const d = new Date(`${dateStr}T12:00:00`);
-  return d.toLocaleDateString('en-GB', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-  });
-}
+type ViewMode = 'list' | 'calendar';
 
-/** Full combined label: "Thursday, 4 June — 2:30 pm" */
-function formatDateTime(dateStr: string, time: string): string {
-  return `${formatFullDate(dateStr)} — ${fmt12(time)}`;
-}
-
-/** ISO datetime string for <time> element */
-function isoDateTime(dateStr: string, time: string): string {
-  return `${dateStr}T${time}`;
-}
-
-/** Days between two "YYYY-MM-DD" strings (b − a) */
-function diffDays(a: string, b: string): number {
-  const msA = new Date(`${a}T12:00:00`).getTime();
-  const msB = new Date(`${b}T12:00:00`).getTime();
-  return Math.round((msB - msA) / 86_400_000);
-}
-
-/** Compare two appointments by date then time for chronological sort */
-function chronoSort(a: Appointment, b: Appointment): number {
-  if (a.date !== b.date) return a.date < b.date ? -1 : 1;
-  return a.time < b.time ? -1 : 1;
-}
-
-// ── Location icon and labels ───────────────────────────────────────────────────
-
-const LOCATION_ICON: Record<AppointmentLocationType, LucideIcon> = {
-  clinic:    MapPin,
-  hospital:  Building2,
+const LOCATION_ICON: Record<
+  AppointmentLocationType,
+  LucideIcon
+> = {
+  clinic: MapPin,
+  hospital: Building2,
   telephone: Phone,
-  home:      Home,
+  home: Home,
 };
 
-const LOCATION_TYPE_LABEL: Record<AppointmentLocationType, string> = {
-  clinic:    'Clinic visit',
-  hospital:  'Hospital visit',
+const LOCATION_LABEL: Record<
+  AppointmentLocationType,
+  string
+> = {
+  clinic: 'Clinic visit',
+  hospital: 'Hospital visit',
   telephone: 'Telephone — no travel needed',
-  home:      'Home visit — they come to you',
+  home: 'Home visit — they come to you',
 };
 
-// ── Group divider ──────────────────────────────────────────────────────────────
+const WEEK_DAYS = [
+  'Sun',
+  'Mon',
+  'Tue',
+  'Wed',
+  'Thu',
+  'Fri',
+  'Sat',
+];
 
-function GroupDivider({
-  id,
-  label,
-  sub,
-  highlight = false,
-}: {
-  id: string;
-  label: string;
-  sub?: string;
-  highlight?: boolean;
-}) {
-  return (
-    <div className="flex items-center gap-3" aria-hidden="false">
-      {highlight ? (
-        <span
-          id={id}
-          className="flex-shrink-0 inline-flex items-center gap-1.5 bg-calm-600 text-white text-sm font-bold px-4 py-1.5 rounded-pill uppercase tracking-wide"
-        >
-          <CalendarDays className="w-4 h-4" aria-hidden="true" />
-          {label}
-        </span>
-      ) : (
-        <span
-          id={id}
-          className="flex-shrink-0 text-sm font-bold text-neutral-500 uppercase tracking-widest"
-        >
-          {label}
-        </span>
-      )}
-      {sub && (
-        <span className="text-base font-medium text-neutral-600 flex-shrink-0">{sub}</span>
-      )}
-      <span className="flex-1 h-px bg-neutral-200" aria-hidden="true" />
-    </div>
+function dateKey(date: Date) {
+  const year = date.getFullYear();
+  const month = String(
+    date.getMonth() + 1,
+  ).padStart(2, '0');
+
+  const day = String(
+    date.getDate(),
+  ).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+}
+
+function parseDate(value: string) {
+  return new Date(
+    `${value}T12:00:00`,
   );
 }
 
-// ── Individual appointment card ────────────────────────────────────────────────
+function formatTime(time: string) {
+  const [hour, minute] =
+    time.split(':').map(Number);
+
+  const suffix =
+    hour >= 12 ? 'pm' : 'am';
+
+  return `${hour % 12 || 12}:${String(
+    minute,
+  ).padStart(2, '0')} ${suffix}`;
+}
+
+function formatDate(value: string) {
+  return parseDate(
+    value,
+  ).toLocaleDateString(
+    'en-US',
+    {
+      weekday: 'long',
+      month: 'long',
+      day: 'numeric',
+    },
+  );
+}
+
+function diffDays(
+  start: string,
+  end: string,
+) {
+  return Math.round(
+    (
+      parseDate(end).getTime() -
+      parseDate(start).getTime()
+    ) / 86_400_000,
+  );
+}
+
+function sortAppointments(
+  a: Appointment,
+  b: Appointment,
+) {
+  if (a.date !== b.date) {
+    return a.date < b.date
+      ? -1
+      : 1;
+  }
+
+  return a.time < b.time
+    ? -1
+    : 1;
+}
+
+function monthLabel(date: Date) {
+  return date.toLocaleDateString(
+    'en-US',
+    {
+      month: 'long',
+      year: 'numeric',
+    },
+  );
+}
+
+function changeMonth(
+  date: Date,
+  amount: number,
+) {
+  return new Date(
+    date.getFullYear(),
+    date.getMonth() + amount,
+    1,
+    12,
+  );
+}
+
+function calendarDays(month: Date) {
+  const first =
+    new Date(
+      month.getFullYear(),
+      month.getMonth(),
+      1,
+      12,
+    );
+
+  const start =
+    new Date(first);
+
+  start.setDate(
+    first.getDate() -
+      first.getDay(),
+  );
+
+  return Array.from(
+    { length: 42 },
+    (_, index) => {
+      const day =
+        new Date(start);
+
+      day.setDate(
+        start.getDate() +
+          index,
+      );
+
+      return day;
+    },
+  );
+}
 
 function AppointmentCard({
-  appt,
-  isToday,
-  inMyDay,
-  onAddToMyDay,
+  appointment,
+  today,
+  onAdd,
 }: {
-  appt: Appointment;
-  isToday: boolean;
-  inMyDay: boolean;
-  onAddToMyDay: (id: string) => void;
+  appointment: Appointment;
+  today: string;
+  onAdd: (
+    appointment: Appointment,
+  ) => void;
 }) {
-  const LocIcon = LOCATION_ICON[appt.location.type];
-  const canGetDirections =
-    appt.location.type !== 'telephone' &&
-    appt.location.type !== 'home' &&
-    appt.location.address;
+  const Icon =
+    LOCATION_ICON[
+      appointment.location.type
+    ];
 
-  const directionsUrl = canGetDirections
-    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-        `${appt.location.name}, ${appt.location.address}`,
-      )}`
-    : null;
+  const physicalLocation =
+    appointment.location.type !==
+      'telephone' &&
+    appointment.location.type !==
+      'home' &&
+    Boolean(
+      appointment.location.address,
+    );
+
+  const directionsUrl =
+    physicalLocation
+      ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+          `${appointment.location.name}, ${appointment.location.address}`,
+        )}`
+      : '';
 
   return (
     <Card
-      heading={appt.title}
+      heading={appointment.title}
       headingLevel={3}
+      className={
+        appointment.date === today
+          ? 'border-calm-300'
+          : ''
+      }
       actions={
-        isToday ? (
-          // "Today" badge lives in the Card's top-right actions slot
-          <span className="inline-flex items-center gap-1.5 bg-calm-100 text-calm-700 text-sm font-bold px-3 py-1 rounded-pill flex-shrink-0">
-            <CalendarDays className="w-3.5 h-3.5" aria-hidden="true" />
+        appointment.date === today ? (
+          <span className="inline-flex items-center gap-1.5 bg-calm-100 text-calm-700 text-sm font-bold px-3 py-1 rounded-pill">
+            <CalendarDays
+              className="w-4 h-4"
+              aria-hidden="true"
+            />
             Today
           </span>
         ) : undefined
       }
-      className={isToday ? 'border-calm-300' : ''}
     >
       <div className="space-y-4">
 
-        {/* ── Date, day, and time — full words, no abbreviations ─────────── */}
         <div className="flex items-start gap-3">
           <Clock
-            className="w-5 h-5 text-neutral-400 flex-shrink-0 mt-0.5"
+            className="w-5 h-5 text-neutral-500 flex-shrink-0"
             aria-hidden="true"
           />
+
           <time
-            dateTime={isoDateTime(appt.date, appt.time)}
-            className="text-lg font-bold text-neutral-800 leading-snug"
+            dateTime={`${appointment.date}T${appointment.time}`}
+            className="font-bold text-neutral-800"
           >
-            {formatDateTime(appt.date, appt.time)}
+            {formatDate(
+              appointment.date,
+            )}{' '}
+            —{' '}
+            {formatTime(
+              appointment.time,
+            )}
           </time>
         </div>
 
-        {/* ── Location with icon ─────────────────────────────────────────── */}
         <div className="flex items-start gap-3">
-          <LocIcon
-            className="w-5 h-5 text-calm-600 flex-shrink-0 mt-0.5"
+          <Icon
+            className="w-5 h-5 text-calm-600 flex-shrink-0"
             aria-hidden="true"
           />
-          <div className="min-w-0">
-            <p className="font-semibold text-neutral-800 leading-tight">
-              {appt.location.name}
+
+          <div>
+            <p className="font-semibold text-neutral-800">
+              {
+                appointment.location
+                  .name
+              }
             </p>
-            {appt.location.address && (
-              <p className="text-sm text-neutral-500 mt-0.5">{appt.location.address}</p>
+
+            {appointment.location
+              .address && (
+              <p className="text-sm text-neutral-500 mt-1">
+                {
+                  appointment
+                    .location.address
+                }
+              </p>
             )}
-            <p className="text-sm text-neutral-400 mt-0.5 font-medium">
-              {LOCATION_TYPE_LABEL[appt.location.type]}
+
+            <p className="text-sm text-neutral-500 mt-1">
+              {
+                LOCATION_LABEL[
+                  appointment.location
+                    .type
+                ]
+              }
             </p>
           </div>
         </div>
 
-        {/* ── Who is taking me ───────────────────────────────────────────── */}
-        {appt.caregiver && (
-          <div className="flex items-center gap-3 bg-success-50 rounded-xl px-4 py-3 border border-success-200">
+        {appointment.caregiver && (
+          <div className="flex items-center gap-3 rounded-xl bg-success-50 border border-success-200 p-3">
             <User2
-              className="w-5 h-5 text-success-600 flex-shrink-0"
+              className="w-5 h-5 text-success-700"
               aria-hidden="true"
             />
-            <p className="text-base font-semibold text-success-800">
-              <strong>{appt.caregiver.split(' ')[0]}</strong>{' '}
-              <span className="font-normal text-success-700">is taking you to this appointment</span>
+
+            <p className="text-success-800">
+              {
+                appointment
+                  .caregiver
+                  .split(' ')[0]
+              }{' '}
+              is taking you to
+              this appointment.
             </p>
           </div>
         )}
 
-        {/* ── Notes ─────────────────────────────────────────────────────── */}
-        {appt.notes && (
-          <div className="flex items-start gap-3 bg-neutral-50 rounded-xl px-4 py-3 border border-neutral-200">
+        {appointment.notes && (
+          <div className="flex items-start gap-3 rounded-xl bg-neutral-50 border border-neutral-200 p-3">
             <Info
-              className="w-5 h-5 text-neutral-400 flex-shrink-0 mt-0.5"
+              className="w-5 h-5 text-neutral-500"
               aria-hidden="true"
             />
-            <p className="text-base text-neutral-600 leading-relaxed">{appt.notes}</p>
+
+            <p className="text-neutral-700">
+              {appointment.notes}
+            </p>
           </div>
         )}
 
-        {/* ── Actions row ───────────────────────────────────────────────── */}
         <div className="flex items-center gap-3 flex-wrap pt-3 border-t border-neutral-100">
-          {/* Get directions — only for physical locations */}
-          {directionsUrl ? (
-            <Button
-              variant="secondary"
-              icon={<MapPin className="w-4 h-4" />}
-              onClick={() => window.open(directionsUrl, '_blank', 'noopener,noreferrer')}
-              aria-label={`Get directions to ${appt.location.name}`}
+
+          {physicalLocation ? (
+            <button
+              type="button"
+              onClick={() =>
+                window.open(
+                  directionsUrl,
+                  '_blank',
+                  'noopener,noreferrer',
+                )
+              }
+              className="inline-flex items-center gap-2 rounded-lg border-2 border-neutral-300 px-4 py-2.5 font-semibold text-neutral-700 hover:bg-neutral-50"
             >
+              <MapPin
+                className="w-4 h-4"
+                aria-hidden="true"
+              />
               Get directions
-            </Button>
+            </button>
           ) : (
-            /* Telephone / home: reassuring "no travel" note */
-            <span className="inline-flex items-center gap-2 text-sm font-medium text-success-700 bg-success-50 border border-success-200 rounded-lg px-3 py-2 min-h-[2.75rem]">
-              <CheckCircle2 className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
+            <span className="inline-flex items-center gap-2 rounded-lg bg-success-50 border border-success-200 px-3 py-2 text-sm font-semibold text-success-700">
+              <CheckCircle2
+                className="w-4 h-4"
+                aria-hidden="true"
+              />
               No travel needed
             </span>
           )}
 
-          {/* "In My Day" indicator / "Add to My Day" button */}
           <div className="ml-auto">
-            {inMyDay ? (
-              <span
-                className="inline-flex items-center gap-2 text-sm font-bold text-success-700 bg-success-50 border border-success-200 rounded-lg px-3 py-2 min-h-[2.75rem]"
-                aria-label="This appointment is already in your My Day schedule"
-              >
-                <CheckCircle2 className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
+            {appointment.isInMyDay ? (
+              <span className="inline-flex items-center gap-2 rounded-lg bg-success-50 border border-success-200 px-3 py-2 text-sm font-bold text-success-700">
+                <CheckCircle2
+                  className="w-4 h-4"
+                  aria-hidden="true"
+                />
                 In My Day
               </span>
             ) : (
               <button
-                onClick={() => onAddToMyDay(appt.id)}
-                className="inline-flex items-center gap-2 text-sm font-semibold text-calm-700 bg-calm-50 border-2 border-calm-300 rounded-lg px-3 py-2 min-h-[2.75rem] hover:bg-calm-100 hover:border-calm-400 transition-colors"
-                aria-label={`Add "${appt.title}" to My Day schedule`}
+                type="button"
+                onClick={() =>
+                  onAdd(
+                    appointment,
+                  )
+                }
+                className="inline-flex items-center gap-2 rounded-lg bg-calm-50 border-2 border-calm-300 px-3 py-2 text-sm font-semibold text-calm-700 hover:bg-calm-100"
               >
-                <PlusCircle className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
+                <PlusCircle
+                  className="w-4 h-4"
+                  aria-hidden="true"
+                />
                 Add to My Day
               </button>
             )}
@@ -260,141 +394,501 @@ function AppointmentCard({
   );
 }
 
-// ── Page ──────────────────────────────────────────────────────────────────────
-
 export default function Appointments() {
-  const appointments = useMemo(() => getAppointments(), []);
+  const today =
+    dateKey(new Date());
 
-  const [myDaySet, setMyDaySet] = useState<Set<string>>(
-    () => new Set(appointments.filter((a) => a.isInMyDay).map((a) => a.id)),
+  const [
+    appointments,
+    setAppointments,
+  ] = useState<Appointment[]>(
+    getAppointments,
   );
 
-  function addToMyDay(id: string) {
-    setMyDaySet((prev) => new Set([...prev, id]));
+  const [view, setView] =
+    useState<ViewMode>('list');
+
+  const nextAppointment =
+    useMemo(
+      () =>
+        [...appointments]
+          .filter(
+            (appointment) =>
+              diffDays(
+                today,
+                appointment.date,
+              ) >= 0,
+          )
+          .sort(
+            sortAppointments,
+          )[0],
+      [appointments, today],
+    );
+
+  const [
+    selectedDate,
+    setSelectedDate,
+  ] = useState(
+    nextAppointment?.date ??
+      today,
+  );
+
+  const [
+    visibleMonth,
+    setVisibleMonth,
+  ] = useState(() => {
+    const start =
+      parseDate(
+        nextAppointment?.date ??
+          today,
+      );
+
+    return new Date(
+      start.getFullYear(),
+      start.getMonth(),
+      1,
+      12,
+    );
+  });
+
+  const [
+    announcement,
+    setAnnouncement,
+  ] = useState('');
+
+  const futureAppointments =
+    useMemo(
+      () =>
+        [...appointments]
+          .filter(
+            (appointment) =>
+              diffDays(
+                today,
+                appointment.date,
+              ) >= 0,
+          )
+          .sort(
+            sortAppointments,
+          ),
+      [appointments, today],
+    );
+
+  const appointmentsByDate =
+    useMemo(() => {
+      const map =
+        new Map<
+          string,
+          Appointment[]
+        >();
+
+      appointments.forEach(
+        (appointment) => {
+          const existing =
+            map.get(
+              appointment.date,
+            ) ?? [];
+
+          map.set(
+            appointment.date,
+            [
+              ...existing,
+              appointment,
+            ],
+          );
+        },
+      );
+
+      return map;
+    }, [appointments]);
+
+  function addToMyDay(
+    appointment: Appointment,
+  ) {
+    const updated =
+      appointments.map(
+        (item) =>
+          item.id ===
+          appointment.id
+            ? {
+                ...item,
+                isInMyDay: true,
+              }
+            : item,
+      );
+
+    setAppointments(updated);
+    saveAppointments(updated);
+
+    setAnnouncement(
+      `${appointment.title} was added to My Day.`,
+    );
   }
 
-  const today = new Date().toISOString().split('T')[0];
+  const todayGroup =
+    futureAppointments.filter(
+      (appointment) =>
+        appointment.date ===
+        today,
+    );
 
-  // Partition and sort in one pass
-  const { todayAppts, thisWeekAppts, comingUpAppts } = useMemo(() => {
-    const future = appointments.filter((a) => diffDays(today, a.date) >= 0);
-    const sorted = [...future].sort(chronoSort);
+  const weekGroup =
+    futureAppointments.filter(
+      (appointment) => {
+        const days =
+          diffDays(
+            today,
+            appointment.date,
+          );
 
-    return {
-      todayAppts:    sorted.filter((a) => diffDays(today, a.date) === 0),
-      thisWeekAppts: sorted.filter((a) => {
-        const d = diffDays(today, a.date);
-        return d >= 1 && d <= 6;
-      }),
-      comingUpAppts: sorted.filter((a) => diffDays(today, a.date) >= 7),
-    };
-  }, [today]);
+        return (
+          days >= 1 &&
+          days <= 6
+        );
+      },
+    );
 
-  const hasAny = todayAppts.length + thisWeekAppts.length + comingUpAppts.length > 0;
-  const todayLabel = formatFullDate(today);
+  const laterGroup =
+    futureAppointments.filter(
+      (appointment) =>
+        diffDays(
+          today,
+          appointment.date,
+        ) >= 7,
+    );
+
+  function renderGroup(
+    title: string,
+    group: Appointment[],
+  ) {
+    if (!group.length) {
+      return null;
+    }
+
+    return (
+      <section className="space-y-4">
+        <h2 className="text-xl font-bold text-neutral-800">
+          {title}
+        </h2>
+
+        {group.map(
+          (appointment) => (
+            <AppointmentCard
+              key={appointment.id}
+              appointment={
+                appointment
+              }
+              today={today}
+              onAdd={
+                addToMyDay
+              }
+            />
+          ),
+        )}
+      </section>
+    );
+  }
+
+  const days =
+    calendarDays(
+      visibleMonth,
+    );
+
+  const selectedAppointments =
+    [
+      ...(
+        appointmentsByDate.get(
+          selectedDate,
+        ) ?? []
+      ),
+    ].sort(
+      sortAppointments,
+    );
 
   return (
-    <div className="space-y-8 max-w-3xl mx-auto">
+    <div className="space-y-6 max-w-4xl mx-auto">
 
-      {/* ── Page heading ──────────────────────────────────────────────── */}
-      <div>
-        <h1 className="text-3xl font-bold text-neutral-800 leading-tight">
-          My Appointments
-        </h1>
-        <p className="mt-1 text-lg text-neutral-500">
-          Upcoming visits, tests, and calls — all in one place
-        </p>
-      </div>
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
 
-      {/* ── TODAY ─────────────────────────────────────────────────────── */}
-      {todayAppts.length > 0 && (
-        <section aria-labelledby="group-today" className="space-y-4">
-          <GroupDivider
-            id="group-today"
-            label="Today"
-            sub={todayLabel}
-            highlight
-          />
-          <ul className="space-y-4 list-none p-0 m-0" role="list">
-            {todayAppts.map((appt) => (
-              <li key={appt.id}>
-                <AppointmentCard
-                  appt={appt}
-                  isToday
-                  inMyDay={myDaySet.has(appt.id)}
-                  onAddToMyDay={addToMyDay}
-                />
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
+        <div>
+          <h1 className="text-3xl font-bold text-neutral-800">
+            My Appointments
+          </h1>
 
-      {/* ── LATER THIS WEEK ───────────────────────────────────────────── */}
-      {thisWeekAppts.length > 0 && (
-        <section aria-labelledby="group-week" className="space-y-4">
-          <GroupDivider id="group-week" label="Later this week" />
-          <ul className="space-y-4 list-none p-0 m-0" role="list">
-            {thisWeekAppts.map((appt) => (
-              <li key={appt.id}>
-                <AppointmentCard
-                  appt={appt}
-                  isToday={false}
-                  inMyDay={myDaySet.has(appt.id)}
-                  onAddToMyDay={addToMyDay}
-                />
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      {/* ── COMING UP ─────────────────────────────────────────────────── */}
-      {comingUpAppts.length > 0 && (
-        <section aria-labelledby="group-coming" className="space-y-4">
-          <GroupDivider id="group-coming" label="Coming up" />
-          <ul className="space-y-4 list-none p-0 m-0" role="list">
-            {comingUpAppts.map((appt) => (
-              <li key={appt.id}>
-                <AppointmentCard
-                  appt={appt}
-                  isToday={false}
-                  inMyDay={myDaySet.has(appt.id)}
-                  onAddToMyDay={addToMyDay}
-                />
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      {/* ── Empty state ───────────────────────────────────────────────── */}
-      {!hasAny && (
-        <div className="bg-white rounded-xl border-2 border-neutral-200 shadow-card p-10 text-center space-y-3">
-          <span
-            className="inline-flex w-16 h-16 rounded-full bg-success-100 items-center justify-center mx-auto"
-            aria-hidden="true"
-          >
-            <CheckCircle2 className="w-8 h-8 text-success-600" />
-          </span>
-          <p className="text-xl font-bold text-neutral-800">
-            No upcoming appointments
-          </p>
-          <p className="text-base text-neutral-500">
-            You're all clear. New appointments will appear here when they are booked.
+          <p className="mt-1 text-neutral-500">
+            View visits and calls
+            as a list or calendar.
           </p>
         </div>
-      )}
 
-      {/* ── Reassurance note ──────────────────────────────────────────── */}
-      {hasAny && (
-        <p className="text-sm text-neutral-400 text-center pb-2">
-          Your caregiver can add or update appointments for you.
-          <br />
-          CareConnect never gives medical advice.
-        </p>
-      )}
+        <div
+          role="group"
+          aria-label="Appointment view"
+          className="inline-flex self-start rounded-xl border-2 border-neutral-200 bg-white p-1"
+        >
+          <button
+            type="button"
+            onClick={() =>
+              setView('list')
+            }
+            aria-pressed={
+              view === 'list'
+            }
+            className={`inline-flex items-center gap-2 rounded-lg px-4 py-2.5 font-semibold ${
+              view === 'list'
+                ? 'bg-calm-600 text-white'
+                : 'text-neutral-600'
+            }`}
+          >
+            <List
+              className="w-5 h-5"
+              aria-hidden="true"
+            />
+            List
+          </button>
 
+          <button
+            type="button"
+            onClick={() =>
+              setView(
+                'calendar',
+              )
+            }
+            aria-pressed={
+              view === 'calendar'
+            }
+            className={`inline-flex items-center gap-2 rounded-lg px-4 py-2.5 font-semibold ${
+              view === 'calendar'
+                ? 'bg-calm-600 text-white'
+                : 'text-neutral-600'
+            }`}
+          >
+            <CalendarDays
+              className="w-5 h-5"
+              aria-hidden="true"
+            />
+            Calendar
+          </button>
+        </div>
+      </div>
+
+      <div
+        role="status"
+        aria-live="polite"
+      >
+        {announcement && (
+          <div className="rounded-xl border-2 border-success-200 bg-success-50 px-4 py-3 text-success-800 font-semibold">
+            {announcement}
+          </div>
+        )}
+      </div>
+
+      {view === 'list' ? (
+        <div className="space-y-8">
+
+          {renderGroup(
+            'Today',
+            todayGroup,
+          )}
+
+          {renderGroup(
+            'Later this week',
+            weekGroup,
+          )}
+
+          {renderGroup(
+            'Coming up',
+            laterGroup,
+          )}
+
+          {!futureAppointments.length && (
+            <div className="card text-center py-10">
+              <CalendarDays
+                className="w-12 h-12 mx-auto text-neutral-400"
+                aria-hidden="true"
+              />
+
+              <p className="mt-3 font-bold text-neutral-800">
+                No upcoming
+                appointments
+              </p>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="space-y-6">
+
+          <section
+            aria-label="Appointment calendar"
+            className="card p-4 sm:p-5"
+          >
+            <div className="flex items-center justify-between gap-3 mb-4">
+
+              <button
+                type="button"
+                onClick={() =>
+                  setVisibleMonth(
+                    changeMonth(
+                      visibleMonth,
+                      -1,
+                    ),
+                  )
+                }
+                aria-label="Previous month"
+                className="w-11 h-11 rounded-lg border-2 border-neutral-300 flex items-center justify-center"
+              >
+                <ChevronLeft
+                  className="w-5 h-5"
+                  aria-hidden="true"
+                />
+              </button>
+
+              <h2
+                className="text-xl font-bold text-neutral-800 text-center"
+                aria-live="polite"
+              >
+                {monthLabel(
+                  visibleMonth,
+                )}
+              </h2>
+
+              <button
+                type="button"
+                onClick={() =>
+                  setVisibleMonth(
+                    changeMonth(
+                      visibleMonth,
+                      1,
+                    ),
+                  )
+                }
+                aria-label="Next month"
+                className="w-11 h-11 rounded-lg border-2 border-neutral-300 flex items-center justify-center"
+              >
+                <ChevronRight
+                  className="w-5 h-5"
+                  aria-hidden="true"
+                />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-7 gap-1">
+              {WEEK_DAYS.map(
+                (day) => (
+                  <div
+                    key={day}
+                    className="text-center text-xs sm:text-sm font-bold text-neutral-500 py-2"
+                  >
+                    {day}
+                  </div>
+                ),
+              )}
+
+              {days.map(
+                (day) => {
+                  const key =
+                    dateKey(day);
+
+                  const count =
+                    appointmentsByDate.get(
+                      key,
+                    )?.length ?? 0;
+
+                  const sameMonth =
+                    day.getMonth() ===
+                    visibleMonth.getMonth();
+
+                  const selected =
+                    key ===
+                    selectedDate;
+
+                  const isToday =
+                    key === today;
+
+                  return (
+                    <button
+                      key={key}
+                      type="button"
+                      onClick={() =>
+                        setSelectedDate(
+                          key,
+                        )
+                      }
+                      aria-pressed={
+                        selected
+                      }
+                      aria-label={`${formatDate(
+                        key,
+                      )}, ${count} appointment${count === 1 ? '' : 's'}`}
+                      className={[
+                        'relative min-h-[4rem] sm:min-h-[5rem] rounded-lg border-2 p-1.5 text-left',
+                        sameMonth
+                          ? 'bg-white'
+                          : 'bg-neutral-50 text-neutral-400',
+                        selected
+                          ? 'border-calm-600 bg-calm-50'
+                          : 'border-neutral-200',
+                      ].join(' ')}
+                    >
+                      <span
+                        className={`inline-flex w-7 h-7 items-center justify-center rounded-full text-sm font-semibold ${
+                          isToday
+                            ? 'bg-calm-600 text-white'
+                            : ''
+                        }`}
+                      >
+                        {day.getDate()}
+                      </span>
+
+                      {count > 0 && (
+                        <span className="absolute bottom-1 left-1 right-1 text-center rounded-full bg-warm-100 text-warm-800 text-[0.65rem] font-bold py-0.5">
+                          {count}{' '}
+                          {count === 1
+                            ? 'visit'
+                            : 'visits'}
+                        </span>
+                      )}
+                    </button>
+                  );
+                },
+              )}
+            </div>
+          </section>
+
+          <section className="space-y-4">
+            <h2 className="text-xl font-bold text-neutral-800">
+              {formatDate(
+                selectedDate,
+              )}
+            </h2>
+
+            {selectedAppointments.length ? (
+              selectedAppointments.map(
+                (
+                  appointment,
+                ) => (
+                  <AppointmentCard
+                    key={
+                      appointment.id
+                    }
+                    appointment={
+                      appointment
+                    }
+                    today={today}
+                    onAdd={
+                      addToMyDay
+                    }
+                  />
+                ),
+              )
+            ) : (
+              <div className="card text-center py-8 text-neutral-500">
+                No appointments on
+                this date.
+              </div>
+            )}
+          </section>
+        </div>
+      )}
     </div>
   );
 }

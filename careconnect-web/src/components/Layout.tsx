@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
   Home,
@@ -15,12 +15,15 @@ import {
   LayoutDashboard,
   Activity,
   MessageCircle,
+  MessageSquare,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useAuth } from '../auth/AuthContext';
 import { useApp } from '../context/AppContext';
 import type { AppView } from '../types';
 import ChatBot from './ChatBot';
+import ConfirmDialog from './ConfirmDialog';
+import { getUnreadMessageCount, MESSAGES_CHANGED_EVENT } from '../data/messagesStore';
 
 // ── Nav definitions ────────────────────────────────────────────────────────────
 
@@ -37,6 +40,7 @@ const patientNav: NavItem[] = [
   { to: '/app/medications',  label: 'Medicines',    Icon: Pill },
   { to: '/app/memories',     label: 'Memories',     Icon: BookOpen },
   { to: '/app/contacts',     label: 'Contacts',     Icon: Phone },
+  { to: '/app/messages',         label: 'Messages',      Icon: MessageSquare },
   { to: '/app/help',             label: 'Help',          Icon: MessageCircle },
 ];
 
@@ -57,6 +61,7 @@ const SCREEN_TITLES: Record<string, string> = {
   '/app/medications':         'Medicines',
   '/app/memories':            'Memories',
   '/app/contacts':            'Contacts',
+  '/app/messages':            'Messages',
   '/app/help':                'Help',
   '/app/caregiver':           'Caregiver Notes',
   '/app/activity':            'Activity Log',
@@ -138,7 +143,48 @@ export default function Layout({
   const screenTitle = useScreenTitle();
   const location = useLocation();
 
+  const signOutButtonRef =
+    useRef<HTMLButtonElement>(null);
+
+  const [
+    signOutOpen,
+    setSignOutOpen,
+  ] = useState(false);
+
   const isPatient = view === 'patient';
+  const [unreadMessages, setUnreadMessages] =
+    useState(getUnreadMessageCount);
+
+  useEffect(() => {
+    function refreshUnreadMessages() {
+      setUnreadMessages(
+        getUnreadMessageCount(),
+      );
+    }
+
+    window.addEventListener(
+      MESSAGES_CHANGED_EVENT,
+      refreshUnreadMessages,
+    );
+
+    window.addEventListener(
+      'storage',
+      refreshUnreadMessages,
+    );
+
+    return () => {
+      window.removeEventListener(
+        MESSAGES_CHANGED_EVENT,
+        refreshUnreadMessages,
+      );
+
+      window.removeEventListener(
+        'storage',
+        refreshUnreadMessages,
+      );
+    };
+  }, []);
+
   const nav = isPatient ? patientNav : caregiverNav;
 
   const dateStr = formatOrientationDate(now);
@@ -219,7 +265,8 @@ export default function Layout({
               </button>
 
               <button
-                onClick={onSignOut}
+                ref={signOutButtonRef}
+                onClick={() => setSignOutOpen(true)}
                 className="inline-flex items-center justify-center gap-2 font-semibold rounded-lg px-3 py-2 min-h-[2.75rem] min-w-[2.75rem] text-sm bg-transparent text-neutral-500 border-2 border-transparent hover:bg-neutral-100 hover:text-neutral-800 transition-colors"
                 aria-label="Sign out of CareConnect"
               >
@@ -352,6 +399,11 @@ export default function Layout({
                       to={to}
                       end={to === '/app'}
                       aria-current={location.pathname === to ? 'page' : undefined}
+                      aria-label={
+                        to === '/app/messages' && unreadMessages > 0
+                          ? `Messages, ${unreadMessages} unread messages`
+                          : label
+                      }
                       className={({ isActive }) =>
                         [
                           'flex items-center gap-2.5 px-3 py-2.5 rounded-lg',
@@ -396,17 +448,22 @@ export default function Layout({
             className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-neutral-200 z-40 pb-[env(safe-area-inset-bottom)]"
           >
             <ul
-              className="flex items-stretch justify-around list-none p-0 m-0"
+              className="flex items-stretch overflow-x-auto list-none p-0 m-0"
               role="list"
             >
               {nav.map(({ to, label, Icon }) => (
                 // min-w-0 lets each tab shrink below its label width, so long
                 // labels truncate instead of forcing horizontal page scroll.
-                <li key={to} className="flex-1 min-w-0">
+                <li key={to} className="flex-1 min-w-[4.75rem]">
                   <NavLink
                     to={to}
                     end={to === '/app'}
                     aria-current={location.pathname === to ? 'page' : undefined}
+                      aria-label={
+                        to === '/app/messages' && unreadMessages > 0
+                          ? `Messages, ${unreadMessages} unread messages`
+                          : label
+                      }
                     className={({ isActive }) =>
                       [
                         'flex flex-col items-center justify-center gap-1',
@@ -420,7 +477,21 @@ export default function Layout({
                       ].join(' ')
                     }
                   >
-                    <Icon className="w-6 h-6 flex-shrink-0" aria-hidden="true" />
+                    <span className="relative inline-flex">
+                      <Icon
+                        className="w-6 h-6 flex-shrink-0"
+                        aria-hidden="true"
+                      />
+
+                      {to === '/app/messages' && unreadMessages > 0 && (
+                        <span
+                          className="absolute -top-2 -right-3 inline-flex items-center justify-center min-w-[1.25rem] h-5 px-1 rounded-full bg-alert-600 text-white text-[0.65rem] font-bold"
+                          aria-hidden="true"
+                        >
+                          {unreadMessages > 9 ? '9+' : unreadMessages}
+                        </span>
+                      )}
+                    </span>
                     <span className="leading-none w-full max-w-full text-center truncate">
                       {label}
                     </span>
@@ -448,6 +519,21 @@ export default function Layout({
         </footer>
 
       </div>
+      <ConfirmDialog
+        open={signOutOpen}
+        title="Sign out of CareConnect?"
+        description="You will return to the sign-in screen. Information saved in this CareConnect demonstration will remain on this device."
+        confirmLabel="Sign out"
+        cancelLabel="Stay signed in"
+        triggerRef={signOutButtonRef}
+        onConfirm={() => {
+          setSignOutOpen(false);
+          onSignOut();
+        }}
+        onCancel={() =>
+          setSignOutOpen(false)
+        }
+      />
     </>
   );
 }
