@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="CareConnect">
+  <rect width="512" height="512" rx="96" fill="#146488"/>
+  <path fill="#ffffff" d="M256 432S88 320 88 208a96 96 0 0 1 168-63 96 96 0 0 1 168 63c0 112-168 224-168 224z"/>
+</svg>
