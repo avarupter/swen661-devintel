@@ -1,4 +1,4 @@
-/** @type {import("jest").Config} */
+﻿/** @type {import("jest").Config} */
 export default {
   testEnvironment: "jsdom",
 
@@ -28,10 +28,29 @@ export default {
   restoreMocks: true,
 
   collectCoverageFrom: [
-    "src/**/*.{js,jsx,ts,tsx}",
+    "src/**/*.{ts,tsx}",
+
+    // Test infrastructure
     "!src/test/**",
     "!src/**/__tests__/**",
     "!src/**/*.d.ts",
+
+    // Barrel/type-only files
+    "!src/**/index.ts",
+
+    // Vite production service-worker registration is tested
+    // with the built application/browser rather than Jest.
+    "!src/pwa/registerSW.ts",
+
+    // Temporary/backup source copies are not production code
+    "!src/**/*.backup-*.tsx",
+    "!src/**/*.before-*.tsx",
+
+    // Active entry point is main.tsx/App.tsx.
+    // Legacy JSX application remains in the repository but is not
+    // the Vite application submitted for Week 12.
+    "!src/**/*.jsx",
+    "!src/**/*.js",
   ],
 
   coverageProvider: "babel",

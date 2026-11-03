@@ -23,7 +23,7 @@ export default function RoleChooser() {
       </a>
 
       <div className="min-h-screen bg-neutral-50 flex flex-col">
-        {/* Minimal header — no nav, no orientation bar */}
+        {/* Minimal header â€” no nav, no orientation bar */}
         <header className="bg-white border-b border-neutral-200" role="banner">
           <div className="max-w-5xl mx-auto px-4 md:px-6 h-14 flex items-center">
             <span className="flex items-center gap-2">
@@ -63,7 +63,7 @@ export default function RoleChooser() {
 
             {/* Role tiles */}
             <div
-              className="grid grid-cols-1 sm:grid-cols-2 gap-5"
+              className="role-chooser-grid grid grid-cols-1 sm:grid-cols-2 gap-5"
               role="group"
               aria-label="Choose your role"
             >
@@ -85,7 +85,7 @@ export default function RoleChooser() {
 
             {/* Reassurance */}
             <p className="text-center text-sm text-neutral-400">
-              This does not affect what information is stored — only which view you see first.
+              This does not affect what information is stored â€” only which view you see first.
             </p>
           </div>
         </main>

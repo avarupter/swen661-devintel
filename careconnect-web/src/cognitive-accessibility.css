@@ -1,0 +1,830 @@
+html[data-cc-font="normal"] { font-size: 100%; }
+html[data-cc-font="large"] { font-size: 112.5%; }
+html[data-cc-font="xlarge"] { font-size: 125%; }
+
+.cc-controls {
+  position: fixed;
+  z-index: 60;
+  max-width: calc(100vw - 1.5rem);
+  border: 2px solid #d1d5db;
+  border-radius: .85rem;
+  background: #fff;
+  padding: .65rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,.14);
+}
+
+.cc-controls-app { top: 4.75rem; right: .75rem; }
+.cc-controls-public { right: 1rem; bottom: 1rem; }
+
+.cc-control-group {
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+}
+
+.cc-control-label {
+  font-size: .75rem;
+  line-height: 1rem;
+  font-weight: 700;
+  color: #4b5563;
+}
+
+.cc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .45rem;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  border: 2px solid #d1d5db;
+  border-radius: .6rem;
+  background: #fff;
+  padding: .4rem .65rem;
+  color: #1f2937;
+  font-weight: 700;
+}
+
+.cc-btn[aria-pressed="true"] {
+  border-color: #28798a;
+  background: #e8f5f7;
+}
+
+.cc-theme-button { min-width: 8rem; }
+
+.cc-family-button,
+.cc-provider-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  min-height: 2.75rem;
+  border-radius: .65rem;
+  padding: .65rem 1rem;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.cc-family-button { background: #23724c; }
+.cc-provider-button { background: #315f86; }
+
+.cc-chat-floating-button {
+  width: 4.75rem !important;
+  height: 4.75rem !important;
+  min-width: 4.75rem !important;
+  min-height: 4.75rem !important;
+}
+
+.cc-chat-floating-button svg {
+  width: 2rem !important;
+  height: 2rem !important;
+}
+
+a[href="/signin"] + a[href="/signup"] { margin-left: .75rem; }
+
+/* Softer dark mode: muted blue-gray instead of near-black. */
+html[data-cc-theme="dark"],
+html[data-cc-theme="dark"] body {
+  background: #263746 !important;
+  color: #eef4f7 !important;
+}
+
+html[data-cc-theme="dark"] .bg-white,
+html[data-cc-theme="dark"] .card,
+html[data-cc-theme="dark"] .cc-controls {
+  background: #344a5b !important;
+  color: #eef4f7 !important;
+  border-color: #6f8798 !important;
+}
+
+html[data-cc-theme="dark"] .bg-neutral-50,
+html[data-cc-theme="dark"] .bg-neutral-100,
+html[data-cc-theme="dark"] .bg-calm-50 {
+  background: #2c4050 !important;
+}
+
+html[data-cc-theme="dark"] .text-neutral-800,
+html[data-cc-theme="dark"] .text-neutral-700 {
+  color: #f4f8fa !important;
+}
+
+html[data-cc-theme="dark"] .text-neutral-600,
+html[data-cc-theme="dark"] .text-neutral-500,
+html[data-cc-theme="dark"] .cc-control-label {
+  color: #d4e0e7 !important;
+}
+
+html[data-cc-theme="dark"] input,
+html[data-cc-theme="dark"] textarea,
+html[data-cc-theme="dark"] select,
+html[data-cc-theme="dark"] .cc-btn {
+  border-color: #7891a2 !important;
+  background: #41596a !important;
+  color: #f5f8fa !important;
+}
+
+html[data-cc-theme="dark"] input::placeholder,
+html[data-cc-theme="dark"] textarea::placeholder {
+  color: #c5d2da !important;
+}
+
+html[data-cc-theme="dark"] .cc-btn[aria-pressed="true"] {
+  border-color: #8fd0da !important;
+  background: #476b73 !important;
+  color: #fff !important;
+}
+
+html[data-cc-theme="dark"] .border-neutral-200,
+html[data-cc-theme="dark"] .border-neutral-300 {
+  border-color: #708899 !important;
+}
+
+@media (max-width: 720px) {
+  .cc-controls-app {
+    top: auto;
+    right: .75rem;
+    bottom: 1rem;
+  }
+}
+
+
+/* FINAL CARE RECIPIENT CONTRAST FIX */
+
+/* Care Recipient is the first tile in RoleChooser */
+html[data-cc-theme="dark"] .role-chooser-grid > *:first-child,
+html[data-cc-theme="dark"] .role-chooser-grid > *:first-child *,
+html[data-cc-theme="dark"] .role-chooser-grid button:first-child,
+html[data-cc-theme="dark"] .role-chooser-grid button:first-child * {
+  color: #ffffff !important;
+}
+
+/* Make the small explanatory text easier to read */
+html[data-cc-theme="dark"] .role-chooser-grid ~ p,
+html[data-cc-theme="dark"] #role-chooser-main .text-neutral-400,
+html[data-cc-theme="dark"] #role-chooser-main .text-neutral-500 {
+  color: #dbe7ee !important;
+}
+
+
+/* GLOBAL DARK MODE READABILITY FINAL */
+
+/*
+ * In dark mode, default ALL application text to high contrast.
+ * This catches links, quick-question buttons, labels, headings,
+ * icons/text inside cards, and utility classes not covered above.
+ */
+html[data-cc-theme="dark"] body,
+html[data-cc-theme="dark"] body * {
+  color: #f4f8fb !important;
+}
+
+/* Secondary/supporting copy can be slightly softer but still readable */
+html[data-cc-theme="dark"] .text-neutral-400,
+html[data-cc-theme="dark"] .text-neutral-500,
+html[data-cc-theme="dark"] .text-neutral-600 {
+  color: #d9e4eb !important;
+}
+
+/* Form placeholders */
+html[data-cc-theme="dark"] input::placeholder,
+html[data-cc-theme="dark"] textarea::placeholder {
+  color: #d4dee6 !important;
+  opacity: 1 !important;
+}
+
+/* Links and outlined action buttons */
+html[data-cc-theme="dark"] a,
+html[data-cc-theme="dark"] button {
+  color: #f4f8fb !important;
+}
+
+/*
+ * Emergency box is intentionally light/pink,
+ * so restore dark-red text there.
+ */
+html[data-cc-theme="dark"] .bg-alert-50,
+html[data-cc-theme="dark"] .bg-alert-50 *,
+html[data-cc-theme="dark"] [class*="bg-alert-50"],
+html[data-cc-theme="dark"] [class*="bg-alert-50"] * {
+  color: #651b27 !important;
+}
+
+/*
+ * Any light success/caregiver tile should use dark text
+ * rather than white-on-light.
+ */
+html[data-cc-theme="dark"] .bg-success-50,
+html[data-cc-theme="dark"] .bg-success-50 *,
+html[data-cc-theme="dark"] [class*="bg-success-50"],
+html[data-cc-theme="dark"] [class*="bg-success-50"] * {
+  color: #123b30 !important;
+}
+
+/* Preserve white text on colored call/action buttons */
+html[data-cc-theme="dark"] .cc-family-button,
+html[data-cc-theme="dark"] .cc-family-button *,
+html[data-cc-theme="dark"] .btn-primary,
+html[data-cc-theme="dark"] .btn-primary * {
+  color: #ffffff !important;
+}
+
+
+
+/* === CARECONNECT FINAL HIGH CONTRAST DARK THEME === */
+
+/*
+ * Base palette
+ * Background: deep blue-gray
+ * Primary text: near-white
+ * Secondary text: pale blue-gray
+ */
+html[data-cc-theme="dark"],
+html[data-cc-theme="dark"] body {
+    background: #223543 !important;
+    color: #F8FAFC !important;
+}
+
+
+/* ============================================================
+   GLOBAL TEXT
+   ============================================================ */
+
+html[data-cc-theme="dark"] h1,
+html[data-cc-theme="dark"] h2,
+html[data-cc-theme="dark"] h3,
+html[data-cc-theme="dark"] h4,
+html[data-cc-theme="dark"] h5,
+html[data-cc-theme="dark"] h6,
+html[data-cc-theme="dark"] label,
+html[data-cc-theme="dark"] legend,
+html[data-cc-theme="dark"] strong {
+    color: #FFFFFF !important;
+}
+
+html[data-cc-theme="dark"] .text-neutral-900,
+html[data-cc-theme="dark"] .text-neutral-800,
+html[data-cc-theme="dark"] .text-neutral-700 {
+    color: #F8FAFC !important;
+}
+
+html[data-cc-theme="dark"] .text-neutral-600,
+html[data-cc-theme="dark"] .text-neutral-500,
+html[data-cc-theme="dark"] .text-neutral-400 {
+    color: #D6E2EA !important;
+}
+
+
+/* ============================================================
+   NORMAL CARDS / PANELS
+   ============================================================ */
+
+html[data-cc-theme="dark"] .bg-white,
+html[data-cc-theme="dark"] .card,
+html[data-cc-theme="dark"] .bg-neutral-50,
+html[data-cc-theme="dark"] .bg-neutral-100 {
+    background: #304A5C !important;
+    border-color: #7893A6 !important;
+}
+
+html[data-cc-theme="dark"] .bg-white *,
+html[data-cc-theme="dark"] .card * {
+    color: #F8FAFC;
+}
+
+
+/* ============================================================
+   LINKS + OUTLINE BUTTONS
+   ============================================================ */
+
+html[data-cc-theme="dark"] a {
+    color: #BDE9FF !important;
+}
+
+html[data-cc-theme="dark"] button {
+    color: #F8FAFC;
+}
+
+html[data-cc-theme="dark"] .cc-btn,
+html[data-cc-theme="dark"] .btn-secondary,
+html[data-cc-theme="dark"] .btn-ghost {
+    background: #38566B !important;
+    border-color: #91AABD !important;
+    color: #FFFFFF !important;
+}
+
+
+/* ============================================================
+   INPUTS
+   ============================================================ */
+
+html[data-cc-theme="dark"] input,
+html[data-cc-theme="dark"] textarea,
+html[data-cc-theme="dark"] select {
+    background: #263F51 !important;
+    border-color: #8AA5B8 !important;
+    color: #FFFFFF !important;
+}
+
+html[data-cc-theme="dark"] input::placeholder,
+html[data-cc-theme="dark"] textarea::placeholder {
+    color: #D6E2EA !important;
+    opacity: 1 !important;
+}
+
+
+/* ============================================================
+   CALM / BLUE ACTIONS
+   ============================================================ */
+
+html[data-cc-theme="dark"] .bg-calm-50,
+html[data-cc-theme="dark"] .bg-calm-100 {
+    background: #183F53 !important;
+}
+
+html[data-cc-theme="dark"] .border-calm-200,
+html[data-cc-theme="dark"] .border-calm-300,
+html[data-cc-theme="dark"] .border-calm-400 {
+    border-color: #69C9F3 !important;
+}
+
+html[data-cc-theme="dark"] .text-calm-500,
+html[data-cc-theme="dark"] .text-calm-600,
+html[data-cc-theme="dark"] .text-calm-700,
+html[data-cc-theme="dark"] .text-calm-800 {
+    color: #C9F0FF !important;
+}
+
+
+/* ============================================================
+   WARNING / YELLOW CARDS
+   Fixes the washed-out Appointments tile
+   ============================================================ */
+
+html[data-cc-theme="dark"] .bg-warning-50,
+html[data-cc-theme="dark"] .bg-warning-100 {
+    background: #594509 !important;
+}
+
+html[data-cc-theme="dark"] .border-warning-200,
+html[data-cc-theme="dark"] .border-warning-300,
+html[data-cc-theme="dark"] .border-warning-400,
+html[data-cc-theme="dark"] .border-warning-500 {
+    border-color: #FFD45C !important;
+}
+
+html[data-cc-theme="dark"] .text-warning-500,
+html[data-cc-theme="dark"] .text-warning-600,
+html[data-cc-theme="dark"] .text-warning-700,
+html[data-cc-theme="dark"] .text-warning-800,
+html[data-cc-theme="dark"] .bg-warning-50 *,
+html[data-cc-theme="dark"] .bg-warning-100 * {
+    color: #FFF4C2 !important;
+}
+
+
+/* ============================================================
+   SUCCESS / GREEN CARDS
+   ============================================================ */
+
+html[data-cc-theme="dark"] .bg-success-50,
+html[data-cc-theme="dark"] .bg-success-100 {
+    background: #173F35 !important;
+}
+
+html[data-cc-theme="dark"] .border-success-200,
+html[data-cc-theme="dark"] .border-success-300,
+html[data-cc-theme="dark"] .border-success-400 {
+    border-color: #6BD7B0 !important;
+}
+
+html[data-cc-theme="dark"] .text-success-600,
+html[data-cc-theme="dark"] .text-success-700,
+html[data-cc-theme="dark"] .text-success-800,
+html[data-cc-theme="dark"] .bg-success-50 *,
+html[data-cc-theme="dark"] .bg-success-100 * {
+    color: #E9FFF7 !important;
+}
+
+
+/* ============================================================
+   EMERGENCY / ALERT
+   Deep maroon background + pale rose text
+   ============================================================ */
+
+html[data-cc-theme="dark"] .bg-alert-50,
+html[data-cc-theme="dark"] .bg-alert-100 {
+    background: #4B2028 !important;
+}
+
+html[data-cc-theme="dark"] .border-alert-200,
+html[data-cc-theme="dark"] .border-alert-300,
+html[data-cc-theme="dark"] .border-alert-400 {
+    border-color: #FF8491 !important;
+}
+
+html[data-cc-theme="dark"] .text-alert-600,
+html[data-cc-theme="dark"] .text-alert-700,
+html[data-cc-theme="dark"] .text-alert-800,
+html[data-cc-theme="dark"] .bg-alert-50 *,
+html[data-cc-theme="dark"] .bg-alert-100 * {
+    color: #FFE1E5 !important;
+}
+
+
+/* ============================================================
+   ACTIVE / DISABLED ACTION TILES
+   ============================================================ */
+
+html[data-cc-theme="dark"] button:disabled {
+    opacity: 1 !important;
+}
+
+html[data-cc-theme="dark"] button:disabled:not(.btn-primary) {
+    background: #425663 !important;
+    color: #E6EEF3 !important;
+}
+
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+
+html[data-cc-theme="dark"] nav {
+    color: #F8FAFC;
+}
+
+html[data-cc-theme="dark"] nav a {
+    color: #F8FAFC !important;
+}
+
+html[data-cc-theme="dark"] nav a[aria-current="page"] {
+    background: #BFE4F3 !important;
+    color: #17384A !important;
+}
+
+html[data-cc-theme="dark"] nav a[aria-current="page"] * {
+    color: #17384A !important;
+}
+
+
+/* ============================================================
+   KEEP PRIMARY GREEN/CALL BUTTONS WHITE
+   ============================================================ */
+
+html[data-cc-theme="dark"] .cc-family-button,
+html[data-cc-theme="dark"] .cc-family-button *,
+html[data-cc-theme="dark"] .btn-primary,
+html[data-cc-theme="dark"] .btn-primary * {
+    color: #FFFFFF !important;
+}
+
+
+/* === CARECONNECT ACCESSIBLE DARK MODE V2 === */
+
+/* ============================================================
+   BASE
+   ============================================================ */
+
+html[data-cc-theme="dark"],
+html[data-cc-theme="dark"] body {
+  background: #243947 !important;
+  color: #ffffff !important;
+}
+
+
+/* ============================================================
+   DEFAULT TEXT
+   ============================================================ */
+
+html[data-cc-theme="dark"] h1,
+html[data-cc-theme="dark"] h2,
+html[data-cc-theme="dark"] h3,
+html[data-cc-theme="dark"] h4,
+html[data-cc-theme="dark"] h5,
+html[data-cc-theme="dark"] h6,
+html[data-cc-theme="dark"] p,
+html[data-cc-theme="dark"] label,
+html[data-cc-theme="dark"] legend,
+html[data-cc-theme="dark"] li {
+  color: #f8fbfd !important;
+}
+
+html[data-cc-theme="dark"] .text-neutral-400,
+html[data-cc-theme="dark"] .text-neutral-500,
+html[data-cc-theme="dark"] .text-neutral-600 {
+  color: #d9e5ec !important;
+}
+
+html[data-cc-theme="dark"] .text-neutral-700,
+html[data-cc-theme="dark"] .text-neutral-800,
+html[data-cc-theme="dark"] .text-neutral-900 {
+  color: #ffffff !important;
+}
+
+
+/* ============================================================
+   NORMAL CARDS
+   ============================================================ */
+
+html[data-cc-theme="dark"] .card,
+html[data-cc-theme="dark"] [class*="bg-white"],
+html[data-cc-theme="dark"] [class*="bg-neutral-50"],
+html[data-cc-theme="dark"] [class*="bg-neutral-100"] {
+  background: #304b5d !important;
+  border-color: #8299a8 !important;
+}
+
+
+/* ============================================================
+   ALL ACTION TILES
+   ============================================================ */
+
+html[data-cc-theme="dark"] button {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+html[data-cc-theme="dark"] button span,
+html[data-cc-theme="dark"] button p,
+html[data-cc-theme="dark"] button strong {
+  color: inherit !important;
+}
+
+
+/* ============================================================
+   BLUE / MEDICATION TILE
+   ============================================================ */
+
+html[data-cc-theme="dark"] [class*="bg-calm"],
+html[data-cc-theme="dark"] [class*="border-calm"] {
+  background: #123f57 !important;
+  border-color: #65c7f2 !important;
+}
+
+html[data-cc-theme="dark"] [class*="bg-calm"] *,
+html[data-cc-theme="dark"] [class*="border-calm"] * {
+  color: #ffffff !important;
+}
+
+
+/* ============================================================
+   YELLOW / APPOINTMENTS TILE
+   NO MORE PALE YELLOW
+   ============================================================ */
+
+html[data-cc-theme="dark"] [class*="bg-warning"],
+html[data-cc-theme="dark"] [class*="border-warning"] {
+  background: #5a4300 !important;
+  border-color: #ffcf40 !important;
+}
+
+html[data-cc-theme="dark"] [class*="bg-warning"] *,
+html[data-cc-theme="dark"] [class*="border-warning"] *,
+html[data-cc-theme="dark"] [class*="text-warning"] {
+  color: #fff4b8 !important;
+}
+
+
+/* ============================================================
+   GREEN / SUCCESS / CAREGIVER
+   ============================================================ */
+
+html[data-cc-theme="dark"] [class*="bg-success"],
+html[data-cc-theme="dark"] [class*="border-success"] {
+  background: #124735 !important;
+  border-color: #5ee0ad !important;
+}
+
+html[data-cc-theme="dark"] [class*="bg-success"] *,
+html[data-cc-theme="dark"] [class*="border-success"] *,
+html[data-cc-theme="dark"] [class*="text-success"] {
+  color: #f0fff9 !important;
+}
+
+
+/* ============================================================
+   RED / EMERGENCY
+   ============================================================ */
+
+html[data-cc-theme="dark"] [class*="bg-alert"],
+html[data-cc-theme="dark"] [class*="border-alert"] {
+  background: #5a202a !important;
+  border-color: #ff7788 !important;
+}
+
+html[data-cc-theme="dark"] [class*="bg-alert"] *,
+html[data-cc-theme="dark"] [class*="border-alert"] *,
+html[data-cc-theme="dark"] [class*="text-alert"] {
+  color: #fff2f4 !important;
+}
+
+
+/* ============================================================
+   BADGES
+   ============================================================ */
+
+html[data-cc-theme="dark"] .badge,
+html[data-cc-theme="dark"] [class*="badge-"] {
+  background: #203744 !important;
+  color: #ffffff !important;
+  border: 1px solid #94acbb !important;
+  font-weight: 700 !important;
+}
+
+html[data-cc-theme="dark"] .badge-warning {
+  background: #644b00 !important;
+  color: #fff0a6 !important;
+  border-color: #ffd75d !important;
+}
+
+html[data-cc-theme="dark"] .badge-alert {
+  background: #681f2d !important;
+  color: #ffffff !important;
+  border-color: #ff8594 !important;
+}
+
+html[data-cc-theme="dark"] .badge-success {
+  background: #12513c !important;
+  color: #ffffff !important;
+  border-color: #65d9ad !important;
+}
+
+
+/* ============================================================
+   CHECKED-IN / DISABLED TILE
+   ============================================================ */
+
+html[data-cc-theme="dark"] button:disabled {
+  opacity: 1 !important;
+  background: #3c5361 !important;
+  color: #ffffff !important;
+  border-color: #76a08e !important;
+}
+
+html[data-cc-theme="dark"] button:disabled * {
+  color: #ffffff !important;
+}
+
+
+/* ============================================================
+   INPUTS
+   ============================================================ */
+
+html[data-cc-theme="dark"] input,
+html[data-cc-theme="dark"] textarea,
+html[data-cc-theme="dark"] select {
+  background: #1f3442 !important;
+  color: #ffffff !important;
+  border-color: #8da6b6 !important;
+}
+
+html[data-cc-theme="dark"] input::placeholder,
+html[data-cc-theme="dark"] textarea::placeholder {
+  color: #d7e2e9 !important;
+  opacity: 1 !important;
+}
+
+
+/* ============================================================
+   LINKS
+   ============================================================ */
+
+html[data-cc-theme="dark"] a {
+  color: #c7efff !important;
+  font-weight: 600;
+}
+
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+
+html[data-cc-theme="dark"] nav a {
+  color: #f5f9fb !important;
+}
+
+html[data-cc-theme="dark"] nav a[aria-current="page"] {
+  background: #b9dfef !important;
+  color: #153748 !important;
+}
+
+html[data-cc-theme="dark"] nav a[aria-current="page"] * {
+  color: #153748 !important;
+}
+
+
+/* ============================================================
+   FAMILY / PRIMARY BUTTONS
+   ============================================================ */
+
+html[data-cc-theme="dark"] .cc-family-button,
+html[data-cc-theme="dark"] .cc-family-button *,
+html[data-cc-theme="dark"] .btn-primary,
+html[data-cc-theme="dark"] .btn-primary * {
+  color: #ffffff !important;
+}
+
+
+/* APPOINTMENTS TILE DARK MODE FIX */
+
+/*
+ * Appointment action tile uses warning styling.
+ * In dark mode, give it a true dark amber surface
+ * with strong readable text and icon contrast.
+ */
+html[data-cc-theme="dark"] [class*="border-warning"] {
+    background-color: #4A3600 !important;
+    border-color: #F5B82E !important;
+    color: #FFF2B5 !important;
+}
+
+html[data-cc-theme="dark"] [class*="border-warning"] * {
+    color: #FFF2B5 !important;
+}
+
+/* Icon circle inside the appointment tile */
+html[data-cc-theme="dark"] [class*="border-warning"] [class*="bg-warning"] {
+    background-color: #6A4D00 !important;
+}
+
+html[data-cc-theme="dark"] [class*="border-warning"] svg {
+    color: #FFE28A !important;
+    stroke: #FFE28A !important;
+}
+
+
+/* EXACT APPOINTMENTS QUICK ACTION DARK FIX */
+
+/*
+ * Target the Quick Action button containing the calendar icon.
+ * This overrides the pale cream version ONLY in dark mode.
+ */
+html[data-cc-theme="dark"] button:has(.lucide-calendar-days),
+html[data-cc-theme="dark"] button:has(.lucide-calendar) {
+    background: #5A4300 !important;
+    border-color: #FFC83D !important;
+    color: #FFF4B8 !important;
+}
+
+/* Appointment label */
+html[data-cc-theme="dark"] button:has(.lucide-calendar-days) *,
+html[data-cc-theme="dark"] button:has(.lucide-calendar) * {
+    color: #FFF4B8 !important;
+}
+
+/* Calendar circle */
+html[data-cc-theme="dark"] button:has(.lucide-calendar-days) div,
+html[data-cc-theme="dark"] button:has(.lucide-calendar) div {
+    color: #FFF4B8 !important;
+}
+
+/* Calendar icon */
+html[data-cc-theme="dark"] button:has(.lucide-calendar-days) svg,
+html[data-cc-theme="dark"] button:has(.lucide-calendar) svg {
+    color: #FFF4B8 !important;
+    stroke: #FFF4B8 !important;
+}
+
+/* If the icon has a light warning circle, darken it too */
+html[data-cc-theme="dark"] button:has(.lucide-calendar-days) [class*="bg-warning"],
+html[data-cc-theme="dark"] button:has(.lucide-calendar) [class*="bg-warning"],
+html[data-cc-theme="dark"] button:has(.lucide-calendar-days) [class*="bg-amber"],
+html[data-cc-theme="dark"] button:has(.lucide-calendar) [class*="bg-amber"] {
+    background: #7A5900 !important;
+}
+
+
+/* APPOINTMENTS ICON DARK MODE POLISH */
+html[data-cc-theme="dark"] button:has(.lucide-calendar-days) [class*="bg-warning"],
+html[data-cc-theme="dark"] button:has(.lucide-calendar) [class*="bg-warning"] {
+    background: #7A5900 !important;
+}
+
+html[data-cc-theme="dark"] button:has(.lucide-calendar-days) svg,
+html[data-cc-theme="dark"] button:has(.lucide-calendar) svg {
+    color: #FFF4B8 !important;
+    stroke: #FFF4B8 !important;
+}
+
+
+/* FINAL APPOINTMENTS ICON CONTRAST FIX */
+
+/* Circle immediately containing the calendar icon */
+html[data-cc-theme="dark"] button:has(.lucide-calendar-days) :has(> .lucide-calendar-days),
+html[data-cc-theme="dark"] button:has(.lucide-calendar) :has(> .lucide-calendar) {
+    background: #FFD45C !important;
+    color: #2B2100 !important;
+}
+
+/* Calendar itself */
+html[data-cc-theme="dark"] button:has(.lucide-calendar-days) .lucide-calendar-days,
+html[data-cc-theme="dark"] button:has(.lucide-calendar) .lucide-calendar {
+    color: #2B2100 !important;
+    stroke: #2B2100 !important;
+}
+
+/* Ensure the label stays light */
+html[data-cc-theme="dark"] button:has(.lucide-calendar-days),
+html[data-cc-theme="dark"] button:has(.lucide-calendar) {
+    color: #FFF4B8 !important;
+}

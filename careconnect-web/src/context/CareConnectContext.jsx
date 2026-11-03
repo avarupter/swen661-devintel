@@ -69,7 +69,7 @@ const initialRoutines = [
     id: "afternoon-walk",
     kind: "activity",
     title: "Take a walk",
-    detail: "15â€“20 minutes at a comfortable pace",
+    detail: "15Ã¢â‚¬â€œ20 minutes at a comfortable pace",
     time: "4:00 pm",
     minutes: 960,
     taken: false,
@@ -111,7 +111,7 @@ const initialAppointments = [
     time: "3:00 pm",
     title: "Video call with Maria",
     type: "Video visit",
-    detail: "Your daughter â€” she will call you",
+    detail: "Your daughter Ã¢â‚¬â€ she will call you",
     confirmed: true,
   },
   {
@@ -174,7 +174,10 @@ const initialMessages = [
 ];
 
 function startingAuthentication() {
-  if (import.meta.env.MODE === "test") {
+  if (
+    typeof process !== "undefined" &&
+    process.env.NODE_ENV === "test"
+  ) {
     return true;
   }
 

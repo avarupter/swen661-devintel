@@ -16,8 +16,8 @@ import {
   describe,
   expect,
   it,
-  vi,
-} from "vitest";
+  jest,
+} from "@jest/globals";
 
 import {
   AppointmentsPage,
@@ -70,9 +70,9 @@ function renderPage(page) {
 
 describe("MedicationsPage", () => {
   beforeEach(() => {
-    vi.useFakeTimers();
+    jest.useFakeTimers();
 
-    vi.setSystemTime(
+    jest.setSystemTime(
       new Date(
         "2026-06-04T15:30:00"
       )
@@ -80,7 +80,7 @@ describe("MedicationsPage", () => {
   });
 
   afterEach(() => {
-    vi.useRealTimers();
+    jest.useRealTimers();
   });
 
   it("shows taken, missed, due soon, and upcoming routine states", () => {

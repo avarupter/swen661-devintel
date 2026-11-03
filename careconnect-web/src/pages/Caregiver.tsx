@@ -1,54 +1,114 @@
-import { useState } from 'react';
-import { ShieldCheck, AlertCircle, AlertTriangle, Info, PlusCircle, type LucideIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import {
+  ShieldCheck,
+  AlertCircle,
+  AlertTriangle,
+  Info,
+  PlusCircle,
+  type LucideIcon,
+} from 'lucide-react';
 import { caregiverNotes as initialNotes } from '../data/mockData';
+import { useAuth } from '../auth/AuthContext';
+import { useApp } from '../context/AppContext';
 import type { CaregiverNote, Priority } from '../types';
+
+const NOTES_STORAGE_KEY = 'careconnect_caregiver_notes';
 
 const priorityConfig: Record<
   Priority,
   { label: string; badgeClass: string; Icon: LucideIcon }
 > = {
-  low:    { label: 'Routine',  badgeClass: 'badge-neutral',  Icon: Info },
-  medium: { label: 'Note',     badgeClass: 'badge-warning',  Icon: AlertCircle },
-  high:   { label: 'Urgent',   badgeClass: 'badge-alert',    Icon: AlertTriangle },
+  low: { label: 'Routine', badgeClass: 'badge-neutral', Icon: Info },
+  medium: { label: 'Note', badgeClass: 'badge-warning', Icon: AlertCircle },
+  high: { label: 'Urgent', badgeClass: 'badge-alert', Icon: AlertTriangle },
 };
 
 function formatDate(dateStr: string) {
-  const d = new Date(dateStr + 'T00:00:00');
+  const date = new Date(`${dateStr}T00:00:00`);
   const today = new Date();
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);
 
-  if (d.toDateString() === today.toDateString()) return 'Today';
-  if (d.toDateString() === yesterday.toDateString()) return 'Yesterday';
-  return d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+  if (date.toDateString() === today.toDateString()) return 'Today';
+  if (date.toDateString() === yesterday.toDateString()) return 'Yesterday';
+
+  return date.toLocaleDateString('en-GB', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+  });
 }
 
-// Group notes by date
 function groupByDate(notes: CaregiverNote[]) {
   const groups: Record<string, CaregiverNote[]> = {};
+
   for (const note of notes) {
     if (!groups[note.date]) groups[note.date] = [];
     groups[note.date].push(note);
   }
+
   return Object.entries(groups).sort((a, b) => b[0].localeCompare(a[0]));
 }
 
+function loadNotes(): CaregiverNote[] {
+  try {
+    const raw = localStorage.getItem(NOTES_STORAGE_KEY);
+    if (!raw) return initialNotes;
+
+    const stored = JSON.parse(raw) as CaregiverNote[];
+    return Array.isArray(stored) ? stored : initialNotes;
+  } catch {
+    return initialNotes;
+  }
+}
+
 export default function Caregiver() {
-  const [notes, setNotes] = useState<CaregiverNote[]>(initialNotes);
+  const { user } = useAuth();
+  const { patient } = useApp();
+
+  const [notes, setNotes] = useState<CaregiverNote[]>(loadNotes);
   const [composing, setComposing] = useState(false);
   const [draft, setDraft] = useState('');
   const [draftPriority, setDraftPriority] = useState<Priority>('low');
 
+  useEffect(() => {
+    localStorage.setItem(NOTES_STORAGE_KEY, JSON.stringify(notes));
+  }, [notes]);
+
+  useEffect(() => {
+    const signedInName = user?.name?.trim();
+    if (!signedInName) return;
+
+    setNotes((current) => {
+      let changed = false;
+
+      const corrected = current.map((note) => {
+        const userCreatedNote = /^n\d{10,}$/.test(note.id);
+
+        if (userCreatedNote && note.author === 'Joyce Adeyemi') {
+          changed = true;
+          return { ...note, author: signedInName };
+        }
+
+        return note;
+      });
+
+      return changed ? corrected : current;
+    });
+  }, [user?.name]);
+
   function addNote() {
     if (!draft.trim()) return;
+
     const newNote: CaregiverNote = {
       id: `n${Date.now()}`,
       date: new Date().toISOString().split('T')[0],
-      author: 'Joyce Adeyemi',
+      author: user?.name?.trim() || 'Caregiver',
       note: draft.trim(),
       priority: draftPriority,
     };
-    setNotes((prev) => [newNote, ...prev]);
+
+    setNotes((previous) => [newNote, ...previous]);
     setDraft('');
     setDraftPriority('low');
     setComposing(false);
@@ -58,17 +118,20 @@ export default function Caregiver() {
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
-      {/* ── Page header ─────────────────────────────────────────────────── */}
       <div className="flex items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-neutral-800 flex items-center gap-2">
             <ShieldCheck className="w-6 h-6 text-calm-600" aria-hidden="true" />
             Caregiver Notes
           </h1>
-          <p className="text-neutral-500 mt-1">Daily observations for Dorothy's care team</p>
+          <p className="text-neutral-500 mt-1">
+            Daily observations for {patient.name}&apos;s care team
+          </p>
         </div>
+
         <button
-          onClick={() => setComposing((v) => !v)}
+          type="button"
+          onClick={() => setComposing((value) => !value)}
           className="btn-primary text-sm px-4 py-2 min-h-0 h-11 flex-shrink-0"
           aria-expanded={composing}
           aria-controls="note-compose"
@@ -78,7 +141,6 @@ export default function Caregiver() {
         </button>
       </div>
 
-      {/* ── Compose area ─────────────────────────────────────────────────── */}
       {composing && (
         <section
           id="note-compose"
@@ -87,30 +149,41 @@ export default function Caregiver() {
         >
           <h2 className="font-semibold text-neutral-800">New note</h2>
 
-          {/* Priority selector */}
+          <p className="text-sm text-neutral-600">
+            This note will be saved as <strong>{user?.name || 'Caregiver'}</strong>.
+          </p>
+
           <fieldset>
-            <legend className="text-sm font-medium text-neutral-600 mb-2">Priority</legend>
+            <legend className="text-sm font-medium text-neutral-600 mb-2">
+              Priority
+            </legend>
             <div className="flex gap-2 flex-wrap" role="group">
-              {(Object.entries(priorityConfig) as [Priority, typeof priorityConfig[Priority]][]).map(
-                ([key, { label }]) => (
-                  <button
-                    key={key}
-                    onClick={() => setDraftPriority(key)}
-                    className={`btn text-sm px-4 py-2 min-h-0 h-10 ${
-                      draftPriority === key ? 'btn-primary' : 'btn-secondary'
-                    }`}
-                    aria-pressed={draftPriority === key}
-                  >
-                    {label}
-                  </button>
-                )
-              )}
+              {(
+                Object.entries(priorityConfig) as [
+                  Priority,
+                  (typeof priorityConfig)[Priority],
+                ][]
+              ).map(([key, { label }]) => (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => setDraftPriority(key)}
+                  className={`btn text-sm px-4 py-2 min-h-0 h-10 ${
+                    draftPriority === key ? 'btn-primary' : 'btn-secondary'
+                  }`}
+                  aria-pressed={draftPriority === key}
+                >
+                  {label}
+                </button>
+              ))}
             </div>
           </fieldset>
 
-          {/* Text area */}
           <div>
-            <label htmlFor="note-text" className="text-sm font-medium text-neutral-600 block mb-1.5">
+            <label
+              htmlFor="note-text"
+              className="text-sm font-medium text-neutral-600 block mb-1.5"
+            >
               Note
             </label>
             <textarea
@@ -119,14 +192,14 @@ export default function Caregiver() {
               className="w-full rounded-lg border-2 border-neutral-300 px-4 py-3 text-base text-neutral-800 placeholder:text-neutral-400 focus:border-calm-600 focus:outline-none transition-colors resize-none"
               placeholder="Describe any observations, concerns, or updates…"
               value={draft}
-              onChange={(e) => setDraft(e.target.value)}
+              onChange={(event) => setDraft(event.target.value)}
               aria-required="true"
             />
           </div>
 
-          {/* Actions */}
           <div className="flex gap-3">
             <button
+              type="button"
               onClick={addNote}
               className="btn-primary"
               disabled={!draft.trim()}
@@ -134,14 +207,17 @@ export default function Caregiver() {
             >
               Save note
             </button>
-            <button onClick={() => setComposing(false)} className="btn-ghost">
+            <button
+              type="button"
+              onClick={() => setComposing(false)}
+              className="btn-ghost"
+            >
               Cancel
             </button>
           </div>
         </section>
       )}
 
-      {/* ── Notes list ───────────────────────────────────────────────────── */}
       {grouped.length === 0 ? (
         <div className="card text-center py-14 text-neutral-500">
           <p className="text-lg font-medium">No notes yet. Add the first one above.</p>
@@ -153,9 +229,12 @@ export default function Caregiver() {
               <h2 className="text-base font-semibold text-neutral-500 uppercase tracking-wide mb-3 border-b border-neutral-200 pb-2">
                 {formatDate(date)}
               </h2>
+
               <ul className="space-y-3 list-none p-0 m-0" role="list">
                 {dayNotes.map((note) => {
                   const { label, badgeClass, Icon } = priorityConfig[note.priority];
+                  const displayedNote = note.note.replace(/\bDorothy\b/g, patient.name);
+
                   return (
                     <li key={note.id}>
                       <article
@@ -170,19 +249,21 @@ export default function Caregiver() {
                             >
                               {note.author
                                 .split(' ')
-                                .map((n) => n[0])
+                                .map((name) => name[0])
                                 .join('')}
                             </span>
                             <span className="font-semibold text-neutral-700 text-sm">
                               {note.author}
                             </span>
                           </div>
+
                           <span className={`badge text-xs ${badgeClass}`}>
                             <Icon className="w-3 h-3" aria-hidden="true" />
                             {label}
                           </span>
                         </div>
-                        <p className="text-neutral-700 leading-relaxed">{note.note}</p>
+
+                        <p className="text-neutral-700 leading-relaxed">{displayedNote}</p>
                       </article>
                     </li>
                   );

@@ -13,7 +13,7 @@ import {
   describe,
   expect,
   it,
-} from "vitest";
+} from "@jest/globals";
 
 import Nav from "../Nav.jsx";
 

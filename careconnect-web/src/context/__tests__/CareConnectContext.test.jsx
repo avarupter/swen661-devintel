@@ -9,7 +9,7 @@ import {
   describe,
   expect,
   it,
-} from "vitest";
+} from "@jest/globals";
 
 import {
   CareConnectProvider,

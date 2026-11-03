@@ -9,7 +9,6 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import { Card } from '../components';
-import ChatBot from '../components/ChatBot';
 
 // ── Feature card data ──────────────────────────────────────────────────────────
 
@@ -67,13 +66,13 @@ export default function Landing() {
 
             {/* Header CTAs */}
             <nav aria-label="Account navigation">
-              <ul className="flex items-center gap-3 list-none p-0 m-0" role="list">
+              <ul className="flex items-center gap-5 list-none p-0 m-0" role="list">
                 <li>
                   <Link
                     to="/signin"
                     className="inline-flex items-center justify-center gap-2 font-semibold rounded-lg px-4 py-2 min-h-[2.75rem] min-w-[2.75rem] text-sm bg-white text-calm-700 border-2 border-calm-600 hover:bg-calm-50 hover:text-calm-800 transition-colors no-underline"
                   >
-                    Sign in
+                    Login
                   </Link>
                 </li>
                 <li>
@@ -120,7 +119,7 @@ export default function Landing() {
                 </p>
 
                 {/* Primary CTAs */}
-                <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex flex-col sm:flex-row gap-6">
                   <Link
                     to="/signup"
                     className="inline-flex items-center justify-center gap-2 font-bold rounded-lg px-7 py-4 min-h-[3rem] text-lg bg-white text-calm-700 border-2 border-white hover:bg-calm-50 transition-colors no-underline"
@@ -132,7 +131,7 @@ export default function Landing() {
                   <Link
                     to="/signin"
                     className="inline-flex items-center justify-center gap-2 font-semibold rounded-lg px-7 py-4 min-h-[3rem] text-lg bg-transparent text-white border-2 border-white/60 hover:border-white hover:bg-white/10 transition-colors no-underline"
-                    aria-label="Sign in to CareConnect"
+                    aria-label="Login to CareConnect"
                   >
                     I already have an account
                   </Link>
@@ -249,7 +248,7 @@ export default function Landing() {
               <p className="text-neutral-500 text-lg mb-8 max-w-md mx-auto">
                 Set up takes under two minutes — no credit card, no medical records.
               </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
                 <Link
                   to="/signup"
                   className="inline-flex items-center justify-center gap-2 font-bold rounded-lg px-8 py-4 min-h-[3rem] text-lg bg-calm-600 text-white border-2 border-calm-600 hover:bg-calm-700 transition-colors no-underline"
@@ -261,7 +260,7 @@ export default function Landing() {
                   to="/signin"
                   className="inline-flex items-center justify-center gap-2 font-semibold rounded-lg px-8 py-4 min-h-[3rem] text-lg bg-white text-calm-700 border-2 border-calm-600 hover:bg-calm-50 transition-colors no-underline"
                 >
-                  Sign in
+                  Login
                 </Link>
               </div>
 
@@ -311,8 +310,6 @@ export default function Landing() {
 
       </div>
 
-      {/* Floating chat assistant — landing page only */}
-      <ChatBot />
     </>
   );
 }

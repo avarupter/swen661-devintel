@@ -256,12 +256,12 @@ export default function Layout({
                 className="inline-flex items-center justify-center gap-2 font-semibold rounded-lg px-3 py-2 min-h-[2.75rem] min-w-[2.75rem] text-sm bg-white text-calm-700 border-2 border-calm-600 hover:bg-calm-50 transition-colors"
                 aria-label={
                   isPatient
-                    ? 'Switch to caregiver role'
-                    : 'Switch to care recipient role'
+                    ? 'Switch to Caregiver View'
+                    : 'Switch to Care Recipient View'
                 }
               >
                 <ArrowLeftRight className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
-                <span className="hidden sm:inline">Switch role</span>
+                <span>{isPatient ? 'Switch to Caregiver' : 'Switch to Care Recipient'}</span>
               </button>
 
               <button
@@ -271,7 +271,7 @@ export default function Layout({
                 aria-label="Sign out of CareConnect"
               >
                 <LogOut className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
-                <span className="hidden sm:inline">Sign out</span>
+                <span>Sign out</span>
               </button>
             </div>
           </div>
@@ -336,152 +336,61 @@ export default function Layout({
         </header>
 
         {/* ══════════════════════════════════════════════════════════════════
-            BODY — layout differs by role
-            Patient:   single column, bottom nav fixed at bottom (DOM last)
-            Caregiver: flex row; main (DOM first → tab #3), sidebar nav (DOM
-                       second → tab #4), visually left via CSS order
+            BODY — shared navigation style for care recipient and caregiver.
+            Desktop: left navigation panel. Mobile: horizontal strip.
         ══════════════════════════════════════════════════════════════════ */}
-        <div
-          className={`flex-1 flex ${
-            isPatient
-              ? 'flex-col'
-              : 'flex-col lg:flex-row'
-          }`}
-        >
-
-          {/* ── MAIN CONTENT — tab stop #3 ───────────────────────────── */}
+        <div className="flex-1 flex flex-col lg:flex-row">
           <main
             id="main-content"
             tabIndex={-1}
             aria-label="Main content"
-            className={[
-              'flex-1 min-w-0',
-              'px-4 md:px-6 lg:px-8 py-6',
-              'page-enter',
-              // Caregiver desktop: main is visually on the right
-              !isPatient ? 'lg:order-2' : '',
-              // Patient: extra bottom padding so content clears fixed bottom nav
-              isPatient ? 'pb-28 lg:pb-6' : '',
-            ]
-              .filter(Boolean)
-              .join(' ')}
+            className="flex-1 min-w-0 px-4 md:px-6 lg:px-8 py-6 page-enter lg:order-2"
           >
             {children}
           </main>
 
-          {/* ── CAREGIVER SIDEBAR — tab stop #4, visually left via order-1 ── */}
-          {!isPatient && (
-            <nav
-              aria-label="Main navigation"
-              className={[
-                // Desktop: fixed-width sidebar, visually left
-                'lg:order-1 lg:flex-shrink-0 lg:w-56',
-                'lg:border-r-2 lg:border-neutral-200 lg:bg-white',
-                'lg:sticky lg:top-[var(--header-h,9rem)]',
-                // Mobile: horizontal strip below header, above main
-                'order-first',          // mobile: above main
-                'flex lg:flex-col',
-                'bg-white border-b-2 lg:border-b-0 border-neutral-200',
-                'overflow-x-auto lg:overflow-x-visible',
-                'px-2 lg:px-3 py-2 lg:py-4',
-                'gap-1',
-              ]
-                .join(' ')}
-            >
-              {/* Caregiver nav items */}
-              <ul
-                className="flex lg:flex-col gap-1 list-none p-0 m-0 min-w-max lg:min-w-0 w-full"
-                role="list"
-              >
-                {nav.map(({ to, label, Icon }) => (
-                  <li key={to} className="flex-shrink-0 lg:flex-shrink lg:w-full">
-                    <NavLink
-                      to={to}
-                      end={to === '/app'}
-                      aria-current={location.pathname === to ? 'page' : undefined}
-                      aria-label={
-                        to === '/app/messages' && unreadMessages > 0
-                          ? `Messages, ${unreadMessages} unread messages`
-                          : label
-                      }
-                      className={({ isActive }) =>
-                        [
-                          'flex items-center gap-2.5 px-3 py-2.5 rounded-lg',
-                          'text-sm lg:text-base font-medium no-underline',
-                          'min-h-[2.75rem] min-w-[2.75rem]',
-                          'transition-colors duration-150 whitespace-nowrap',
-                          isActive
-                            ? 'bg-calm-100 text-calm-700 font-semibold'
-                            : 'text-neutral-500 hover:text-calm-600 hover:bg-calm-50',
-                        ].join(' ')
-                      }
-                    >
-                      <Icon className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
-                      {label}
-                    </NavLink>
-                  </li>
-                ))}
-              </ul>
-
-              {/* Switch role inside sidebar — supplemental shortcut */}
-              <div className="hidden lg:block mt-auto pt-4 border-t border-neutral-200">
-                <button
-                  onClick={onSwitchRole}
-                  className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium text-neutral-500 hover:text-calm-600 hover:bg-calm-50 transition-colors min-h-[2.75rem]"
-                  aria-label="Switch to care recipient role"
-                >
-                  <Heart className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
-                  Switch to patient
-                </button>
-              </div>
-            </nav>
-          )}
-        </div>
-        {isPatient && <ChatBot variant="floating" />}
-
-        
-
-        {/* ── PATIENT BOTTOM NAV — tab stop #4, fixed at bottom ─────────── */}
-        {isPatient && (
           <nav
-            aria-label="Main navigation"
-            className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-neutral-200 z-40 pb-[env(safe-area-inset-bottom)]"
+            aria-label={isPatient ? 'Patient navigation' : 'Caregiver navigation'}
+            className={[
+              'lg:order-1 lg:flex-shrink-0 lg:w-56',
+              'lg:border-r-2 lg:border-neutral-200 lg:bg-white',
+              'order-first',
+              'flex lg:flex-col',
+              'bg-white border-b-2 lg:border-b-0 border-neutral-200',
+              'overflow-x-auto lg:overflow-x-visible',
+              'px-2 lg:px-3 py-2 lg:py-4',
+              'gap-1',
+            ].join(' ')}
           >
             <ul
-              className="flex items-stretch overflow-x-auto list-none p-0 m-0"
+              className="flex lg:flex-col gap-1 list-none p-0 m-0 min-w-max lg:min-w-0 w-full"
               role="list"
             >
               {nav.map(({ to, label, Icon }) => (
-                // min-w-0 lets each tab shrink below its label width, so long
-                // labels truncate instead of forcing horizontal page scroll.
-                <li key={to} className="flex-1 min-w-[4.75rem]">
+                <li key={to} className="flex-shrink-0 lg:flex-shrink lg:w-full">
                   <NavLink
                     to={to}
                     end={to === '/app'}
                     aria-current={location.pathname === to ? 'page' : undefined}
-                      aria-label={
-                        to === '/app/messages' && unreadMessages > 0
-                          ? `Messages, ${unreadMessages} unread messages`
-                          : label
-                      }
+                    aria-label={
+                      to === '/app/messages' && unreadMessages > 0
+                        ? `Messages, ${unreadMessages} unread messages`
+                        : label
+                    }
                     className={({ isActive }) =>
                       [
-                        'flex flex-col items-center justify-center gap-1',
-                        'w-full min-w-0 py-2.5 px-1',
-                        'min-h-[3.5rem]',
-                        'text-xs font-medium no-underline',
-                        'transition-colors duration-150',
+                        'flex items-center gap-2.5 px-3 py-2.5 rounded-lg',
+                        'text-sm lg:text-base font-medium no-underline',
+                        'min-h-[2.75rem] min-w-[2.75rem]',
+                        'transition-colors duration-150 whitespace-nowrap',
                         isActive
-                          ? 'text-calm-700 bg-calm-50'
-                          : 'text-neutral-500 hover:text-calm-600',
+                          ? 'bg-calm-100 text-calm-700 font-semibold'
+                          : 'text-neutral-500 hover:text-calm-600 hover:bg-calm-50',
                       ].join(' ')
                     }
                   >
-                    <span className="relative inline-flex">
-                      <Icon
-                        className="w-6 h-6 flex-shrink-0"
-                        aria-hidden="true"
-                      />
+                    <span className="relative inline-flex flex-shrink-0">
+                      <Icon className="w-5 h-5" aria-hidden="true" />
 
                       {to === '/app/messages' && unreadMessages > 0 && (
                         <span
@@ -492,15 +401,37 @@ export default function Layout({
                         </span>
                       )}
                     </span>
-                    <span className="leading-none w-full max-w-full text-center truncate">
-                      {label}
-                    </span>
+
+                    {label}
                   </NavLink>
                 </li>
               ))}
             </ul>
+
+            <div className="hidden lg:block mt-auto pt-4 border-t border-neutral-200">
+              <button
+                type="button"
+                onClick={onSwitchRole}
+                className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium text-neutral-500 hover:text-calm-600 hover:bg-calm-50 transition-colors min-h-[2.75rem]"
+                aria-label={
+                  isPatient
+                    ? 'Switch to Caregiver View'
+                    : 'Switch to Care Recipient View'
+                }
+              >
+                {isPatient ? (
+                  <ShieldCheck className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
+                ) : (
+                  <Heart className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
+                )}
+
+                {isPatient ? 'Switch to Caregiver' : 'Switch to Care Recipient'}
+              </button>
+            </div>
           </nav>
-        )}
+        </div>
+
+        {isPatient && <ChatBot variant="floating" />}
 
         {/* ── Footer ───────────────────────────────────────────────────── */}
         <footer

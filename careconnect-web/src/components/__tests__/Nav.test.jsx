@@ -8,8 +8,8 @@ import { CURRENT_DESTINATION, DESTINATIONS } from "../../data/patientToday.js";
  * cover what jsdom can prove: the markup, the accessible names, the ARIA state
  * wiring and the data contract the three presentations share.
  *
- * The class names that exist purely as stylesheet hooks — `cc-nav--<variant>`,
- * `is-current`, `cc-sr-only` — ARE asserted, but only as wiring: that the prop
+ * The class names that exist purely as stylesheet hooks â€” `cc-nav--<variant>`,
+ * `is-current`, `cc-sr-only` â€” ARE asserted, but only as wiring: that the prop
  * or the branch reaches the class the stylesheet selects on. Each harness owns
  * half of those guarantees and neither half is worth much alone. Whether the
  * CSS then hides the span, hides two of the three presentations, tints the
@@ -21,7 +21,7 @@ import { CURRENT_DESTINATION, DESTINATIONS } from "../../data/patientToday.js";
 const VARIANTS = ["sidebar", "tabs", "bar"];
 
 /**
- * The accessible names are the same in all three presentations — that is the
+ * The accessible names are the same in all three presentations â€” that is the
  * whole point of the mobile abbreviation being aria-hidden. The Messages count
  * is announced after the destination, never before it.
  */
@@ -43,7 +43,7 @@ const DESTINATION_IDS = [
 
 const getNav = () => screen.getByRole("navigation", { name: "Main" });
 
-describe.each(VARIANTS)("Nav — %s variant", (variant) => {
+describe.each(VARIANTS)("Nav â€” %s variant", (variant) => {
   it("is a navigation landmark labelled Main", () => {
     render(<Nav variant={variant} current="home" />);
 
@@ -55,7 +55,7 @@ describe.each(VARIANTS)("Nav — %s variant", (variant) => {
     render(<Nav variant={variant} current="home" />);
 
     // All three presentations render identical markup, so this class is the
-    // only thing that tells them apart — and App mounts all three Navs at
+    // only thing that tells them apart â€” and App mounts all three Navs at
     // once, leaning on layout.css to hide two of them. Drop the modifier and
     // every width shows three stacked navigations while every assertion in
     // this file stays green. Which one is actually visible is measured in
@@ -172,14 +172,14 @@ describe.each(VARIANTS)("Nav — %s variant", (variant) => {
 
     // Found by a loose name, asserted against an exact one. Looking the link
     // up by the exact name it is then asserted to have would make every
-    // assertion below circular — and the anchored regexes that used to stand
+    // assertion below circular â€” and the anchored regexes that used to stand
     // in for the ordering check matched nothing in either direction, so a
     // component announcing ", 2 unread Messages" passed them on a technicality
     // and was caught only by the strict lookup they were written to back up.
     const messages = within(getNav()).getByRole("link", { name: /Messages/ });
 
     // The visible badge is a single node inside the aria-hidden icon wrapper,
-    // so the number reaches the screen reader once — from the sr-only suffix.
+    // so the number reaches the screen reader once â€” from the sr-only suffix.
     const count = within(messages).getByText("2");
     expect(within(messages).getAllByText("2")).toHaveLength(1);
     expect(count.parentElement).toHaveAttribute("aria-hidden", "true");
@@ -215,7 +215,7 @@ describe.each(VARIANTS)("Nav — %s variant", (variant) => {
   });
 });
 
-describe("Nav — bar variant abbreviations", () => {
+describe("Nav â€” bar variant abbreviations", () => {
   const ABBREVIATED = [
     { label: "Medications", shortLabel: "Meds", name: "Medications" },
     { label: "Appointments", shortLabel: "Visits", name: "Appointments" },
@@ -241,7 +241,7 @@ describe("Nav — bar variant abbreviations", () => {
       expect(announced).not.toHaveAttribute("aria-hidden");
       expect(announced).not.toBe(visible);
 
-      // And it is in the visually hidden span specifically — the half the
+      // And it is in the visually hidden span specifically â€” the half the
       // stylesheet acts on. Swap `cc-sr-only` for a plain span and every
       // accessible name here still passes while the tab visibly reads
       // "MedsMedications". jsdom cannot see that the span is hidden; it can
@@ -268,7 +268,7 @@ describe("Nav — bar variant abbreviations", () => {
       const link = screen.getByRole("link", { name: label });
       const labels = within(link).getAllByText(label);
 
-      // One text node, not an aria-hidden copy plus an sr-only copy — a
+      // One text node, not an aria-hidden copy plus an sr-only copy â€” a
       // duplicate here would announce the destination twice.
       expect(labels).toHaveLength(1);
       expect(labels[0]).not.toHaveAttribute("aria-hidden");
@@ -288,7 +288,7 @@ describe("Nav — bar variant abbreviations", () => {
   });
 });
 
-describe.each(["sidebar", "tabs"])("Nav — %s variant labels", (variant) => {
+describe.each(["sidebar", "tabs"])("Nav â€” %s variant labels", (variant) => {
   const FULL = [
     { label: "Home", name: "Home" },
     { label: "Medications", name: "Medications" },
@@ -338,7 +338,7 @@ describe.each(["sidebar", "tabs"])("Nav — %s variant labels", (variant) => {
   });
 });
 
-describe("Nav — unrecognised variant", () => {
+describe("Nav â€” unrecognised variant", () => {
   it.each([undefined, "bogus"])(
     "renders the full labels when variant is %s",
     (variant) => {
@@ -356,25 +356,20 @@ describe("Nav — unrecognised variant", () => {
 
 /**
  * Nav reads the destinations from the data module rather than taking them as a
- * prop, so the two cases the shipped list cannot produce — a badge count of
- * zero and a label long enough to be worth worrying about — are covered by
+ * prop, so the two cases the shipped list cannot produce â€” a badge count of
+ * zero and a label long enough to be worth worrying about â€” are covered by
  * standing in a different list. These also prove Nav renders whatever the
  * module declares instead of a hand-written copy of the five destinations.
  */
-describe("Nav — against a stand-in destination list", () => {
-  afterEach(() => {
-    jest.dontMock("../../data/patientToday.js");
-    jest.resetModules();
-  });
-
+describe("Nav â€” against a stand-in destination list", () => {
   async function renderWith(destinations) {
-    jest.resetModules();
-    jest.doMock("../../data/patientToday.js", () => ({
-      DESTINATIONS: destinations,
-      CURRENT_DESTINATION: "one",
-    }));
-    const { default: MockedNav } = await import("../Nav.jsx");
-    return render(<MockedNav variant="bar" current="one" />);
+    return render(
+      <Nav
+        variant="bar"
+        current="one"
+        destinations={destinations}
+      />,
+    );
   }
 
   it("renders a zero badge count as nothing at all", async () => {
@@ -437,11 +432,11 @@ describe("Nav — against a stand-in destination list", () => {
 });
 
 /**
- * The contract Nav leans on. Nav's guarantees — five destinations, one
- * aria-current, a full accessible name for every presentation — are only as
+ * The contract Nav leans on. Nav's guarantees â€” five destinations, one
+ * aria-current, a full accessible name for every presentation â€” are only as
  * true as the list it renders, so the parts it depends on are pinned here.
  */
-describe("Nav — the destination data contract", () => {
+describe("Nav â€” the destination data contract", () => {
   it("declares five destinations in a fixed order", () => {
     expect(DESTINATIONS.map((d) => d.id)).toEqual(DESTINATION_IDS);
   });

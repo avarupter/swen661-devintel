@@ -17,6 +17,7 @@ import {
   Home,
   MessageCircle,
   Phone,
+  PhoneCall,
   Pill,
   RotateCcw,
   Send,
@@ -24,6 +25,10 @@ import {
   X,
   type LucideIcon,
 } from 'lucide-react';
+
+import { getMedications } from '../data/medsStore';
+import { contacts } from '../data/mockData';
+import { getExtendedProfile } from '../data/profileSupport';
 
 interface ChatMessage {
   id: string;
@@ -43,7 +48,7 @@ interface QuickLink {
 }
 
 const WELCOME_MESSAGE =
-  "Hi! I'm the CareConnect Assistant. I can help you find things in CareConnect and explain how app features work. I cannot give medical advice.";
+  "Hi! I'm the CareConnect Assistant. I can help you remember what to do next, find familiar information, locate your medicine, and contact someone you trust. I cannot give medical advice.";
 
 const QUICK_LINKS: QuickLink[] = [
   {
@@ -60,7 +65,7 @@ const QUICK_LINKS: QuickLink[] = [
   },
   {
     label: 'Medicines',
-    description: 'View today’s medicines',
+    description: 'View your medicines for today',
     route: '/app/medications',
     Icon: Pill,
   },
@@ -85,11 +90,56 @@ const QUICK_LINKS: QuickLink[] = [
 ];
 
 const QUICK_QUESTIONS = [
-  'Where are my medicines?',
-  'How do I record a meal?',
-  'Where is my About Me information?',
-  'How do I check in?',
+  'What should I do next?',
+  'What day and time is it?',
+  'Which medicine is next?',
+  'What color bottle should I look for?',
+  'Where is my evening medicine?',
+  'Where else could my medicine be?',
+  'Who can I call?',
+  'Who is my provider?',
 ];
+
+function toMinutes(time: string): number {
+  const [hours, minutes] = time.split(':').map(Number);
+  return hours * 60 + minutes;
+}
+
+function medicineColor(value: string): string {
+  const lower = value.toLowerCase();
+  if (lower.includes('calm') || lower.includes('blue')) return 'blue';
+  if (lower.includes('warm') || lower.includes('orange')) return 'orange';
+  if (lower.includes('success') || lower.includes('green')) return 'green';
+  if (lower.includes('warning') || lower.includes('yellow')) return 'yellow';
+  if (lower.includes('alert') || lower.includes('red')) return 'red';
+  return 'assigned';
+}
+
+function medicineLocation(minutes: number): string {
+  if (minutes >= 17 * 60) return 'the labeled evening medicine tray on the nightstand beside the bed';
+  if (minutes >= 12 * 60) return 'the labeled daytime medicine basket on the kitchen counter';
+  return 'the labeled morning medicine beside the coffee pot in the kitchen';
+}
+
+function backupMedicineLocation(): string {
+  return 'If it is not in the usual time-of-day location, check the familiar backup locations assigned for this home, such as the labeled left bathroom cabinet or the labeled medicine basket in the kitchen. Use only the location your caregiver or provider has assigned.';
+}
+
+function nextMedicineAnswer(eveningOnly = false): string {
+  const schedule = getMedications().flatMap((medication) => medication.times.map((time) => ({ medication, minutes: toMinutes(time) }))).sort((first, second) => first.minutes - second.minutes);
+  if (schedule.length === 0) return 'I do not see a medication schedule yet.';
+  const now = new Date();
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+  const item = eveningOnly ? schedule.find((entry) => entry.minutes >= 17 * 60) : schedule.find((entry) => entry.minutes >= currentMinutes) ?? schedule[0];
+  if (!item) return 'I do not see an evening medicine scheduled.';
+  return `${item.medication.name}: look for the ${medicineColor(item.medication.colour)} color cue at ${medicineLocation(item.minutes)}.`;
+}
+
+function familyDetails() {
+  const profile = getExtendedProfile();
+  const family = contacts.find((contact) => contact.role === 'family');
+  return { name: profile.familyMemberName || family?.name || 'your family member', phone: profile.familyMemberPhone || family?.phone || '' };
+}
 
 function getScriptedResponse(message: string): string {
   const msg = message.trim().toLowerCase();
@@ -101,6 +151,39 @@ function getScriptedResponse(message: string): string {
     )
   ) {
     return "If you or someone else may be in immediate danger, call local emergency services now. In the United States call 911; in the United Kingdom call 999. CareConnect cannot contact emergency services for you.";
+  }
+
+  if (/\b(what day|what time|day and time|date and time|today's date|todays date)\b/.test(msg)) {
+    return `It is ${new Date().toLocaleString([], { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' })}.`;
+  }
+
+  if (/\b(evening medicine|night medicine|nighttime medicine|bedtime medicine)\b/.test(msg)) {
+    return nextMedicineAnswer(true);
+  }
+
+  if (/\b(where else|other location|backup location|bathroom cabinet|coffee pot|where could my medicine be)\b/.test(msg)) {
+    return backupMedicineLocation();
+  }
+
+  if (/\b(who is my provider|my provider|my doctor|call provider|call doctor)\b/.test(msg)) {
+    return 'Your caregiver contact information is available in CareConnect.';
+  }
+
+  if (/\b(color bottle|colour bottle|what color|what colour|which medicine is next|medicine is next|next medicine)\b/.test(msg)) {
+    return nextMedicineAnswer();
+  }
+
+  if (/\b(who can i call|call family|family member|someone i trust)\b/.test(msg)) {
+    const family = familyDetails();
+    return family.phone ? `You can call ${family.name}. Use the Call Family button in CareConnect.` : 'Open Contacts to choose someone you trust to call.';
+  }
+
+  if (/\b(confused|forgot where i am|forgot what to do|i forgot|help me remember)\b/.test(msg)) {
+    return "You are in CareConnect. Check the day and time, then open My Day to see the next familiar activity. You can also use Call Family if you want help from someone you know.";
+  }
+
+  if (/\b(what should i do next|what do i do next|next activity)\b/.test(msg)) {
+    return "Open My Day to see the next activity in your routine. CareConnect keeps today's tasks in one simple list.";
   }
 
   if (
@@ -184,7 +267,7 @@ function getScriptedResponse(message: string): string {
       msg,
     )
   ) {
-    return "Hello! Try asking me something like, “Where are my medicines?”, “How do I record a meal?”, or “Where is my About Me information?”";
+    return "Hello! Try asking me: Where are my medicines?";
   }
 
   if (
@@ -200,6 +283,7 @@ function getScriptedResponse(message: string): string {
 
 function AssistantConversation() {
   const navigate = useNavigate();
+  const family = familyDetails();
 
   const inputId = useId();
   const liveId = useId();
@@ -308,7 +392,7 @@ function AssistantConversation() {
             </p>
 
             <p className="text-xs text-neutral-500">
-              App help and navigation
+              Memory, orientation, and app help
             </p>
           </div>
         </div>
@@ -439,6 +523,20 @@ function AssistantConversation() {
         </div>
       </form>
 
+      {family.phone && (
+        <div className="mt-4 flex flex-wrap gap-2">
+          {family.phone && (
+            <a
+              href={`tel:${family.phone.replace(/\s/g, '')}`}
+              className="inline-flex items-center gap-2 rounded-lg bg-success-600 text-white px-4 py-3 font-bold no-underline"
+            >
+              <PhoneCall className="w-5 h-5" aria-hidden="true" />
+              Call {family.name}
+            </a>
+          )}
+        </div>
+      )}
+
       <p className="mt-3 text-xs text-neutral-500 leading-relaxed">
         The CareConnect Assistant helps
         with application features and
@@ -564,7 +662,7 @@ export default function ChatBot({
           aria-controls="careconnect-floating-assistant"
           className={[
             'fixed right-4 md:right-6 bottom-20',
-            'z-50 w-14 h-14 rounded-full shadow-xl',
+            'cc-chat-floating-button z-50 w-[4.75rem] h-[4.75rem] rounded-full shadow-xl',
             'flex items-center justify-center',
             'border-2 border-white',
             'transition-colors',
@@ -575,12 +673,12 @@ export default function ChatBot({
         >
           {open ? (
             <X
-              className="w-6 h-6 text-white"
+              className="w-8 h-8 text-white"
               aria-hidden="true"
             />
           ) : (
             <MessageCircle
-              className="w-6 h-6 text-white"
+              className="w-8 h-8 text-white"
               aria-hidden="true"
             />
           )}
@@ -692,13 +790,7 @@ export default function ChatBot({
               Need emergency help?
             </p>
 
-            <p className="mt-1 text-sm text-alert-800">
-              If someone may be in
-              immediate danger, call
-              local emergency services
-              now — 911 in the U.S. or
-              999 in the U.K.
-            </p>
+            <p className="mt-1 text-sm text-alert-800">If someone may be in immediate danger, call local emergency services now - 911 in the U.S. or 999 in the U.K.</p>
           </div>
         </div>
       </div>

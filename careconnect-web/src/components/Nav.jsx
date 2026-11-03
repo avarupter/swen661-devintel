@@ -19,6 +19,7 @@ function RoutedDestination({
   className,
   current,
   children,
+  ariaLabel,
 }) {
   const navigate = useNavigate();
 
@@ -42,6 +43,7 @@ function RoutedDestination({
       className={className}
       href={`#${destination.id}`}
       aria-current={current ? "page" : undefined}
+      aria-label={ariaLabel}
       onClick={handleClick}
     >
       {children}
@@ -53,6 +55,7 @@ export default function Nav({
   variant,
   current,
   unreadMessages,
+  destinations = DESTINATIONS,
 }) {
   const insideRouter = useInRouterContext();
 
@@ -62,7 +65,7 @@ export default function Nav({
       aria-label="Main"
     >
       <ul className="cc-nav__list">
-        {DESTINATIONS.map((destination) => {
+        {destinations.map((destination) => {
           const isCurrent = destination.id === current;
 
           const abbreviated =
@@ -74,6 +77,10 @@ export default function Nav({
             unreadMessages !== undefined
               ? unreadMessages
               : destination.badgeCount;
+          const accessibleName =
+            badgeCount
+              ? `${destination.label}, ${badgeCount} unread`
+              : destination.label;
 
           const className =
             `cc-nav__link${isCurrent ? " is-current" : ""}`;
@@ -133,6 +140,7 @@ export default function Nav({
                   destination={destination}
                   className={className}
                   current={isCurrent}
+                  ariaLabel={accessibleName}
                 >
                   {content}
                 </RoutedDestination>
@@ -141,6 +149,7 @@ export default function Nav({
                   className={className}
                   href={`#${destination.id}`}
                   aria-current={isCurrent ? "page" : undefined}
+                  aria-label={accessibleName}
                 >
                   {content}
                 </a>

@@ -13,7 +13,6 @@ import {
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { BigActionTile, Banner, Card } from '../components';
-import ChatBot from '../components/ChatBot';
 import { scheduleItems } from '../data/mockData';
 import { appendActivityEvent } from '../data/caregiverStore';
 import { useApp } from '../context/AppContext';
@@ -476,7 +475,6 @@ export default function Today() {
       {/* =====================================================
           HELP + CARECONNECT ASSISTANT
       ====================================================== */}
-      <ChatBot variant="embedded" />
     </div>
   );
 }

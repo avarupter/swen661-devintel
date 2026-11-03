@@ -3,8 +3,9 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './auth/AuthContext';
 import { getSession } from './auth/mockAuth';
 import { AppProvider } from './context/AppContext';
-import { ProtectedRoute, RoleRoute, AuthRoute } from './components/ProtectedRoute';
+import { ProtectedRoute, RoleRoute } from './components/ProtectedRoute';
 import Layout from './components/Layout';
+import AccessibilityControls from './components/AccessibilityControls';
 
 // Public pages (do not modify)
 import Landing     from './pages/Landing';
@@ -16,13 +17,13 @@ import RoleChooser from './pages/RoleChooser';
 import Today        from './pages/Today';
 import Schedule     from './pages/Schedule';
 import Appointments from './pages/Appointments';
-import Medications  from './pages/Medications';
-import Memories     from './pages/Memories';
+import Medications  from './pages/MedicationEnhanced';
+import Memories     from './pages/MemoriesEnhanced';
 import Contacts     from './pages/Contacts';
 import Messages     from './pages/Messages';
 import Help         from './pages/Help';
 import Caregiver    from './pages/Caregiver';
-import CaregiverDashboard    from './pages/CaregiverDashboard';
+import CaregiverDashboard    from './pages/CaregiverEnhanced';
 import ActivityLog           from './pages/ActivityLog';
 import ManageMedications     from './pages/ManageMedications';
 import ManageAppointments    from './pages/ManageAppointments';
@@ -83,8 +84,8 @@ function AppRoutes() {
     <Routes>
       {/* Public */}
       <Route path="/"       element={<Landing />} />
-      <Route path="/signin" element={<AuthRoute><SignIn /></AuthRoute>} />
-      <Route path="/signup" element={<AuthRoute><SignUp /></AuthRoute>} />
+      <Route path="/signin" element={<SignIn />} />
+      <Route path="/signup" element={<SignUp />} />
 
       {/* Post-auth role chooser */}
       <Route path="/role"   element={<RoleRoute><RoleChooser /></RoleRoute>} />
@@ -113,6 +114,7 @@ export default function App() {
     <BrowserRouter>
       <AuthProvider>
         <AppProvider>
+          <AccessibilityControls />
           <AppRoutes />
         </AppProvider>
       </AuthProvider>

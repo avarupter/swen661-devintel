@@ -1,40 +1,39 @@
-import { useState, useId } from 'react';
+import { useId, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Heart, UserPlus } from 'lucide-react';
+import { Eye, EyeOff, Heart, UserPlus } from 'lucide-react';
 import { Field } from '../components';
 import { useAuth } from '../auth/AuthContext';
+import RegistrationProfileFields from '../components/RegistrationProfileFields';
 
 export default function SignUp() {
   const { signUp } = useAuth();
   const navigate = useNavigate();
   const errorSummaryId = useId();
 
-  const [name, setName]         = useState('');
-  const [email, setEmail]       = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirm, setConfirm]   = useState('');
-  const [errors, setErrors]     = useState<{
-    name?: string; email?: string; password?: string; confirm?: string;
+  const [confirm, setConfirm] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [errors, setErrors] = useState<{
+    name?: string;
+    email?: string;
+    password?: string;
+    confirm?: string;
   }>({});
   const [globalError, setGlobalError] = useState('');
-  const [submitting, setSubmitting]   = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   function validate() {
     const next: typeof errors = {};
-    if (!name.trim())
-      next.name = 'Please enter your name.';
-    if (!email.trim())
-      next.email = 'Please enter your email address.';
-    else if (!/\S+@\S+\.\S+/.test(email))
-      next.email = 'Please enter a valid email address.';
-    if (!password)
-      next.password = 'Please create a password.';
-    else if (password.length < 6)
-      next.password = 'Password must be at least 6 characters.';
-    if (!confirm)
-      next.confirm = 'Please confirm your password.';
-    else if (confirm !== password)
-      next.confirm = 'Passwords do not match.';
+    if (!name.trim()) next.name = 'Please enter your name.';
+    if (!email.trim()) next.email = 'Please enter your email address.';
+    else if (!/\S+@\S+\.\S+/.test(email)) next.email = 'Please enter a valid email address.';
+    if (!password) next.password = 'Please create a password.';
+    else if (password.length < 6) next.password = 'Password must be at least 6 characters.';
+    if (!confirm) next.confirm = 'Please confirm your password.';
+    else if (confirm !== password) next.confirm = 'Passwords do not match.';
     return next;
   }
 
@@ -53,6 +52,7 @@ export default function SignUp() {
       setGlobalError(result.error);
       return;
     }
+
     navigate('/role');
   }
 
@@ -60,11 +60,17 @@ export default function SignUp() {
 
   return (
     <div className="min-h-screen bg-neutral-50 flex flex-col">
-      {/* ── Page header ──────────────────────────────────────────────────── */}
       <header className="bg-white border-b border-neutral-200" role="banner">
         <div className="max-w-5xl mx-auto px-4 md:px-6 h-16 flex items-center">
-          <Link to="/" className="flex items-center gap-2.5 no-underline" aria-label="CareConnect home">
-            <span className="w-9 h-9 rounded-lg bg-calm-600 flex items-center justify-center" aria-hidden="true">
+          <Link
+            to="/"
+            className="flex items-center gap-2.5 no-underline"
+            aria-label="CareConnect home"
+          >
+            <span
+              className="w-9 h-9 rounded-lg bg-calm-600 flex items-center justify-center"
+              aria-hidden="true"
+            >
               <Heart className="w-5 h-5 text-white" strokeWidth={2.5} />
             </span>
             <span className="text-xl font-bold text-neutral-800">
@@ -74,7 +80,6 @@ export default function SignUp() {
         </div>
       </header>
 
-      {/* ── Main ─────────────────────────────────────────────────────────── */}
       <main
         id="main-content"
         className="flex-1 flex items-center justify-center px-4 py-12"
@@ -82,7 +87,6 @@ export default function SignUp() {
       >
         <div className="w-full max-w-md">
           <div className="bg-white rounded-xl border-2 border-neutral-200 shadow-card p-8 space-y-6">
-            {/* Heading */}
             <div className="text-center">
               <h1 className="text-2xl font-bold text-neutral-800">Create your account</h1>
               <p className="text-neutral-500 mt-1 text-base">
@@ -90,7 +94,6 @@ export default function SignUp() {
               </p>
             </div>
 
-            {/* Error summary */}
             {(hasFieldErrors || globalError) && (
               <div
                 id={errorSummaryId}
@@ -105,7 +108,6 @@ export default function SignUp() {
               </div>
             )}
 
-            {/* Form */}
             <form
               noValidate
               onSubmit={handleSubmit}
@@ -117,11 +119,10 @@ export default function SignUp() {
                 type="text"
                 autoComplete="name"
                 value={name}
-                onChange={(e) => setName((e.target as HTMLInputElement).value)}
+                onChange={(event) => setName((event.target as HTMLInputElement).value)}
                 error={errors.name}
                 required
-                placeholder="e.g. Dorothy Smith"
-                hint="This is how CareConnect will greet you."
+                placeholder="Your full name"
               />
 
               <Field
@@ -129,32 +130,64 @@ export default function SignUp() {
                 type="email"
                 autoComplete="email"
                 value={email}
-                onChange={(e) => setEmail((e.target as HTMLInputElement).value)}
+                onChange={(event) => setEmail((event.target as HTMLInputElement).value)}
                 error={errors.email}
                 required
                 placeholder="you@example.com"
               />
 
-              <Field
-                label="Password"
-                type="password"
-                autoComplete="new-password"
-                value={password}
-                onChange={(e) => setPassword((e.target as HTMLInputElement).value)}
-                error={errors.password}
-                required
-                hint="At least 6 characters."
-              />
+              <div className="space-y-2">
+                <Field
+                  label="Password"
+                  type={showPassword ? 'text' : 'password'}
+                  autoComplete="new-password"
+                  value={password}
+                  onChange={(event) => setPassword((event.target as HTMLInputElement).value)}
+                  error={errors.password}
+                  required
+                  hint="Use at least 6 characters."
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((value) => !value)}
+                  className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-calm-700 hover:bg-calm-50"
+                  aria-pressed={showPassword}
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" aria-hidden="true" />
+                  ) : (
+                    <Eye className="w-4 h-4" aria-hidden="true" />
+                  )}
+                  {showPassword ? 'Hide password' : 'Show password'}
+                </button>
+              </div>
 
-              <Field
-                label="Confirm password"
-                type="password"
-                autoComplete="new-password"
-                value={confirm}
-                onChange={(e) => setConfirm((e.target as HTMLInputElement).value)}
-                error={errors.confirm}
-                required
-              />
+              <div className="space-y-2">
+                <Field
+                  label="Confirm password"
+                  type={showConfirm ? 'text' : 'password'}
+                  autoComplete="new-password"
+                  value={confirm}
+                  onChange={(event) => setConfirm((event.target as HTMLInputElement).value)}
+                  error={errors.confirm}
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirm((value) => !value)}
+                  className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-calm-700 hover:bg-calm-50"
+                  aria-pressed={showConfirm}
+                >
+                  {showConfirm ? (
+                    <EyeOff className="w-4 h-4" aria-hidden="true" />
+                  ) : (
+                    <Eye className="w-4 h-4" aria-hidden="true" />
+                  )}
+                  {showConfirm ? 'Hide password' : 'Show password'}
+                </button>
+              </div>
+
+              <RegistrationProfileFields />
 
               <button
                 type="submit"
@@ -167,16 +200,10 @@ export default function SignUp() {
               </button>
             </form>
 
-            {/* Privacy assurance */}
-            <p className="text-center text-xs text-neutral-400 leading-relaxed">
-              CareConnect never gives medical advice and never shares your information with third parties.
-            </p>
-
-            {/* Switch link */}
             <p className="text-center text-sm text-neutral-500">
               Already have an account?{' '}
               <Link to="/signin" className="font-semibold text-calm-600">
-                Sign in
+                Login
               </Link>
             </p>
           </div>

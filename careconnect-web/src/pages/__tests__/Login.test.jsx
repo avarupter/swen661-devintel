@@ -15,7 +15,7 @@ import {
   describe,
   expect,
   it,
-} from "vitest";
+} from "@jest/globals";
 
 import Login from "../Login.jsx";
 
