@@ -1,4 +1,12 @@
 CareConnect
+
+## Live Application
+
+**CareConnect Web:**  
+https://careconnect-web-swen661.netlify.app
+
+The production Web application is publicly accessible over HTTPS and can be installed as a Progressive Web App.
+
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 ![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-build-646CFF?logo=vite&logoColor=white)
