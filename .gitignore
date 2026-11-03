@@ -39,3 +39,7 @@
 **/Thumbs.db
 **/*.log
 **/.vs
+
+# WAVE results stay out of this public repo: WebAIM's terms require permission
+# to redistribute WAVE reports or data. They go in the Word doc instead.
+careconnect-web/docs/final-a11y/*/wave/

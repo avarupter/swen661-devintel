@@ -156,10 +156,12 @@ Press **Sign out**, then **Sign in**, then **I am the Caregiver**.
 
 Examples: `wave-signin-errors-public-before.png`, `wave-dashboard-caregiver-after-details.png`.
 
-**Folder.** Save the shots next to the web app's axe and Lighthouse evidence: `careconnect-web/docs/final-a11y/before/wave/` for the unfixed app and `careconnect-web/docs/final-a11y/after/wave/` for the fixed app.
+**Folder.** Save the shots in `careconnect-web/docs/final-a11y/before/wave/` for the unfixed app and `careconnect-web/docs/final-a11y/after/wave/` for the fixed app.
+
+**Keep WAVE results out of the repo.** Git ignores both folders on purpose. This repo is public, and WebAIM's terms say: "You must first obtain WebAIM's permission if you want to sell or redistribute WAVE reports or data (e.g. number of WAVE errors, error listings, etc.) derived directly from WAVE" ([wave.webaim.org/terms](https://wave.webaim.org/terms)). Pasting them into the graded Word doc is ordinary use; publishing them on GitHub is not ours to decide. Share the files with the team privately (the Word doc, or a shared drive).
 
 - Do not put the files in a folder named `web/`. The root `.gitignore` ignores every folder with that name (`**/web/`).
-- Before committing, check that `git check-ignore -v careconnect-web/docs/final-a11y/*/wave/*.png` prints nothing.
+- To confirm git ignores them, run `git check-ignore -v careconnect-web/docs/final-a11y/before/wave/test.png`. It should print the root `.gitignore` rule.
 
 **Capturing.** Use the Windows Snipping Tool (Win+Shift+S, *Window* mode) on the Chrome window, and save as PNG.
 
