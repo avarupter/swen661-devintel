@@ -1,0 +1,3512 @@
+{
+  "generated": "2026-11-02T23:31:42.600Z",
+  "app": "careconnect-web @ e79a08c (vite build, served by vite preview on http://localhost:4310)",
+  "tools": {
+    "axe": "axe-core 4.14.0 (runOnly wcag2a,wcag2aa,wcag21a,wcag21aa + label-content-name-mismatch)",
+    "lighthouse": "Lighthouse 13.5.0, Chrome for Testing 153.0.8010.12 headless=new, simulated throttling",
+    "playwright": "playwright-core 1.63.0"
+  },
+  "axeClock": {
+    "timezone": "America/New_York",
+    "fixedTime": "2026-11-02T12:00:00-05:00"
+  },
+  "lighthouseWindow": {
+    "start": "2026-11-02T22:49:46.829Z",
+    "end": "2026-11-02T22:59:26.982Z",
+    "note": "real clock; local date == UTC date during the run"
+  },
+  "signIn": "UI sign-up via /signup (Margaret Thompson / margaret@example.com or Joyce Adeyemi / joyce@example.com, password audit123) -> /role tile; storage states saved as Playwright storageState",
+  "lighthouse": [
+    {
+      "name": "signedout__landing__mobile",
+      "state": "signedout",
+      "route": "/",
+      "ff": "mobile",
+      "final": "http://localhost:4310/",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "signedout__landing__desktop",
+      "state": "signedout",
+      "route": "/",
+      "ff": "desktop",
+      "final": "http://localhost:4310/",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "signedout__signin__mobile",
+      "state": "signedout",
+      "route": "/signin",
+      "ff": "mobile",
+      "final": "http://localhost:4310/signin",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "signedout__signin__desktop",
+      "state": "signedout",
+      "route": "/signin",
+      "ff": "desktop",
+      "final": "http://localhost:4310/signin",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "signedout__signup__mobile",
+      "state": "signedout",
+      "route": "/signup",
+      "ff": "mobile",
+      "final": "http://localhost:4310/signup",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "signedout__signup__desktop",
+      "state": "signedout",
+      "route": "/signup",
+      "ff": "desktop",
+      "final": "http://localhost:4310/signup",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "norole__role__mobile",
+      "state": "norole",
+      "route": "/role",
+      "ff": "mobile",
+      "final": "http://localhost:4310/role",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "norole__role__desktop",
+      "state": "norole",
+      "route": "/role",
+      "ff": "desktop",
+      "final": "http://localhost:4310/role",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "patient__app__mobile",
+      "state": "patient",
+      "route": "/app",
+      "ff": "mobile",
+      "final": "http://localhost:4310/app",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "patient__app__desktop",
+      "state": "patient",
+      "route": "/app",
+      "ff": "desktop",
+      "final": "http://localhost:4310/app",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "patient__app-schedule__mobile",
+      "state": "patient",
+      "route": "/app/schedule",
+      "ff": "mobile",
+      "final": "http://localhost:4310/app/schedule",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "patient__app-schedule__desktop",
+      "state": "patient",
+      "route": "/app/schedule",
+      "ff": "desktop",
+      "final": "http://localhost:4310/app/schedule",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "patient__app-appointments__mobile",
+      "state": "patient",
+      "route": "/app/appointments",
+      "ff": "mobile",
+      "final": "http://localhost:4310/app/appointments",
+      "scores": {
+        "performance": 100,
+        "accessibility": 94,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast",
+        "heading-order"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "patient__app-appointments__desktop",
+      "state": "patient",
+      "route": "/app/appointments",
+      "ff": "desktop",
+      "final": "http://localhost:4310/app/appointments",
+      "scores": {
+        "performance": 100,
+        "accessibility": 94,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast",
+        "heading-order"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "patient__app-medications__mobile",
+      "state": "patient",
+      "route": "/app/medications",
+      "ff": "mobile",
+      "final": "http://localhost:4310/app/medications",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "patient__app-medications__desktop",
+      "state": "patient",
+      "route": "/app/medications",
+      "ff": "desktop",
+      "final": "http://localhost:4310/app/medications",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "patient__app-memories__mobile",
+      "state": "patient",
+      "route": "/app/memories",
+      "ff": "mobile",
+      "final": "http://localhost:4310/app/memories",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 77,
+        "seo": 92
+      },
+      "a11yFails": [],
+      "otherFails": [
+        "best-practices:third-party-cookies",
+        "best-practices:inspector-issues",
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "patient__app-memories__desktop",
+      "state": "patient",
+      "route": "/app/memories",
+      "ff": "desktop",
+      "final": "http://localhost:4310/app/memories",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 92
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "patient__app-contacts__mobile",
+      "state": "patient",
+      "route": "/app/contacts",
+      "ff": "mobile",
+      "final": "http://localhost:4310/app/contacts",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "patient__app-contacts__desktop",
+      "state": "patient",
+      "route": "/app/contacts",
+      "ff": "desktop",
+      "final": "http://localhost:4310/app/contacts",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "patient__app-caregiver__mobile",
+      "state": "patient",
+      "route": "/app/caregiver",
+      "ff": "mobile",
+      "final": "http://localhost:4310/app/caregiver",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "patient__app-caregiver__desktop",
+      "state": "patient",
+      "route": "/app/caregiver",
+      "ff": "desktop",
+      "final": "http://localhost:4310/app/caregiver",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "patient__app-activity__mobile",
+      "state": "patient",
+      "route": "/app/activity",
+      "ff": "mobile",
+      "final": "http://localhost:4310/app/activity",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "patient__app-activity__desktop",
+      "state": "patient",
+      "route": "/app/activity",
+      "ff": "desktop",
+      "final": "http://localhost:4310/app/activity",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "patient__app-manage-medications__mobile",
+      "state": "patient",
+      "route": "/app/manage-medications",
+      "ff": "mobile",
+      "final": "http://localhost:4310/app/manage-medications",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "patient__app-manage-medications__desktop",
+      "state": "patient",
+      "route": "/app/manage-medications",
+      "ff": "desktop",
+      "final": "http://localhost:4310/app/manage-medications",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "patient__app-manage-appointments__mobile",
+      "state": "patient",
+      "route": "/app/manage-appointments",
+      "ff": "mobile",
+      "final": "http://localhost:4310/app/manage-appointments",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "patient__app-manage-appointments__desktop",
+      "state": "patient",
+      "route": "/app/manage-appointments",
+      "ff": "desktop",
+      "final": "http://localhost:4310/app/manage-appointments",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "caregiver__app__mobile",
+      "state": "caregiver",
+      "route": "/app",
+      "ff": "mobile",
+      "final": "http://localhost:4310/app",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "caregiver__app__desktop",
+      "state": "caregiver",
+      "route": "/app",
+      "ff": "desktop",
+      "final": "http://localhost:4310/app",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "caregiver__app-schedule__mobile",
+      "state": "caregiver",
+      "route": "/app/schedule",
+      "ff": "mobile",
+      "final": "http://localhost:4310/app/schedule",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "caregiver__app-schedule__desktop",
+      "state": "caregiver",
+      "route": "/app/schedule",
+      "ff": "desktop",
+      "final": "http://localhost:4310/app/schedule",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "caregiver__app-appointments__mobile",
+      "state": "caregiver",
+      "route": "/app/appointments",
+      "ff": "mobile",
+      "final": "http://localhost:4310/app/appointments",
+      "scores": {
+        "performance": 100,
+        "accessibility": 94,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast",
+        "heading-order"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "caregiver__app-appointments__desktop",
+      "state": "caregiver",
+      "route": "/app/appointments",
+      "ff": "desktop",
+      "final": "http://localhost:4310/app/appointments",
+      "scores": {
+        "performance": 100,
+        "accessibility": 94,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast",
+        "heading-order"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "caregiver__app-medications__mobile",
+      "state": "caregiver",
+      "route": "/app/medications",
+      "ff": "mobile",
+      "final": "http://localhost:4310/app/medications",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "caregiver__app-medications__desktop",
+      "state": "caregiver",
+      "route": "/app/medications",
+      "ff": "desktop",
+      "final": "http://localhost:4310/app/medications",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "caregiver__app-memories__mobile",
+      "state": "caregiver",
+      "route": "/app/memories",
+      "ff": "mobile",
+      "final": "http://localhost:4310/app/memories",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 92
+      },
+      "a11yFails": [],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "caregiver__app-memories__desktop",
+      "state": "caregiver",
+      "route": "/app/memories",
+      "ff": "desktop",
+      "final": "http://localhost:4310/app/memories",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 92
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "caregiver__app-contacts__mobile",
+      "state": "caregiver",
+      "route": "/app/contacts",
+      "ff": "mobile",
+      "final": "http://localhost:4310/app/contacts",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "caregiver__app-contacts__desktop",
+      "state": "caregiver",
+      "route": "/app/contacts",
+      "ff": "desktop",
+      "final": "http://localhost:4310/app/contacts",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "caregiver__app-caregiver__mobile",
+      "state": "caregiver",
+      "route": "/app/caregiver",
+      "ff": "mobile",
+      "final": "http://localhost:4310/app/caregiver",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "caregiver__app-caregiver__desktop",
+      "state": "caregiver",
+      "route": "/app/caregiver",
+      "ff": "desktop",
+      "final": "http://localhost:4310/app/caregiver",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "caregiver__app-activity__mobile",
+      "state": "caregiver",
+      "route": "/app/activity",
+      "ff": "mobile",
+      "final": "http://localhost:4310/app/activity",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "caregiver__app-activity__desktop",
+      "state": "caregiver",
+      "route": "/app/activity",
+      "ff": "desktop",
+      "final": "http://localhost:4310/app/activity",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "caregiver__app-manage-medications__mobile",
+      "state": "caregiver",
+      "route": "/app/manage-medications",
+      "ff": "mobile",
+      "final": "http://localhost:4310/app/manage-medications",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "caregiver__app-manage-medications__desktop",
+      "state": "caregiver",
+      "route": "/app/manage-medications",
+      "ff": "desktop",
+      "final": "http://localhost:4310/app/manage-medications",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "caregiver__app-manage-appointments__mobile",
+      "state": "caregiver",
+      "route": "/app/manage-appointments",
+      "ff": "mobile",
+      "final": "http://localhost:4310/app/manage-appointments",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    },
+    {
+      "name": "caregiver__app-manage-appointments__desktop",
+      "state": "caregiver",
+      "route": "/app/manage-appointments",
+      "ff": "desktop",
+      "final": "http://localhost:4310/app/manage-appointments",
+      "scores": {
+        "performance": 100,
+        "accessibility": 96,
+        "best-practices": 100,
+        "seo": 91
+      },
+      "a11yFails": [
+        "color-contrast"
+      ],
+      "otherFails": [
+        "seo:robots-txt"
+      ]
+    }
+  ],
+  "axeStatic": [
+    {
+      "name": "signedout__landing__desktop",
+      "state": "signedout",
+      "route": "/",
+      "viewport": "desktop",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "button",
+        "name": "Need help getting started? Open assistant",
+        "focusVisible": true,
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 4
+        }
+      ]
+    },
+    {
+      "name": "signedout__signin__desktop",
+      "state": "signedout",
+      "route": "/signin",
+      "viewport": "desktop",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "signedout__signup__desktop",
+      "state": "signedout",
+      "route": "/signup",
+      "viewport": "desktop",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag143"
+          ]
+        }
+      ],
+      "incomplete": []
+    },
+    {
+      "name": "norole__role__desktop",
+      "state": "norole",
+      "route": "/role",
+      "viewport": "desktop",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag143"
+          ]
+        }
+      ],
+      "incomplete": []
+    },
+    {
+      "name": "patient__app__desktop",
+      "state": "patient",
+      "route": "/app",
+      "viewport": "desktop",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 3,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "patient__app-schedule__desktop",
+      "state": "patient",
+      "route": "/app/schedule",
+      "viewport": "desktop",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 14,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "patient__app-appointments__desktop",
+      "state": "patient",
+      "route": "/app/appointments",
+      "viewport": "desktop",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 11,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 7,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 4
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "patient__app-medications__desktop",
+      "state": "patient",
+      "route": "/app/medications",
+      "viewport": "desktop",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 11,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "patient__app-memories__desktop",
+      "state": "patient",
+      "route": "/app/memories",
+      "viewport": "desktop",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "patient__app-contacts__desktop",
+      "state": "patient",
+      "route": "/app/contacts",
+      "viewport": "desktop",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "patient__app-caregiver__desktop",
+      "state": "patient",
+      "route": "/app/caregiver",
+      "viewport": "desktop",
+      "redirected": false,
+      "inNav": false,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "patient__app-activity__desktop",
+      "state": "patient",
+      "route": "/app/activity",
+      "viewport": "desktop",
+      "redirected": false,
+      "inNav": false,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "patient__app-manage-medications__desktop",
+      "state": "patient",
+      "route": "/app/manage-medications",
+      "viewport": "desktop",
+      "redirected": false,
+      "inNav": false,
+      "loadFocus": {
+        "el": "button",
+        "name": "Delete Vitamin D3",
+        "focusVisible": true,
+        "scrollY": 260
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 6
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "patient__app-manage-appointments__desktop",
+      "state": "patient",
+      "route": "/app/manage-appointments",
+      "viewport": "desktop",
+      "redirected": false,
+      "inNav": false,
+      "loadFocus": {
+        "el": "button",
+        "name": "Delete: Annual health review — Dr. Sharma",
+        "focusVisible": true,
+        "scrollY": 1511
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 9,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app__desktop",
+      "state": "caregiver",
+      "route": "/app",
+      "viewport": "desktop",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 4,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 5,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 4
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app-schedule__desktop",
+      "state": "caregiver",
+      "route": "/app/schedule",
+      "viewport": "desktop",
+      "redirected": false,
+      "inNav": false,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 14,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app-appointments__desktop",
+      "state": "caregiver",
+      "route": "/app/appointments",
+      "viewport": "desktop",
+      "redirected": false,
+      "inNav": false,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 11,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 7,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 4
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app-medications__desktop",
+      "state": "caregiver",
+      "route": "/app/medications",
+      "viewport": "desktop",
+      "redirected": false,
+      "inNav": false,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 11,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app-memories__desktop",
+      "state": "caregiver",
+      "route": "/app/memories",
+      "viewport": "desktop",
+      "redirected": false,
+      "inNav": false,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app-contacts__desktop",
+      "state": "caregiver",
+      "route": "/app/contacts",
+      "viewport": "desktop",
+      "redirected": false,
+      "inNav": false,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app-caregiver__desktop",
+      "state": "caregiver",
+      "route": "/app/caregiver",
+      "viewport": "desktop",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app-activity__desktop",
+      "state": "caregiver",
+      "route": "/app/activity",
+      "viewport": "desktop",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app-manage-medications__desktop",
+      "state": "caregiver",
+      "route": "/app/manage-medications",
+      "viewport": "desktop",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "button",
+        "name": "Delete Vitamin D3",
+        "focusVisible": true,
+        "scrollY": 291
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 6
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app-manage-appointments__desktop",
+      "state": "caregiver",
+      "route": "/app/manage-appointments",
+      "viewport": "desktop",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "button",
+        "name": "Delete: Annual health review — Dr. Sharma",
+        "focusVisible": true,
+        "scrollY": 1566
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 9,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "signedout__landing__mobile",
+      "state": "signedout",
+      "route": "/",
+      "viewport": "mobile",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "button",
+        "name": "Need help getting started? Open assistant",
+        "focusVisible": true,
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 4
+        }
+      ]
+    },
+    {
+      "name": "signedout__signin__mobile",
+      "state": "signedout",
+      "route": "/signin",
+      "viewport": "mobile",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "signedout__signup__mobile",
+      "state": "signedout",
+      "route": "/signup",
+      "viewport": "mobile",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag143"
+          ]
+        }
+      ],
+      "incomplete": []
+    },
+    {
+      "name": "norole__role__mobile",
+      "state": "norole",
+      "route": "/role",
+      "viewport": "mobile",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag143"
+          ]
+        }
+      ],
+      "incomplete": []
+    },
+    {
+      "name": "patient__app__mobile",
+      "state": "patient",
+      "route": "/app",
+      "viewport": "mobile",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "patient__app-schedule__mobile",
+      "state": "patient",
+      "route": "/app/schedule",
+      "viewport": "mobile",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 12,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "patient__app-appointments__mobile",
+      "state": "patient",
+      "route": "/app/appointments",
+      "viewport": "mobile",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 9,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 7,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 4
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "patient__app-medications__mobile",
+      "state": "patient",
+      "route": "/app/medications",
+      "viewport": "mobile",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 9,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "patient__app-memories__mobile",
+      "state": "patient",
+      "route": "/app/memories",
+      "viewport": "mobile",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "patient__app-contacts__mobile",
+      "state": "patient",
+      "route": "/app/contacts",
+      "viewport": "mobile",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "patient__app-caregiver__mobile",
+      "state": "patient",
+      "route": "/app/caregiver",
+      "viewport": "mobile",
+      "redirected": false,
+      "inNav": false,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "patient__app-activity__mobile",
+      "state": "patient",
+      "route": "/app/activity",
+      "viewport": "mobile",
+      "redirected": false,
+      "inNav": false,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "patient__app-manage-medications__mobile",
+      "state": "patient",
+      "route": "/app/manage-medications",
+      "viewport": "mobile",
+      "redirected": false,
+      "inNav": false,
+      "loadFocus": {
+        "el": "button",
+        "name": "Delete Vitamin D3",
+        "focusVisible": true,
+        "scrollY": 1232
+      },
+      "violations": [
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 6
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "patient__app-manage-appointments__mobile",
+      "state": "patient",
+      "route": "/app/manage-appointments",
+      "viewport": "mobile",
+      "redirected": false,
+      "inNav": false,
+      "loadFocus": {
+        "el": "button",
+        "name": "Delete: Annual health review — Dr. Sharma",
+        "focusVisible": true,
+        "scrollY": 4178
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 7,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app__mobile",
+      "state": "caregiver",
+      "route": "/app",
+      "viewport": "mobile",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 4,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 4
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app-schedule__mobile",
+      "state": "caregiver",
+      "route": "/app/schedule",
+      "viewport": "mobile",
+      "redirected": false,
+      "inNav": false,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 12,
+          "sc": [
+            "wcag143"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app-appointments__mobile",
+      "state": "caregiver",
+      "route": "/app/appointments",
+      "viewport": "mobile",
+      "redirected": false,
+      "inNav": false,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 9,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 6,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 4
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app-medications__mobile",
+      "state": "caregiver",
+      "route": "/app/medications",
+      "viewport": "mobile",
+      "redirected": false,
+      "inNav": false,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 9,
+          "sc": [
+            "wcag143"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app-memories__mobile",
+      "state": "caregiver",
+      "route": "/app/memories",
+      "viewport": "mobile",
+      "redirected": false,
+      "inNav": false,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app-contacts__mobile",
+      "state": "caregiver",
+      "route": "/app/contacts",
+      "viewport": "mobile",
+      "redirected": false,
+      "inNav": false,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app-caregiver__mobile",
+      "state": "caregiver",
+      "route": "/app/caregiver",
+      "viewport": "mobile",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app-activity__mobile",
+      "state": "caregiver",
+      "route": "/app/activity",
+      "viewport": "mobile",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "body",
+        "scrollY": 0
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app-manage-medications__mobile",
+      "state": "caregiver",
+      "route": "/app/manage-medications",
+      "viewport": "mobile",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "button",
+        "name": "Delete Vitamin D3",
+        "focusVisible": true,
+        "scrollY": 1152
+      },
+      "violations": [
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 6
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 2
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app-manage-appointments__mobile",
+      "state": "caregiver",
+      "route": "/app/manage-appointments",
+      "viewport": "mobile",
+      "redirected": false,
+      "inNav": true,
+      "loadFocus": {
+        "el": "button",
+        "name": "Delete: Annual health review — Dr. Sharma",
+        "focusVisible": true,
+        "scrollY": 4099
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 7,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    }
+  ],
+  "axeStates": [
+    {
+      "name": "signedout__landing__desktop-chat-open",
+      "violations": [
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag253"
+          ]
+        },
+        {
+          "id": "scrollable-region-focusable",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag211",
+            "wcag213"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 1
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 4
+        }
+      ]
+    },
+    {
+      "name": "signedout__landing__mobile-chat-open",
+      "violations": [
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag253"
+          ]
+        },
+        {
+          "id": "scrollable-region-focusable",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag211",
+            "wcag213"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 1
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 4
+        }
+      ]
+    },
+    {
+      "name": "signedout__landing__desktop-chat-long",
+      "violations": [
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag253"
+          ]
+        },
+        {
+          "id": "scrollable-region-focusable",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag211",
+            "wcag213"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 1
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 4
+        }
+      ]
+    },
+    {
+      "name": "signedout__landing__mobile-chat-long",
+      "violations": [
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag253"
+          ]
+        },
+        {
+          "id": "scrollable-region-focusable",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag211",
+            "wcag213"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 1
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 4
+        }
+      ]
+    },
+    {
+      "name": "signedout__landing__desktop-install-prompt",
+      "violations": [
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 4
+        }
+      ]
+    },
+    {
+      "name": "signedout__landing__mobile-install-prompt",
+      "violations": [
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 5
+        }
+      ]
+    },
+    {
+      "name": "signedout__signin__desktop-errors",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "signedout__signin__desktop-unknown-account",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "signedout__signup__desktop-errors",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag143"
+          ]
+        }
+      ],
+      "incomplete": []
+    },
+    {
+      "name": "patient__app__desktop-install-prompt",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 3,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "patient__app__mobile-install-prompt",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 4
+        }
+      ]
+    },
+    {
+      "name": "patient__app__desktop-checked-in",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 3,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "patient__app-schedule__desktop-all-done",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 41,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "patient__app-medications__desktop-all-taken",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 19,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "patient__app-appointments__desktop-added-to-my-day",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 11,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 6,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 5
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "patient__app-memories__desktop-expanded",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app-caregiver__desktop-compose",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app-manage-medications__desktop-add-form",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app-manage-medications__desktop-form-errors",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app-manage-medications__desktop-delete-dialog",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 6
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 2
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app-manage-medications__mobile-delete-dialog",
+      "violations": [
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 6
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 3
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app-manage-appointments__desktop-add-form",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app-manage-appointments__desktop-form-errors",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app-manage-appointments__desktop-delete-dialog",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 9,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 2,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 2
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app__desktop-with-events",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 11,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 5,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 4
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app__mobile-with-events",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 9,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 4,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 4
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app-activity__desktop-with-events",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 8,
+          "sc": [
+            "wcag143"
+          ]
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodes": 1,
+          "sc": [
+            "wcag253"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "caregiver__app-activity__mobile-with-events",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 6,
+          "sc": [
+            "wcag143"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 2
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    }
+  ],
+  "issuePngs": [
+    {
+      "file": "01-landing-label-content-name-mismatch.png",
+      "caption": "Landing, 1280px. Hero CTAs: visible text 'Get started — it's free' / 'I already have an account' is not in their accessible names 'Sign up for CareConnect' / 'Sign in to CareConnect' (axe label-content-name-mismatch, WCAG 2.5.3). Landing.tsx:124-138."
+    },
+    {
+      "file": "02-signup-color-contrast.png",
+      "caption": "Sign up, 1280px. Privacy note text-xs text-neutral-400 on white = 2.84:1, needs 4.5:1 (WCAG 1.4.3). SignUp.tsx:171."
+    },
+    {
+      "file": "03-role-color-contrast.png",
+      "caption": "Role chooser, 1280px. Two helper lines text-sm text-neutral-400 on neutral-50 = 2.68:1 (WCAG 1.4.3). RoleChooser.tsx:62, 90."
+    },
+    {
+      "file": "04-patient-app-color-contrast.png",
+      "caption": "Care recipient Today, 1280px. 'NEXT THING TO DO' label 2.84:1 (Today.tsx:175) and the desktop footer text 2.84:1 (Layout.tsx:432) (WCAG 1.4.3)."
+    },
+    {
+      "file": "05-patient-app-label-content-name-mismatch.png",
+      "caption": "Care recipient header, every route. Visible 'Call my caregiver' vs accessible name 'Call your caregiver: Joyce — 07700 900 456' (WCAG 2.5.3). Layout.tsx:275-282."
+    },
+    {
+      "file": "06-patient-app-schedule-color-contrast.png",
+      "caption": "My Day, 1280px. Done items sit in opacity-60 cards: titles 1.76:1, descriptions 2.44:1, badges 2.6-2.95:1, times 3.13:1; hint 'Tap the circle…' 2.68:1 (WCAG 1.4.3). Schedule.tsx:86-114, 164."
+    },
+    {
+      "file": "07-patient-app-appointments-color-contrast.png",
+      "caption": "My Appointments, 1280px. Location-type labels (2.84:1) and the reassurance note (2.68:1) use text-neutral-400 (WCAG 1.4.3). Appointments.tsx:185, 391."
+    },
+    {
+      "file": "08-patient-app-appointments-label-content-name-mismatch.png",
+      "caption": "My Appointments. 'Add to My Day' buttons are named 'Add \"<title>\" to My Day schedule', so the visible label is not contained (WCAG 2.5.3). Appointments.tsx:247-254."
+    },
+    {
+      "file": "09-patient-app-medications-color-contrast.png",
+      "caption": "Medicines, 1280px. Taken medicines sit in opacity-60 cards (1.76-2.95:1) and the disclaimer is 2.68:1 (WCAG 1.4.3). Medications.tsx:116-145, 167."
+    },
+    {
+      "file": "10-patient-app-manage-medications-label-content-name-mismatch.png",
+      "caption": "Manage medications. 'Add medication' button is named 'Add new medication' (WCAG 2.5.3). ManageMedications.tsx:407-415."
+    },
+    {
+      "file": "11-patient-app-manage-appointments-color-contrast.png",
+      "caption": "Manage appointments, 1280px. Addresses in text-neutral-400 on white = 2.84:1 (WCAG 1.4.3). ManageAppointments.tsx:452."
+    },
+    {
+      "file": "12-caregiver-app-color-contrast.png",
+      "caption": "Caregiver Dashboard, 1280px. Empty-activity hint (text-sm) and the refresh footnote (text-xs) in text-neutral-400, 2.84:1 / 2.68:1 (WCAG 1.4.3). CaregiverDashboard.tsx:424, 547."
+    },
+    {
+      "file": "13-caregiver-app-label-content-name-mismatch.png",
+      "caption": "Caregiver Dashboard. Four quick-link cards whose aria-label drops the visible sub-text, plus the sidebar 'Switch to patient' button named 'Switch to care recipient role' (WCAG 2.5.3). CaregiverDashboard.tsx:451-541, Layout.tsx:372-379."
+    },
+    {
+      "file": "14-landing-scrollable-region-focusable-chat-open.png",
+      "caption": "Landing with the assistant open (replies are the scripted fallback; with VITE_SUPABASE_URL unset each message POSTs to /undefined/functions/v1/chat-assistant and gets a 404). The conversation list scrolls but contains nothing focusable, so keyboard users cannot scroll earlier messages (axe scrollable-region-focusable, WCAG 2.1.1). ChatBot.tsx:267-270."
+    },
+    {
+      "file": "15-patient-app-schedule-color-contrast-all-done.png",
+      "caption": "My Day after every task is ticked: the whole list drops below contrast minimums (41 nodes) because done cards use opacity-60. Schedule.tsx:86-88."
+    },
+    {
+      "file": "16-patient-app-medications-color-contrast-all-taken.png",
+      "caption": "Medicines after every medicine is ticked: 19 contrast failures from opacity-60 cards. Medications.tsx:116."
+    },
+    {
+      "file": "17-caregiver-app-manage-medications-label-content-name-mismatch-add-form.png",
+      "caption": "Add medication form. 'Add another time' button is named 'Add another scheduled time' (WCAG 2.5.3). ManageMedications.tsx:261-269."
+    },
+    {
+      "file": "18-caregiver-app-color-contrast-with-events.png",
+      "caption": "Caregiver Dashboard with activity events: event-type labels and 'Nh ago' times are text-xs text-neutral-400, 2.84:1 (WCAG 1.4.3). CaregiverDashboard.tsx:254, 260."
+    },
+    {
+      "file": "19-caregiver-app-activity-color-contrast-with-events.png",
+      "caption": "Activity log with events: event-kind labels (text-xs) and the per-day count (text-sm) in text-neutral-400 (WCAG 1.4.3). ActivityLog.tsx:108, 200."
+    },
+    {
+      "file": "20-landing-focus-on-load-chat-launcher.png",
+      "caption": "Landing on load: focus is already on the chat launcher (bottom-right), so the first Tab leaves the page and the skip link is not the first stop (WCAG 2.4.3). ChatBot.tsx:129-135."
+    },
+    {
+      "file": "21-landing-hero-cta-focus-invisible.png",
+      "caption": "Landing: 'Get started — it's free' has keyboard focus (magenta box marks the CTA group). The 3px #146488 ring sits on the calm-700→600 gradient at about 1.1-1.3:1 and cannot be seen (WCAG 2.4.7, 1.4.11). index.css:49-53, Landing.tsx:96-139."
+    },
+    {
+      "file": "22-landing-hero-secondary-cta-focus-invisible.png",
+      "caption": "Landing: 'I already have an account' has keyboard focus; same invisible ring on the gradient (WCAG 2.4.7, 1.4.11)."
+    },
+    {
+      "file": "23-patient-app-install-prompt-over-content-mobile.png",
+      "caption": "Today at 390px with the install banner, rendered by a synthetic beforeinstallprompt event (headless Chromium never fires the real one). Header + banner + bottom nav leave about 100px of content; Esc / Not now / Install drop focus to <body>. InstallPrompt.tsx:109-118."
+    },
+    {
+      "file": "24-patient-app-header-icon-only-buttons-sm-breakpoint.png",
+      "caption": "Header at 1280px: the wordmark and the 'Switch role' / 'Sign out' labels never render because tailwind.config.js defines no sm breakpoint, so these are icon-only at every width. tailwind.config.js:6-9, Layout.tsx:181, 214, 223."
+    },
+    {
+      "file": "25-caregiver-manage-medications-focus-stolen-on-load.png",
+      "caption": "Manage medications on load: focus jumps to the last 'Delete' button and the page scrolls to it (WCAG 2.4.3). ConfirmDialog.tsx:95-99 runs its focus-return effect on mount for every danger Button (Button.tsx:116-125)."
+    },
+    {
+      "file": "26-caregiver-manage-medications-delete-dialog-buttons-mobile.png",
+      "caption": "Delete dialog at 390px: opens off-centre with Cancel below the fold; 'Yes, delete' is stacked above 'Cancel' at every width (flex-col-reverse, dead sm:). ConfirmDialog.tsx:117-123, 179."
+    },
+    {
+      "file": "27-caregiver-manage-appointments-focus-stolen-on-load.png",
+      "caption": "Manage appointments on load: focus jumps to the last 'Delete' button, page scrolled about 1566px (WCAG 2.4.3). Same cause as 25."
+    },
+    {
+      "file": "28-caregiver-manage-appointments-delete-dialog-buttons-mobile.png",
+      "caption": "Delete appointment dialog at 390px: same off-centre placement and stacked destructive-first buttons as 26."
+    },
+    {
+      "file": "29-patient-app-schedule-toggle-icon-non-text-contrast.png",
+      "caption": "My Day: unchecked task toggles are text-neutral-300 (#c4cad5) circles on white, 1.6:1; the only visual cue for the control needs 3:1 (WCAG 1.4.11). Schedule.tsx:128, Medications.tsx:157."
+    },
+    {
+      "file": "30-caregiver-app-contacts-sidebar-under-sticky-header.png",
+      "caption": "Caregiver desktop scrolled 600px: the sidebar slides under the 222px sticky header (it is a stretched flex item, so lg:sticky never engages, and --header-h is never set). Layout.tsx:323-339."
+    },
+    {
+      "file": "31-landing-320px-reflow-header-signup-clipped.png",
+      "caption": "Landing at 320px (400% zoom): header nav runs to 410px; 'Sign up' is clipped by html/body overflow-x: clip and 'Sign in' wraps (WCAG 1.4.10). Landing.tsx:54-88, index.css:22-26."
+    },
+    {
+      "file": "32-caregiver-app-caregiver-320px-reflow-add-note-clipped.png",
+      "caption": "Caregiver Notes at 320px: 'Add note' button extends to 374px and is cut off (WCAG 1.4.10). Caregiver.tsx:62-79."
+    },
+    {
+      "file": "33-caregiver-app-manage-appointments-320px-reflow-heading-clipped.png",
+      "caption": "Manage appointments at 320px: the h1 'Manage appointments' is 341px wide and its end is clipped (WCAG 1.4.10). ManageAppointments.tsx:546-549."
+    },
+    {
+      "file": "34-patient-app-focus-obscured.png",
+      "caption": "Today at 1280px: Tab reaches the footer link 'View contacts', which is fully behind the fixed bottom nav. The care-recipient footer is never visible at ≥1024px (WCAG 2.4.7). Layout.tsx:313, 386-441."
+    },
+    {
+      "file": "35-patient-app-contacts-focus-obscured.png",
+      "caption": "Contacts at 1280px: focused 'Call Dr. Priya Sharma' link is scrolled to the viewport edge and fully hidden by the bottom nav (WCAG 2.4.7)."
+    },
+    {
+      "file": "36-patient-app-schedule-focus-obscured-mobile.png",
+      "caption": "My Day at 390px: the focused toggle for 'Breakfast' is two-thirds behind the fixed bottom nav (partly hidden = WCAG 2.2 SC 2.4.11, not a 2.1 failure); the next stop, 'Lunch', is fully hidden (WCAG 2.1 SC 2.4.7)."
+    },
+    {
+      "file": "37-patient-app-medications-focus-obscured-mobile.png",
+      "caption": "Medicines at 390px: focused 'Mark Atorvastatin as taken' is fully behind the bottom nav (WCAG 2.4.7)."
+    },
+    {
+      "file": "38-caregiver-app-contacts-focus-obscured.png",
+      "caption": "Caregiver Contacts at 1280px: Tab moves from the page into the sidebar; the focused 'Dashboard', 'Medications' and 'Appointments' links are under the sticky header and invisible (WCAG 2.4.7)."
+    },
+    {
+      "file": "39-patient-app-400pct-zoom-320x256-chrome-covers-content.png",
+      "caption": "Care recipient at 320x256 CSS px (a 1280x1024 window at 400% zoom): 403px sticky header + 70px fixed bottom nav, so 0px of page content is visible at any scroll position (WCAG 1.4.10). Layout.tsx:163-166, 386-389."
+    },
+    {
+      "file": "40-caregiver-app-400pct-zoom-320x256-chrome-covers-content.png",
+      "caption": "Caregiver at 320x256 CSS px (1280x1024 at 400% zoom): the 353px sticky header fills the viewport; 0px of content visible (WCAG 1.4.10)."
+    },
+    {
+      "file": "41-caregiver-manage-appointments-dialog-not-fixed-to-viewport.png",
+      "caption": "Delete dialog opened by pointer from the top of the list at 1280px: the page jumps 704px, the backdrop dims only <main> (the sidebar is outside the backdrop) and the sticky header scrolls away. <main class='page-enter'> keeps transform: translateY(0) after its animation (fill-mode forwards), so the position:fixed dialog is laid out against <main>, not the viewport. index.css:202-207, Layout.tsx:309, ConfirmDialog.tsx:118."
+    },
+    {
+      "file": "42-caregiver-manage-appointments-dialog-not-fixed-to-viewport-mobile.png",
+      "caption": "Same at 390px: page jumps 2015px and the dialog's bottom (Cancel) is below the fold."
+    }
+  ]
+}
